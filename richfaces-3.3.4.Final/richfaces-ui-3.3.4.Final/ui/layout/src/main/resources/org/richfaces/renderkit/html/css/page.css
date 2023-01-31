@@ -55,3 +55,12 @@ version: 2.5.2
 
 .rich-page-content:after {content:".";display:block;height:0;clear:both;visibility:hidden;}
 .rich-page-content {zoom:1;}
+
+/* Fix CSP 2022/11/02 */
+
+.color-red-float-left-opacity-055 { color:red;float:left;opacity:.5; }
+
+.div-jquery-offset-initialize { position:absolute;top:0;left:0;margin:0;border:5px solid #000;padding:0;width:1px;height:1px;}
+
+.table-jquery-offset-initialize { position:absolute;top:0;left:0;margin:0;border:5px solid #000;padding:0;width:1px;height:1px;}
+

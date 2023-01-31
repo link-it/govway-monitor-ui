@@ -208,6 +208,7 @@ public class ToolTipRenderer extends AjaxComponentRendererBase {
         StringBuffer ret = new StringBuffer();
         ret.append("<script ");
         ret.append("type=\"text/javascript\" ");
+        ret.append("nonce=\"").append(getUtils().getCspNonceValue(context)).append("\"");
         ret.append("id =\"script").append(component.getClientId(context)).append("\">\n");
         ret.append(constructJSVariable(context, component)).append("\n");
         ret.append("</script>");

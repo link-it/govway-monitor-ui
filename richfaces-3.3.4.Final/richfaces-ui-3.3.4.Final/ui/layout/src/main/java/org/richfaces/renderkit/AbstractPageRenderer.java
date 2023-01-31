@@ -1,6 +1,11 @@
 /**
  * 
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit;
 
 import java.io.IOException;
@@ -9,10 +14,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.UIPage;
 import org.richfaces.skin.SkinFactory;
@@ -72,6 +79,9 @@ public abstract class AbstractPageRenderer extends HeaderResourcesRendererBase {
 		doctypes.put("html-3.2", new String[] {
 				"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n",
 				"text/html", null });
+		
+		// HTML5
+		doctypes.put("html5", new String[] { "<!DOCTYPE html>\n", "text/html", null });
 	}
 
 	public String prolog(FacesContext context, UIComponent component)
@@ -136,6 +146,10 @@ public abstract class AbstractPageRenderer extends HeaderResourcesRendererBase {
 				style = context.getApplication().getViewHandler().getResourceURL(context, style);
 				style= context.getExternalContext().encodeResourceURL(style);
 				writer.writeAttribute(HTML.HREF_ATTR, style, null);
+				String cspValue = RendererUtils.getCspNonceValue(context);
+				if(cspValue != null) {
+					writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+				}
 				writer.endElement(HTML.LINK_ELEMENT);
 			}
 		}
@@ -153,6 +167,10 @@ public abstract class AbstractPageRenderer extends HeaderResourcesRendererBase {
 				script = context.getApplication().getViewHandler().getResourceURL(context, script);
 				script= context.getExternalContext().encodeResourceURL(script);
 				writer.writeAttribute(HTML.src_ATTRIBUTE, script, null);
+				String cspValue = RendererUtils.getCspNonceValue(context);
+				if(cspValue != null) {
+					writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+				}
 				writer.endElement(HTML.SCRIPT_ELEM);
 			}
 		}
@@ -168,6 +186,10 @@ public abstract class AbstractPageRenderer extends HeaderResourcesRendererBase {
 		Map<String, Object> attributes = component.getAttributes();
 		writer.startElement("style", component);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
 		// Calculate page width
 		Integer width = (Integer) attributes.get("width");
 		if (null != width && width.intValue() > 0) {

@@ -18,13 +18,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.renderkit.html;
 
 import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -65,6 +70,10 @@ public class AjaxPushRenderer extends AjaxCommandRendererBase {
 			// pushing script.
 				writer.startElement(HTML.SCRIPT_ELEM, component);
 				writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+				String cspValue = RendererUtils.getCspNonceValue(context);
+				if(cspValue != null) {
+					writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+				}
 				StringBuffer script = new StringBuffer("\n");
 				if(push.isEnabled()){
 				JSFunction function = AjaxRendererUtils.buildAjaxFunction(component, context, AJAX_PUSH_FUNCTION);

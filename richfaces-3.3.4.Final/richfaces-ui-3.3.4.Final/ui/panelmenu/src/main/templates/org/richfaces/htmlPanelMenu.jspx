@@ -35,10 +35,22 @@
 		          variables.setVariable("style", style);
 		 ]]>
 	</jsp:scriptlet>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-pmenu-style {
+			width:#{component.width}; #{style}
+		}
+		.#{cssId}-script { display:none;}
+	</style>
 	
 	
 	<f:call name="utils.encodeBeginFormIfNessesary"/>
-	<div style="width:#{component.width}; #{style}"  class="rich-pmenu #{component.styleClass}"
+	<div class="rich-pmenu #{component.styleClass} #{cssId}-pmenu-style"
 			id="#{clientId}"  
 			x:passThruWithExclusions="style,width,class,styleClass,id">
 		<vcp:body>
@@ -46,7 +58,7 @@
 		</vcp:body>		
 		<f:clientid var="clientId"/>
 		<input autocomplete="off" type="hidden" id="#{clientId}selectedItemName" name="#{clientId}selectedItemName" value="#{this:getSelectedItemInputValue(context, component)}" />
-		<div style="display:none">
+		<div class="#{clientId}-script">
 			<f:call name="insertScript"/>
 		</div>
 	</div>

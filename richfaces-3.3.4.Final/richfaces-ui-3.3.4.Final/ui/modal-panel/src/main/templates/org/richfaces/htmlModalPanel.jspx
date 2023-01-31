@@ -24,10 +24,21 @@
 	</h:scripts>
 
 	<f:clientid var="clientId"/>
-
-	<div id="#{clientId}"
-		style="display: none;"
-		>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-style { display:none; }
+		.#{cssId}-container-style { position: absolute; z-index: #{component.zindex}; background-color: inherit; }
+		.#{cssId}-mask-style { z-index: -1; }
+		.#{cssId}-cdiv-style { position: absolute; left: 0px; top: 0px; z-index: 9; }
+		.#{cssId}-shadow-style { #{component.shadowStyle} }
+		.#{cssId}-contentdiv-style { #{component.attributes['style']} }
+	</style>
+	<div id="#{clientId}" class="#{cssId}-style">
 
 		<f:call name="checkOptions" />
 		<f:call name="initializeResources" />
@@ -35,12 +46,10 @@
 		<input autocomplete="off" type="hidden" id="#{clientId}OpenedState" name="#{clientId}OpenedState" />
 		
 		<div id="#{clientId}Container"
-		style="position: absolute; display: none; z-index: #{component.zindex}; background-color: inherit;"
-		class="rich-modalpanel #{component.attributes['styleClass']}"
+		class="rich-modalpanel #{component.attributes['styleClass']} #{cssId}-container-style rich-modalpanel-display-none"
 		x:passThruWithExclusions="id,style,class,styleClass"
 		>
-			<div class="rich-mpnl-mask-div-opaque rich-mpnl-mask-div" id="#{clientId}Div"
-				style="z-index: -1;"
+			<div class="rich-mpnl-mask-div-opaque rich-mpnl-mask-div #{cssId}-mask-style" id="#{clientId}Div"
 				onclick="#{component.attributes['onmaskclick']}"
 				ondblclick="#{component.attributes['onmaskdblclick']}"
 				oncontextmenu="#{component.attributes['onmaskcontextmenu']}"
@@ -54,10 +63,9 @@
 			</div>	
 
 			<div class="rich-mpnl-panel" >
-			<div id="#{clientId}CDiv" style="position: absolute; left: 0px; top: 0px; z-index: 9;" class="rich-mp-container">
+			<div id="#{clientId}CDiv" class="rich-mp-container #{cssId}-cdiv-style">
 
-				<div id="#{clientId}ShadowDiv" class="rich-mpnl-shadow"
-					style="#{component.shadowStyle}" >
+				<div id="#{clientId}ShadowDiv" class="rich-mpnl-shadow #{cssId}-shadow-style">
 			   	</div>
 				
 				<c:object var="divClass" type="java.lang.String" />
@@ -102,7 +110,7 @@
 					]]>
 				</jsp:scriptlet>
 				
-				<div id="#{clientId}ContentDiv" style="#{component.attributes['style']}" class="#{divClass} rich-mpnl-content">
+				<div id="#{clientId}ContentDiv" class="#{divClass} rich-mpnl-content #{cssId}-contentdiv-style">
 					<jsp:scriptlet>
 						<![CDATA[if(component.getFacet("controls")!=null && component.getFacet("controls").isRendered()) {]]>
 					</jsp:scriptlet>
@@ -112,14 +120,19 @@
 					<jsp:scriptlet>
 						<![CDATA[}]]>
 					</jsp:scriptlet>
-					
-					<table id="#{clientId}ContentTable" style="#{tableStyle}" border="0" cellpadding="0" cellspacing="0" class="rich-mp-content-table">
+					<style type="text/css" nonce="#{cspValue}">
+						.#{cssId}-content-table-style { #{tableStyle} }
+						.#{cssId}-tr-content-table-style { height: 1%; }
+						.#{cssId}-tr-td-header-content-table-style { white-space: nowrap;}
+						.#{cssId}-tr-body-content-table-style { height: 99%; }
+					</style>
+					<table id="#{clientId}ContentTable" border="0" cellpadding="0" cellspacing="0" class="rich-mp-content-table #{cssId}-content-table-style">
 						<jsp:scriptlet>
 							<![CDATA[if(component.getFacet("header")!=null && component.getFacet("header").isRendered()) {]]>
 						</jsp:scriptlet>
-				        	<tr style="height: 1%;">
+				        	<tr class="#{cssId}-tr-content-table-style">
 								<td class="rich-mpnl-header-cell" >
-									<div id="#{clientId}Header" style="white-space: nowrap;" class="rich-mpnl-text rich-mpnl-header #{component.attributes['headerClass']}">
+									<div id="#{clientId}Header" class="rich-mpnl-text rich-mpnl-header #{component.attributes['headerClass']} #{cssId}-tr-td-header-content-table-style">
 		 					           <u:insertFacet name="header" />
 									</div>
 								</td>
@@ -127,7 +140,7 @@
 						<jsp:scriptlet>
 							<![CDATA[}]]>
 						</jsp:scriptlet>
-				        	<tr style="height: 99%">
+				        	<tr class="#{cssId}-tr-body-content-table-style">
 				        		<td class="rich-mpnl-body" valign="top">
 									<vcp:body>
 										<f:call name="renderChildren" />
@@ -152,7 +165,10 @@
 								variables.setVariable("resizerStyle", style);
 					]]>
 				</jsp:scriptlet>
-					<div id="#{clientId}Resizer#{resizer}" class="rich-mpnl-resizer" style="#{resizerStyle}">
+					<style type="text/css" nonce="#{cspValue}">
+						.#{cssId}-content-resizer-style { #{resizerStyle} }
+					</style>
+					<div id="#{clientId}Resizer#{resizer}" class="rich-mpnl-resizer #{cssId}-content-resizer-style">
 					</div>
 				<jsp:scriptlet>
 					<![CDATA[
@@ -163,13 +179,15 @@
 
 			</div>
 			</div>
-			<div class="rich-mpnl-mask-div rich-mpnl-mask-div-transparent" id="#{clientId}CursorDiv"
-				style="z-index: -200;">
+			<style type="text/css" nonce="#{cspValue}">
+				.#{cssId}-cursor-div-style { z-index: -200; }
+			</style>
+			<div class="rich-mpnl-mask-div rich-mpnl-mask-div-transparent #{cssId}-cursor-div-style" id="#{clientId}CursorDiv">
 				
 		        <button class="rich-mpnl-button" id="#{clientId}LastHref"></button>
 			</div>
 
-			<script type="text/javascript">
+			<script type="text/javascript" nonce="#{cspValue}">
 				new ModalPanel('#{clientId}',
 				{
 					width: #{component.width},
@@ -204,7 +222,7 @@
 				});
 			</script>
 		</div>
-		<script type="text/javascript" >
+		<script type="text/javascript" nonce="#{cspValue}">
 			#{this:getShowScript(context, component)}
 		</script>
 	</div>

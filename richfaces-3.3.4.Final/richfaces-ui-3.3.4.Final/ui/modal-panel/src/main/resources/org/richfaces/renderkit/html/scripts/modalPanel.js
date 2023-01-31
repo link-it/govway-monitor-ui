@@ -490,6 +490,7 @@ ModalPanel.prototype = {
 		if(!this.shown && this.invokeEvent("beforeshow",event,null,element)) {
 			
 			var element = this.id;
+			var jqElement = jQuery(element);
 
 			this.preventFocus();
 			
@@ -525,6 +526,7 @@ ModalPanel.prototype = {
 			}
 	
 			var eCdiv = $(this.cdiv);
+			var jqEDiv = jQuery(eCdiv);
 			var forms = eCdiv.getElementsByTagName("form");
 	
 			if (this.options.keepVisualState && forms) {
@@ -641,8 +643,11 @@ ModalPanel.prototype = {
 				/* */
 			}
 	
-			element.style.visibility = "hidden";
-			Element.show(element);
+			jqElement.removeClass( "rich-modalpanel-display-none" ).addClass( "rich-modalpanel-display" );
+    		jqElement.removeClass( "rich-modalpanel-visibility" ).addClass( "rich-modalpanel-visibility-hidden" );
+    		
+//			element.style .visibility = "hidden";
+//			Element.show(element);
 			this.correctShadowSize();
 	
 			if (options.left) {
@@ -694,12 +699,16 @@ ModalPanel.prototype = {
 				this.header.doPosition();
 			}
 	
-	        Element.hide(eCdiv);
-	        element.style.visibility = "";
+    		jqElement.removeClass( "rich-modalpanel-visibility-hidden" ).addClass( "rich-modalpanel-visibility" );
+    		jqEDiv.removeClass( "rich-modalpanel-display" ).addClass( "rich-modalpanel-display-none" );
+    		
+//	        Element.hide(eCdiv);
+//	        element.style .visibility = "";
 	
 			this.lastOnfocus();
 	    	
-	    	Element.show(eCdiv);
+	    	jqEDiv.removeClass( "rich-modalpanel-display-none" ).addClass( "rich-modalpanel-display" );
+//	    	Element.show(eCdiv);
 	
 	    	var event = {};
 	    	event.parameters = opts || {};
@@ -737,6 +746,7 @@ ModalPanel.prototype = {
 			
 			var eDiv = $(this.div);
 			var eCdiv = $(this.cdiv);
+			var jqEDiv = jQuery(eCdiv);
 	
 			if (eDiv.style.position == "absolute") {
 				eDiv.style.removeExpression("width");
@@ -757,7 +767,10 @@ ModalPanel.prototype = {
 			}
 	
 			var element = $(this.id);
-			Element.hide(element);
+			var jqElement = jQuery(element); // uso jQuey per comodita''
+			
+			jqElement.removeClass( "rich-modalpanel-display" ).addClass( "rich-modalpanel-display-none" );
+//			Element.hide(element);
 	
 			if (this.parent) {
 				if (this.domReattached) {

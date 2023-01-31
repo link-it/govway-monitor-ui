@@ -26,7 +26,13 @@
 	</h:scripts>
  
 	<f:clientid var="clientId" />
-	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+
 	<jsp:scriptlet>
 		<![CDATA[
             Boolean disabled = (Boolean) component.getAttributes().get("disabled");
@@ -110,21 +116,31 @@
 		]]>
     </jsp:scriptlet>
 		<f:resource var="spacer" name="images/spacer.gif"/>
-<div id="#{clientId}">		
-<div id="#{clientId}combobox" class="rich-combobox-font rich-combobox #{styleClass}" style="width:#{width};#{style}"
+<div id="#{clientId}">	
+		<style type="text/css" nonce="#{cspValue}">
+			.#{cssId}-combobox-style { width:#{width};#{style} }
+			.#{cssId}-combobox-shell-style { width:#{width}; }
+			.#{cssId}-combobox-field-width-style { width:#{correction} !important; }
+			.#{cssId}-combobox-field-style { #{component.attributes['inputInactiveStyle']} }
+			.#{cssId}-combobox-button-style { #{component.attributes['buttonStyle']}; background-image: #{buttonIconInactive}; }
+			.#{cssId}-combobox-strut-style { width:#{correction}; }
+			.#{cssId}-combobox-list-cord-style { #{component.attributes['listStyle']}; }
+			.#{cssId}-combobox-list-cord-position-style { position:absolute;z-index:1000; }
+			.#{cssId}-combobox-shadow-style { border:0; }
+		</style>
+<div id="#{clientId}combobox" class="rich-combobox-font rich-combobox #{styleClass} #{cssId}-combobox-style" 
 	 x:passThruWithExclusions="value,name,type,id,styleClass,class,style,size,autocomplete,disabled,onchange">
 
 	<div class="rich-combobox-list-cord"></div>
-	<div class="rich-combobox-font rich-combobox-shell" style="width:#{width};">
+	<div class="rich-combobox-font rich-combobox-shell #{cssId}-combobox-shell-style">
 		<input id="#{clientId}comboboxField" 
 					   name="#{clientId}comboboxField" 
 					   disabled="#{disabled}" 
-					   class="#{valueStyle} rich-combobox-input-inactive  #{component.attributes['inputInactiveClass']}" type="text" 
+					   class="#{valueStyle} rich-combobox-input-inactive #{component.attributes['inputInactiveClass']} #{cssId}-combobox-field-width-style #{cssId}-combobox-field-style"  type="text" 
 					   readonly="#{this:getReadOnlyValue(enableManualInput)}"
 					   value="#{value}" 
 					   x:onblur="#{component.attributes['onblur']}"
 					   onfocus = "#{component.attributes['onfocus']}"
-					   style="width:#{correction}; #{component.attributes['inputInactiveStyle']}"
 					   autocomplete="off"
 					   tabindex="#{component.attributes['tabindex']}"
 					   />
@@ -140,28 +156,27 @@
 			   disabled="#{disabled}" 
 			   type="text" 
 			   value="" 
-			   style="#{component.attributes['buttonStyle']}; background-image: #{buttonIconInactive};" 
-			   class="rich-combobox-font-inactive rich-combobox-button-icon-inactive rich-combobox-button-inactive #{buttonInactiveClass}"/>
-		<div class="rich-combobox-strut rich-combobox-font" style="width:#{correction}">Strut</div>		   
+			   class="rich-combobox-font-inactive rich-combobox-button-icon-inactive rich-combobox-button-inactive #{buttonInactiveClass} #{cssId}-combobox-button-style"/>
+		<div class="rich-combobox-strut rich-combobox-font #{cssId}-combobox-strut-style">Strut</div>		   
 	</div>
 	
-	<div id="#{clientId}listParent" class="rich-combobox-list-cord #{component.attributes['listClass']}" style="display:none; #{component.attributes['listStyle']}; position:absolute;z-index:1000;">
+	<div id="#{clientId}listParent" class="rich-combobox-list-cord #{component.attributes['listClass']} #{cssId}-combobox-list-cord-style #{cssId}-combobox-list-cord-position-style rich-combobox-list-cord-display-none">
 		<div class="rich-combobox-shadow">
 			<table id="#{clientId}shadow" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td class="rich-combobox-shadow-tl">
-						<img src="#{spacer}" width="10" height="1" alt="" style="border:0"></img><br></br>
+						<img src="#{spacer}" width="10" height="1" alt="" class="#{cssId}-combobox-shadow-style"></img><br></br>
 					</td>
 					<td class="rich-combobox-shadow-tr">
-						<img src="#{spacer}" width="1" height="10" alt="" style="border:0"></img><br></br>
+						<img src="#{spacer}" width="1" height="10" alt="" class="#{cssId}-combobox-shadow-style"></img><br></br>
 					</td>
 				</tr>
 				<tr>
 					<td class="rich-combobox-shadow-bl">
-						<img src="#{spacer}" width="1" height="10" alt="" style="border:0"></img><br></br>
+						<img src="#{spacer}" width="1" height="10" alt="" class="#{cssId}-combobox-shadow-style"></img><br></br>
 					</td>
 					<td class="rich-combobox-shadow-br">
-						<img src="#{spacer}" width="10" height="10" alt="" style="border:0"></img><br></br>
+						<img src="#{spacer}" width="10" height="10" alt="" class="#{cssId}-combobox-shadow-style"></img><br></br>
 					</td>
 				</tr>
 			</table>
@@ -254,7 +269,7 @@
 	<c:scriptObject var="options">
 		<c:scriptOption variables="userStyles, listOptions, fields, value" />
 	</c:scriptObject>
-	<script type="text/javascript">
+	<script type="text/javascript" nonce="#{cspValue}">
 		new Richfaces.ComboBox("#{clientId}"
 			<c:if test="#{not empty options}">
 			, <f:writeAsScript value="#{options}" />

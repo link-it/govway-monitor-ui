@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.renderkit.html;
 
 import java.io.IOException;
@@ -93,6 +97,9 @@ public class AjaxPageRenderer extends AjaxContainerRenderer {
 		doctypes.put("html-3.2", new String[] {
 				"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n",
 				"text/html", null });
+		
+		// HTML5
+		doctypes.put("html5", new String[] { "<!DOCTYPE html>\n", "text/html", null });
 	}
 
 	// private PreparedTemplate pageStyles =

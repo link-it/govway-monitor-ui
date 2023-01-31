@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.context;
 
 import java.io.IOException;
@@ -53,6 +57,7 @@ import org.ajax4jsf.renderkit.ProducerContext;
 import org.ajax4jsf.renderkit.ProducerContextImpl;
 import org.ajax4jsf.renderkit.UserResourceRenderer;
 import org.ajax4jsf.renderkit.UserResourceRenderer2;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 import org.ajax4jsf.resource.InternetResourceBase;
@@ -122,6 +127,13 @@ public class ViewResources {
 				
 				for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 					writer.writeAttribute(entry.getKey(), entry.getValue(), null);
+				}
+				
+				if(!attributes.containsKey(HTML.nonce_ATTRIBUTE)) {
+					String cspValue = RendererUtils.getCspNonceValue(context);
+					if(cspValue != null) {
+						writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+					}
 				}
 				
 				writer.writeText("window.RICH_FACES_EXTENDED_SKINNING_ON=true;", null);

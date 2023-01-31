@@ -27,13 +27,23 @@
 	</h:scripts>
 	
 	<f:clientId var="clientId"/>
-	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-rich-ordering-list-focus-keeper-style { width: 1px; position: absolute; left: -32767px; }
+		.#{cssId}-rich-ordering-list-td-controls-va-style { vertical-align: #{component.attributes['controlsVerticalAlign']}; }
+		.#{cssId}-rich-ordering-list-tr-caption-style { #{this:getCaptionDisplay(context, component)} }
+	</style>
     <div id="#{clientId}" class="rich-ordering-list-ds #{component.attributes['styleClass']}" x:passThruWithExclusions="id,class,styleClass">
-    	<input id="#{clientId}focusKeeper" type="button" value="" style="width: 1px; position: absolute; left: -32767px;" />
+    	<input id="#{clientId}focusKeeper" type="button" value="" class="#{cssId}-rich-ordering-list-focus-keeper-style" />
 		
 		<table id="#{clientId}table" cellpadding="0" cellspacing="0" class="rich-ordering-list-body">
 			<tbody>
-				<tr style="#{this:getCaptionDisplay(context, component)}" >
+				<tr class="#{cssId}-rich-ordering-list-tr-caption-style" >
 					<jsp:scriptlet><![CDATA[
 			        	if ("left".equals(component.getAttributes().get("controlsHorizontalAlign"))) {
                 	]]></jsp:scriptlet>
@@ -56,7 +66,7 @@
 					<jsp:scriptlet><![CDATA[
 			        	if ("left".equals(component.getAttributes().get("controlsHorizontalAlign"))) {
                 	]]></jsp:scriptlet>
-	                	<td class="rich-ordering-list-button-valign"  style="vertical-align: #{component.attributes['controlsVerticalAlign']}" >
+	                	<td class="rich-ordering-list-button-valign #{cssId}-rich-ordering-list-td-controls-va-style" >
 							<div class="rich-ordering-list-button-layout">
 								<f:call name="encodeControlsFacets" />
 							</div>
@@ -76,7 +86,10 @@
 		                		}
 			                	if (isHeaderExists(context, component)) {
                 			]]></jsp:scriptlet>
-							<div class="rich-ordering-list-header" style="#{contentContainerStyle}">
+							<div class="rich-ordering-list-header #{cssId}-rich-ordering-list-header-style">
+								<style type="text/css" nonce="#{cspValue}">
+									.#{cssId}-rich-ordering-list-header-style { #{contentContainerStyle}; }
+								</style>
 								<table id="#{clientId}internal_header_tab" class="rich-ordering-list-items-header" cellpadding="0" cellspacing="0">
 									<f:call name="encodeHeader"/>
 								</table>
@@ -89,7 +102,10 @@
 			                		variables.setVariable("contentContainerStyle", contentContainerStyle);
 			                	}
                 			]]></jsp:scriptlet>
-							<div id="#{clientId}contentBox" class="rich-ordering-list-content" style="#{contentContainerStyle}">
+                			<style type="text/css" nonce="#{cspValue}">
+								.#{cssId}-rich-ordering-list-content-style { #{contentContainerStyle}; }
+							</style>
+							<div id="#{clientId}contentBox" class="rich-ordering-list-content #{cssId}-rich-ordering-list-content-style">
 								<table id="#{clientId}internal_tab" class="rich-ordering-list-items" cellpadding="0" cellspacing="0">
 									<tbody id="#{clientId}tbody">
 										<vcp:body>
@@ -103,7 +119,7 @@
 					<jsp:scriptlet><![CDATA[
 			        	if (!"left".equals(component.getAttributes().get("controlsHorizontalAlign"))) {
                 	]]></jsp:scriptlet>
-	                	<td class="rich-ordering-list-button-valign" style="vertical-align: #{component.attributes['controlsVerticalAlign']}" >
+	                	<td class="rich-ordering-list-button-valign #{cssId}-rich-ordering-list-td-controls-va-style" >
 							<div class="rich-ordering-list-button-layout">
 								<f:call name="encodeControlsFacets" />
 							</div>
@@ -125,7 +141,7 @@
 	<c:scriptObject var="options">
 		<c:scriptOption variables="events, classes"  />
 	</c:scriptObject>
-	<script type="text/javascript">
+	<script type="text/javascript" nonce="#{cspValue}">
 			new Richfaces.OrderingList('#{cId}'
 				<c:if test="#{not empty options}">
 				, <f:writeAsScript value="#{options}" />

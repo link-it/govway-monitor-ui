@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.renderkit.html;
 
 import java.io.IOException;
@@ -31,6 +35,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -40,6 +45,7 @@ import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.ScriptUtils;
 import org.ajax4jsf.renderkit.AjaxComponentRendererBase;
 import org.ajax4jsf.renderkit.AjaxRendererUtils;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 
@@ -191,12 +197,12 @@ public class AjaxFormRenderer extends AjaxComponentRendererBase {
 			target = (String) component.getAttributes().get(
 					HTML.target_ATTRIBUTE);
 		}
-		renderClearHiddenCommandFormParamsFunction(writer, clientId, hiddenFields, target);
+		renderClearHiddenCommandFormParamsFunction(context, writer, clientId, hiddenFields, target);
 		// Script
 		if (component instanceof UIAjaxForm) {
 			UIAjaxForm form = (UIAjaxForm) component;
 			if (form.isAjaxSubmit()) {
-				renderAjaxFormSetupScript(writer, clientId);
+				renderAjaxFormSetupScript(context, writer, clientId);
 			}
 		}
 		// writeFormSubmitScript(context, writer);
@@ -245,9 +251,13 @@ public class AjaxFormRenderer extends AjaxComponentRendererBase {
 	}
 	
 	
-	public void renderAjaxFormSetupScript(ResponseWriter writer, String formName) throws IOException {
+	public void renderAjaxFormSetupScript(FacesContext context, ResponseWriter writer, String formName) throws IOException {
 		writer.startElement(HTML.SCRIPT_ELEM, null);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
 		writer.writeText("A4J.setupForm('"+formName+"');", null);
 		writer.endElement(HTML.SCRIPT_ELEM);
 	}
@@ -264,13 +274,17 @@ public class AjaxFormRenderer extends AjaxComponentRendererBase {
 	 * @param formTarget
 	 * @throws IOException
 	 */
-	public void renderClearHiddenCommandFormParamsFunction(
+	public void renderClearHiddenCommandFormParamsFunction(FacesContext context,
 			ResponseWriter writer, String formName, Set dummyFormParams,
 			String formTarget) throws IOException {
 		// render the clear hidden inputs javascript function
 		String functionName = getClearHiddenCommandFormParamsFunctionName(formName);
 		writer.startElement(HTML.SCRIPT_ELEM, null);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
 
 		// Using writeComment instead of write with <!-- tag
 		StringBuffer script = new StringBuffer();

@@ -29,7 +29,20 @@
 	</h:scripts>
 	
 	<f:clientId var="clientId"/>
-	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-rich-shuttle-focus-keeper-style { width: 1px; position: absolute; left: -32767px; }
+		.#{cssId}-rich-shuttle-table-td-header-box-style { border: 0px; padding: 0px; }
+		.#{cssId}-rich-shuttle-focus-tl-keeper-style { width: 1px; position: absolute; left: -32767px; }
+		.#{cssId}-rich-shuttle-table-td-tl-header-box-style { border: 0px; padding: 0px; }
+		.#{cssId}-rich-shuttle-td-controls-va-style { vertical-align: #{component.controlsVerticalAlign}; }
+		.#{cssId}-rich-shuttle-tr-caption-style { #{this:getCaptionDisplay(context, component)} }
+	</style>
 	<table id="#{clientId}" class="rich-list-shuttle #{component.attributes['styleClass']}"
 			cellspacing="0" cellpadding="0"
 			x:passThruWithExclusions="id,class,styleClass">
@@ -51,7 +64,7 @@
 					]]>
 				</jsp:scriptlet>
 
-				<tr style="#{this:getCaptionDisplay(context, component)}" >
+				<tr class="#{cssId}-rich-shuttle-tr-caption-style" >
 					<td class="rich-list-shuttle-caption" colspan="2">
 						<f:call name="encodeSLCaption"/>
 					</td>
@@ -62,12 +75,12 @@
 				<tr>
 					<td>
 					    <div class="rich-shuttle-source-items #{component.listClass}">
-					    	<input id="#{clientId}focusKeeper" type="button" value="" style="width: 1px; position: absolute; left: -32767px;"/>
+					    	<input id="#{clientId}focusKeeper" type="button" value="" class="#{cssId}-rich-shuttle-focus-keeper-style"/>
 							
 							<table id="#{clientId}table" cellpadding="0" cellspacing="0" class="rich-shuttle-body">
 								<tbody>
 									<tr>
-										<td style="border:0px;padding : 0px;">
+										<td class="#{cssId}-rich-shuttle-table-td-header-box-style">
 											<div id="#{clientId}headerBox" class="rich-shuttle-list">
 												<jsp:scriptlet>
 													<![CDATA[
@@ -80,7 +93,10 @@
 														if (isHeaderExists(context, component)) {
 													]]>
 		                						</jsp:scriptlet>
-												<div class="rich-shuttle-list-header" style="#{contentContainerStyle}">
+		                						<style type="text/css" nonce="#{cspValue}">
+													.#{cssId}-rich-shuttle-list-header-style { #{contentContainerStyle}; }
+												</style>
+												<div class="rich-shuttle-list-header #{cssId}-rich-shuttle-list-header-style">
 													<table id="#{clientId}internal_header_tab" class="rich-shuttle-internal-header-tab" cellpadding="0" cellspacing="0">
 														<f:call name="encodeSLHeader"/>
 													</table>
@@ -95,7 +111,10 @@
 									                	}
 	                								]]>
 	                							</jsp:scriptlet>
-												<div id="#{clientId}contentBox" class="rich-shuttle-list-content" style="#{contentContainerStyle}">
+	                							<style type="text/css" nonce="#{cspValue}">
+													.#{cssId}-rich-shuttle-list-content-style { #{contentContainerStyle}; }
+												</style>
+												<div id="#{clientId}contentBox" class="rich-shuttle-list-content #{cssId}-rich-shuttle-list-content-style">
 													<table id="#{clientId}internal_tab" class="rich-shuttle-internal-tab" cellpadding="0" cellspacing="0">
 														<tbody id="#{clientId}tbody">
 															<jsp:scriptlet><![CDATA[
@@ -112,7 +131,7 @@
 							</table>
 						</div> 
 					</td>
-					<td style="vertical-align: #{component.controlsVerticalAlign};" >
+					<td class="#{cssId}-rich-shuttle-td-controls-va-style">
 						<div class="rich-shuttle-controls">
 							<jsp:scriptlet><![CDATA[
 								encodeShuttleControlsFacets(context, component, sourceSelectionState, targetSelectionState);
@@ -122,14 +141,14 @@
 					</td>
 					<td>
 						<div class="rich-shuttle-target-items #{component.listClass}" >
-							<input autocomplete="off" type="hidden" value=":" style="display: none;" name="#{baseClientId}" />
+							<input autocomplete="off" type="hidden" value=":" class="rich-shuttle-display-none" name="#{baseClientId}" />
 	
-					    	<input id="#{clientId}tlfocusKeeper" type="button" value="" style="width: 1px; position: absolute; left: -32767px;"/>
+					    	<input id="#{clientId}tlfocusKeeper" type="button" value="" class="#{cssId}-rich-shuttle-focus-tl-keeper-style"/>
 							
 							<table id="#{clientId}tltable" cellpadding="0" cellspacing="0" class="rich-shuttle-body">
 								<tbody>
 									<tr>
-										<td style="border:0px;padding : 0px;">
+										<td class="#{cssId}-rich-shuttle-table-td-tl-header-box-style">
 											<div id="#{clientId}tlheaderBox" class="rich-shuttle-list">
 												<jsp:scriptlet>
 													<![CDATA[
@@ -142,7 +161,10 @@
 														if (isHeaderExists(context, component)) {
 													]]>
 			                					</jsp:scriptlet>
-												<div class="rich-shuttle-list-header" style="#{trContentContainerStyle}">
+			                					<style type="text/css" nonce="#{cspValue}">
+													.#{cssId}-rich-shuttle-list-tl-header-style { #{trContentContainerStyle}; }
+												</style>
+												<div class="rich-shuttle-list-header #{cssId}-rich-shuttle-list-tl-header-style">
 													<table id="#{clientId}tlinternal_header_tab" class="rich-shuttle-internal-header-tab" cellpadding="0" cellspacing="0">
 														<f:call name="encodeTLHeader"/>
 													</table>
@@ -156,7 +178,10 @@
 									                	}
 		                							]]>
 		                						</jsp:scriptlet>
-												<div id="#{clientId}tlcontentBox" class="rich-shuttle-list-content" style="#{trContentContainerStyle}">
+		                						<style type="text/css" nonce="#{cspValue}">
+													.#{cssId}-rich-shuttle-list-tl-content-style { #{trContentContainerStyle}; }
+												</style>
+												<div id="#{clientId}tlcontentBox" class="rich-shuttle-list-content #{cssId}-rich-shuttle-list-tl-content-style">
 													<table id="#{clientId}tlinternal_tab" class="rich-shuttle-internal-tab" cellpadding="0" cellspacing="0">
 														<tbody id="#{clientId}tltbody">
 															<jsp:scriptlet><![CDATA[
@@ -173,7 +198,7 @@
 							</table>
 						</div> 
 					</td>
-					<td style="vertical-align: #{component.controlsVerticalAlign};" >
+					<td class="#{cssId}-rich-shuttle-td-controls-va-style">
 						<div class="rich-shuttle-controls">
 							<jsp:scriptlet><![CDATA[
 								encodeTLControlsFacets(context, component, targetSelectionState);
@@ -197,7 +222,7 @@
 							<c:scriptOption attributes="switchByClick, switchByDblClick" />
 							<c:scriptOption variables="events, internalOptions"  />
 						</c:scriptObject>
-						<script type="text/javascript">
+						<script type="text/javascript" nonce="#{cspValue}">
 							new Richfaces.ListShuttle(
 								"#{clientId}"
 								<c:if test="#{not empty options}">

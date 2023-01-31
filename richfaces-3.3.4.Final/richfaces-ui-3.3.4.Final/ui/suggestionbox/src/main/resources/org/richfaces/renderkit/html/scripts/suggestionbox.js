@@ -597,6 +597,9 @@ Suggestion.Base.prototype = {
                     }
                 }
             }
+            
+            // highlight della porzione selezionata
+        	this.highlightLabel();
 
             this.prevIndex = this.index;
             if (this.hasFocus && !this.wasBlur) {
@@ -611,6 +614,100 @@ Suggestion.Base.prototype = {
 		}
         }
     },
+    
+    highlightLabel: function(){
+    	if (this.entryCount > 0) {
+    		for (var i = 0; i < this.entryCount; i++) {
+    			var entry = this.getEntry(i); // selezione del tr
+    			// se e' una riga di auto complete
+    			if(entry.id.indexOf('NothingLabel') == -1) {
+    				// celle con il testo
+    				var cells = entry.select(".rich-sb-cell-padding");
+    				if(cells && cells.length > 0){
+    					for (var j = 0; j < cells.length; j++) {
+    						var labelOriginale = cells[j].textContent;
+    						// applico la procedura di split
+        					var strongText = this.createHighlightItem(labelOriginale, this.element.value);
+        					// applico il valore aggiornato
+        					cells[j].innerHTML = strongText;
+						}
+    				}
+    			}
+			}
+    	}
+    },
+    
+    createHighlightItem: function(test, subString){
+  	  var tokens = this.occurrences(test,test.toUpperCase(), subString.toUpperCase());
+  	  
+  	  var html = '';
+  	  for(var i=0;i<tokens.length;i++){
+  		  var token = tokens[i];
+  		  if(token.highlight) { 
+  			  html += "<strong>";
+  		  }
+  		  html += token.originText;
+  		  if(token.highlight) {
+  			  html += "</strong>";
+  			  }
+  		  }
+  		  
+  		  return html;
+  	  },
+      	  
+     occurrences: function (originTest, test, subString) {
+  		  var split = [];
+  		  test += "";
+  	  subString += "";
+  	  if (subString.length <= 0) return split;
+
+  	  var pos = 0, nuovaPos = 0, step = subString.length;
+
+  	  while (true) {
+//      			  console.log('Pos: ' + pos);
+  		  nuovaPos = test.indexOf(subString, pos);
+//      			  console.log('NuovaPos: ' + nuovaPos);
+  		  var tokenString = '';
+  		  var originTokenString = '';
+  		  var highlight = false;
+  		  if (nuovaPos >= 0) {
+  			  if(nuovaPos == pos) { // metch del token highlight true
+  				  tokenString = test.substr(pos, step);
+  				  originTokenString = originTest.substr(pos, step);
+  				  pos += step;
+  				  highlight = true;
+  			  } else {
+  				  tokenString = test.substr(pos, (nuovaPos - pos));
+  				  originTokenString = originTest.substr(pos, (nuovaPos - pos));
+  				  pos = nuovaPos;
+  			  }
+  			  if(tokenString) {
+//      					  console.log('Token: ' + tokenString);
+//      					  console.log('Highlight: ' + highlight);
+  				  var item = {};
+  				  item.text = tokenString;
+  				  item.highlight = highlight;
+  				  item.originText = originTokenString;
+  				  split.push(item);
+  			  }
+  		  } else {
+  			  tokenString = test.substr(pos);
+  			  originTokenString = originTest.substr(pos);
+  			  if(tokenString) {
+//      					  console.log('Ultimo Token: ' + tokenString);
+//      					  console.log('Highlight: ' + highlight);
+  				  var item = {};
+  				  item.text = tokenString;
+  				  item.highlight = highlight;
+  				  item.originText = originTokenString;
+  				  split.push(item);
+  			  }
+  			  break;
+  		  }
+  	  }
+  	   
+  	  return split;
+  	},
 
     markPrevious: function() {
         if (this.index > 0) this.index--;
@@ -1065,6 +1162,8 @@ Object.extend(Object.extend(RichFaces.Suggestion.prototype, Suggestion.Base.prot
         if (this.options.onajaxcomplete) {
             this.options.onajaxcomplete(request, event);
         }
+        
+        
     },
 
     create: function(element, suggestion, content, options) {

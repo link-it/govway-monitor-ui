@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit;
 
 import java.io.IOException;
@@ -32,6 +37,7 @@ import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.JSFunctionDefinition;
 import org.ajax4jsf.javascript.JSReference;
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 import org.richfaces.component.UIComponentControl;
@@ -163,6 +169,10 @@ public class ComponentControlRendererBase  extends HeaderResourcesRendererBase {
 		if (eventFunction != null || namedFunction != null) {
 			writer.startElement(HTML.SCRIPT_ELEM, componentControl);
 			getUtils().writeAttribute(writer, HTML.TYPE_ATTR, "text/javascript");
+			String cspValue = RendererUtils.getCspNonceValue(context);
+			if(cspValue != null) {
+				getUtils().writeAttribute(writer, HTML.nonce_ATTRIBUTE, cspValue);
+			}
 			if (namedFunction != null) {
 				writer.writeText(namedFunction.toScript(), component, null);
 				writer.writeText(";", component, null);

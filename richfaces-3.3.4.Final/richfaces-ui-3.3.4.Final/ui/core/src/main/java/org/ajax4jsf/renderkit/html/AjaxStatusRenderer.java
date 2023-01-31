@@ -18,10 +18,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.renderkit.html;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -30,6 +35,7 @@ import javax.faces.context.ResponseWriter;
 import org.ajax4jsf.component.UIAjaxStatus;
 import org.ajax4jsf.javascript.JSFunctionDefinition;
 import org.ajax4jsf.renderkit.RendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 
 
@@ -51,6 +57,16 @@ public class AjaxStatusRenderer extends RendererBase
      *
      */
     public static final String START_STYLE = "display: none";
+    
+	private String uuid;
+	
+	public String getUuid() {
+		if(uuid == null) {
+			uuid = UUID.randomUUID().toString().replace("-", "");
+		}
+		
+		return uuid;
+	}
 
     /* (non-Javadoc)
      * @see javax.faces.render.Renderer#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
@@ -84,21 +100,36 @@ public class AjaxStatusRenderer extends RendererBase
         String style = getNamedAttribute(component, "Style", state);
         // for start state rendered style always disable display of status 
         // ( since it will enabled by JavaScript on start request ) 
+        String statusCssClass = "rich-status-display";
         if("start".equals(state)) {
-            if(null == style) {
-                style = START_STYLE;
-            } else {
-                style += "; "+START_STYLE;
-            }
+        	statusCssClass = "rich-status-display-none";
         }
+        
 //        HtmlRendererUtils.renderHTMLAttribute(writer, "style", "style", style );
 //        HtmlRendererUtils.renderHTMLAttribute(writer, "styleClass", "styleClass", getNamedAttribute(component, "StyleClass", state));
+        StringBuffer sb = new StringBuffer();
         if (null != style) {
-			writer.writeAttribute("style", style, null);
+        	sb.append("css-status-" + getUuid());
 		}
+        
         String styleClass = getNamedAttribute(component, "StyleClass", state);
-        if(null != styleClass){
-			writer.writeAttribute("class", styleClass, null);        	
+        
+        if(null != styleClass) {
+        	if(sb.length() > 0)
+        		sb.append(" ");
+        	
+        	sb.append(styleClass);
+        }
+        
+        if(null != statusCssClass) {
+        	if(sb.length() > 0)
+        		sb.append(" ");
+        	
+        	sb.append(statusCssClass);
+        }
+        
+        if(sb.length() > 0) {
+        	writer.writeAttribute("class", sb.toString(), null);        	
         }
 //        getUtils().encodeAttribute(context,component,"class");
         getUtils().encodePassThru(context , component);
@@ -116,6 +147,21 @@ public class AjaxStatusRenderer extends RendererBase
 //			}
         }
         writer.endElement(tag);
+        
+        if (null != style) {
+			writer.startElement(HTML.STYLE_ELEM, component);
+			writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+			String cspValue = RendererUtils.getCspNonceValue(context);
+			if(cspValue != null) {
+				writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+			}
+			StringBuilder sbStyle = new StringBuilder();
+			sbStyle.append(".").append("css-status-").append(getUuid()).append(" {\n").append(style).append("}\n");
+			
+			writer.writeText(sbStyle.toString(), null);
+			writer.endElement(HTML.STYLE_ELEM);
+        }
+        
         // ENCODE onstart/onstop javaScript.
         Object eventHandler = component.getAttributes().get("on"+state);
         if(null != eventHandler){

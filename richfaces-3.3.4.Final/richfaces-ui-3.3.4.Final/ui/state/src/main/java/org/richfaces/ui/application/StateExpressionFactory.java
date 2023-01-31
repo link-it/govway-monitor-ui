@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.ui.application;
 
 import javax.el.ELContext;
@@ -38,9 +43,9 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @return
 	 * @see javax.el.ExpressionFactory#coerceToType(java.lang.Object, java.lang.Class)
 	 */
-	public Object coerceToType(Object obj, Class<?> targetType) {
+	/*public Object coerceToType(Object obj, Class<?> targetType) {
 		return getDefaultFactory().coerceToType(obj, targetType);
-	}
+	}*/
 
 	/**
 	 * @param context
@@ -50,14 +55,14 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @return
 	 * @see javax.el.ExpressionFactory#createMethodExpression(javax.el.ELContext, java.lang.String, java.lang.Class, java.lang.Class<?>[])
 	 */
-	public MethodExpression createMethodExpression(ELContext context,
+	/*public MethodExpression createMethodExpression(ELContext context,
 			String expression, Class<?> expectedReturnType,
 			Class<?>[] expectedParamTypes) {
 		MethodExpression methodExpression = getDefaultFactory().createMethodExpression(context, expression,
 						expectedReturnType, expectedParamTypes);
 		ValueExpression valueExpression = getDefaultFactory().createValueExpression(context, expression, MethodExpression.class);
 		return new StateMethodExpressionWrapper(methodExpression,valueExpression);
-	}
+	}*/
 
 	/**
 	 * @param context
@@ -66,11 +71,11 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @return
 	 * @see javax.el.ExpressionFactory#createValueExpression(javax.el.ELContext, java.lang.String, java.lang.Class)
 	 */
-	public ValueExpression createValueExpression(ELContext context,
+	/*public ValueExpression createValueExpression(ELContext context,
 			String expression, Class<?> expectedType) {
 		return getDefaultFactory().createValueExpression(context, expression,
 				expectedType);
-	}
+	}*/
 
 	/**
 	 * @param instance
@@ -78,10 +83,10 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @return
 	 * @see javax.el.ExpressionFactory#createValueExpression(java.lang.Object, java.lang.Class)
 	 */
-	public ValueExpression createValueExpression(Object instance,
+	/*public ValueExpression createValueExpression(Object instance,
 			Class<?> expectedType) {
 		return getDefaultFactory().createValueExpression(instance, expectedType);
-	}
+	}*/
 
 	/**
 	 * @return the defaultFactory

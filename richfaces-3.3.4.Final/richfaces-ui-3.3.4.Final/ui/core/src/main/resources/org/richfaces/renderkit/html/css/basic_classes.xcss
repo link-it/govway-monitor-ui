@@ -52,6 +52,15 @@
 			padding : 0px;
 			margin : 0px;
 		}
+		.rich-status-display-none { 
+			display: none;
+		}
+		.rich-status-display { 
+			display: ;
+		}
+		.rich-output-panel-display-none { 
+			display: none;
+		}
 		]]>
 	</f:verbatim>
 

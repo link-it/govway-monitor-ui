@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
@@ -171,6 +175,10 @@ public class ContextMenuRendererBase extends TemplateEncoderRendererBase {
 		
 		writer.startElement("script", component);
 		getUtils().writeAttribute(writer, "type", "text/javascript" );
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
 		writer.writeText("var contextMenu = new Richfaces.ContextMenu('", null);
 		writer.writeText(component.getClientId(context), null);
 		writer.writeText("', ", null);

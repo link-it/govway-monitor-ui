@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.renderkit.html;
 
 import java.io.IOException;
@@ -39,6 +43,7 @@ import org.ajax4jsf.Messages;
 import org.ajax4jsf.javascript.AjaxScript;
 import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 import org.apache.commons.logging.Log;
@@ -105,6 +110,11 @@ public class HtmlCommandLinkRenderer extends HeaderResourcesRendererBase {
 		getUtils().encodeAttributesFromArray(context,component,HTML.PASS_THRU_STYLES);
 		getUtils().encodePassThruWithExclusionsArray(context,component,LINK_EXCLUSIONS);
 		writer.writeAttribute("href","#",null);
+		 
+		encodeValue(writer,context,component);
+	}
+	
+	private void encodeActiveOnClickHandler(ResponseWriter writer, FacesContext context, UIComponent component) throws IOException {
 		UIForm form = getUtils().getNestingForm(context,component);
 		String clientId = component.getClientId(context);
 		if(null == form){
@@ -149,9 +159,33 @@ public class HtmlCommandLinkRenderer extends HeaderResourcesRendererBase {
 		submit.addParameter(parameters);
 		onclick.append("return ");
 		submit.appendScript(onclick);
-		writer.writeAttribute(HTML.onclick_ATTRIBUTE,onclick,"onclick");
-		// 
-		encodeValue(writer,context,component);
+		
+		if(onclick.length() > 0) {
+			writer.startElement(HTML.SCRIPT_ELEM, component);
+			writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+			
+			String cspValue = RendererUtils.getCspNonceValue(context);
+			if(cspValue != null) {
+				writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+			}
+			
+			/*jQuery(document).ready(function() {
+	 		 jQuery("input[id$='#{clientId}']").click(function() {
+	 			onClick
+	 			});
+		 		});
+			 */
+			StringBuffer scrpt = new StringBuffer(256);
+			scrpt.append("jQuery(document).ready(function() { ")
+			.append("jQuery(\"a[id$='"+clientId+"']\").click(function() { ")
+			.append(onclick.toString())
+			.append(" });")
+			.append(" });");
+			
+			writer.write(scrpt.toString());
+			
+			writer.endElement(HTML.SCRIPT_ELEM);
+		}
 	}
 
 	protected void doEncodePassiveBegin(ResponseWriter writer, FacesContext context, UIComponent component) throws IOException{
@@ -178,6 +212,8 @@ public class HtmlCommandLinkRenderer extends HeaderResourcesRendererBase {
 			doEncodePassiveEnd(writer, context, component);
 		} else {
 			doEncodeActiveEnd(writer, context, component);
+			// click handler
+			encodeActiveOnClickHandler(writer, context, component);
 		}
 	}
 

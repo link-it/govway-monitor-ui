@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit;
 
 import java.io.IOException;
@@ -203,7 +208,7 @@ public abstract class OrderingListRendererBase extends OrderingComponentRenderer
 				
 				writer.startElement(HTML.IMG_ELEMENT, table);
 				writer.writeAttribute(HTML.src_ATTRIBUTE, getResource("/org/richfaces/renderkit/html/images/spacer.gif").getUri(context, null), null);
-				writer.writeAttribute(HTML.style_ATTRIBUTE, "width:1px;height:1px;", null);
+				writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-ordering-list-source-cell-img", null);
 				writer.writeAttribute(HTML.alt_ATTRIBUTE, " ", null);
 				writer.endElement(HTML.IMG_ELEMENT);
 				

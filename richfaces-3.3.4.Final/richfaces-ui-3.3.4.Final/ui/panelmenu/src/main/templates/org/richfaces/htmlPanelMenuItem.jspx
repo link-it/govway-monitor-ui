@@ -21,12 +21,23 @@
 	          isNodeSelected = queryAndMarkSelection(context, component);
 	      ]]>
 	</jsp:scriptlet>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-div-style { #{this:getHideStyle(context, component)} }
+		.#{cssId}-table-style { #{this:getFullStyle( context, component )} }
+		.#{cssId}-table-td-style { width:100%; }
+		.#{cssId}-script { display:none;}
+	</style>
 	
-	<div id="#{clientId}" style="#{this:getHideStyle(context, component)}" >
+	<div id="#{clientId}" class="#{cssId}-div-style" >
 		<table 	cellspacing="0" cellpadding="0" border="0" 
 				id="tablehide#{clientId}"
-				class="rich-pmenu-item #{this:getFullStyleClass( context, component )} " 
-				style="#{this:getFullStyle( context, component )}" 
+				class="rich-pmenu-item #{this:getFullStyleClass( context, component )} #{cssId}-table-style " 
 				x:passThruWithExclusions="cellspacing,cellpadding,border,id,class,styleClass,style">
 			<tbody>
 				<tr id="row_#{clientId}"
@@ -37,7 +48,7 @@
 							<f:parameter value="left" />
 						</f:call>
 					</td>
-					<td style="width:100%" id="icon#{clientId}" class="rich-pmenu-group-self-label #{this:getLabelClass( context, component )}" >
+					<td id="icon#{clientId}" class="rich-pmenu-group-self-label #{this:getLabelClass( context, component )} #{cssId}-table-td-style" >
 							<input type="hidden" autocomplete="off" name="panelMenuAction#{clientId}" value=""/>
 							<f:call name="insertLabel"/>
 							<vcp:body>

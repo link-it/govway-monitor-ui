@@ -158,10 +158,10 @@
 							</aggregations>
 							<resources>
 								<resource>
-									<directory>target/javascript</directory>
+									<directory>${project.build.directory}/javascript</directory>
 								</resource>
 								<resource>
-									<directory>src/main/resources</directory>
+									<directory>${project.basedir}/src/main/resources</directory>
 								</resource>
 							</resources>
 						</configuration>

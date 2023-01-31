@@ -82,6 +82,22 @@ input.rich-combobox-font-disabled {
 	position : relative; 
 }
 
+.rich-combobox-list-cord-display-none {
+	display: none; 
+}
+
+.rich-combobox-list-cord-display {
+	display: ;
+}
+
+.rich-combobox-list-cord-visibility-hidden {
+	visibility: hidden; 
+}
+
+.rich-combobox-list-cord-visibility {
+	visibility: visible;
+}
+
 .rich-combobox-item {
 	padding : 2px; 
 	white-space : nowrap;

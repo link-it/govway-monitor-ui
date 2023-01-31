@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.renderkit.html;
 
 import java.io.IOException;
@@ -64,7 +68,7 @@ public class AjaxOutputPanelRenderer extends RendererBase {
 						ResponseWriter out = context.getResponseWriter();
 						out.startElement(HTML.SPAN_ELEM,child);
 						out.writeAttribute(HTML.id_ATTRIBUTE,childId,HTML.id_ATTRIBUTE);
-						out.writeAttribute(HTML.style_ATTRIBUTE,"display: none;","style");
+						out.writeAttribute(HTML.class_ATTRIBUTE,"rich-output-panel-display-none","class");
 						out.endElement(HTML.SPAN_ELEM);
 					}
 					// register child as rendered

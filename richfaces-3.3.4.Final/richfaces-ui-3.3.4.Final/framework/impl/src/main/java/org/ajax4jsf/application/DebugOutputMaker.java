@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.application;
 
 import java.beans.PropertyDescriptor;
@@ -44,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.resource.InternetResource;
 import org.ajax4jsf.resource.InternetResourceBuilder;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -129,7 +134,7 @@ public class DebugOutputMaker {
 				Messages.getMessage(Messages.ERROR_ON_PAGE, viewId) +
 				"</title></head><body>");
 		// write script
-		writeScriptAndStyle(out);
+		writeScriptAndStyle(context, out);
 		// Header
 		PhaseId facesPhase = (PhaseId) context.getExternalContext().getRequestMap().get(DebugLifecycle.PHASE_ID_PARAM);
 		
@@ -216,9 +221,9 @@ public class DebugOutputMaker {
 		out.println("</dl></div>");
 	}
 	
-	public void writeScriptAndStyle(PrintWriter out) {
-		writeScript(out);
-		writeStyleSheet(out);
+	public void writeScriptAndStyle(FacesContext context, PrintWriter out) {
+		writeScript(context, out);
+		writeStyleSheet(context, out);
 	}
 
 	/**
@@ -408,9 +413,12 @@ public class DebugOutputMaker {
 	/**
 	 * @param out
 	 */
-	private void writeScript(PrintWriter out) {
+	private void writeScript(FacesContext context, PrintWriter out) {
+		String cspValue = RendererUtils.getCspNonceValue(context);
 		out
-				.println("<script type='text/javascript' language='javascript'>\n"
+				.println("<script type='text/javascript' language='javascript' " 
+						+ " nonce='"+ cspValue+"' "
+						+">\n"
 						+ "function toggle(id) {\n"
 						+ "var style = document.getElementById(id).style;\n"
 						+ "if ('block' == style.display) {\n"
@@ -429,9 +437,12 @@ public class DebugOutputMaker {
 	/**
 	 * @param out
 	 */
-	private void writeStyleSheet(PrintWriter out) {
+	private void writeStyleSheet(FacesContext context, PrintWriter out) {
+		String cspValue = RendererUtils.getCspNonceValue(context);
 		out
-				.println("<style type=\'text/css\' >\n" + 
+				.println("<style type=\'text/css\' " 
+						+ " nonce='"+ cspValue+"' >\n"
+						+ 
 						"div.a4j_debug, .a4j_debug span, .a4j_debug td, .a4j_debug th, .a4j_debug caption { font-family: Verdana, Arial, Sans-Serif; }\n" + 
 						".a4j_debug li{\n" + 
 						"   list-style-position : inside;\n" + 

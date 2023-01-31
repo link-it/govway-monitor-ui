@@ -14,8 +14,17 @@
 	>
 	<h:styles>css/table.xcss</h:styles>
 	<f:clientid var="clientId"/>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-rich-table-style { #{component.attributes['style']} }
+	</style>
 	<table id="#{clientId}"
-	    class="rich-table #{component.attributes['styleClass']}" style="#{component.attributes['style']}" >
+	    class="rich-table #{component.attributes['styleClass']} #{cssId}-rich-table-style" >
 
 			<f:call name="utils.encodePassThruWithExclusions">
 				<f:parameter value="value,name,type,id,class,rows,style" />

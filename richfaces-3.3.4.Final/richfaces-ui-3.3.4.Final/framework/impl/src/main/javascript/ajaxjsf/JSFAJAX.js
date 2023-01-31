@@ -357,6 +357,48 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 			    }
 		    }
 	},
+
+	IEVersion: function() {
+		var ua = window.navigator.userAgent;
+
+		var msie = ua.indexOf('MSIE ');
+		if (msie > 0) {
+		  // IE 10 or older => return version number
+		  return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+		}
+
+		var trident = ua.indexOf('Trident/');
+		if (trident > 0) {
+		  // IE 11 => version
+		  var rv = ua.indexOf('rv:');
+		  return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+		}
+
+		var edge = ua.indexOf('Edge/');
+		if (edge > 0) {
+		  // Edge (IE 12+) => version
+		  return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+		}
+
+		return -1;
+	},
+	  
+	serializeXmlNode: function(xmlNode, v) {
+		try {
+			if (typeof window.XMLSerializer != "undefined" && v && (v > 10 || v == -1)) {
+				return (new window.XMLSerializer()).serializeToString(xmlNode);
+			} else if (typeof xmlNode.xml != "undefined") {
+				return xmlNode.xml;
+			} else {
+				console.log("Node xml: property missing.");
+				return '';
+			}
+		}
+		catch(e) {
+			console.log("Node serialization failed " + e.message);
+		}
+	},
+
 	
 	/**
 	 * Update DOM element with given ID by element with same ID in parsed responseXML
@@ -391,7 +433,18 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 						Sarissa.clearChildNodes(oldnode);
 	   		        }
    		        }
-   		        oldnode.outerHTML = new XMLSerializer().serializeToString(newnode);
+				var v = this.IEVersion();
+				var _serialized = this.serializeXmlNode(newnode, v);
+				if(v != 11) {
+					oldnode.outerHTML = _serialized;
+				} else {
+					var _node = newnode.cloneNode(true);
+					var _children = _node.childElements();
+					for(var i = 0; i<_children.length; i++){
+						oldnode.appendChild(_children[i]);
+					}
+				}
+
 			} else {
     // need to check for firstChild due to opera 8 bug with hasChildNodes
 				Sarissa.clearChildNodes(oldnode);
@@ -1041,8 +1094,11 @@ A4J.AJAX.processResponse = function(req) {
         	  }
         	  // Replace client-side hidden inputs for JSF View state.
         	  var idsSpan = req.getElementById("ajax-view-state");
-	          LOG.debug("Hidden JSF state fields: "+idsSpan);
         	  if(idsSpan != null){
+			if(typeof idsSpan.xml != "undefined") {
+				LOG.debug("Hidden JSF state fields: "+idsSpan.xml);
+			}
+
         	  	// For a portal case, replace content in the current window only.
 			        var namespace = options.parameters['org.ajax4jsf.portlet.NAMESPACE'];
 			        LOG.debug("Namespace for hidden view-state input fields is "+namespace);
@@ -1370,21 +1426,24 @@ A4J.AJAX.status = function(regionID,targetID,start){
 	    var startElem = document.getElementById(targetID + ".start");
 	    var stopElem = document.getElementById(targetID + ".stop");
 	    
+	    var jqStartElement = jQuery(startElem);
+	    var jqStopElement = jQuery(stopElem);
+	    
 	    if(A4J.AJAX._requestsCounts[targetID] > 0){
 	    	if (stopElem) { 
-	    		stopElem.style.display = "none";
+			jqStopElement.removeClass( "rich-status-display" ).addClass( "rich-status-display-none" );
 	    	}
 
 	    	if (startElem) {
-	    		startElem.style.display = "";
+			jqStartElement.removeClass( "rich-status-display-none" ).addClass( "rich-status-display" );
 	    	}
 	    } else {
 	    	if (startElem) {
-	    		startElem.style.display = "none";
+			jqStartElement.removeClass( "rich-status-display" ).addClass( "rich-status-display-none" );
 	    	}
 
 	    	if (stopElem) { 
-	    		stopElem.style.display = "";
+			jqStopElement.removeClass( "rich-status-display-none" ).addClass( "rich-status-display" );
 	    	}
 	    }
 	    

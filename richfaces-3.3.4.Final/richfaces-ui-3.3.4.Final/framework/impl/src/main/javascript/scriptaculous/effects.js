@@ -545,6 +545,26 @@ Effect.Fade = function(element) {
   return new Effect.Opacity(element,options);
 };
 
+Effect.FadeCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
+  element = $(element);
+  var oldOpacity = element.getInlineOpacity();
+  var options = Object.extend({
+    from: element.getOpacity() || 1.0,
+    to:   0.0,
+    afterFinishInternal: function(effect) {
+      if (effect.options.to!=0) return;
+      
+       var jqElement = jQuery(effect.element);
+       jqElement.removeClass(classNameDisplay).addClass( classNameDisplayNone );
+      
+      effect.element.setStyle({opacity: oldOpacity});
+//      .hide()
+    }
+  }, arguments[1] || { });
+  return new Effect.Opacity(element,options);
+};
+
+
 Effect.Appear = function(element) {
   element = $(element);
   var options = Object.extend({
@@ -556,6 +576,25 @@ Effect.Appear = function(element) {
   },
   beforeSetup: function(effect) {
     effect.element.setOpacity(effect.options.from).show();
+  }}, arguments[1] || { });
+  return new Effect.Opacity(element,options);
+};
+
+Effect.AppearCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
+  element = $(element);
+  var jqElement = jQuery(element);
+  var options = Object.extend({
+  from: (jqElement.hasClass(classNameDisplayNone) ? 0.0 : element.getOpacity() || 0.0),
+  to:   1.0,
+  // force Safari to render floated elements properly
+  afterFinishInternal: function(effect) {
+    effect.element.forceRerendering();
+  },
+  beforeSetup: function(effect) {
+    effect.element.setOpacity(effect.options.from);
+    var jqElement = jQuery(effect.element); // uso jQuey per comodita'
+    jqElement.removeClass(classNameDisplayNone).addClass( classNameDisplay );
+//    .show();
   }}, arguments[1] || { });
   return new Effect.Opacity(element,options);
 };

@@ -35,6 +35,23 @@
 	width:100%;
 }
 
+.rich-shuttle-display-none { 
+	display: none;
+}
+.rich-shuttle-display { 
+	display: ;
+}
+.rich-shuttle-visibility-hidden {
+	visibility: hidden; 
+}
+.rich-shuttle-visibility {
+	visibility: visible;
+}
+.rich-shuttle-source-cell-img {
+	width:1px;
+	height:1px;
+}
+
 ]]>
 </f:verbatim>
 

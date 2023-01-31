@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit.html;
 
@@ -39,6 +44,7 @@ import javax.faces.context.ResponseWriter;
 import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.ScriptUtils;
 import org.ajax4jsf.renderkit.AjaxRendererUtils;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.UIPanelMenu;
 import org.richfaces.component.UIPanelMenuGroup;
@@ -276,6 +282,11 @@ public class PanelMenuRenderer extends PanelMenuRendererBase {
 		writer.startElement(HTML.SCRIPT_ELEM, component);
 		writer.writeAttribute(HTML.id_ATTRIBUTE, "script" + component.getClientId(context), null);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+		
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
 		writer.writeText(panelMenu, null);
 		writer.writeText(buffer, null);
 		writer.endElement(HTML.SCRIPT_ELEM);

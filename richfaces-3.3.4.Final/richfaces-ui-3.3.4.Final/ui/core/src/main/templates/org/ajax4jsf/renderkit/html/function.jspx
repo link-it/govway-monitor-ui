@@ -12,9 +12,15 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" >
 	<jsp:directive.page import="javax.faces.context.FacesContext,javax.faces.component.UIComponent"/>
 	<f:clientid var="clientId"/>	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+	]]>
+	</jsp:scriptlet>
 	<script
 		id="#{clientId}"
 		type="text/javascript"
+		nonce="#{cspValue}" 
 		>
 		<vcp:body />
 		//<![CDATA[

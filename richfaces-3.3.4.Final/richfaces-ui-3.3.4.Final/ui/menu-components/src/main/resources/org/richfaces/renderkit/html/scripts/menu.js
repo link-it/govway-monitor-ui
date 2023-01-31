@@ -113,7 +113,10 @@ RichFaces.Menu.Layers = {
 	},
 
 	isVisible: function(layer) {
-		return $(layer).style.display != 'none';
+		// return $(layer).style .display != 'none';
+		// layer e' il div con Id che termina per "_menu"
+		var jqLayer = jQuery(this.layer);
+		return jqLayer.hasClass('rich-menu-list-border-display');
 	},
 
 	/**
@@ -244,9 +247,10 @@ RichFaces.Menu.Layers = {
 	 */
 	setVisibility: function (layer, visible) {
 		var tmpLayer = $(layer);
-
+		var jqLayer = jQuery(tmpLayer); 
+		
 		if (visible) {
-			tmpLayer.style.display = '';
+			jqLayer.removeClass( "rich-menu-list-border-display-none" ).addClass( "rich-menu-list-border-display" );
 		} else {
 			if(tmpLayer.getElementsByTagName){
 				var inputs = tmpLayer.getElementsByTagName('INPUT');
@@ -255,7 +259,7 @@ RichFaces.Menu.Layers = {
 				} // if
 			} // if
 
-			tmpLayer.style.display = 'none';
+			jqLayer.removeClass( "rich-menu-list-border-display" ).addClass( "rich-menu-list-border-display-none" );
 //			tmpLayer.style.left = "-"+tmpLayer.clientWidth;
 //			Element.hide(tmpLayer);
 		} // else
@@ -393,17 +397,31 @@ RichFaces.Menu.DelayedContextMenu = function(layer, e) {
     this.show = function() {
 		RichFaces.Menu.Layers.shutdown();
 
-		var layer_display = this.layer.style.display;
-		if (layer_display=='none') {
-			this.layer.style.visibility='hidden';
-			this.layer.style.display='';
+		// layer e' il div con Id che termina per "_menu"
+		var jqLayer = jQuery(this.layer);
+		var hidden = (jqLayer.hasClass('rich-menu-list-border-display-none'));
+		var oldVisibility;
+//		var layer_display = this.layer.style .display;
+// 		if (layer_display=='none')
+		if (hidden)
+		{
+			oldVisibility = jqLayer.hasClass('rich-menu-list-border-visibility');
+    		jqLayer.removeClass( "rich-menu-list-border-display-none" ).addClass( "rich-menu-list-border-display" );
+    		jqLayer.removeClass( "rich-menu-list-border-visibility" ).addClass( "rich-menu-list-border-visibility-hidden" );
+    		
+//			this.layer.style .visibility='hidden';
+//			this.layer.style .display='';
 		}
 	        
 		var cursorRect = Richfaces.jQuery.getPointerRectangle(this.event);
 		Richfaces.jQuery.position(cursorRect, this.layer);
 
-		this.layer.style.display=layer_display;
-		this.layer.style.visibility='';
+//		this.layer.style .display=layer_display;
+//		this.layer.style .visibility='';
+		if (hidden){
+			jqLayer.removeClass( "rich-menu-list-border-display" ).addClass( "rich-menu-list-border-display-none" );
+		}
+		jqLayer.removeClass( "rich-menu-list-border-visibility-hidden" ).addClass( "rich-menu-list-border-visibility" );
 		
 		RichFaces.Menu.Layers.LMPopUp(this.layer.id, false,e);
         RichFaces.Menu.Layers.clearLMTO();
@@ -496,11 +514,20 @@ RichFaces.Menu.DelayedDropDown = function(layer, elementId, e) {
 	this.show = function() {
 		RichFaces.Menu.Layers.shutdown();
 		
-		var layer_display = this.layer.style.display;
-		if (layer_display=='none')
+		// layer e' il div con Id che termina per "_menu"
+		var jqLayer = jQuery(this.layer);
+		var hidden = (jqLayer.hasClass('rich-menu-list-border-display-none'));
+		var oldVisibility;
+//		var layer_display = this.layer.style .display;
+// 		if (layer_display=='none')
+		if (hidden)
 		{
-			this.layer.style.visibility='hidden';
-			this.layer.style.display='';
+			oldVisibility = jqLayer.hasClass('rich-menu-list-border-visibility');
+    		jqLayer.removeClass( "rich-menu-list-border-display-none" ).addClass( "rich-menu-list-border-display" );
+    		jqLayer.removeClass( "rich-menu-list-border-visibility" ).addClass( "rich-menu-list-border-visibility-hidden" );
+    		
+//			this.layer.style .visibility='hidden';
+//			this.layer.style .display='';
 		}
 
 		var winOffset	= RichFaces.Menu.getWindowScrollOffset();
@@ -577,8 +604,14 @@ RichFaces.Menu.DelayedDropDown = function(layer, elementId, e) {
 
 	    this.layer.style.width = this.layer.clientWidth + "px";
 
-		this.layer.style.display=layer_display;
-		this.layer.style.visibility='';
+//		this.layer.style .display=layer_display;
+//		this.layer.style .visibility='';
+		jqLayer.removeClass( "rich-menu-list-border-visibility-hidden" ).addClass( "rich-menu-list-border-visibility" );
+		if(hidden){
+			jqLayer.removeClass( "rich-menu-list-border-display" ).addClass( "rich-menu-list-border-display-none" );
+		} else {
+
+		}
 		
 		RichFaces.Menu.Layers.LMPopUp(this.layer.id, false);
 		RichFaces.Menu.Layers.clearLMTO();
@@ -607,17 +640,31 @@ RichFaces.Menu.DelayedPopUp = function(layer, e) {
         if (!RichFaces.Menu.Layers.isVisible(this.layer) &&
         	RichFaces.Menu.Layers.isVisible(RichFaces.Menu.Layers.father[this.layer.id])) {
 			
-			var layer_display = this.layer.style.display;
-			if (layer_display=='none')
+			// layer e' il div con Id che termina per "_menu"
+			var jqLayer = jQuery(this.layer);
+			var hidden = (jqLayer.hasClass('rich-menu-list-border-display-none'));
+			var oldVisibility;
+	//		var layer_display = this.layer.style .display;
+	// 		if (layer_display=='none')
+			if (hidden)
 			{
-				this.layer.style.visibility='hidden';
-				this.layer.style.display='';
+				oldVisibility = jqLayer.hasClass('rich-menu-list-border-visibility');
+	    		jqLayer.removeClass( "rich-menu-list-border-display-none" ).addClass( "rich-menu-list-border-display" );
+	    		jqLayer.removeClass( "rich-menu-list-border-visibility" ).addClass( "rich-menu-list-border-visibility-hidden" );
+	    		
+	//			this.layer.style .visibility='hidden';
+	//			this.layer.style .display='';
 			}
+			
         	
 	        this.reposition();
 			
-			this.layer.style.display=layer_display;
-			this.layer.style.visibility='';
+			if(hidden){
+				jqLayer.removeClass( "rich-menu-list-border-display" ).addClass( "rich-menu-list-border-display-none" );
+			}
+			jqLayer.removeClass( "rich-menu-list-border-visibility-hidden" ).addClass( "rich-menu-list-border-visibility" );
+//			this.layer.style .display=layer_display;
+//			this.layer.style .visibility='';
     	    
     	    RichFaces.Menu.Layers.LMPopUp(this.layer, false);
         }

@@ -15,6 +15,7 @@
 	<c:set var="name" value="#{component.attributes['name']}"/>
 	<c:set var="timing" value="#{component.attributes['timing']}"/>
 	<c:set var="query" value="#{component.attributes['query']}"/>
+	<c:set var="cspValue" value=""/>
 	<h:scripts>/org/richfaces/renderkit/html/scripts/jquery/jquery.js</h:scripts>
 
 
@@ -28,17 +29,18 @@
 			checkValidity(clientId, name, timing, query); 
 			variables.setVariable("selector", getUtils().escapeJavaScript(
 					replaceClientIds(context, component, selector)));
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
 ]]>
 </jsp:scriptlet>
 
 <jsp:scriptlet><![CDATA[ if (! "".equals(name.trim()) ) { ]]></jsp:scriptlet>
-<script type="text/javascript">
+<script type="text/javascript" nonce="#{cspValue}">
  //<![CDATA[
 function #{name}(elm, param) {
 	var selector = "#{selector}";
-	try {
-		selector = eval("#{selector}");
-	} catch (e) {}
+//	try {
+//		selector = eval("#{selector}");
+//	} catch (e) {}
 	
 	jQuery(elm || selector).#{query};
 }
@@ -47,13 +49,13 @@ function #{name}(elm, param) {
 <jsp:scriptlet><![CDATA[ } ]]></jsp:scriptlet>
 
 <jsp:scriptlet><![CDATA[ if ( "immediate".equals(timing) ) { ]]></jsp:scriptlet>
-<script type="text/javascript">
+<script type="text/javascript" nonce="#{cspValue}">
  //<![CDATA[
  {
 	var selector = "#{selector}";
-	try {
-		selector = eval("#{selector}");
-	} catch (e) {}
+//	try {
+//		selector = eval("#{selector}");
+//	} catch (e) {}
 	jQuery(selector).#{query};
 }
 //]]>
@@ -61,13 +63,13 @@ function #{name}(elm, param) {
 <jsp:scriptlet><![CDATA[ } ]]></jsp:scriptlet>
 
 <jsp:scriptlet><![CDATA[ if ( "onload".equals(timing) ) { ]]></jsp:scriptlet>
-<script type="text/javascript">
+<script type="text/javascript" nonce="#{cspValue}">
  //<![CDATA[
   jQuery(document).ready(function() {
 	var selector = "#{selector}";
-	try {
-		selector = eval("#{selector}");
-	} catch (e) {}
+//	try {
+//		selector = eval("#{selector}");
+//	} catch (e) {}
 	jQuery(selector).#{query};
  });
 //]]>

@@ -181,6 +181,21 @@ a.rich-ordering-list-button-selection:link {
 .rich-ordering-list-ds input {
 	-moz-user-select: text;
 }
+
+.rich-ordering-list-display-none { 
+	display: none;
+}
+.rich-ordering-list-display { 
+	display: ;
+}
+.rich-ordering-list-display-block { 
+	display: block;
+}
+
+.rich-ordering-list-source-cell-img {
+	width:1px;
+	height:1px;
+}
 ]]>
 </f:verbatim>
 

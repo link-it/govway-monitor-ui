@@ -12,20 +12,35 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" >
 	<jsp:directive.page import="javax.faces.context.FacesContext,javax.faces.component.UIComponent"/>
 	<f:clientid var="clientId"/>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+	]]>
+	</jsp:scriptlet>
 	<jsp:scriptlet> if(component.isPopup()){</jsp:scriptlet>
 	<script 
 		id="#{clientId}"
 		type="text/javascript"
+		nonce="#{cspValue}" 
 		>
 		LOG.registerPopup('#{component.hotkey}','#{component.name}',#{component.width},#{component.height},LOG.#{component.level});
 	</script>
 	<jsp:scriptlet>} else {</jsp:scriptlet>
+		<style type="text/css" nonce="#{cspValue}">
+			.#{cssId}-logConsole-style { width:#{component.width};height:#{component.height};overflow:auto;#{component.attributes["style"]} }
+		</style>
 		<div id="logConsole"
-		x:style='width:#{component.width};height:#{component.height};overflow:auto;#{component.attributes["style"]}'
 		x:passThruWithExclusions="value,name,id,style"
+		class="#{cssId}-logConsole-style"
 		>
 			<button onclick="LOG.clear()">Clear</button><br />
-			<script type="text/javascript">
+			<script type="text/javascript" nonce="#{cspValue}">
 				LOG.LEVEL = LOG.#{component.level};
 			</script>
 		</div>

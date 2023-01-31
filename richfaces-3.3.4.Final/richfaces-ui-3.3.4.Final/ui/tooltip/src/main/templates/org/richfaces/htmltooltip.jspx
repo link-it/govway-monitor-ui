@@ -12,15 +12,29 @@
 		component="org.richfaces.component.UIToolTip" >
 		
 	<f:clientid var="clientId"/>
-	<span id="#{clientId}" style="z-index:#{component.attributes['zorder']}; #{component.attributes['style']}"
-			class="rich-tool-tip #{component.attributes['styleClass']}">
+	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-tooltip {
+			z-index:#{component.attributes['zorder']}; #{component.attributes['style']}
+		}
+		.#{cssId}-defaultContent { display:none;}
+		.#{cssId}-script { display:none;}
+	</style>
+	<span id="#{clientId}"
+			class="rich-tool-tip #{component.attributes['styleClass']} #{cssId}-tooltip">
 		<f:call name="utils.encodePassThruWithExclusions">
 				<f:parameter value="id,style,class,disabled" />
 			</f:call>
 		 <jsp:scriptlet>
 			<![CDATA[if("ajax".equals(component.getMode()) && component.getFacet("defaultContent")!=null) {]]>
 		 </jsp:scriptlet>
-		    <span id="#{clientId}defaultContent" style="display:none">
+		    <span id="#{clientId}defaultContent" class="#{cssId}-defaultContent">
 			    <u:insertFacet name="defaultContent" />
 			</span>
 		 <jsp:scriptlet>
@@ -31,7 +45,7 @@
            	<f:call name="encodeTooltipText"/>
            </vcp:body>
            <f:clientid var="clientId"/>
-           <span id="#{clientId}script" style="display:none">
+           <span id="#{clientId}script" class="#{cssId}-script">
            	<f:call name="insertScript"/>
            </span>
 	</span>			

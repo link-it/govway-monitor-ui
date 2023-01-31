@@ -32,7 +32,16 @@
 	<f:call name="initializeStyles" />
 	
 	<f:clientid var="clientId"/>
-			
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		##{clientId} { #{menuItemStyle} }
+		.#{cssId}-icon-style-attr { #{component.attributes['iconStyle']} }
+	</style>
 		
 	<jsp:scriptlet><![CDATA[
 		if (((org.richfaces.component.UIMenuItem) component).isDisabled()) {
@@ -41,7 +50,6 @@
 			
 	<div id="#{clientId}" 		
 		class="#{menuItemClass}"
-		style="#{menuItemStyle}"
 		onclick="Event.stop(event);" >
 		
 	<jsp:scriptlet><![CDATA[
@@ -84,8 +92,7 @@
 		class="#{menuItemClass}"
 		onmouseout="RichFaces.Menu.Utils.itemMouseOut(event, this, #{this:toScript(onmouseoutClasses)});"
 		onmouseover="RichFaces.Menu.Utils.itemMouseOver(event, this, #{this:toScript(onmouseoverClasses)});"
-		onclick="#{onclick}"
-		style="#{menuItemStyle}">
+		onclick="#{onclick}">
 		<f:call name="utils.encodeAttributes">
 			<f:parameter value="onmousemove,onmousedown,onmouseup" />
 		</f:call>
@@ -98,8 +105,7 @@
 		class="#{menuItemClass}"
 		
 
-		onclick="#{onclick}"
-		style="#{menuItemStyle}">
+		onclick="#{onclick}">
 		<f:call name="utils.encodeAttributes">
 			<f:parameter value="onmousemove,onmousedown,onmouseup" />
 		</f:call>
@@ -109,8 +115,7 @@
 	]]></jsp:scriptlet>		
 	
 	<span id="#{clientId}:icon" 
-			class="rich-menu-item-icon #{iconDisabledClasses} #{component.attributes['iconClass']}"
-			style="#{component.attributes['iconStyle']}">
+			class="rich-menu-item-icon #{iconDisabledClasses} #{component.attributes['iconClass']} #{cssId}-icon-style-attr">
 			
 			<jsp:scriptlet><![CDATA[
 				UIComponent iconFacet = getIconFacet((org.richfaces.component.UIMenuItem) component);			

@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit;
 
 import java.io.IOException;
@@ -738,7 +742,7 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 					FormUtil.throwEnclFormReqExceptionIfNeed(context, column.getParent());
 					writer.writeAttribute(HTML.onclick_ATTRIBUTE, buildAjaxFunction(context, column, true)
 							.toString(), null);
-					writer.writeAttribute(HTML.style_ATTRIBUTE, "cursor: pointer;", null);
+					writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-table-cursor-pointer", null);
 				}
 				
 				writer.startElement(HTML.DIV_ELEM, column);

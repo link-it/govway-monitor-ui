@@ -186,7 +186,8 @@ Richfaces.Slider.prototype = {
 
 	setInitialValue: function(){
 		this.setValue(parseFloat(this.options.sliderValue || this.options.minValue));
-        this.handle.style.visibility="visible";
+		var jqHandler = jQuery(this.handle);
+		jqHandler.removeClass( "rich-inslider-visibility-hidden" ).addClass( "rich-inslider-visibility" );
 		this.prevValue = this.value;
 		this.valueChanged = false;
 		if(this.options.showArrows){

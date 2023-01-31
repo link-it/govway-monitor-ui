@@ -12,12 +12,24 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" >
 	<jsp:directive.page import="javax.faces.context.FacesContext,javax.faces.component.UIComponent"/>
 	<f:clientid var="clientId"/>	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<script type="text/javascript" nonce="#{cspValue}">			
+	 	jQuery(document).ready(function() {
+	 		 jQuery("a[id$='#{clientId}']").click(function() {
+	 			#{this:getOnClick(context,component)};
+	 		});
+		 });
+	</script>
 	<a
 		id="#{clientId}"
 		name="#{clientId}"
 		type="#{component.attributes['type']}"
 		x:passThruWithExclusions="value,name,onclick,type,href,id"
-		onclick="#{this:getOnClick(context,component)}"
 		href="#"
 		class="#{component.attributes['styleClass']}"
 		>

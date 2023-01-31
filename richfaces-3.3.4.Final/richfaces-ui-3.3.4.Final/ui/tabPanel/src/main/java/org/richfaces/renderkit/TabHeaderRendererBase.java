@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit;
 
 import java.io.IOException;
@@ -35,6 +39,7 @@ import javax.faces.context.ResponseWriter;
 import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.ScriptUtils;
 import org.ajax4jsf.renderkit.AjaxRendererUtils;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.UISwitchablePanel;
 import org.richfaces.component.UITab;
@@ -57,17 +62,17 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
     // find and encode UIParameter's components
     //TODO generify
     //TODO move the code to utils
-    public List encodeParams(FacesContext context, UITab component) throws IOException {
+    public List<String> encodeParams(FacesContext context, UITab component) throws IOException {
     	
     	UITab menuItem = component;
-    	List params = new ArrayList();
+    	List<String> params = new ArrayList();
     	//TODO use StringBuilder
     	StringBuffer buff = new StringBuffer();
     	
     	//TODO use getChildCount() > 0
-    	List children = menuItem.getChildren();
-    	for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-    		UIComponent child = (UIComponent) iterator.next();
+    	List<UIComponent> children = menuItem.getChildren();
+    	for (Iterator<UIComponent> iterator = children.iterator(); iterator.hasNext();) {
+    		UIComponent child = iterator.next();
 	
     		if(child instanceof UIParameter){
 					
@@ -109,14 +114,7 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
         }
 
         String clientId = tab.getClientId(context);
-
-        //String style = "position:relative; top:1px;" + (String) tab.getAttributes().get("style");
         
-        //TODO use CSS classes
-        String defShift = tab.isActive() ? "position:relative; top:1px;" : "position:relative;";
-        String componentStyle = (String) tab.getAttributes().get("style");
-        String style = defShift + (componentStyle != null ? componentStyle : "");
-
         //TODO format code block properly
         if (!disabled) {
             if (clientSide) {
@@ -161,20 +159,35 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
                 }
             }
         }
-
-
+        
+        String cssId = RendererUtils.getCssId(clientId);
+        String cssClassName = cssId + "-shifted-style";
+        
+        writer.writeAttribute(HTML.class_ATTRIBUTE, cssClassName, null);
+    }
+    
+    public void encodeTabLabelClass(FacesContext context, UITab tab) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        
+        String clientId = tab.getClientId(context);
+        
+        String defShift = tab.isActive() ? "position:relative; top:1px;" : "position:relative;";
+        String componentStyle = (String) tab.getAttributes().get("style");
+        String style = defShift + (componentStyle != null ? componentStyle : "");
+        
         String width = tab.getLabelWidth();
         
-        //TODO move to class
         style += ";height : 100%; ";
         if (width != null) {
             //TODO use qualifySize
             style += " width: " + getUtils().encodePctOrPx(width) + ";";
         }
 
-        if (style != null) {
-            writer.writeAttribute(HTML.style_ATTRIBUTE, style, "tabStyle");
-        }
+        String cssId = RendererUtils.getCssId(clientId);
+        String cssClassName = cssId + "-shifted-style";
+        String finalClass = "." + cssClassName + " {" + style + "}";
+        
+        writer.writeText(finalClass, null);
     }
 
     //TODO review
@@ -194,6 +207,9 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
                 labelClass = TabPanelRendererBase.INACTIVE_CELL_CLASSES;
             }
         }
+        String clientId = tab.getClientId(context);
+        String cssId = RendererUtils.getCssId(clientId);
+        labelClass = labelClass + " " + cssId + "-tab-cell-td-style";
 
         writer.writeAttribute(HTML.class_ATTRIBUTE, labelClass, null);
     }

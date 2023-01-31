@@ -88,12 +88,16 @@ Richfaces.Control.prototype.doDisable = function() {
 
 Richfaces.Control.prototype.doHideNode = function(node) {
 	//node.className = Richfaces.Control.CLASSES[this.action].hidden;
-	node.hide();
+	var jqNode = jQuery(node);
+	jqNode.removeClass( "rich-ordering-list-display-block" ).addClass( "rich-ordering-list-display-none" );
+//	node.hide();
 }
 
 Richfaces.Control.prototype.doShowNode = function(node) {
 	//node.className = Richfaces.Control.CLASSES[this.action].shown;
-	node.show();
+	var jqNode = jQuery(node);
+	jqNode.removeClass( "rich-ordering-list-display-none" ).addClass( "rich-ordering-list-display-block" );
+//	node.show();
 }
 
 

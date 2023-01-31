@@ -47,31 +47,46 @@
             variables.setVariable("height", height);
         ]]>
 	</jsp:scriptlet>
-	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
 	<jsp:scriptlet>
         <![CDATA[
     if ("vertical".equalsIgnoreCase((String)variables.getVariable("orientation"))) {
         
         ]]>
     </jsp:scriptlet>
-    
-   <table id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider-vertical rich-slider #{component.attributes['styleClass']}"
-           style="height: #{height};#{style}" x:passThruWithExclusions="id,boundClass,tipClass,class,width,height,style,border">
+    <style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-slider-style { height: #{height};#{style} }
+		.#{cssId}-slider-ta-left-va-bottom-style { text-align: left; vertical-align: bottom; }
+		.#{cssId}-slider-ta-right-va-bottom-style { text-align: right; vertical-align: bottom; }
+		.#{cssId}-slider-position-relative-style { position: relative; }
+		.#{cssId}-slider-height-cento-style { height: 100%; }
+		.#{cssId}-slider-height-novantotto-style { height: 98%; }
+		.#{cssId}-slider-display-block-style { display: block; }
+	</style>
+   <table id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider-vertical rich-slider #{component.attributes['styleClass']} #{cssId}-slider-style"
+            x:passThruWithExclusions="id,boundClass,tipClass,class,width,height,style,border">
         <tbody>
             <tr>
                 <jsp:scriptlet><![CDATA[
                     if ("right".equalsIgnoreCase((String)variables.getVariable("inputPosition"))) {
                 ]]></jsp:scriptlet>
-                <td style="text-align: left; vertical-align: bottom">
+                <td class="#{cssId}-slider-ta-left-va-bottom-style">
                     <jsp:scriptlet><![CDATA[
                     if (((Boolean)variables.getVariable("showInput")).booleanValue()) {
                     ]]></jsp:scriptlet>
+                    			<style type="text/css" nonce="#{cspValue}">
+						.#{cssId}-slider-input-style { #{component.attributes['inputStyle']}; #{color} }
+					</style>	
                                 <input  id="#{clientId}Input"
                                         name="#{clientId}"
                                         value="#{this:getInputValue(context,component)}"
                                         type="text"
-                                        class="rich-inslider-field-top rich-inslider-field #{component.attributes['inputClass']}"
-                                        style="#{component.attributes['inputStyle']}; #{color}"
+                                        class="rich-inslider-field-top rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
                                         readonly="#{inputReadOnly}"
                                         disabled="#{inputDisabled}"
                                         onselect="#{component.attributes['onselect']}"
@@ -113,15 +128,18 @@
 	        ]]></jsp:scriptlet>
             <tr>
                 <td class="rich-inslider-td-arrow">
-	                <div style="position : relative">
-	                    <div id="#{clientId}TipArrowInc" class="rich-inslider-tip #{component.attributes['tipClass']}" style="display: none; #{component.attributes['tipStyle']}">
+	                <div class="#{cssId}-slider-position-relative-style">
+	                	<style type="text/css" nonce="#{cspValue}">
+							.#{cssId}-slider-inslider-tip-inc-style { #{component.attributes['tipStyle']} }
+							.#{cssId}-slider-inslider-arrow-inc-style { #{component.attributes['increaseStyle']} }
+						</style>
+	                    <div id="#{clientId}TipArrowInc" class="rich-inslider-tip #{component.attributes['tipClass']} #{cssId}-slider-inslider-tip-inc-style rich-inslider-display-none">
 	                         <jsp:scriptlet><![CDATA[
 	                           writer.write("&#160;");
 	                         ]]></jsp:scriptlet>
 	                     </div>
 	                                <div  id="#{clientId}ArrowInc"
-	                                        class="rich-inslider-inc-vertical rich-inslider-arrow #{component.attributes['increaseClass']}"
-	                                        style="#{component.attributes['increaseStyle']}"
+	                                        class="rich-inslider-inc-vertical rich-inslider-arrow #{component.attributes['increaseClass']} #{cssId}-slider-inslider-arrow-inc-style"
 	                                />   
 	                </div>
                 </td>
@@ -130,30 +148,34 @@
 	             } 
 	        ]]></jsp:scriptlet>
             <tr>                  
-                <td style="height: 100%;">
-                    <table border="0" cellpadding="0" cellspacing="0" style="height: 100%;">
+                <td class="#{cssId}-slider-height-cento-style">
+                    <table border="0" cellpadding="0" cellspacing="0" class="#{cssId}-slider-height-cento-style">
 	                    <tbody>
 		                    <tr>
                                <td rowspan="2" id="#{clientId}Track" class="rich-inslider-size-height">     
-                                   <div class="rich-inslider-track-vertical rich-inslider-track #{component.attributes['barClass']}" 
-                                       style="#{component.attributes['barStyle']}">
+                               		<style type="text/css" nonce="#{cspValue}">
+											.#{cssId}-slider-inslider-tip-style { left: 9px; #{component.attributes['tipStyle']} }
+											.#{cssId}-slider-inslider-handler-style { top: -7px; left:1px; }
+											.#{cssId}-slider-inslider-bar-style { #{component.attributes['barStyle']} }
+									</style>
+                                   <div class="rich-inslider-track-vertical rich-inslider-track #{component.attributes['barClass']} #{cssId}-slider-inslider-bar-style">
                                        <table class="rich-inslider-track-decor-1 rich-inslider-track-border" cellpadding="0" cellspacing="0" >
                                            <tbody>
-                                               <tr style="height: 98%">
+                                               <tr class="#{cssId}-slider-height-novantotto-style">
                                                    <td class="rich-inslider-track-decor-2">
-                                                       <img src="#{spacer}" style="display: block;" />
+                                                       <img src="#{spacer}" class="#{cssId}-slider-display-block-style" />
                                                    </td>
                                                </tr>
                                            </tbody>
                                        </table>
                                    </div>
-                                   <div style="position : relative">
-                                       <div id="#{clientId}Tip" class="rich-inslider-tip #{component.attributes['tipClass']}" style="display: none;left: 9px; #{component.attributes['tipStyle']}">
+                                   <div class="#{cssId}-slider-position-relative-style">
+                                       <div id="#{clientId}Tip" class="rich-inslider-tip #{component.attributes['tipClass']} #{cssId}-slider-inslider-tip-style rich-inslider-display-none">
                                            <jsp:scriptlet><![CDATA[
                                              writer.write("&#160;");
                                            ]]></jsp:scriptlet>
                                        </div>
-                                       <div class="rich-inslider-handler-vertical #{component.attributes['handleClass']}" id="#{clientId}Handle" style="visibility:visible; top: -7px; left:1px;">
+                                       <div class="rich-inslider-handler-vertical #{component.attributes['handleClass']} #{cssId}-slider-inslider-handler-style rich-inslider-visibility" id="#{clientId}Handle">
                                            <jsp:scriptlet><![CDATA[
                                              writer.write("&#160;");
                                            ]]></jsp:scriptlet>
@@ -199,15 +221,18 @@
 		        ]]></jsp:scriptlet>
                 <tr>
 	                <td class="rich-inslider-td-arrow">
-		                <div style="position : relative">
-	                    	<div id="#{clientId}TipArrowDec" class="rich-inslider-tip #{component.attributes['tipClass']}" style="display: none; #{component.attributes['tipStyle']}">
+		                <div class="#{cssId}-slider-position-relative-style">
+		                	<style type="text/css" nonce="#{cspValue}">
+								.#{cssId}-slider-inslider-tip-dec-style { #{component.attributes['tipStyle']} }
+								.#{cssId}-slider-inslider-arrow-dec-style { #{component.attributes['decreaseStyle']} }
+							</style>
+	                    	<div id="#{clientId}TipArrowDec" class="rich-inslider-tip #{component.attributes['tipClass']} #{cssId}-slider-inslider-tip-dec-style rich-inslider-display-none">
                              <jsp:scriptlet><![CDATA[
                                writer.write("&#160;");
                              ]]></jsp:scriptlet>
                            </div>
 		                                <div  id="#{clientId}ArrowDec"
-		                                        class="rich-inslider-dec-vertical rich-inslider-arrow #{component.attributes['decreaseClass']}"
-		                                        style="#{component.attributes['decreaseStyle']}"
+		                                        class="rich-inslider-dec-vertical rich-inslider-arrow #{component.attributes['decreaseClass']} #{cssId}-slider-inslider-arrow-dec-style"
 		                                />
 		                </div>
 	                </td>
@@ -219,16 +244,18 @@
                 <jsp:scriptlet><![CDATA[
                     if ("left".equalsIgnoreCase((String)variables.getVariable("inputPosition"))) {
                 ]]></jsp:scriptlet>
-                <td style="text-align: left; vertical-align: bottom">
+                <td class="#{cssId}-slider-ta-left-va-bottom-style">
                     <jsp:scriptlet><![CDATA[
                     if (((Boolean)variables.getVariable("showInput")).booleanValue()) {
                     ]]></jsp:scriptlet>
+                    			<style type="text/css" nonce="#{cspValue}">
+									.#{cssId}-slider-input-style { #{component.attributes['inputStyle']}; #{color} }
+								</style>
                                 <input  id="#{clientId}Input"
                                         name="#{clientId}"
                                         value="#{this:getInputValue(context,component)}"
                                         type="text"
-                                        class="rich-inslider-field-bottom rich-inslider-field #{component.attributes['inputClass']}"
-                                        style="#{component.attributes['inputStyle']}; #{color}"
+                                        class="rich-inslider-field-bottom rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
                                         readonly="#{inputReadOnly}"
                                         disabled="#{inputDisabled}"
                                         onselect="#{component.attributes['onselect']}"
@@ -279,7 +306,7 @@
 					<c:scriptOption variables="height" defaultValue="20px" />										
 					<c:scriptOption name="orientation" value="vertical" />
 				</c:scriptObject>
-				<script type="text/javascript">
+				<script type="text/javascript" nonce="#{cspValue}">
 					new Richfaces.Slider("#{clientId}"
 							<c:if test="#{not empty options}">
 							, <f:writeAsScript value="#{options}" />
@@ -296,23 +323,34 @@
         ]]>
     </jsp:scriptlet>
     
-   <table id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider rich-slider #{component.attributes['styleClass']}"
-           style="width: #{width};#{style}" x:passThruWithExclusions="id,boundClass,tipClass,class,width,height,style,border">
+    <style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-slider-style { width: #{width};#{style} }
+		.#{cssId}-slider-ta-left-va-bottom-style { text-align: left; vertical-align: bottom; }
+		.#{cssId}-slider-ta-right-va-bottom-style { text-align: right; vertical-align: bottom; }
+		.#{cssId}-slider-position-relative-style { position: relative; }
+		.#{cssId}-slider-height-cento-style { height: 100%; }
+		.#{cssId}-slider-height-novantotto-style { height: 98%; }
+		.#{cssId}-slider-display-block-style { display: block; }
+	</style>
+   <table id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider rich-slider #{component.attributes['styleClass']} #{cssId}-slider-style"
+            x:passThruWithExclusions="id,boundClass,tipClass,class,width,height,style,border">
 		<tbody>
 			<tr>
                 <jsp:scriptlet><![CDATA[
                     if ("left".equalsIgnoreCase((String)variables.getVariable("inputPosition"))) {
                 ]]></jsp:scriptlet>
-                <td rowspan="2" style="text-align: right; vertical-align: bottom">
+                <td rowspan="2" class="#{cssId}-slider-ta-right-va-bottom-style">
                     <jsp:scriptlet><![CDATA[
                     if (((Boolean)variables.getVariable("showInput")).booleanValue()) {
                     ]]></jsp:scriptlet>
+                    			<style type="text/css" nonce="#{cspValue}">
+									.#{cssId}-slider-input-style { #{component.attributes['inputStyle']}; #{color} }
+								</style>
                                 <input	id="#{clientId}Input"
                                         name="#{clientId}"
                                         value="#{this:getInputValue(context,component)}"
                                         type="text"
-                                        class="rich-inslider-field-left rich-inslider-field #{component.attributes['inputClass']}"
-                                        style="#{component.attributes['inputStyle']}; #{color}"
+                                        class="rich-inslider-field-left rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
                                         readonly="#{inputReadOnly}"
                                         disabled="#{inputDisabled}"
                                         onselect="#{component.attributes['onselect']}"
@@ -353,15 +391,18 @@
 	                 if (((Boolean)variables.getVariable("showArrows")).booleanValue()) {
 	            ]]></jsp:scriptlet>
 				<td rowspan="2" class="rich-inslider-td-arrow">
-	                <div style="position : relative">
-	                    <div id="#{clientId}TipArrowDec" class="rich-inslider-tip #{component.attributes['tipClass']}" style="display: none; #{component.attributes['tipStyle']}">
+	                <div class="#{cssId}-slider-position-relative-style">
+	                	<style type="text/css" nonce="#{cspValue}">
+								.#{cssId}-slider-inslider-tip-dec-style { #{component.attributes['tipStyle']} }
+								.#{cssId}-slider-inslider-arrow-dec-style { #{component.attributes['decreaseStyle']} }
+							</style>
+	                    <div id="#{clientId}TipArrowDec" class="rich-inslider-tip #{component.attributes['tipClass']} #{cssId}-slider-inslider-tip-dec-style rich-inslider-display-none">
 	                         <jsp:scriptlet><![CDATA[
 	                           writer.write("&#160;");
 	                         ]]></jsp:scriptlet>
 	                     </div>
 	                                <div  id="#{clientId}ArrowDec"
-	                                        class="rich-inslider-dec-horizontal rich-inslider-arrow #{component.attributes['decreaseClass']}"
-	                                        style="#{component.attributes['decreaseStyle']}"
+	                                        class="rich-inslider-dec-horizontal rich-inslider-arrow #{component.attributes['decreaseClass']} #{cssId}-slider-inslider-arrow-dec-style"
 	                                />     
 	                </div>
                 </td>
@@ -392,15 +433,18 @@
 	                 if (((Boolean)variables.getVariable("showArrows")).booleanValue()) {
 	           	]]></jsp:scriptlet>
 				<td rowspan="2" class="rich-inslider-td-arrow">
-	                <div style="position : relative">
-	                     <div id="#{clientId}TipArrowInc" class="rich-inslider-tip #{component.attributes['tipClass']}" style="display: none; #{component.attributes['tipStyle']}">
+	                <div class="#{cssId}-slider-position-relative-style">
+	                	<style type="text/css" nonce="#{cspValue}">
+							.#{cssId}-slider-inslider-tip-inc-style { #{component.attributes['tipStyle']} }
+							.#{cssId}-slider-inslider-arrow-inc-style { #{component.attributes['increaseStyle']} }
+						</style>
+	                     <div id="#{clientId}TipArrowInc" class="rich-inslider-tip #{component.attributes['tipClass']} #{cssId}-slider-inslider-tip-inc-style rich-inslider-display-none">
 	                         <jsp:scriptlet><![CDATA[
 	                           writer.write("&#160;");
 	                         ]]></jsp:scriptlet>
 	                     </div>
 	                                <div  id="#{clientId}ArrowInc"
-	                                        class="rich-inslider-inc-horizontal rich-inslider-arrow #{component.attributes['increaseClass']}"
-	                                        style="#{component.attributes['increaseStyle']}"
+	                                        class="rich-inslider-inc-horizontal rich-inslider-arrow #{component.attributes['increaseClass']} #{cssId}-slider-inslider-arrow-inc-style"
 	                                />
 	                </div>   
                 </td>
@@ -411,16 +455,18 @@
                 <jsp:scriptlet><![CDATA[
                     if ("right".equalsIgnoreCase((String)variables.getVariable("inputPosition"))) {
                 ]]></jsp:scriptlet>
-                <td rowspan="2" style="text-align: left; vertical-align: bottom">
+                <td rowspan="2" class="#{cssId}-slider-ta-left-va-bottom-style">
 					<jsp:scriptlet><![CDATA[
 					if (((Boolean)variables.getVariable("showInput")).booleanValue()) {
 					]]></jsp:scriptlet>
+								<style type="text/css" nonce="#{cspValue}">
+									.#{cssId}-slider-input-style { #{component.attributes['inputStyle']}; #{color} }
+								</style>
 								<input	id="#{clientId}Input"
 										name="#{clientId}"
 										value="#{this:getInputValue(context,component)}"
 										type="text"
-										class="rich-inslider-field-right rich-inslider-field #{component.attributes['inputClass']}"
-										style="#{component.attributes['inputStyle']}; #{color}"
+										class="rich-inslider-field-right rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
 										readonly="#{inputReadOnly}"
 										disabled="#{inputDisabled}"
 										onselect="#{component.attributes['onselect']}"
@@ -463,24 +509,29 @@
 						<tbody>
 							<tr>
 								<td id="#{clientId}Track">
-									<div style="position : relative">
-										<div id="#{clientId}Tip" class="rich-inslider-tip #{component.attributes['tipClass']}" style="display: none;#{component.attributes['tipStyle']}">
+									<style type="text/css" nonce="#{cspValue}">
+										.#{cssId}-slider-inslider-tip-style { #{component.attributes['tipStyle']} }
+										.#{cssId}-slider-inslider-handler-style { }
+										.#{cssId}-slider-inslider-bar-style { #{component.attributes['barStyle']} }
+									</style>
+									<div class="#{cssId}-slider-position-relative-style">
+										<div id="#{clientId}Tip" class="rich-inslider-tip #{component.attributes['tipClass']} #{cssId}-slider-inslider-tip-style rich-inslider-display-none">
                                             <jsp:scriptlet><![CDATA[
                                               writer.write("&#160;");
                                             ]]></jsp:scriptlet>
                                         </div>
-										<div class="rich-inslider-handler #{component.attributes['handleClass']}" id="#{clientId}Handle" style="visibility:hidden;">
+										<div class="rich-inslider-handler #{component.attributes['handleClass']} #{cssId}-slider-inslider-handler-style rich-inslider-visibility-hidden" id="#{clientId}Handle">
                                             <jsp:scriptlet><![CDATA[
                                               writer.write("&#160;");
                                             ]]></jsp:scriptlet>
                                         </div>
 									</div>
-									<div class="rich-inslider-track #{component.attributes['barClass']}" style="#{component.attributes['barStyle']}">
+									<div class="rich-inslider-track #{component.attributes['barClass']} #{cssId}-slider-inslider-bar-style">
 										<table class="rich-inslider-track-decor-1" cellpadding="0" cellspacing="0">
 											<tbody>
 												<tr>
 													<td class="rich-inslider-track-decor-2">
-														<img src="#{spacer}" alt="" style="display: block;" />
+														<img src="#{spacer}" alt="" class="#{cssId}-slider-display-block-style" />
 													</td>
 												</tr>
 											</tbody>
@@ -498,7 +549,7 @@
 										<c:scriptOption variables="width" defaultValue="200px" />
 										<c:scriptOption variables="height" defaultValue="20px" />										
 									</c:scriptObject>
-									<script type="text/javascript">
+									<script type="text/javascript" nonce="#{cspValue}">
 										new Richfaces.Slider("#{clientId}"
 												<c:if test="#{not empty options}">
 												, <f:writeAsScript value="#{options}" />

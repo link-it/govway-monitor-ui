@@ -108,10 +108,18 @@
 		key = getUtils().escapeJavaScript(key);
 		]]>
 	</jsp:scriptlet>	
-
-	<span id="#{clientId}" style="display:none">
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-span-style { display:none; }
+	</style>
+	<span id="#{clientId}" class="#{cssId}-span-style">
 		
-		<script type="text/javascript">
+		<script type="text/javascript" nonce="#{cspValue}">
 			new Richfaces.hotKey('#{clientId}','#{key}','#{selector}', #{options}, function(event) { #{attributes['handler']} });
 		</script>
 	</span>

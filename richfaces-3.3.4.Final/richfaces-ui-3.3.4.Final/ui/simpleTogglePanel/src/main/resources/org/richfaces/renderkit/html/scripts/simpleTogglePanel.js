@@ -35,19 +35,31 @@ SimpleTogglePanel.prototype = {
 		var switch_on = $(this.panelId+"_switch_on");
 		var switch_off = $(this.panelId+"_switch_off");
 		if (this.status=="false"){
-			 if (this.invokeEvent("expand",event,"false",body)) {	
-		 	 	Element.show(body);
+			 if (this.invokeEvent("expand",event,"false",body)) {
+				body.classList.remove("rich-stglpanel-body-display-none");
+				body.classList.add("rich-stglpanel-body-display");	
+//		 	 	Element.show(body);
 	         	this.status="true";
-	         	switch_off.style.display="none";
-	         	switch_on.style.display="";
+	         	switch_off.classList.remove("rich-stglpnl-marker-display");
+	         	switch_on.classList.remove("rich-stglpnl-marker-display-none");
+	         	switch_off.classList.add("rich-stglpnl-marker-display-none");
+	         	switch_on.classList.add("rich-stglpnl-marker-display");
+//	         	switch_off.style.display="none";
+//	         	switch_on.style.display="";
 			 }	
 //			 this.timer = setTimeout(this.windowOnLoad.bind(this), 100);
 //		 	 body.firstChild.style.width=body.clientWidth;
 	    } else if (this.invokeEvent("collapse",event,"true",body)) {
-	    	 Element.hide(body);
+	  		 body.classList.remove("rich-stglpanel-body-display");
+			 body.classList.add("rich-stglpanel-body-display-none");	
+//	    	 Element.hide(body);
              this.status="false";
-             switch_on.style.display="none";
-	         switch_off.style.display="";
+             switch_on.classList.remove("rich-stglpnl-marker-display");
+           	 switch_off.classList.remove("rich-stglpnl-marker-display-none");
+         	 switch_on.classList.add("rich-stglpnl-marker-display-none");
+         	 switch_off.classList.add("rich-stglpnl-marker-display");
+//             switch_on.style.display="none";
+//	         switch_off.style.display="";
         }
         
 	    if (RichFaces.navigatorType() == RichFaces.MSIE){
@@ -139,15 +151,19 @@ SimpleTogglePanelManager.toggleOnClient = function (event,panelId) {
 
 SimpleTogglePanelManager.toggleOnAjax = function(event,panelId) {
 	var element = $(panelId);
-	
+	var body = $(panelId+"_body");
 	var thePanel = this.panels.get(panelId);
 	if (thePanel.status == "true") {
 		var res = thePanel.invokeEvent("collapse",event,"true",element);
-		Element.hide(panelId+"_body");
+		body.classList.remove("rich-stglpanel-body-display");
+		body.classList.add("rich-stglpanel-body-display-none");	
+//		Element.hide(panelId+"_body");
 		return res
 	} else {
-		var res = thePanel.invokeEvent("expand",event,"false",element); 
-		Element.show(panelId+"_body");
+		var res = thePanel.invokeEvent("expand",event,"false",element);
+		body.classList.remove("rich-stglpanel-body-display-none");
+		body.classList.add("rich-stglpanel-body-display"); 
+//		Element.show(panelId+"_body");
 		return res
 	}
 }

@@ -11,13 +11,23 @@
 
 	<f:clientid var="clientId" />
 	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		##{clientId} { #{component.attributes['style']} }
+		.#{cssId}-container-menu-display-none { margin: 0px; padding: 0px; border: 0px; position: absolute; z-index: 100; }
+	</style>
+	<jsp:scriptlet>
 		<![CDATA[ org.richfaces.component.UIDropDownMenu menu = (org.richfaces.component.UIDropDownMenu) component;
 		        if (!menu.getSubmitMode().equalsIgnoreCase("none"))
 		        	org.richfaces.component.util.FormUtil.throwEnclFormReqExceptionIfNeed(context,component);
 		        
     			if (!menu.isDisabled()) {]]>
     </jsp:scriptlet>
-	<div id="#{clientId}" style="#{component.attributes['style']}"
+	<div id="#{clientId}" 
 		class="rich-ddmenu-label rich-ddmenu-label-unselect #{component.attributes['styleClass']} #{component.attributes['labelClass']}"
 		onmouseover="#{component.attributes['onmouseover']}"
 		onmouseout="#{component.attributes['onmouseout']}"
@@ -25,7 +35,7 @@
 	<jsp:scriptlet>	
 		<![CDATA[ } else { ]]> 
 	</jsp:scriptlet>
-	<div id="#{clientId}" style="#{component.attributes['style']}"
+	<div id="#{clientId}" 
 		class="rich-ddmenu-label-disabled rich-ddmenu-label-unselect #{component.attributes['styleClass']} #{component.attributes['disabledLabelClass']}"
 		onmouseover="#{component.attributes['onmouseover']}"
 		onmouseout="#{component.attributes['onmouseout']}"
@@ -44,8 +54,7 @@
 					<![CDATA[}]]> 
 		</jsp:scriptlet>
 
-	<div
-		style="margin: 0px; padding: 0px; border: 0px; position: absolute; z-index: 100;">
+	<div class="#{cssId}-container-menu-display-none" >
 	<vcp:body>
 		<f:call name="renderChildren" />
 	</vcp:body></div>

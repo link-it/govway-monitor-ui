@@ -117,6 +117,18 @@
 			left: 0px;
 			top: 0px;
 		}
+		.rich-modalpanel-display-none { 
+			display: none;
+		}
+		.rich-modalpanel-display { 
+			display: ;
+		}
+		.rich-modalpanel-visibility-hidden {
+			visibility: hidden; 
+		}
+		.rich-modalpanel-visibility {
+			visibility: visible;
+		}
 	</f:verbatim>
 	
 	<f:verbatim>

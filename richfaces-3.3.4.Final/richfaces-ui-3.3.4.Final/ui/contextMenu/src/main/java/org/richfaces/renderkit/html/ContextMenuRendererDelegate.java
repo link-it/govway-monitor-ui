@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
@@ -28,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.javascript.JSFunction;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 import org.richfaces.component.UIContextMenu;
@@ -56,12 +61,8 @@ public class ContextMenuRendererDelegate extends AbstractMenuRenderer {
 	}
 
 	protected void processLayerStyles(FacesContext context, UIComponent layer, ResponseWriter writer) throws IOException {
-		Object style = layer.getAttributes().get(HTML.style_ATTRIBUTE);
 		Object styleClass = layer.getAttributes().get(HTML.STYLE_CLASS_ATTR);
 		
-		if (null == style) {
-			style = "";
-		}
 		if (null == styleClass) {
 			styleClass = "";
 		}
@@ -70,7 +71,27 @@ public class ContextMenuRendererDelegate extends AbstractMenuRenderer {
         getUtils().writeAttribute(writer, HTML.onmouseout_ATTRIBUTE, layer.getAttributes().get("onmouseout"));
         getUtils().writeAttribute(writer, HTML.onmouseover_ATTRIBUTE, layer.getAttributes().get("onmouseover"));
         
-		writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-border " + styleClass, null);
-		writer.writeAttribute(HTML.style_ATTRIBUTE, "display: none; z-index: 2; " + style, null);
+        String clientId = layer.getClientId(context);
+		String cssId = RendererUtils.getCssId(clientId);
+		String cssClass = cssId + "-style";
+		String cssDisplayNone = "rich-menu-list-border-display-none";
+        
+		writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-border " + styleClass + " " + cssClass + " " + cssDisplayNone, null);
+	}
+	
+	protected String getLayerStyle(FacesContext context, UIComponent layer, ResponseWriter writer) throws IOException {
+		Object style = layer.getAttributes().get(HTML.style_ATTRIBUTE);
+		
+		if (null == style) {
+			style = "";
+		}
+		
+        String clientId = layer.getClientId(context);
+		String cssId = RendererUtils.getCssId(clientId);
+		String cssClass = cssId + "-style";
+		
+		String regolaStyle = "." + cssClass + " { z-index: 2; "+ style +"; }";
+		
+		return regolaStyle ; 
 	}
 }

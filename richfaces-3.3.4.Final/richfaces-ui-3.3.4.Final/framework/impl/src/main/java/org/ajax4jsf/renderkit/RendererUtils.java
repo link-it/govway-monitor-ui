@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.renderkit;
 
 import java.awt.Dimension;
@@ -40,6 +44,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -210,6 +215,8 @@ public class RendererUtils {
 		public static final String src_ATTRIBUTE = "src";
 
 		public static final String media_ATTRIBUTE = "media";
+		
+		public static final String nonce_ATTRIBUTE = "nonce";
 
 		// public static final String onreset_ATTRIBUTE = "onreset";
 		// attributes sets.
@@ -248,6 +255,7 @@ public class RendererUtils {
 
 		public static final String[] PASS_THRU_STYLES = { "style", "class", };
 
+		public static final String STYLE_ELEM = "style";
 		public static final String SPAN_ELEM = "span";
 		public static final String DIV_ELEM = "div";
 		public static final String SCRIPT_ELEM = "script";
@@ -287,6 +295,10 @@ public class RendererUtils {
 		
 		public static final String DT_ELEMENT = "dt";
 		public static final String DL_ELEMENT = "dl";
+		
+		/* CSP */
+		public static final String REQUEST_ATTRIBUTE_CSP_RANDOM_NONCE = "_csp_random_nonce";
+		public static final String HEADER_NAME_CONTENT_SECURITY_POLICY = "Content-Security-Policy";
 	}
 
 	/**
@@ -1158,5 +1170,21 @@ public class RendererUtils {
 		} else {
 			return null;
 		}
+	}
+	
+	public static String getCspNonceValue(FacesContext context) {
+		ExternalContext extCtx = context.getExternalContext();
+		if(extCtx != null) {
+			String cspValue = (String) extCtx.getRequestMap().get(HTML.REQUEST_ATTRIBUTE_CSP_RANDOM_NONCE);
+			return cspValue;
+		}
+		
+		return null;
+	}
+	
+	public static String getCssId(String componentId) {
+		if(componentId == null) return null;
+		
+		return componentId.replace(":", "-").replace(".", "-");
 	}
 }

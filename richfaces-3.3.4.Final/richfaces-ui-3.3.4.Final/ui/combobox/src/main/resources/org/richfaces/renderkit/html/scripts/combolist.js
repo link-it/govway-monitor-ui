@@ -45,8 +45,10 @@ Richfaces.ComboBoxList.prototype = {
 	},
 	
 	initDimensions : function() {
-		this.listParent.style.visibility = "hidden";
-		this.listParent.style.display = "";
+	    this.listParent.classList.remove("rich-combobox-list-cord-visibility");
+       	this.listParent.classList.remove("rich-combobox-list-cord-display-none");
+     	this.listParent.classList.add("rich-combobox-list-cord-visibility-hidden");
+     	this.listParent.classList.add("rich-combobox-list-cord-display");
 		
 		var el = this.listParent.childNodes[1].firstChild;
 		this.LAYOUT_BORDER_V = Richfaces.getBorderWidth(el, "tb");
@@ -54,8 +56,10 @@ Richfaces.ComboBoxList.prototype = {
 		this.LAYOUT_PADDING_V = Richfaces.getPaddingWidth(el, "tb");
 		this.LAYOUT_PADDING_H = Richfaces.getPaddingWidth(el, "lr");
 				
-		this.listParent.style.display = "none";
-		this.listParent.style.visibility = "visible";
+		this.listParent.classList.remove("rich-combobox-list-cord-visibility-hidden");
+       	this.listParent.classList.remove("rich-combobox-list-cord-display");
+     	this.listParent.classList.add("rich-combobox-list-cord-visibility");
+     	this.listParent.classList.add("rich-combobox-list-cord-display-none");
 	},
 	
 	createDefaultList : function() {
@@ -63,6 +67,7 @@ Richfaces.ComboBoxList.prototype = {
 		for (var i = 0; i < this.itemsText.length; i++) {
 			items.push(this.createItem(this.itemsText[i], this.classes.item.normal));
 		}
+		
 		this.createNewList(items);
 	},
 	
@@ -85,11 +90,15 @@ Richfaces.ComboBoxList.prototype = {
 		 
 		this.fieldDimensions.height = this.fieldElem.parentNode.offsetHeight;
 		
-		this.listParent.style.visibility = "hidden";
-		this.listParent.style.display = "";
+	    this.listParent.classList.remove("rich-combobox-list-cord-visibility");
+       	this.listParent.classList.remove("rich-combobox-list-cord-display-none");
+     	this.listParent.classList.add("rich-combobox-list-cord-visibility-hidden");
+     	this.listParent.classList.add("rich-combobox-list-cord-display");
 		this.setSize();
-		this.listParent.style.display = "none";
-		this.listParent.style.visibility = "visible";
+		this.listParent.classList.remove("rich-combobox-list-cord-visibility-hidden");
+       	this.listParent.classList.remove("rich-combobox-list-cord-display");
+     	this.listParent.classList.add("rich-combobox-list-cord-visibility");
+     	this.listParent.classList.add("rich-combobox-list-cord-display-none");
 		
 		//attach list to the document body 
 		this.injectListToBody(this.listParent);
@@ -107,7 +116,8 @@ Richfaces.ComboBoxList.prototype = {
 			if (this.iframe) {
 				Element.show(this.iframe);
 			}
-			this.listParent.style.display = "";
+       		this.listParent.classList.remove("rich-combobox-list-cord-display-none");
+     		this.listParent.classList.add("rich-combobox-list-cord-display");
 			if (this.selectFirstOnUpdate) {
 				if (this.selectedItem) {
 					this.doActiveItem(this.selectedItem);
@@ -164,8 +174,10 @@ Richfaces.ComboBoxList.prototype = {
 		component.style.position = "static";
 		component.style.zIndex = 0;
 		
-		//this.listParent.style.display = "none";
-		Element.hide(this.listParent);
+		this.listParent.classList.remove("rich-combobox-list-cord-display");
+		this.listParent.classList.remove("rich-combobox-list-cord-visibility-hidden");
+     	this.listParent.classList.add("rich-combobox-list-cord-display-none");
+     	this.listParent.classList.add("rich-combobox-list-cord-visibility");
 	},
 	
 	eventOnScroll: function (e) {
@@ -173,7 +185,7 @@ Richfaces.ComboBoxList.prototype = {
 	},
 	
 	visible : function() {
-		return this.listParent.visible();
+		return this.hasClass(this.listParent.classList, 'rich-combobox-list-cord-display');
 	},
 	
 	setSize : function() {
@@ -372,8 +384,9 @@ Richfaces.ComboBoxList.prototype = {
 		var items = new Array();
 		for (var i = 0; i < this.itemsText.length; i++) {
 			var itText = this.itemsText[i];
-			if (itText.substr(0, text.length).toLowerCase() == text.toLowerCase()) { //FIXME: to optimaize
-				items.push(this.createItem(itText, this.classes.item.normal));
+			// if (itText.substr(0, text.length).toLowerCase() == text.toLowerCase()) { //FIXME: to optimaize
+			if (itText.toUpperCase().indexOf(text.toUpperCase()) > -1) { // 2020/04/02 Ricerca su tutto il testo
+				items.push(this.createItemWithHighLight(itText, text, this.classes.item.normal));
 			}
 		}
 		return items;
@@ -389,7 +402,7 @@ Richfaces.ComboBoxList.prototype = {
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i]
 			var itText = item.innerHTML.unescapeHTML();
-			if (itText.substr(0, substr.length).toLowerCase() == substr.toLowerCase()) { //FIXME: to optimaize
+			if (itText.toUpperCase().indexOf(substr.toUpperCase()) > -1) { // 2020/04/02 Ricerca su tutto il testo
 				return item;
 			}
 		}
@@ -413,6 +426,17 @@ Richfaces.ComboBoxList.prototype = {
 	
 	createItem : function(text, className) {
 		var escapedText = text.escapeHTML();
+		return "<span class=\"" + className+ "\">" + escapedText + "</span>";
+	},
+	
+	createItemWithHighLight : function(text, substr, className) {
+		var escapedText = text.escapeHTML();
+		
+		if(substr && substr.length > 0) {
+			var strongText = this.createHighlightItem(escapedText, substr);
+			return "<span class=\"" + className+ "\">" + strongText + "</span>";	
+		}
+		
 		return "<span class=\"" + className+ "\">" + escapedText + "</span>";
 	},
 	
@@ -457,12 +481,13 @@ Richfaces.ComboBoxList.prototype = {
     	var jqs = jQuery(source);
     	var so = jqs.offset();
     	
-    	var hidden = (jqt.css('display') == 'none');
+    	var hidden = (jqt.hasClass('rich-combobox-list-cord-display-none'));
     	var oldVisibility;
     	
     	if (hidden) {
-    		oldVisibility = jqt.css('visibility');
-    		jqt.css('visibility', 'hidden').css('display', '');
+    		oldVisibility = jqt.hasClass('rich-combobox-list-cord-visibility');
+    		jqt.removeClass( "rich-combobox-list-cord-display-none" ).addClass( "rich-combobox-list-cord-display" );
+    		jqt.removeClass( "rich-combobox-list-cord-visibility" ).addClass( "rich-combobox-list-cord-visibility-hidden" );
     	}
     	
     	var left = this.parseToPx(jqt.css('left'));
@@ -480,7 +505,14 @@ Richfaces.ComboBoxList.prototype = {
     	var to = jqt.offset();
 
     	if (hidden) {
-    		jqt.css('display', 'none').css('visibility', oldVisibility);
+			jqt.removeClass( "rich-combobox-list-cord-display" ).addClass( "rich-combobox-list-cord-display-none" );
+    		jqt.removeClass( "rich-combobox-list-cord-visibility-hidden" );
+    		
+    		if(oldVisibility){
+				jqt.addClass( "rich-combobox-list-cord-visibility" );
+			} else {
+				jqt.addClass( "rich-combobox-list-cord-visibility-hidden" );
+			}
     	}
     	
     	// set position
@@ -488,7 +520,91 @@ Richfaces.ComboBoxList.prototype = {
     		left: (so.left - to.left + left) + 'px', 
     		top: (so.top - to.top + top + vOffset) + 'px'
     	});
-    }
+    },
+
+    
+    createHighlightItem: function(test, subString){
+	  var tokens = this.occurrences(test,test.toUpperCase(), subString.toUpperCase());
+	  
+	  var html = '';
+	  for(var i=0;i<tokens.length;i++){
+		  var token = tokens[i];
+		  if(token.highlight) { 
+			  html += "<strong>";
+		  }
+		  html += token.originText;
+		  if(token.highlight) {
+			  html += "</strong>";
+			  }
+		  }
+		  
+		  return html;
+	  },
+    	  
+    occurrences: function (originTest, test, subString) {
+		  var split = [];
+		  test += "";
+	  subString += "";
+	  if (subString.length <= 0) return split;
+
+	  var pos = 0, nuovaPos = 0, step = subString.length;
+
+	  while (true) {
+//    			  console.log('Pos: ' + pos);
+		  nuovaPos = test.indexOf(subString, pos);
+//    			  console.log('NuovaPos: ' + nuovaPos);
+		  var tokenString = '';
+		  var originTokenString = '';
+		  var highlight = false;
+		  if (nuovaPos >= 0) {
+			  if(nuovaPos == pos) { // metch del token highlight true
+				  tokenString = test.substr(pos, step);
+				  originTokenString = originTest.substr(pos, step);
+				  pos += step;
+				  highlight = true;
+			  } else {
+				  tokenString = test.substr(pos, (nuovaPos - pos));
+				  originTokenString = originTest.substr(pos, (nuovaPos - pos));
+				  pos = nuovaPos;
+			  }
+			  if(tokenString) {
+//    					  console.log('Token: ' + tokenString);
+//    					  console.log('Highlight: ' + highlight);
+				  var item = {};
+				  item.text = tokenString;
+				  item.highlight = highlight;
+				  item.originText = originTokenString;
+				  split.push(item);
+			  }
+		  } else {
+			  tokenString = test.substr(pos);
+			  originTokenString = originTest.substr(pos);
+			  if(tokenString) {
+//    					  console.log('Ultimo Token: ' + tokenString);
+//    					  console.log('Highlight: ' + highlight);
+				  var item = {};
+				  item.text = tokenString;
+				  item.highlight = highlight;
+				  item.originText = originTokenString;
+				  split.push(item);
+			  }
+			  break;
+		  }
+	  }
+	   
+	  return split;
+	},
+	hasClass: function(classes, cls) {
+		if(classes){
+		    var i;
+		    for(i = 0; i < classes.length; i++) {
+		        if(classes[i] == cls) {
+		            return true;
+		        }
+		    }
+	    }
+	    return false;
+	}
 }
 
 Richfaces.ComboBoxList.getElemXY = function(elem) {

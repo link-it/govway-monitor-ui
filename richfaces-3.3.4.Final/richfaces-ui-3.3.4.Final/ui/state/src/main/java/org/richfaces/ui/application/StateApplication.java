@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.ui.application;
 
 import java.util.Collection;
@@ -25,10 +30,12 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.el.ELContext;
 import javax.el.ELContextListener;
 import javax.el.ELException;
 import javax.el.ELResolver;
 import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -65,6 +72,27 @@ public class StateApplication extends Application {
 			@Override
 			public ExpressionFactory getDefaultFactory() {
 				return parent.getExpressionFactory();
+			}
+
+			@Override
+			public ValueExpression createValueExpression(ELContext context, String expression, Class expectedType) {
+				return parent.getExpressionFactory().createValueExpression(context, expression, expectedType);
+			}
+
+			@Override
+			public ValueExpression createValueExpression(Object instance, Class expectedType) {
+				return parent.getExpressionFactory().createValueExpression(instance, expectedType);
+			}
+
+			@Override
+			public MethodExpression createMethodExpression(ELContext context, String expression,
+					Class expectedReturnType, Class[] expectedParamTypes) {
+				return parent.getExpressionFactory().createMethodExpression(context, expression, expectedReturnType, expectedParamTypes);
+			}
+
+			@Override
+			public Object coerceToType(Object obj, Class targetType) {
+				return parent.getExpressionFactory().coerceToType(obj, targetType);
 			}
 		};
 	}

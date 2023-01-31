@@ -16,6 +16,13 @@
 	padding-right: 3px; 
 }
 
+.rich-stglpnl-marker-display-none {
+	display: none; 
+}
+
+.rich-stglpnl-marker-display {
+}
+
 .rich-stglpanel-header{
    border-width: 1px;
    border-style: solid;
@@ -32,6 +39,14 @@
    vertical-align : top;
    overflow: auto;
 }
+
+.rich-stglpanel-body-display-none {
+	display: none; 
+}
+
+.rich-stglpanel-body-display {
+}
+
 .rich-stglpanel-marker{
 	float: right;
 }

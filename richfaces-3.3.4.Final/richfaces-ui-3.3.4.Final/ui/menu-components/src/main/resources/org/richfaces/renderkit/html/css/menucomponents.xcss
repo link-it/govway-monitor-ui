@@ -56,6 +56,19 @@
 	float : left; 
 	position : absolute;
 }
+.rich-menu-list-border-display-none { 
+	display: none;
+}
+.rich-menu-list-border-display { 
+	display: ;
+}
+.rich-menu-list-border-visibility-hidden {
+	visibility: hidden; 
+}
+.rich-menu-list-border-visibility {
+	visibility: visible;
+}
+
 .rich-menu-list-bg {
 	border-top-style : solid;
 	border-left-style : solid;

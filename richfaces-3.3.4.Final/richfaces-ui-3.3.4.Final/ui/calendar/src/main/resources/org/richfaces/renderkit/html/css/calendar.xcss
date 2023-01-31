@@ -112,6 +112,18 @@
 	background-repeat: repeat-x;
 	font-size: 0px;
 }
+.rich-calendar-display-none { 
+	display: none;
+}
+.rich-calendar-display { 
+	display: ;
+}
+.rich-calendar-visibility-hidden {
+	visibility: hidden; 
+}
+.rich-calendar-visibility {
+	visibility: visible;
+}
 
 ]]>
    </f:verbatim>

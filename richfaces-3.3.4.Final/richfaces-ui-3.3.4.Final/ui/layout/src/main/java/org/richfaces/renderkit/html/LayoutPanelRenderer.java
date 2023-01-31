@@ -1,10 +1,16 @@
 /**
  * 
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -12,6 +18,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
 import org.ajax4jsf.renderkit.RendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.LayoutPosition;
 import org.richfaces.component.LayoutStructure;
@@ -25,6 +32,16 @@ import org.richfaces.component.UILayoutPanel;
 public class LayoutPanelRenderer extends RendererBase {
 	private static final Object[] LAYOUT_EXCLUSIONS = { HTML.id_ATTRIBUTE,
 			HTML.style_ATTRIBUTE };
+	
+	private String uuid;
+	
+	public String getUuid() {
+		if(uuid == null) {
+			uuid = UUID.randomUUID().toString().replace("-", "");
+		}
+		
+		return uuid;
+	}
 
 	@Override
 	protected void doEncodeBegin(ResponseWriter writer, FacesContext context,
@@ -35,8 +52,8 @@ public class LayoutPanelRenderer extends RendererBase {
 				LAYOUT_EXCLUSIONS);
 		String layoutStyle = layoutStyle(context, (UILayoutPanel) component);
 		if (null != layoutStyle) {
-			writer.writeAttribute(HTML.style_ATTRIBUTE, layoutStyle, "style");
-
+			writer.writeAttribute(HTML.class_ATTRIBUTE, "css-" + getUuid(), null);
+//			writer.writeAttribute(HTML.style_ATTRIBUTE, layoutStyle, "style");
 		}
 	}
 
@@ -82,6 +99,23 @@ public class LayoutPanelRenderer extends RendererBase {
 	protected void doEncodeEnd(ResponseWriter writer, FacesContext context,
 			UIComponent component) throws IOException {
 		writer.endElement(HTML.DIV_ELEM);
+		
+		String layoutStyle = layoutStyle(context, (UILayoutPanel) component);
+		if (null != layoutStyle) {
+//			writer.writeAttribute(HTML.style_ATTRIBUTE, layoutStyle, "style");
+
+			writer.startElement(HTML.STYLE_ELEM, component);
+			writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+			String cspValue = RendererUtils.getCspNonceValue(context);
+			if(cspValue != null) {
+				writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append(".").append("css-").append(getUuid()).append(" {\n").append(layoutStyle).append(";\n").append("zoom:1;\n").append("}\n");
+			
+			writer.writeText(sb.toString(), null);
+			writer.endElement(HTML.STYLE_ELEM);
+		}
 	}
 
 	@Override

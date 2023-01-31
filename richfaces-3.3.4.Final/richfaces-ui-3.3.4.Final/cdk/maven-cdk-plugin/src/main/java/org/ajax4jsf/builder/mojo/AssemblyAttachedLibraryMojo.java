@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.builder.mojo;
 
 import java.io.File;
@@ -83,9 +87,9 @@ import org.w3c.dom.Node;
  */
 public class AssemblyAttachedLibraryMojo extends AbstractCDKMojo {
 
-	private static final String TEMPLATES_PREFIX = "/templates/";
+	private static final String TEMPLATES_PREFIX = "templates/";
 
-	private static final String TEMPLATES12_PREFIX = "/templates12/";
+	private static final String TEMPLATES12_PREFIX = "templates12/";
 
 	private static final String FACES_CONFIG_TEMPLATE = "faces-config.vm";
 

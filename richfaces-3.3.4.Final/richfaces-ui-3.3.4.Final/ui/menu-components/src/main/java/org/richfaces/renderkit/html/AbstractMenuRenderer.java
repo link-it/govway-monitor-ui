@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
@@ -236,6 +240,7 @@ public abstract class AbstractMenuRenderer extends HeaderResourcesRendererBase {
     	}
 
         String clientId = layer.getClientId(context);
+        String cspValue = RendererUtils.getCspNonceValue(context);
         
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.DIV_ELEM, layer);
@@ -249,13 +254,11 @@ public abstract class AbstractMenuRenderer extends HeaderResourcesRendererBase {
         writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-strut",
                 null);
         writer.startElement(HTML.DIV_ELEM, layer);
-        writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-strut",
-                null);
-        writer.writeAttribute(HTML.style_ATTRIBUTE, width != null
-                && width.length() > 0 ? "width: " + HtmlUtil.qualifySize(width)
-                : "", null);
+        String cssId = RendererUtils.getCssId(clientId);
+        writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-strut", null);
         writer.write("&#160;");
         writer.endElement(HTML.DIV_ELEM);
+        
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
@@ -264,8 +267,27 @@ public abstract class AbstractMenuRenderer extends HeaderResourcesRendererBase {
         writer.writeAttribute(HTML.id_ATTRIBUTE, clientId + "_menu_script",
                 null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
         encodeScript(context, layer);
         writer.endElement(HTML.SCRIPT_ELEM);
+        
+        writer.startElement("style", layer);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+		writer.writeAttribute(HTML.id_ATTRIBUTE, clientId + "_menu_style",null);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
+        if(width != null && width.length() > 0) {
+		//	writer.write("#"+cssId+"-menu-list-strut { width: "+ HtmlUtil.qualifySize(width) +";}\n");
+        }
+        String layerStyle = getLayerStyle(context, layer, writer);
+        if(layerStyle != null) {
+        	writer.write(layerStyle);
+        }
+        
+        writer.endElement("style");
     }
     
     public void encodeItems(FacesContext context, UIComponent component)
@@ -298,6 +320,9 @@ public abstract class AbstractMenuRenderer extends HeaderResourcesRendererBase {
     }
     
     protected abstract void processLayerStyles(FacesContext context,
+            UIComponent layer, ResponseWriter writer) throws IOException;
+    
+    protected abstract String getLayerStyle(FacesContext context,
             UIComponent layer, ResponseWriter writer) throws IOException;
     
 }

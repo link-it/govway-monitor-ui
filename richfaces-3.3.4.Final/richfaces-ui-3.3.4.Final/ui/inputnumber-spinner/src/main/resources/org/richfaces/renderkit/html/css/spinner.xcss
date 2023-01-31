@@ -43,6 +43,10 @@ input.rich-spinner-input {
 	display: block;
 	border-style: none;
 }
+
+.rich-spinner-tab-display-moz {
+	display: -moz-inline-box;
+}
 ]]>
 
 </f:verbatim>

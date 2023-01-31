@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
@@ -63,8 +67,20 @@ public class DropDownMenuRendererBase extends AbstractMenuRenderer {
 	}
 
 	protected void processLayerStyles(FacesContext context, UIComponent layer, ResponseWriter writer) throws IOException {
-		writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-border", null);
-		writer.writeAttribute(HTML.style_ATTRIBUTE, "display: none; z-index: 2;", null);
+		String clientId = layer.getClientId(context);
+		String cssId = RendererUtils.getCssId(clientId);
+		String cssClass = cssId + "-style";
+		String cssDisplayNone = "rich-menu-list-border-display-none";
+		writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-border " + cssClass + " " + cssDisplayNone, null);
 	}
 
+	protected String getLayerStyle(FacesContext context, UIComponent layer, ResponseWriter writer) throws IOException {
+		String clientId = layer.getClientId(context);
+		String cssId = RendererUtils.getCssId(clientId);
+		String cssClass = cssId + "-style";
+		
+		String regolaStyle = "." + cssClass + " { z-index: 2; }";
+		
+		return regolaStyle; 
+	}
 }

@@ -145,8 +145,8 @@ Richfaces.ComboBox.prototype = {
 	},
 	
 	buttonMouseUpHandler : function(e) {
-		this.buttonBG.className = "rich-combobox-font rich-combobox-button-background rich-combobox-button";
-		this.button.className = this.classes.button.classes.active + " rich-combobox-button-hovered";
+		this.buttonBG.className = this.normalizeClasses(this.buttonBG.className, "rich-combobox-font rich-combobox-button-background rich-combobox-button");
+		this.button.className = this.normalizeClasses(this.button.className, this.classes.button.classes.active + " rich-combobox-button-hovered");
 		
 		var styleCss = this.classes.button.style;
 		if(styleCss && !styleCss.active.blank()) {
@@ -157,8 +157,8 @@ Richfaces.ComboBox.prototype = {
 	},
 	
 	buttonMousedownHandler : function(e) {
-		this.buttonBG.className = "rich-combobox-font rich-combobox-button-pressed-background rich-combobox-button";
-		this.button.className = this.classes.button.classes.active + " rich-combobox-button-hovered";
+		this.buttonBG.className = this.normalizeClasses(this.buttonBG.className, "rich-combobox-font rich-combobox-button-pressed-background rich-combobox-button");
+		this.button.className = this.normalizeClasses(this.button.className, this.classes.button.classes.active + " rich-combobox-button-hovered");
 		
 		var styleCss = this.classes.button.style;
 		if(styleCss && !styleCss.active.blank()) {
@@ -173,7 +173,7 @@ Richfaces.ComboBox.prototype = {
 		var iconStyles = this.classes.buttonicon.style;
 		var styleCss = this.classes.button.style;
 		if (this.isActive()) { 
-			this.button.className= classCss.active + " " + classCss.hovered;
+			this.button.className = this.normalizeClasses(this.button.className, classCss.active + " " + classCss.hovered);
 			
 			if(styleCss && !styleCss.active.blank()) {
 				Element.setStyle(this.button,styleCss.active);
@@ -184,7 +184,7 @@ Richfaces.ComboBox.prototype = {
 			}	
 		
 		} else {
-			this.button.className = classCss.normal + " " + classCss.hovered;
+			this.button.className = this.normalizeClasses(this.button.className, classCss.normal + " " + classCss.hovered);
 			
 			if(styleCss && !styleCss.normal.blank()) {
 				Element.setStyle(this.button,styleCss.normal);
@@ -202,7 +202,7 @@ Richfaces.ComboBox.prototype = {
 		var iconStyles = this.classes.buttonicon.style;
 		
 		if (this.isActive()) { 
-			this.button.className= classCss.active;
+			this.button.className = this.normalizeClasses(this.button.className, classCss.active);
 			
 			if(styleCss && !styleCss.active.blank()) {
 				Element.setStyle(this.button,styleCss.active);
@@ -212,7 +212,7 @@ Richfaces.ComboBox.prototype = {
 				Element.setStyle(this.button,{backgroundImage : iconStyles.active});
 			}	
 		} else {
-			this.button.className = classCss.normal;
+			this.button.className = this.normalizeClasses(this.button.className, classCss.normal);
 			
 			if(styleCss && !styleCss.normal.blank()) {
 				Element.setStyle(this.button,styleCss.normal);
@@ -365,10 +365,10 @@ Richfaces.ComboBox.prototype = {
 	},
 	
 	doDirectSuggestion: function(value) {
-		var startInd = this.field.value.length; 
-		var endInd = value.length;
-		this.field.value = value;
-		Richfaces.ComboBox.textboxSelect(this.field, startInd, endInd);
+//		var startInd = this.field.value.length; 
+//		var endInd = value.length;
+//		this.field.value = value;
+//		Richfaces.ComboBox.textboxSelect(this.field, startInd, endInd);
 	},
 	
 	wasTextDeleted : function(event) {
@@ -446,7 +446,7 @@ Richfaces.ComboBox.prototype = {
 	},
 	
 	applyDefaultText : function() {
-		this.field.className = this.classes.field.classes.disabled;
+		this.field.className = this.normalizeClasses(this.field.className, this.classes.field.classes.disabled);
 		this.field.value = this.defaultLabel;
 		this.comboValue.value = "";
 	},
@@ -457,9 +457,9 @@ Richfaces.ComboBox.prototype = {
 	
 	doActive : function() {
 		if (this.button.className.indexOf(this.classes.button.classes.hovered) != -1) {
-			this.button.className = this.classes.button.classes.active + " " + this.classes.button.classes.hovered;
+			this.button.className = this.normalizeClasses(this.button.className, this.classes.button.classes.active + " " + this.classes.button.classes.hovered);
 		} else {
-			this.button.className = this.classes.button.classes.active ;
+			this.button.className = this.normalizeClasses(this.button.className, this.classes.button.classes.active);
 		}
 		
 		var iconStyles = this.classes.buttonicon.style;
@@ -467,16 +467,16 @@ Richfaces.ComboBox.prototype = {
 			Element.setStyle(this.button, {backgroundImage:iconStyles.active});
 		}	
 				
-		this.field.className = this.classes.field.classes.active;
+		this.field.className = this.normalizeClasses(this.field.className, this.classes.field.classes.active);
 		Element.setStyle(this.field, this.classes.field.style.active);
 		 
 		this.disabled = false;
 	},
 		
 	disable : function() {
-		this.button.className = this.classes.button.classes.disabled;
-		this.buttonBG.className = this.classes.buttonbg.classes.disabled;
-		this.field.className = this.classes.field.classes.disabled;
+		this.button.className = this.normalizeClasses(this.button.className, this.classes.button.classes.disabled);
+		this.buttonBG.className = this.normalizeClasses(this.buttonBG.className, this.classes.buttonbg.classes.disabled);
+		this.field.className = this.normalizeClasses(this.field.className, this.classes.field.classes.disabled);
 		Element.setStyle(this.field, this.classes.field.style.disabled);
 		
 		var styleCss =  this.classes.button.style;
@@ -496,9 +496,9 @@ Richfaces.ComboBox.prototype = {
 	},
 	
 	enable : function() {
-		this.button.className = this.classes.button.classes.normal;
-		this.buttonBG.className = this.classes.buttonbg.classes.normal;
-		this.field.className = this.classes.field.classes.normal;
+		this.button.className = this.normalizeClasses(this.button.className, this.classes.button.classes.normal);
+		this.buttonBG.className = this.normalizeClasses(this.buttonBG.className, this.classes.buttonbg.classes.normal);
+		this.field.className = this.normalizeClasses(this.field.className, this.classes.field.classes.normal);
 		var fieldStyles = this.classes.field.style.normal;
 		Element.setStyle(this.field, fieldStyles);
 
@@ -543,7 +543,24 @@ Richfaces.ComboBox.prototype = {
 	 
 	 hideList : function() {
 	 	this.comboList.hideWithDelay();
-	 }
+	 },
+	 
+	 normalizeClasses: function(oldClasses, newClasses){
+		// split elenco classi attuali
+		var split = oldClasses.split(' ');
+		
+		// prelevo quelle custom create per il csp
+		var cls = '';
+		for(var i =0; i < split.length; i++) {
+			if(split[i].indexOf('-style') > -1) {
+				cls += ' ';
+				cls += split[i];
+			}
+		}
+		
+		// incollo le classi da conservare a quelle previste
+		return newClasses + cls;
+	}
 };
 
 

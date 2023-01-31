@@ -25,10 +25,21 @@
 	<f:resource name="images/spacer.gif" var="spacer" />
 	
 	<f:call name="encodeTabPanelScript"/>
+	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-tab-panel-style { #{this:encodeStyles(context, component)}; }
+		.#{cssId}-tab-bottom-line-spacer-img-style { #{this:encodeHeaderSpacing(context, component)};border:0; }
+		.#{cssId}-tab-panel-input-div-style { display: none; }
+	</style>
 		
 	<table border="0" cellpadding="0" cellspacing="0" id="#{clientId}"
-		class="rich-tabpanel #{component.attributes['styleClass']}"
-		style="#{this:encodeStyles(context, component)}">
+		class="rich-tabpanel #{component.attributes['styleClass']} #{cssId}-tab-panel-style">
 		<f:call name="utils.encodePassThruWithExclusions">
 			<f:parameter value="width,height,styleClass,class,style,id" />
 		</f:call>
@@ -44,7 +55,7 @@
 									
 											<td>
 												<img src="#{spacer}" height="1" alt=""
-												 style="#{this:encodeHeaderSpacing(context, component)};border:0" />
+												 class="#{cssId}-tab-bottom-line-spacer-img-style" />
 											</td>
 										
 										<f:call name="encodeTabs" />
@@ -54,7 +65,7 @@
 								</table>
 							
 							
-					<div style="display: none;">
+					<div class="#{cssId}-tab-panel-input-div-style">
 						<c:if test="#{clientSide}">
 							<input autocomplete="off" type="hidden"
 							id="#{clientId}_input" 

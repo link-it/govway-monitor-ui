@@ -1,10 +1,16 @@
 /**
  * 
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -13,6 +19,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
 import org.ajax4jsf.renderkit.RendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.LayoutPosition;
 import org.richfaces.component.LayoutStructure;
@@ -28,6 +35,17 @@ public class LayoutRenderer extends
 	
 	public static final String LAYOUT_STRUCTURE_ATTRIBUTE = UILayout.class.getName()+".structure";
 	private static final Object[] LAYOUT_EXCLUSIONS = {HTML.id_ATTRIBUTE,HTML.style_ATTRIBUTE};
+	
+	private String uuid;
+	
+	public String getUuid() {
+		if(uuid == null) {
+			uuid = UUID.randomUUID().toString().replace("-", "");
+		}
+		
+		return uuid;
+	}
+	
 	@Override
 	protected void doEncodeBegin(ResponseWriter writer, FacesContext context,
 			UIComponent component) throws IOException {
@@ -35,7 +53,9 @@ public class LayoutRenderer extends
 		getUtils().encodeCustomId(context, component);
 		getUtils().encodePassThruWithExclusionsArray(context, component, LAYOUT_EXCLUSIONS);
 		Object style = component.getAttributes().get("style");
-		writer.writeAttribute(HTML.style_ATTRIBUTE,null==style?"":(style.toString()+";")+"zoom:1;","style");
+		if(style != null) { // fix elimina gli elementi con attributo style=""
+			writer.writeAttribute(HTML.class_ATTRIBUTE, "css-" + getUuid(), null);
+		}
 	}
 
 	
@@ -70,9 +90,24 @@ public class LayoutRenderer extends
 		}
 		// line separator.
 		writer.startElement(HTML.DIV_ELEM, layout);
-		writer.writeAttribute(HTML.style_ATTRIBUTE, "display: block; height: 0;line-height:0px; font-size:0px; clear: both; visibility: hidden;", null);
+		writer.writeAttribute(HTML.class_ATTRIBUTE, "css-layout-" + getUuid(), null);
+		//writer.writeAttribute(HTML.style_ATTRIBUTE, "display: block; height: 0;line-height:0px; font-size:0px; clear: both; visibility: hidden;", null);
 		writer.writeText(".", null);
 		writer.endElement(HTML.DIV_ELEM);
+		
+		writer.startElement(HTML.STYLE_ELEM, layout);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(".").append("css-layout-").append(getUuid()).append(" {\n").append("display: block; height: 0;line-height:0px; font-size:0px; clear: both; visibility: hidden;").append("}\n");
+		
+		writer.writeText(sb.toString(), null);
+		writer.endElement(HTML.STYLE_ELEM);
+		
+		
 		if (null != structure.getBottom()) {
 			renderChild(context, structure.getBottom());
 		}
@@ -83,6 +118,22 @@ public class LayoutRenderer extends
 	protected void doEncodeEnd(ResponseWriter writer, FacesContext context,
 			UIComponent component) throws IOException {
 		writer.endElement(HTML.DIV_ELEM);
+		
+		Object style = component.getAttributes().get("style");
+		if(style != null) {
+			writer.startElement(HTML.STYLE_ELEM, component);
+			writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+			String cspValue = RendererUtils.getCspNonceValue(context);
+			if(cspValue != null) {
+				writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append(".").append("css-").append(getUuid()).append(" {\n").append(style.toString()).append(";\n").append("zoom:1;\n").append("}\n");
+			
+			writer.writeText(sb.toString(), null);
+			writer.endElement(HTML.STYLE_ELEM);
+			//writer.writeAttribute(HTML.style_ATTRIBUTE,null==style?"":(style.toString()+";")+"zoom:1;","style");
+		}
 	}
 
 	@Override

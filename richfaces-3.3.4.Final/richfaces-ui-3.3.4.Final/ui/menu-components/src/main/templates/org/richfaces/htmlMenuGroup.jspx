@@ -22,6 +22,17 @@
 	<f:call name="initializeStyleClasses" />
 	<f:resource name="/org/richfaces/renderkit/html/images/spacer.gif" var="spacer" />
 
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		##{clientId} { #{menuItemStyle} }
+		.#{cssId}-icon-style-attr { #{component.attributes['iconStyle']} }
+	</style>
+
     <jsp:scriptlet>
         <![CDATA[
             boolean disabled = ((Boolean) component.getAttributes().get("disabled")).booleanValue();
@@ -30,14 +41,12 @@
     </jsp:scriptlet>
     <div id="#{clientId}" 
         class="#{menuGroupClass}" 
-        style="#{menuItemStyle}"
         onmousemove="#{menuItemMouseMove}" >
     <jsp:scriptlet> 
         <![CDATA[} else {]]> 
     </jsp:scriptlet>
     <div id="#{clientId}" 
         class="#{menuGroupClass}" 
-        style="#{menuItemStyle}"
         onmousemove="#{menuItemMouseMove}"
         onmouseout="RichFaces.Menu.groupMouseOut(event, this, '#{menuGroupCustomClass}', '#{onmouseoutInlineStyles}');"
         onmouseover="RichFaces.Menu.groupMouseOver(event, this, '#{menuGroupHoverClass}', '#{onmouseoverInlineStyles}');">
@@ -57,14 +66,12 @@
 						renderChild(context, iconFacet);
 					} else if (component.getAttributes().get(iconName)!=null) {]]> 
 		</jsp:scriptlet>
-			<img width="16" height="16" alt=""
-				style="#{component.attributes['iconStyle']}"
+			<img width="16" height="16" alt="" class="#{cssId}-icon-style-attr"
 				src="#{actualIcon}"/>
 		<jsp:scriptlet>	
 			<![CDATA[} else {]]> 
 		</jsp:scriptlet>
-			<img  width="16" height="16" alt=""
-				style="#{component.attributes['iconStyle']}"
+			<img  width="16" height="16" alt="" class="#{cssId}-icon-style-attr"
 				src="#{spacer}"/>
 		<jsp:scriptlet><![CDATA[}]]></jsp:scriptlet>
 		</span>
@@ -92,8 +99,7 @@
 		<![CDATA[} else if (component.getAttributes().get(iconFolder)!=null) {]]>
 		</jsp:scriptlet>
 			<div id="#{clientId}:folder" class="rich-menu-node #{menuGroupItemFolderClass} #{component.attributes['iconClass']}">
-				<img width="16" height="16" alt=""
-					style="#{component.attributes['iconStyle']}"
+				<img width="16" height="16" alt="" class="#{cssId}-icon-style-attr"
 					src="#{actualIconFolder}"/>
 			</div>
 		<jsp:scriptlet>	

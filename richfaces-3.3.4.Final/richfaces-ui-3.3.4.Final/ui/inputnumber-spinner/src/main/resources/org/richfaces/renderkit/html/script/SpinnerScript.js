@@ -26,8 +26,10 @@ Richfaces.Spinner.prototype = {
 		this.table		= $(buttonsId.substr(buttonsId.indexOf("buttons")+7));
 		if (RichFaces.navigatorType() == RichFaces.FF ||
 				RichFaces.navigatorType() == RichFaces.NETSCAPE) {
-			if (!this.fie)
-			this.table.style.display = "-moz-inline-box";
+			if (!this.fie){
+				var jqTable = jQuery(this.table);
+				jqTable.addClass( "rich-spinner-tab-display-moz" );
+			}
 		}
 		Object.extend(this, options);
 		if (!this.disabled){

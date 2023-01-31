@@ -13,16 +13,32 @@
 
 	<f:resource name="images/spacer.gif" var="spacer" />
 	
-	<td style="height: 100%; vertical-align: bottom;" id="#{clientId}_cell">
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-tab-cell-td-style { height: 100%; vertical-align: bottom; }
+		.#{cssId}-tab-side-border-img-style { border:0; }
+		.#{cssId}-tab-td-side-cell-style { #{this:encodeTabLabelWidth(context, component)}; }
+		.#{cssId}-tab-td-side-cell-table-style { height: 100%; width: 100%; }
+		.#{cssId}-tab-header-spacer-img-style { #{this:encodeHeaderSpacing(context, component)};border:0; }
+	</style>
+	<td id="#{clientId}_cell">
 		<f:call name="encodeCellClasses" />
 
 		<table id="#{clientId}_shifted" border="0" cellpadding="0" cellspacing="0">
 			<f:call name="encodeTabLabel" />
-
+			
+			<style type="text/css" nonce="#{cspValue}">
+				<f:call name="encodeTabLabelClass" />
+			</style>
 			<tr>
-				<td class="rich-tabhdr-side-border"><img src="#{spacer}" width="1" height="1" alt="" style="border:0" /></td>
-				<td class="rich-tabhdr-side-cell" style="#{this:encodeTabLabelWidth(context, component)}">
-					<table style="height: 100%; width: 100%;" border="0" cellpadding="0" cellspacing="0" >
+				<td class="rich-tabhdr-side-border"><img src="#{spacer}" width="1" height="1" alt="" class="#{cssId}-tab-side-border-img-style" /></td>
+				<td class="rich-tabhdr-side-cell #{cssId}-tab-td-side-cell-style">
+					<table class="#{cssId}-tab-td-side-cell-table-style" border="0" cellpadding="0" cellspacing="0" >
 						<tr>
 							<td id="#{clientId}_lbl" 
 								onclick="#{component.attributes['onlabelclick']}"
@@ -40,12 +56,12 @@
 						</tr>
 					</table>
 				</td>
-				<td class="rich-tabhdr-side-border"><img src="#{spacer}" width="1" height="1" alt="" style="border:0" /></td>
+				<td class="rich-tabhdr-side-border"><img src="#{spacer}" width="1" height="1" alt="" class="#{cssId}-tab-side-border-img-style" /></td>
 			</tr>
 		</table>
 
 	</td>
-	<td><img src="#{spacer}" height="1" alt="" style="#{this:encodeHeaderSpacing(context, component)};border:0"/></td>
+	<td><img src="#{spacer}" height="1" alt="" class="#{cssId}-tab-header-spacer-img-style"/></td>
 
 </f:root>
 

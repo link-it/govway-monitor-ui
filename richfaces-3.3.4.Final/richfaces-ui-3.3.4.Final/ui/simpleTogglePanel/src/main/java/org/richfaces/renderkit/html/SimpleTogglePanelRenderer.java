@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 /*
  * Created on 04.07.2006
  */
@@ -38,6 +42,7 @@ import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.JSReference;
 import org.ajax4jsf.renderkit.AjaxRendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils;
+import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.UISimpleTogglePanel;
 import org.richfaces.component.util.HtmlUtil;
 import org.richfaces.event.SimpleToggleEvent;
@@ -192,10 +197,9 @@ public class SimpleTogglePanelRenderer extends org.ajax4jsf.renderkit.HeaderReso
     public void encodeDivStart(ResponseWriter writer,
             FacesContext context, UISimpleTogglePanel component) throws IOException {
         String clientId = component.getClientId(context);
-        writer.startElement("div", component);
-        getUtils().writeAttribute(writer, "class", "rich-stglpanel " + convertToString(component.getAttributes().get("styleClass")) );
-        getUtils().writeAttribute(writer, "id", clientId );
         
+        String cssId = getUtils().getCssId(clientId);
+        String cssClassId = cssId+"-style";
         String style = convertToString(component.getAttributes().get("style"));
         String width = convertToString(component.getAttributes().get("width"));
         if (!isEmpty(width)) {
@@ -203,9 +207,21 @@ public class SimpleTogglePanelRenderer extends org.ajax4jsf.renderkit.HeaderReso
         }
         
         style = HtmlUtil.concatStyles(style, width);
-        if (!isEmpty(style)) {
-            getUtils().writeAttribute(writer, "style",  style); 
+        
+        writer.startElement("style", component);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
+		if (!isEmpty(style)) {
+			writer.write("."+cssClassId+" {"+style+"}\n");
         }
+		writer.endElement("style");
+        
+        writer.startElement("div", component);
+        getUtils().writeAttribute(writer, "class", "rich-stglpanel " + convertToString(component.getAttributes().get("styleClass")) + " " + cssClassId );
+        getUtils().writeAttribute(writer, "id", clientId );
 
         getUtils().encodeAttributesFromArray(context,component,new String[] {
                 "align",
@@ -228,13 +244,13 @@ public class SimpleTogglePanelRenderer extends org.ajax4jsf.renderkit.HeaderReso
     public void encodeBodyDivStart(ResponseWriter writer,
             FacesContext context, UISimpleTogglePanel component) throws IOException {
         String clientId = component.getClientId(context);
-        writer.startElement("div", component);
-        getUtils().writeAttribute(writer, "class", "rich-stglpanel-body " + convertToString(component.getAttributes().get("bodyClass")) );
-        getUtils().writeAttribute(writer, "id", convertToString(clientId) + "_body" );
         
-        String display = "";
+        String cssId = getUtils().getCssId(clientId);
+        String cssClassId = cssId+"-body-style";
+        
+        String display = "rich-stglpanel-body-display";
         if (!component.isOpened()) {
-            display = "display: none";
+            display = "rich-stglpanel-body-display-none";
         }
 
         String height = convertToString(component.getAttributes().get("height"));
@@ -242,10 +258,26 @@ public class SimpleTogglePanelRenderer extends org.ajax4jsf.renderkit.HeaderReso
             height = "height: " + height;
         }
         
-        String style = HtmlUtil.concatStyles(display, height);
+        String style = HtmlUtil.concatStyles(height);
+        
+        writer.startElement("style", component);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+		String cspValue = RendererUtils.getCspNonceValue(context);
+		if(cspValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+		}
+        
         if (!isEmpty(style)) {
-            getUtils().writeAttribute(writer, "style", style);
+        	writer.write("."+cssClassId+" {"+style+"}\n");
         }
+        
+        writer.endElement("style");
+        
+        writer.startElement("div", component);
+        getUtils().writeAttribute(writer, "class", "rich-stglpanel-body " + convertToString(component.getAttributes().get("bodyClass")) + " " + cssClassId + " " + display);
+        getUtils().writeAttribute(writer, "id", convertToString(clientId) + "_body" );
+        
+        
     }
     
     public void encodeSwitchOnDivStart(ResponseWriter writer,
@@ -264,14 +296,14 @@ public class SimpleTogglePanelRenderer extends org.ajax4jsf.renderkit.HeaderReso
         String clientId = component.getClientId(context);
         writer.startElement("div", component);
         
-        getUtils().writeAttribute(writer, "class", "rich-stglpnl-marker" );
-        getUtils().writeAttribute(writer, "id", convertToString(clientId) + "_switch_" + (isSwitchOn ? "on" : "off"));
-        
         String display = convertToString(getSwitchStatus(context, component, isSwitchOn)).trim();
         if (!isEmpty(display)) {
-            display = "display: " + display;
+        	getUtils().writeAttribute(writer, "class", "rich-stglpnl-marker rich-stglpnl-marker-display-none" );
+        } else {
+        	getUtils().writeAttribute(writer, "class", "rich-stglpnl-marker rich-stglpnl-marker-display");
         }
-        getUtils().writeAttribute(writer, "style", display);
+        getUtils().writeAttribute(writer, "id", convertToString(clientId) + "_switch_" + (isSwitchOn ? "on" : "off"));
+        
     }
     
     public String getSwitchStatus(FacesContext context, UIComponent component, boolean isSwitchOn) {

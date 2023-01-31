@@ -13,6 +13,17 @@
 
 	<h:styles>/org/richfaces/renderkit/html/css/calendar.xcss</h:styles>
 	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-cal-valign-middle-style { vertical-align: middle; }
+		.#{cssId}-cal-input-date-style { #{component.attributes['inputStyle']} }
+	</style>
+	
 	<f:call name="addPopupToAjaxRendered" />
 	
 	<span id="#{clientId}Popup"
@@ -27,7 +38,7 @@
 		</jsp:scriptlet> 
 				<input id="#{clientId}InputDate"
 				autocomplete="off"
-					style="display:none"	
+					class="rich-calendar-display-none"	
 					name="#{clientId}InputDate"
 					value="#{this:getInputValue(context,component)}" type="hidden" />
 		<jsp:scriptlet>
@@ -69,8 +80,7 @@
 			onmouseover="#{component.attributes['oninputmouseover']}"
 			onmouseout="#{component.attributes['oninputmouseout']}"
 			size="#{component.attributes['inputSize']}"
-			style="vertical-align: middle; #{component.attributes['inputStyle']}"
-			class="rich-calendar-input #{component.attributes['inputClass']}"
+			class="rich-calendar-input #{component.attributes['inputClass']} #{cssId}-cal-valign-middle-style #{cssId}-cal-input-date-style"
 			tabindex="#{component.attributes['tabindex']}">
 			<jsp:scriptlet>
 			<![CDATA[
@@ -98,9 +108,8 @@
 			if(buttonLabel==null || buttonLabel.length()==0){	
 		]]>
 		 </jsp:scriptlet><img id="#{clientId}PopupButton" alt=""
-		class="rich-calendar-button #{component.attributes['buttonClass']}"
+		class="rich-calendar-button #{component.attributes['buttonClass']} #{cssId}-cal-valign-middle-style"
 		accesskey="#{component.attributes['accesskey']}"
-		style="vertical-align: middle"
 		tabindex="#{component.attributes['tabindex']}">
 	<jsp:scriptlet>
 			<![CDATA[
@@ -132,8 +141,7 @@
 		]]>
 	</jsp:scriptlet>
 	<button type="button" id="#{clientId}PopupButton" name="#{clientId}PopupButton"
-		style="vertical-align: middle"
-		class="rich-calendar-button #{component.attributes['buttonClass']}"
+		class="rich-calendar-button #{component.attributes['buttonClass']} #{cssId}-cal-valign-middle-style"
 		tabindex="#{component.attributes['tabindex']}" disabled="#{disabled}">
 	#{buttonLabel}</button>
 	<jsp:scriptlet>
@@ -148,16 +156,16 @@
 		<c:object var="currentDate" type="java.util.Date" value="#{component.currentDateOrDefault}" />
 
 		<input id="#{clientId}InputCurrentDate"
-			style="display:none"	
+			class="rich-calendar-display-none"	
 			autocomplete="off"
 			name="#{clientId}InputCurrentDate"
 			value="#{this:getCurrentDateAsString(context,component,currentDate)}" type="hidden" />
 		<f:call name="dayCellClass" />
 	</span>
-	<div style="display: none;" id="#{clientId}IFrame"></div>
-	<div style="display: none;" id="#{clientId}">
+	<div class="rich-calendar-display-none" id="#{clientId}IFrame"></div>
+	<div class="rich-calendar-display-none" id="#{clientId}">
 	</div>
-	<div style="display: none;" id="#{clientId}Script">
+	<div class="rich-calendar-display-none" id="#{clientId}Script">
 	
 	<c:scriptObject var="options" base="#{this:getSymbolsMap(context, component)}">
 		<c:scriptOption attributes="enableManualInput, disabled, readonly, resetTimeOnDateSelect, showApplyButton, styleClass, minDaysInFirstWeek" />
@@ -188,7 +196,7 @@
 		<c:scriptOption name="labels" value="#{this:getLabels(context, component)}" />
 		<c:scriptOption name="defaultTime" value="#{this:getPreparedDefaultTime(component)}" />
 	</c:scriptObject>
-	<script type="text/javascript">
+	<script type="text/javascript" nonce="#{cspValue}">
 		<f:call name="writeDefaultSymbols" />
 		new Calendar('#{clientId}', 
 			"#{component.asLocale}",

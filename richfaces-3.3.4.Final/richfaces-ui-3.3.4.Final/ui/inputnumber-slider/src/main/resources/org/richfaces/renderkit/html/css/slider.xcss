@@ -8,6 +8,18 @@
 	/*width : 200px;*/
 	height : 20px;
 }
+.rich-inslider-display-none { 
+	display: none;
+}
+.rich-inslider-display { 
+	display: ;
+}
+.rich-inslider-visibility-hidden {
+	visibility: hidden; 
+}
+.rich-inslider-visibility {
+	visibility: visible;
+}
 .rich-inslider-vertical {
     width : 20px;
 }

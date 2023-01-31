@@ -12,9 +12,20 @@
 	>
 	
 	<f:clientid var="clientId"/>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-div-style { #{this:getHideStyle(context, component)} }
+		.#{cssId}-table-style { #{this:getFullStyle( context, component )} }
+		.#{cssId}-table-td-style { width:100%; }
+		.#{cssId}-script { display:none;}
+	</style>
 	
-	<div id="#{clientId}" style="#{this:getHideStyle(context, component)}" 
-			class="#{this:getDivClass(context, component)}" >
+	<div id="#{clientId}" class="#{this:getDivClass(context, component)} #{cssId}-div-style" >
 			
 		<c:object type="boolean" var="isNodeSelected" value="#{false}" />
 		<jsp:scriptlet>
@@ -28,8 +39,7 @@
 		</jsp:scriptlet>
 		<table 	cellspacing="0" cellpadding="0" border="0" 
 				id="tablehide#{clientId}"
-				class="#{this:getTableClass(context, component)} rich-pmenu-group #{this:getFullStyleClass( context, component )} " 
-				style="#{this:getFullStyle( context, component )}" 
+				class="#{this:getTableClass(context, component)} rich-pmenu-group #{this:getFullStyleClass( context, component )} #{cssId}-table-style" 
 				x:passThruWithExclusions="cellspacing,cellpadding,border,id,class,styleClass,style">
 			
 			<tbody>
@@ -41,7 +51,7 @@
 							<f:parameter value="left" />
 						</f:call>
 					</td>
-					<td style="width:100%" id="icon#{clientId}" class="rich-pmenu-group-self-label #{this:getLabelClass( context, component )}" >
+					<td id="icon#{clientId}" class="rich-pmenu-group-self-label #{this:getLabelClass( context, component )} #{cssId}-table-td-style" >
 						<input type="hidden" autocomplete="off" name="panelMenuState#{clientId}" 
 									value="#{isNodeOpened}" />
 							

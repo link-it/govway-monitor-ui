@@ -12,6 +12,12 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" >
 	<jsp:directive.page import="javax.faces.context.FacesContext,javax.faces.component.UIComponent"/>
 	<f:clientid var="clientId"/>	
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
 	<jsp:declaration><![CDATA[
     public void encodeTypeAndImage(FacesContext context, UIComponent uiComponent) throws IOException {
     	ResponseWriter writer = context.getResponseWriter();
@@ -35,13 +41,19 @@
 		}
     }	
 	]]></jsp:declaration>
+	<script type="text/javascript" nonce="#{cspValue}">			
+	 	jQuery(document).ready(function() {
+	 		 jQuery("input[id$='#{clientId}']").click(function() {
+	 			#{this:getOnClick(context,component)};
+	 		});
+		 });
+	</script>
 	<input 
 		id="#{clientId}"
 		name="#{clientId}"
 		value=""
 		x:value="#{this:getValue(component)}" 
 		x:passThruWithExclusions="value,name,onclick,type,id,class"
-		onclick="#{this:getOnClick(context,component)}"
 		class="#{component.attributes['styleClass']}"
 		>
 		<jsp:scriptlet>encodeTypeAndImage(context,component);</jsp:scriptlet>

@@ -12,14 +12,22 @@
 	>
 	
 	<f:clientid var="clientId"/>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-tab-td-style { #{this:getTabDisplay(context, component)}; height:100%; }
+		.#{cssId}-tab-td-content-style { #{component.pane.attributes['contentStyle']}; #{component.attributes['style']}; }
+	</style>
 
-	<td id="#{clientId}" style="#{this:getTabDisplay(context, component)};height:100%" 
-		>
+	<td id="#{clientId}" class="#{cssId}-tab-td-style">
 
-		<table border="0" cellpadding="10" cellspacing="0" width="100%" class="rich-tabpanel-content-position" style="">
+		<table border="0" cellpadding="10" cellspacing="0" width="100%" class="rich-tabpanel-content-position">
 			<tr>
-				<td class="rich-tabpanel-content #{component.pane.attributes['contentClass']} #{component.attributes['styleClass']}" 
-					style="#{component.pane.attributes['contentStyle']}; #{component.attributes['style']}"
+				<td class="rich-tabpanel-content #{component.pane.attributes['contentClass']} #{component.attributes['styleClass']} #{cssId}-tab-td-content-style" 
 					x:passThruWithExclusions="class,style,styleClass,id"
 					>
 					<vcp:body />

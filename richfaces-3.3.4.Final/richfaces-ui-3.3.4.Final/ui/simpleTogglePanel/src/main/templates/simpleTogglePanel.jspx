@@ -23,7 +23,13 @@ scripts/simpleTogglePanel.js
     <jsp:scriptlet>
         encodeDivStart(writer, context, component);
     </jsp:scriptlet>
-        <script type="text/javascript">
+    <jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+        <script type="text/javascript" nonce="#{cspValue}">
             SimpleTogglePanelManager.add(new SimpleTogglePanel("#{clientId}", 
             													"#{component.attributes['opened']}",{ 
             														<f:call name="writeEventHandlerFunction"><f:parameter value="onexpand" /></f:call>,
@@ -32,7 +38,11 @@ scripts/simpleTogglePanel.js
             													
             							 ));
         </script>
-
+		<style type="text/css" nonce="#{cspValue}">
+			.#{cssId}-hidden-panel {
+				display:none;
+			}
+		</style>
         <f:call name="utils.encodeBeginFormIfNessesary"/>
         <div id="#{clientId}_header"
              class="rich-stglpanel-header #{component.attributes['headerClass']}"
@@ -88,7 +98,7 @@ scripts/simpleTogglePanel.js
             <![CDATA[if((component.getSwitchType()!=null) && (component.getSwitchType().equals(component.CLIENT_SWITCH_TYPE)==true)){]]>
         </jsp:scriptlet>
 
-        <div style="display: none;">
+        <div class="#{cssId}-hidden-panel">
             <input autocomplete="off" type="hidden" id="#{clientId}_input" name="#{clientId}"
                    value="#{component.attributes['opened']}"/>
         </div>
