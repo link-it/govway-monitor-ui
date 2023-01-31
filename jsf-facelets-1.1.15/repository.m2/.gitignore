@@ -1,0 +1,9 @@
+# Ignore everything in this directory
+org/apache/maven/plugins/maven-deploy-plugin/resolver-status.properties
+org/apache/maven/plugins/maven-install-plugin/resolver-status.properties
+org/apache/maven/plugins/maven-resources-plugin/resolver-status.properties
+org/apache/maven/plugins/maven-source-plugin/resolver-status.properties
+org/apache/maven/plugins/maven-compiler-plugin/resolver-status.properties
+# Except this file
+!.gitignore
+
