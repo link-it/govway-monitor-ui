@@ -1,0 +1,13 @@
+# Ignore everything in this directory
+generator/target/
+maven-archetype-jsf-component/target/
+maven-archetype-jsfwebapp/target/
+maven-archetype-plug-n-skin/target/
+maven-archetype-theme/target/
+maven-cdk-plugin/target/
+maven-javascript-plugin/target/
+maven-resource-dependency-plugin/target/
+richfaces-facelets/target/
+# Except this file
+!.gitignore
+
