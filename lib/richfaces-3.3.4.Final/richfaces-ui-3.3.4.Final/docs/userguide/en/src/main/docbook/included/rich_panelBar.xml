@@ -1,0 +1,238 @@
+<section role="NotInToc" id="rich_panelBar">
+      <title> &lt; rich:panelBar &gt; <emphasis role="since">
+                  <superscript> available since <emphasis role="version">3.0.0</emphasis>
+                  </superscript>
+            </emphasis>
+      </title>
+      <section>
+            <title>Description</title>
+            <para>
+                  The component is designed to group one or more <link linkend="rich_panelBarItem">&lt;rich:panelBarItem&gt;</link> components into one interactive panel.
+            </para>
+            <figure>
+                  <title>
+                        <emphasis role="bold"><property>&lt;rich:panelBar&gt;</property></emphasis> with content inside</title>
+                  <mediaobject>
+                        <imageobject>
+                              <imagedata fileref="images/panelBar_init.png"/>
+                        </imageobject>
+                  </mediaobject>
+            </figure>
+      </section>
+      <section>
+            <title>Key Features</title>
+            <itemizedlist>
+                  <listitem>
+                        <para>May have any content inside</para>
+                  </listitem>
+                  <listitem>
+                        <para>Has customizable look and feel</para>
+                  </listitem>
+            </itemizedlist>
+      </section>
+      <section>
+            <title>Details of Usage</title>
+            <para>
+                  The component groups page contents into notional blocks. 
+                  Borders separate this content visually from the rest of page. 
+                  The <emphasis role="bold"><property>&lt;rich:panelBar&gt;</property></emphasis> could contain any number of items (<emphasis role="bold"><property>&lt;rich:panelBarItem&gt;</property></emphasis> inside), 
+                  with their own headers that control opening and closing features.
+            </para>
+            <para>
+                  In contrast to <emphasis role="bold"><property>&lt;rich:panel&gt;</property></emphasis> the component has <emphasis><property>&quot;width&quot;</property></emphasis> 
+                  and <emphasis><property>&quot;height&quot;</property></emphasis> attributes that control it size (by default they both have 100%).
+            </para>
+            
+           
+            
+            <!--para>
+            The <emphasis>
+                <property>&quot;label&quot;</property>
+            </emphasis> attribute is a generic attribute.
+            The <emphasis>
+                <property>&quot;label&quot;</property>
+            </emphasis> attribute provides an association between a component, and the message that the component (indirectly) produced.  
+            This attribute defines the parameters of localized error and informational messages that
+            occur as a result of conversion, validation, or other application actions during the request
+            processing lifecycle. With the help of this attribute you can  replace the
+            last parameter substitution token shown in the messages. For example, {1} for <code>&quot;DoubleRangeValidator.MAXIMUM&quot;</code>, {2}
+            for <code>&quot;ShortConverter.SHORT&quot;</code>.
+        </para-->
+
+      </section>
+      <section>
+            <title>Reference Data</title>
+            <para>
+                  <ulink url="&tlddoc;rich/panelBar.html">Table of &lt;rich:panelBar&gt; attributes</ulink>. </para>
+            <table>
+                  <title>Component Identification Parameters </title>
+                  <tgroup cols="2">
+                        <thead>
+                              <row>
+                                    <entry>Name</entry>
+                                    <entry>Value</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry>component-type</entry>
+                                    <entry>org.richfaces.PanelBar</entry>
+                              </row>
+                              <row>
+                                    <entry>component-class</entry>
+                                    <entry>org.richfaces.component.html.HtmlPanelBar</entry>
+                              </row>
+                              <row>
+                                    <entry>component-family</entry>
+                                    <entry>org.richfaces.PanelBar</entry>
+                              </row>
+                              <row>
+                                    <entry>renderer-type</entry>
+                                    <entry>org.richfaces.PanelBarRenderer</entry>
+                              </row>
+                              <row>
+                                    <entry>tag-class</entry>
+                                    <entry>org.richfaces.taglib.PanelBarTag</entry>
+                              </row>
+                        </tbody>
+                  </tgroup>
+            </table>
+            <table id="tab_pB">
+                  <title>Style classes (selectors) and mapped skin parameters</title>
+                  <tgroup cols="4">
+                        <thead>
+                              <row>
+                                    <entry>Class name</entry>
+                                    <entry>Description</entry>
+                                    <entry>Skin parameter</entry>
+                                    <entry>CSS property</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry>.rich-panelbar</entry>
+                                    <entry>Defines styles for wrapper &lt;div&gt; element of a component</entry>
+                                    <entry>headerBackgroundColor</entry>
+                                    <entry>border-color</entry>
+                              </row>
+                              <row>
+                                    <entry morerows="2">.rich-panelbar-content</entry>
+                                    <entry morerows="2">Defines styles for panelBar content</entry>
+                                    <entry>preferableDataFamilyFont</entry>
+                                    <entry>font-family</entry>
+                              </row>
+                              <row>
+                                    <entry>preferableDataSizeFont</entry>
+                                    <entry>font-size</entry>
+                                    
+                              </row>
+                              <row>
+                                    <entry>generalTextColor</entry>
+                                    <entry>color</entry>
+                              </row>
+                              <row>
+                                    <entry morerows="4">.rich-panelbar-header</entry>
+                                    <entry morerows="4">Defines styles for panelBar header</entry>
+                                    <entry>headerBackgroundColor</entry>
+                                    <entry>background-color</entry>
+                              </row>
+                              <row>
+                                    <entry>headerFamilyFont</entry>
+                                    <entry>font-family</entry>
+                              </row>
+                              <row>
+                                    <entry>headerSizeFont</entry>
+                                    <entry>font-size</entry>
+                              </row>
+                              <row>
+                                    <entry>headerWeightFont</entry>
+                                    <entry>font-weight</entry>
+                              </row>
+                              <row>
+                                    <entry>headerTextColor</entry>
+                                    <entry>color</entry>
+                              </row>
+                              
+                              <row>
+                                    <entry morerows="4">.rich-panelbar-header-act</entry>
+                                    <entry morerows="4">Defines styles for panelBar active header</entry>
+                                    <entry>headerBackgroundColor</entry>
+                                    <entry>background-color</entry>
+                              </row>
+                              <row>
+                                    <entry>headerFamilyFont</entry>
+                                    <entry>font-family</entry>
+                              </row>
+                              <row>
+                                    <entry>headerSizeFont</entry>
+                                    <entry>font-size</entry>
+                              </row>
+                              <row>
+                                    <entry>headerWeightFont</entry>
+                                    <entry>font-weight</entry>
+                              </row>
+                              <row>
+                                    <entry>headerTextColor</entry>
+                                    <entry>color</entry>
+                              </row>
+                              <row>
+                                    <entry>.rich-panelbar-interior</entry>
+                                    <entry>Defines styles for panelBar content</entry>
+                                    <entry>generalBackgroundColor</entry>
+                                    <entry>background-color</entry>
+                              </row>
+                              
+                        </tbody>
+                  </tgroup>
+            </table>
+            
+            <table>
+                  <title>Internal style classes (selectors)</title>
+                  <tgroup cols="2">
+                        <thead>
+                              <row>
+                                    <entry>Class name (selector)</entry>
+                                    <entry>Description</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry>.rich-panel-b</entry>
+                                    <entry>Defines styles for panelBar content</entry>
+                              </row>
+                              <row>
+                                    <entry>.rich-panel-header</entry>
+                                    <entry>Defines styles for active header element</entry>
+                              </row>
+                              <row>
+                                    <entry>.rich-panel-header-act</entry>
+                                    <entry>Defines styles for header element</entry>
+                              </row>
+                              <row>
+                                    <entry>.rich-panelbar-content</entry>
+                                    <entry>Defines styles for panelBar content</entry>
+                              </row>
+                              <row>
+                                    <entry>.rich-panelbar-interior</entry>
+                                    <entry>Defines styles for panelBar content</entry>
+                              </row>
+                              
+                        </tbody>
+                  </tgroup>
+            </table>
+            
+            <para>
+                  You can find all necessary information about style classes redefinition in <link linkend="customstyles">Definition of Custom Style Classes</link> section.       
+            </para>
+      </section>
+      
+      <section>
+            <title>Relevant Resources Links</title>
+            <para>
+                  Visit <ulink url="http://livedemo.exadel.com/richfaces-demo/richfaces/panelBar.jsf?c=panelBar">PanelBar page</ulink> at RichFaces LiveDemo for examples of component usage and their sources.
+            </para>
+            <para>
+                  If you have any questions or ideas regarding the <emphasis role="bold"><property>&lt;rich:panel&gt;</property></emphasis> tell about them at the <ulink url="http://www.jboss.com/index.html?module=bb&amp;op=viewtopic&amp;p=4064191">RichFaces Users Forum</ulink>.
+            </para>  
+      </section>
+</section>

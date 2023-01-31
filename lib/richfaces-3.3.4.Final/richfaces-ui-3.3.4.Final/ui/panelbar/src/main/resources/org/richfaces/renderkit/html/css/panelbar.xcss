@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:template xmlns:f='http:/jsf.exadel.com/template'
+   xmlns:u='http:/jsf.exadel.com/template/util' 
+   xmlns="http://www.w3.org/1999/xhtml" >
+   
+<f:verbatim><![CDATA[
+.rich-panelbar{
+	border : 1px solid;
+	padding : 1px;
+}
+.rich-panelbar-interior {
+	border-bottom : 0px !important;
+}
+.rich-panelbar-header{
+	border : 0px solid red;
+	padding : 0px 1px 1px 5px;
+	cursor : pointer;
+}
+
+.rich-panelbar-header-act{
+	border : 0px solid red;
+	padding : 0px 1px 1px 5px;
+	cursor : pointer;
+}
+
+
+.rich-panelbar-content{
+	padding : 10px;
+	text-align : left;
+	vertical-align : top;
+}
+
+.rich-panelbar-b{
+	border-top-width: 0px !important;
+	border-left-width: 0px !important;
+	border-right-width: 0px !important;
+	padding : 0px;
+}
+
+]]></f:verbatim>
+
+<u:selector name=".rich-panelbar">
+   	<u:style name="border-color" skin="headerBackgroundColor" />
+</u:selector>
+
+<u:selector name=".rich-panelbar-header">
+	<u:style name="background-image" >
+    	<f:resource f:key="org.richfaces.renderkit.html.GradientA"/>
+    </u:style>
+	<u:style name="background-position" value="top left"/>
+	<u:style name="background-repeat" 	value="repeat-x"/>
+	<u:style name="vertical-align" 		value="middle"/>
+	<u:style name="color" 				skin="headerTextColor" />
+	<u:style name="background-color" 	skin="headerBackgroundColor" />
+	<u:style name="font-size" 			skin="headerSizeFont" />
+    <u:style name="font-weight" 		skin="headerWeightFont" />
+    <u:style name="font-family" 		skin="headerFamilyFont" />
+</u:selector>
+
+<u:selector name=".rich-panelbar-header-act">
+	<u:style name="background-image" >
+    	<f:resource f:key="org.richfaces.renderkit.html.GradientA"/>
+    </u:style>
+	<u:style name="background-position" value="top left"/>
+	<u:style name="background-repeat" 	value="repeat-x"/>
+	<u:style name="vertical-align" 		value="middle"/>
+	<u:style name="color" 				skin="headerTextColor" />
+	<u:style name="background-color" 	skin="headerBackgroundColor" />
+	<u:style name="font-size" 			skin="headerSizeFont" />
+    <u:style name="font-weight" 		skin="headerWeightFont" />
+    <u:style name="font-family" 		skin="headerFamilyFont" />
+</u:selector>
+
+
+<u:selector name=".rich-panelbar-content">
+	<u:style name="color" 		skin="generalTextColor" />
+	<u:style name="font-size" 	skin="preferableDataSizeFont" />
+    <u:style name="font-family" skin="preferableDataFamilyFont" />
+</u:selector>
+
+   
+<u:selector name=".rich-panelbar-interior">
+	<u:style name="background-color" skin="generalBackgroundColor" />
+</u:selector>
+
+</f:template>

@@ -1,0 +1,14 @@
+<properties>
+    <property>
+        <name>style</name>
+        <classname>java.lang.String</classname>
+        <description>CSS style rules to be applied to the component</description>
+    </property>
+    <property>
+        <name>styleClass</name>
+        <classname>java.lang.String</classname>
+        <description>Assigns one or more CSS class names to the component. Corresponds to the HTML &quot;class&quot; attribute.</description>
+    </property>
+    
+    
+</properties>

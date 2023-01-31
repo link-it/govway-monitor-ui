@@ -1,0 +1,47 @@
+<rich:page xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich" pageTitle="#{title}"
+    theme="simple" markupType="html">
+    <f:facet name="header">
+        <h1>RichFaces Validation components examples</h1>
+    </f:facet>
+    <f:facet name="subheader">
+        <ui:insert name="header" />
+    </f:facet>
+    <f:facet name="sidebar">
+        <h:panelGroup>
+            <!-- YOUR NAVIGATION GOES HERE -->
+            <ui:include src="/include/pagesList.xhtml" />
+            <h:form>
+                <h:selectOneMenu value="#{locale.language}">
+                    <f:selectItem itemLabel="English" itemValue="en" />
+                    <f:selectItem itemLabel="Deutsch" itemValue="de" />
+                    <f:selectItem itemLabel="Francais" itemValue="fr" />
+                </h:selectOneMenu>
+                <h:commandButton action="#{locale.select}"
+                    value="ChangeLanguage" />
+            </h:form>
+        </h:panelGroup>
+    </f:facet>
+    <!-- YOUR DATA GOES HERE -->
+    <rich:tabPanel binding="#{tabNavigation.tabPanel}" switchType="ajax">
+        <rich:tab name="usage" label="Usage">
+            <div><ui:insert name="description" /></div>
+            <div><ui:insert name="content" /></div>
+        </rich:tab>
+        <rich:tab name="page" label="Page Source">
+            <rich:insert content="#{contentBean.content}"
+                highlight="xhtml" />
+        </rich:tab>
+        <rich:tab name="java" label="Java Source"
+            rendered="#{!empty javaBean}">
+            <rich:insert src="/src/#{javaBean}" highlight="java" />
+        </rich:tab>
+    </rich:tabPanel>
+    <f:facet name="footer">
+        <h:panelGroup>Built with RichFaces #{a4j.version}
+                (C) 2009 Exadel, Inc.</h:panelGroup>
+    </f:facet>
+</rich:page>

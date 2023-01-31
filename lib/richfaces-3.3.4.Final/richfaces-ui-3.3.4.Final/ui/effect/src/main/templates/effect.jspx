@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:root 
+	xmlns:f="http://ajax4jsf.org/cdk/template" 
+	xmlns:c=" http://java.sun.com/jsf/core" 
+	xmlns:ui=" http://ajax4jsf.org/cdk/ui"
+	xmlns:u=" http://ajax4jsf.org/cdk/u"
+	xmlns:x=" http://ajax4jsf.org/cdk/x"
+	class="org.richfaces.renderkit.html.EffectRenderer"
+	baseclass="org.richfaces.renderkit.EffectRendererBase"
+	component="org.richfaces.component.UIEffect">
+
+	<h:scripts>new org.ajax4jsf.javascript.PrototypeScript(),scripts/scriptaculous/effects.js,/org/richfaces/renderkit/html/script/processEffect.js</h:scripts>
+
+	<f:call name="writeScript"/>        
+
+</f:root>

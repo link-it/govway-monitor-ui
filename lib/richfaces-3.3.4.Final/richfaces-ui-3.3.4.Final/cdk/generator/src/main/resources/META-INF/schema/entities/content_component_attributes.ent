@@ -1,0 +1,14 @@
+<properties>
+    <property>
+        <name>contentStyle</name>
+        <classname>java.lang.String</classname>
+        <description>CSS style rules to be applied to the component content</description>
+        <defaultvalue><![CDATA[""]]></defaultvalue>
+    </property>
+    <property>
+        <name>contentClass</name>
+        <classname>java.lang.String</classname>
+        <description>Assigns one or more space-separated CSS class names to the component content</description>
+    </property>
+    
+</properties>

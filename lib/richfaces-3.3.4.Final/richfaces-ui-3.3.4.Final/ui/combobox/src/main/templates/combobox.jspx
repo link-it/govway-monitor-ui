@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:root 
+	xmlns:f="http://ajax4jsf.org/cdk/template" 
+	xmlns:c=" http://java.sun.com/jsf/core" 
+	xmlns:ui=" http://ajax4jsf.org/cdk/ui"
+	xmlns:u=" http://ajax4jsf.org/cdk/u"
+	xmlns:jsp=" http://ajax4jsf.org/cdk/jsp"
+	xmlns:x=" http://ajax4jsf.org/cdk/x"
+	baseclass="org.richfaces.renderkit.ComboBoxBaseRenderer"
+	class="org.richfaces.renderkit.html.ComboBoxRenderer"
+	component="org.richfaces.component.UIComboBox"> 
+	
+	<jsp:directive.page import="org.richfaces.component.util.HtmlUtil" />
+	<jsp:directive.page import="java.util.List"/>
+	<jsp:directive.page import="org.ajax4jsf.renderkit.compiler.TemplateContext"/>
+	
+	<h:styles>css/combobox.xcss</h:styles>
+	<h:scripts>
+			new org.ajax4jsf.javascript.PrototypeScript(),
+			/org/richfaces/renderkit/html/scripts/jquery/jquery.js,
+			scripts/comboboxUtils.js,
+			scripts/combolist.js,
+			scripts/combobox.js,
+			scripts/comboboxstyles.js,
+			/org/richfaces/renderkit/html/scripts/utils.js
+	</h:scripts>
+ 
+	<f:clientid var="clientId" />
+	
+	<jsp:scriptlet>
+		<![CDATA[
+            Boolean disabled = (Boolean) component.getAttributes().get("disabled");
+            variables.setVariable("disabled", disabled);
+            
+            String listHeight = (String) component.getAttributes().get("listHeight");
+			if (listHeight == null || listHeight.length() == 0 || listHeight.trim().startsWith("0")) {
+				listHeight = "200px";
+			} else {
+				listHeight = HtmlUtil.qualifySize(listHeight);
+			}
+			variables.setVariable("listHeight", listHeight);
+		
+			    	
+	    	String width = (String) component.getAttributes().get("width");
+	    	String correction = null;
+	    	if (width == null || (width.length() == 0) || (width.trim().startsWith("0")) ) {
+	    	    width = "150px";
+	    	     
+	    	} else {
+	    		width = HtmlUtil.qualifySize(width);
+	    	}
+	    	
+	    	correction =  width.substring(0,width.indexOf("px"));  
+    	    correction = (Integer.parseInt(correction) - 10) + "px";
+	    	
+	    	variables.setVariable("width", width);
+	    	variables.setVariable("correction", correction);
+	    	
+	    	String listWidth = (String) component.getAttributes().get("listWidth");
+	    	
+	    	if (listWidth == null || listWidth.length() == 0 || listWidth.trim().startsWith("0")) {
+	    		listWidth = width;	    	   		
+	    	} else {
+	    		listWidth = HtmlUtil.qualifySize(listWidth);
+	    	}
+	    	variables.setVariable("listWidth", listWidth);
+	    	 
+	    	
+	    	String inputSize = (String) component.getAttributes().get("inputSize");
+	    	variables.setVariable("inputSize", inputSize);
+	    	
+			Object value = component.getSubmittedValue();
+			if (value == null) {
+			    value = component.getAttributes().get("value");    
+			}
+
+       		String valueStyle = "rich-combobox-font-inactive";	
+	    	value = getConvertedStringValue(context, component,value);
+	    	if ("".equals(value)) {
+				valueStyle = "rich-combobox-font-disabled";
+	    	} 
+	    	variables.setVariable("value", value);
+	    	
+			variables.setVariable("valueStyle", valueStyle);
+
+	      	Object styleClass = component.getAttributes().get("styleClass");
+	    	variables.setVariable("styleClass", styleClass);
+	    	
+	    	Object style = component.getAttributes().get("style");
+	    	variables.setVariable("style", style);
+	    		    	
+	    	String buttonIcon = (String)component.getAttributes().get("buttonIcon");
+    		if (!"".equals(buttonIcon)) {
+    			buttonIcon = "url('" + getResource(buttonIcon).getUri(context, component) + "')";
+    		}
+    		variables.setVariable("buttonIcon", buttonIcon);
+    		
+    		String buttonIconDisabled = (String)component.getAttributes().get("buttonIconDisabled");
+    		if (!"".equals(buttonIconDisabled)) {
+    			buttonIconDisabled = "url('" +  getResource(buttonIconDisabled).getUri(context, component) + "')";
+    		}
+    		variables.setVariable("buttonIconDisabled", buttonIconDisabled);
+    		
+    		String buttonIconInactive = (String)component.getAttributes().get("buttonIconInactive");
+    		if (!"".equals(buttonIconInactive)) {
+    			buttonIconInactive = "url('" + getResource(buttonIconInactive).getUri(context, component) + "')";
+    		}
+       		variables.setVariable("buttonIconInactive", buttonIconInactive);
+       		variables.setVariable("enableManualInput", !component.isEnableManualInput());
+		]]>
+    </jsp:scriptlet>
+		<f:resource var="spacer" name="images/spacer.gif"/>
+<div id="#{clientId}">		
+<div id="#{clientId}combobox" class="rich-combobox-font rich-combobox #{styleClass}" style="width:#{width};#{style}"
+	 x:passThruWithExclusions="value,name,type,id,styleClass,class,style,size,autocomplete,disabled,onchange">
+
+	<div class="rich-combobox-list-cord"></div>
+	<div class="rich-combobox-font rich-combobox-shell" style="width:#{width};">
+		<input id="#{clientId}comboboxField" 
+					   name="#{clientId}comboboxField" 
+					   disabled="#{disabled}" 
+					   class="#{valueStyle} rich-combobox-input-inactive  #{component.attributes['inputInactiveClass']}" type="text" 
+					   readonly="#{this:getReadOnlyValue(enableManualInput)}"
+					   value="#{value}" 
+					   x:onblur="#{component.attributes['onblur']}"
+					   onfocus = "#{component.attributes['onfocus']}"
+					   style="width:#{correction}; #{component.attributes['inputInactiveStyle']}"
+					   autocomplete="off"
+					   tabindex="#{component.attributes['tabindex']}"
+					   />
+		<input id="#{clientId}comboBoxButtonBG" 
+			   tabindex="-1"
+			   readonly="readonly" 
+			   type="text" 
+			   value="" 
+			   class="rich-combobox-font-inactive rich-combobox-button-background rich-combobox-button-inactive"/>
+		<input id="#{clientId}comboboxButton"
+			   tabindex="-1"
+			   readonly="readonly" 
+			   disabled="#{disabled}" 
+			   type="text" 
+			   value="" 
+			   style="#{component.attributes['buttonStyle']}; background-image: #{buttonIconInactive};" 
+			   class="rich-combobox-font-inactive rich-combobox-button-icon-inactive rich-combobox-button-inactive #{buttonInactiveClass}"/>
+		<div class="rich-combobox-strut rich-combobox-font" style="width:#{correction}">Strut</div>		   
+	</div>
+	
+	<div id="#{clientId}listParent" class="rich-combobox-list-cord #{component.attributes['listClass']}" style="display:none; #{component.attributes['listStyle']}; position:absolute;z-index:1000;">
+		<div class="rich-combobox-shadow">
+			<table id="#{clientId}shadow" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td class="rich-combobox-shadow-tl">
+						<img src="#{spacer}" width="10" height="1" alt="" style="border:0"></img><br></br>
+					</td>
+					<td class="rich-combobox-shadow-tr">
+						<img src="#{spacer}" width="1" height="10" alt="" style="border:0"></img><br></br>
+					</td>
+				</tr>
+				<tr>
+					<td class="rich-combobox-shadow-bl">
+						<img src="#{spacer}" width="1" height="10" alt="" style="border:0"></img><br></br>
+					</td>
+					<td class="rich-combobox-shadow-br">
+						<img src="#{spacer}" width="10" height="10" alt="" style="border:0"></img><br></br>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="#{clientId}listPosition" class="rich-combobox-list-position">
+			<div id="#{clientId}listDecoration" class="rich-combobox-list-decoration">
+				<div id="#{clientId}list" class="rich-combobox-list-scroll">
+				</div>
+			</div>
+		</div>
+	</div>
+	<jsp:scriptlet>
+	<![CDATA[
+	    variables.setVariable("hiddenValue", value);
+	 ]]>
+	</jsp:scriptlet>
+	<input autocomplete="off" id="#{clientId}comboboxValue" name="#{clientId}" type="hidden"/>
+	
+	
+</div>
+	<c:scriptObject var="classes">
+		<c:scriptOption name="normal" value="#{component.attributes['buttonInactiveClass']}" />
+		<c:scriptOption name="active" value="#{component.attributes['buttonClass']}" />
+		<c:scriptOption name="disabled" value="#{component.attributes['buttonDisabledClass']}" />
+	</c:scriptObject>
+	<c:scriptObject var="style1">
+		<c:scriptOption name="normal" value="#{component.attributes['buttonInactiveStyle']}" />
+		<c:scriptOption name="active" value="#{component.attributes['buttonStyle']}" />
+		<c:scriptOption name="disabled" value="#{component.attributes['buttonDisabledStyle']}" />
+	</c:scriptObject>
+	<c:scriptObject var="button">
+		<c:scriptOption variables="classes" />
+		<c:scriptOption name="style" value="#{style1}" />
+	</c:scriptObject>
+	<c:scriptObject var="style2">
+		<c:scriptOption name="normal" value="#{buttonIconInactive}" />
+		<c:scriptOption name="active" value="#{buttonIcon}" />
+		<c:scriptOption name="disabled" value="#{buttonIconDisabled}" />
+	</c:scriptObject>
+	<c:scriptObject var="buttonicon">
+		<c:scriptOption name="style" value="#{style2}" />
+	</c:scriptObject>
+	<c:scriptObject var="classes2">
+		<c:scriptOption name="normal" value="#{component.attributes['inputInactiveClass']}" />
+		<c:scriptOption name="active" value="#{component.attributes['inputClass']}" />
+		<c:scriptOption name="disabled" value="#{component.attributes['inputDisabledClass']}" />
+	</c:scriptObject>
+	<c:scriptObject var="style3">
+		<c:scriptOption name="normal" value="#{component.attributes['inputInactiveStyle']}" />
+		<c:scriptOption name="active" value="#{component.attributes['inputStyle']}" />
+		<c:scriptOption name="disabled" value="#{component.attributes['inputDisabledStyle']}" />
+	</c:scriptObject>
+	<c:scriptObject var="field">
+		<c:scriptOption name="classes" value="#{classes2}" />
+		<c:scriptOption name="style" value="#{style3}" />
+	</c:scriptObject>
+	<c:scriptObject var="classes3">
+		<c:scriptOption name="active" value="#{component.attributes['listClass']}" />
+	</c:scriptObject>
+	<c:scriptObject var="style4">
+		<c:scriptOption name="active" value="#{component.attributes['listStyle']}" />
+	</c:scriptObject>
+	<c:scriptObject var="list">
+		<c:scriptOption name="classes" value="#{classes3}" />
+		<c:scriptOption name="style" value="#{style4}" />
+	</c:scriptObject>
+	<c:scriptObject var="item">
+		<c:scriptOption name="normal" value="#{component.attributes['itemClass']}" />
+		<c:scriptOption name="selected" value="#{component.attributes['itemSelectedClass']}" />
+	</c:scriptObject>
+	<c:scriptObject var="combolist">
+		<c:scriptOption variables="list, item" />
+	</c:scriptObject>
+	<c:scriptObject var="userStyles">
+		<c:scriptOption variables="button, buttonicon, field, combolist" />
+	</c:scriptObject>
+	<c:scriptObject var="listOptions">
+		<c:scriptOption variables="listWidth" />
+		<c:scriptOption variables="listHeight" defaultValue="200px"/>
+		<c:scriptOption name="itemsText" value="#{this:getItems(context,component)}" />
+		<c:scriptOption attributes="onlistcall, onlistclose" wrapper="eventHandler"/>
+		<c:scriptOption attributes="selectFirstOnUpdate" defaultValue="true"/>
+		<c:scriptOption attributes="showDelay, hideDelay" defaultValue="0"/>
+	</c:scriptObject>
+	<c:scriptObject var="fields">
+		<c:scriptOption attributes="directInputSuggestions, defaultLabel" variables="disabled" />
+		<c:scriptOption attributes="filterNewValues" defaultValue="true"/>
+		<c:scriptOption attributes="onselect, onchange" wrapper="eventHandler"/>
+	</c:scriptObject>
+	<c:scriptObject var="options">
+		<c:scriptOption variables="userStyles, listOptions, fields, value" />
+	</c:scriptObject>
+	<script type="text/javascript">
+		new Richfaces.ComboBox("#{clientId}"
+			<c:if test="#{not empty options}">
+			, <f:writeAsScript value="#{options}" />
+			</c:if> 					
+		);
+	</script>
+</div>
+</f:root>	

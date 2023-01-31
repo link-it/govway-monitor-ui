@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"http://www.docbook.org/xml/4.3CR3/docbookx.dtd" [
+
+	
+	<!ENTITY rfcintro SYSTEM "modules/RFCintro.xml">
+	<!ENTITY rfctechreqs SYSTEM "modules/RFCtechreqs.xml">
+	<!ENTITY rfcGettingStarted SYSTEM "modules/RFCGettingStarted.xml">
+	<!ENTITY rfcSettings SYSTEM "modules/RFCSettings.xml">
+	<!ENTITY wadParams SYSTEM "modules/AUGWADParams.xml">
+	<!ENTITY rfcarchitectover SYSTEM "modules/RFCarchitectover.xml">
+	
+	<!ENTITY rfcidesupport SYSTEM "modules/RFCidesupport.xml">
+	<!ENTITY rfclinks SYSTEM "modules/RFClinks.xml">
+	
+	<!ENTITY a4j_actionparam SYSTEM "included/a4j_actionparam.xml">
+	<!ENTITY a4j_form SYSTEM "included/a4j_form.xml">
+	<!ENTITY a4j_region SYSTEM "included/a4j_region.xml">
+	<!ENTITY a4j_support SYSTEM "included/a4j_support.xml">
+	<!ENTITY a4j_commandButton SYSTEM "included/a4j_commandButton.xml">
+	<!ENTITY a4j_commandLink SYSTEM "included/a4j_commandLink.xml">
+	<!ENTITY a4j_jsFunction SYSTEM "included/a4j_jsFunction.xml">
+	<!ENTITY a4j_poll SYSTEM "included/a4j_poll.xml">
+	<!ENTITY a4j_push SYSTEM "included/a4j_push.xml">
+	<!ENTITY a4j_queue SYSTEM "included/a4j_queue.xml">
+	<!ENTITY a4j_status SYSTEM "included/a4j_status.xml">
+	<!ENTITY a4j_ajaxListener SYSTEM "included/a4j_ajaxListener.xml">
+
+	<!ENTITY a4j_loadBundle SYSTEM "included/a4j_loadBundle.xml">
+	<!ENTITY a4j_loadScript SYSTEM "included/a4j_loadScript.xml">
+	<!ENTITY a4j_loadStyle SYSTEM "included/a4j_loadStyle.xml">
+	<!ENTITY a4j_keepAlive SYSTEM "included/a4j_keepAlive.xml">
+
+	<!ENTITY rich_ajaxValidator SYSTEM "included/rich_ajaxValidator.xml">
+	<!ENTITY rich_beanValidator SYSTEM "included/rich_beanValidator.xml">
+	<!ENTITY rich_graphValidator SYSTEM "included/rich_graphValidator.xml">
+
+	<!ENTITY a4j_mediaOutput SYSTEM "included/a4j_mediaOutput.xml">
+	<!ENTITY a4j_include SYSTEM "included/a4j_include.xml">
+	<!ENTITY a4j_outputPanel SYSTEM "included/a4j_outputPanel.xml">
+	
+	<!ENTITY a4j_page SYSTEM "included/a4j_page.xml">
+	<!ENTITY a4j_portlet SYSTEM "included/a4j_portlet.xml">
+	<!ENTITY a4j_htmlCommandLink SYSTEM "included/a4j_htmlCommandLink.xml">
+	<!ENTITY a4j_log SYSTEM "included/a4j_log.xml">
+
+	<!ENTITY rich_column SYSTEM "included/rich_column.xml">	
+	<!ENTITY rich_columnGroup SYSTEM "included/rich_columnGroup.xml">
+	<!ENTITY rich_columns SYSTEM "included/rich_columns.xml">
+	<!ENTITY rich_dataDefinitionList SYSTEM "included/rich_dataDefinitionList.xml">
+	<!ENTITY rich_dataFilterSlider SYSTEM "included/rich_dataFilterSlider.xml">
+	<!ENTITY rich_dataGrid SYSTEM "included/rich_dataGrid.xml">
+	<!ENTITY rich_dataList SYSTEM "included/rich_dataList.xml">
+	<!ENTITY rich_dataOrderedList SYSTEM "included/rich_dataOrderedList.xml">
+	<!ENTITY rich_datascroller SYSTEM "included/rich_datascroller.xml">
+	<!ENTITY rich_dataTable SYSTEM "included/rich_dataTable.xml">
+	<!ENTITY rich_subTable SYSTEM "included/rich_subTable.xml">
+	<!ENTITY rich_extendedDataTable SYSTEM "included/rich_extendedDataTable.xml">
+	<!ENTITY a4j_repeat SYSTEM "included/a4j_repeat.xml">
+	<!ENTITY rich_scrollableDataTable SYSTEM "included/rich_scrollableDataTable.xml">
+
+	<!ENTITY rich_dragIndicator SYSTEM "included/rich_dragIndicator.xml">
+	<!ENTITY rich_dragSupport SYSTEM "included/rich_dragSupport.xml">
+	<!ENTITY rich_dndParam SYSTEM "included/rich_dndParam.xml">
+	<!ENTITY rich_dropSupport SYSTEM "included/rich_dropSupport.xml">
+	<!ENTITY rich_dropListener SYSTEM "included/rich_dropListener.xml">
+	<!ENTITY rich_dragListener SYSTEM "included/rich_dragListener.xml">
+
+	<!ENTITY rich_contextMenu SYSTEM "included/rich_contextMenu.xml">
+	<!ENTITY rich_dropDownMenu SYSTEM "included/rich_dropDownMenu.xml">
+	<!ENTITY rich_menuGroup SYSTEM "included/rich_menuGroup.xml">
+	<!ENTITY rich_menuItem SYSTEM "included/rich_menuItem.xml">
+	<!ENTITY rich_menuSeparator SYSTEM "included/rich_menuSeparator.xml">
+
+	<!ENTITY rich_recursiveTreeNodesAdaptor SYSTEM "included/rich_recursiveTreeNodesAdaptor.xml">
+	<!ENTITY rich_tree SYSTEM "included/rich_tree.xml">
+	<!ENTITY rich_treeNode SYSTEM "included/rich_treeNode.xml">
+	<!ENTITY rich_treeNodesAdaptor SYSTEM "included/rich_treeNodesAdaptor.xml">
+	<!ENTITY rich_changeExpandListener SYSTEM "included/rich_changeExpandListener.xml">
+	<!ENTITY rich_nodeSelectListener SYSTEM "included/rich_nodeSelectListener.xml">
+	
+	<!ENTITY rich_modalPanel SYSTEM "included/rich_modalPanel.xml">
+	<!ENTITY rich_paint2D SYSTEM "included/rich_paint2D.xml">
+	<!ENTITY rich_panel SYSTEM "included/rich_panel.xml">
+	<!ENTITY rich_panelBar SYSTEM "included/rich_panelBar.xml">
+	<!ENTITY rich_panelBarItem SYSTEM "included/rich_panelBarItem.xml">
+	<!ENTITY rich_panelMenu SYSTEM "included/rich_panelMenu.xml">
+	<!ENTITY rich_panelMenuItem SYSTEM "included/rich_panelMenuItem.xml">
+	<!ENTITY rich_panelMenuGroup SYSTEM "included/rich_panelMenuGroup.xml">
+	<!ENTITY rich_progressBar SYSTEM "included/rich_progressBar.xml">
+	<!ENTITY rich_separator SYSTEM "included/rich_separator.xml">
+	<!ENTITY rich_simpleTogglePanel SYSTEM "included/rich_simpleTogglePanel.xml">
+	<!ENTITY rich_spacer SYSTEM "included/rich_spacer.xml">	
+	<!ENTITY rich_tabPanel SYSTEM "included/rich_tabPanel.xml">	
+	<!ENTITY rich_tab SYSTEM "included/rich_tab.xml">	
+	<!ENTITY rich_togglePanel SYSTEM "included/rich_togglePanel.xml">	
+	<!ENTITY rich_toggleControl SYSTEM "included/rich_toggleControl.xml">	
+	<!ENTITY rich_toolBar SYSTEM "included/rich_toolBar.xml">	
+	<!ENTITY rich_toolBarGroup SYSTEM "included/rich_toolBarGroup.xml">	
+	<!ENTITY rich_toolTip SYSTEM "included/rich_toolTip.xml">	
+
+	<!ENTITY rich_calendar SYSTEM "included/rich_calendar.xml">
+	<!ENTITY rich_colorPicker SYSTEM "included/rich_colorPicker.xml">
+	<!ENTITY rich_comboBox SYSTEM "included/rich_comboBox.xml">
+	<!ENTITY rich_editor SYSTEM "included/rich_editor.xml">
+	<!ENTITY rich_fileUpload SYSTEM "included/rich_fileUpload.xml">
+	<!ENTITY rich_inplaceInput SYSTEM "included/rich_inplaceInput.xml">
+	<!ENTITY rich_inplaceSelect SYSTEM "included/rich_inplaceSelect.xml">
+	<!ENTITY rich_inputNumberSlider SYSTEM "included/rich_inputNumberSlider.xml">
+	<!ENTITY rich_inputNumberSpinner SYSTEM "included/rich_inputNumberSpinner.xml">
+	<!ENTITY rich_suggestionbox SYSTEM "included/rich_suggestionbox.xml">
+
+	<!ENTITY rich_listShuttle SYSTEM "included/rich_listShuttle.xml">
+	<!ENTITY rich_orderingList SYSTEM "included/rich_orderingList.xml">
+	<!ENTITY rich_pickList SYSTEM "included/rich_pickList.xml">
+		
+	<!ENTITY rich_page SYSTEM "included/rich_page.xml">
+	<!ENTITY rich_layout SYSTEM "included/rich_layout.xml">
+	<!ENTITY rich_layoutPanel SYSTEM "included/rich_layoutPanel.xml">
+				
+	
+	<!ENTITY rich_componentControl SYSTEM "included/rich_componentControl.xml">
+	<!ENTITY rich_effect SYSTEM "included/rich_effect.xml">
+	<!ENTITY rich_gmap SYSTEM "included/rich_gmap.xml">
+	<!ENTITY rich_virtualEarth SYSTEM "included/rich_virtualEarth.xml">
+	<!ENTITY rich_hotKey SYSTEM "included/rich_hotKey.xml">
+	<!ENTITY rich_insert SYSTEM "included/rich_insert.xml">
+	<!ENTITY rich_message SYSTEM "included/rich_message.xml">
+	<!ENTITY rich_messages SYSTEM "included/rich_messages.xml">
+	<!ENTITY rich_jQuery SYSTEM "included/rich_jQuery.xml">	
+	
+	<!ENTITY cdkguide "../../cdkguide/html_single/index.html">
+	<!ENTITY devguide "../../devguide/html_single/index.html">
+	<!ENTITY migrationguide "../../migrationguide/html_single/index.html">
+	<!ENTITY photoalbumguide "../../realworld/html_single/index.html">
+	<!ENTITY realworld "../../realworld/html_single/index.html">
+	<!ENTITY tlddoc "../../tlddoc/">
+	<!ENTITY apidoc "../../apidoc/">
+	<!ENTITY apidoc_framework "../../apidoc_framework/">
+	
+]>
+<book>
+	<bookinfo>
+		<title>RichFaces Developer Guide</title>
+		<corpauthor>
+			<inlinemediaobject>
+				<imageobject role="fo">
+					<imagedata format="PNG" fileref="images/richfaces_logo.png" />
+				</imageobject>	
+				<imageobject role="html">
+					<imagedata/>
+				</imageobject>	
+			</inlinemediaobject>           
+		</corpauthor>
+		<subtitle>RichFaces framework with a huge library of rich components and skinnability support</subtitle>
+		<copyright>
+			<year>2008, 2009</year>
+			<holder>Red Hat</holder>
+		</copyright>
+
+<abstract>
+   <title/>
+       <para>
+       	<ulink url="../pdf/richfaces_reference.pdf">PDF version</ulink>
+       </para>
+</abstract>
+<!--citebiblioid>
+<ulink url="../../devguide/en/pdf/richfaces-usersguide.pdf">PDF version</ulink>.
+</citebiblioid-->
+
+ 	</bookinfo>
+	<toc/>  
+ 
+    &rfcintro;
+    &rfctechreqs;
+	&rfcGettingStarted;
+	&rfcSettings;
+    &rfcarchitectover;
+	
+<chapter role="NotInToc" id="RichFacesComponentsLibrary" xreflabel="RichFacesComponentsLibrary">
+	<?dbhtml filename="RichFacesComponentsLibrary.html"?>
+	<title>The RichFaces Components</title>
+	<para>
+		The library encompasses ready-made components built based on 
+		the <emphasis><property>Rich Faces CDK</property></emphasis>.
+	</para>
+	<?forseChanks?>
+	<section id="ajaxSupport" xreflabel="ajaxSupport">
+		<?dbhtml filename="ajaxSupport.html"?>
+		<title>Ajax Support</title>
+		<para>The component in this section lets you easily add  Ajax capabilities to other components as well as manage Ajax requests. </para>
+		<?forseChanks?>
+		&a4j_ajaxListener;
+		&a4j_actionparam;
+		&a4j_form;
+		&a4j_region;
+		&a4j_support;
+		&a4j_commandButton;
+		&a4j_commandLink;
+		&a4j_jsFunction;
+		&a4j_poll;
+		&a4j_push;
+		&a4j_queue;
+		&a4j_status;
+	</section>
+	<section id="resourcesBeansHandling" xreflabel="resourcesBeansHandling">
+		<?dbhtml filename="resourcesBeansHandling.html"?>
+		<title>Resources/Beans Handling</title>
+		<para>The main purpose of the components covered in this section is to load resources (style sheets, JavaScript files and resource bundle) and to keep a state of a bean between requests. </para>
+		
+		<?forseChanks?>
+		&a4j_loadBundle;
+		&a4j_keepAlive;
+		&a4j_loadScript;
+		&a4j_loadStyle;
+	</section>
+	<section id="ajaxValidators" xreflabel="ajaxValidators">
+		<?dbhtml filename="ajaxValidators.html"?>
+		<title>Ajax Validators</title>
+		<para>RichFaces components library provides 3 components to validate user input data. 
+			These components enhance JSF validation capabilities with Ajax support and possibility to use Hibernate validators.   </para>
+		<?forseChanks?>
+		&rich_ajaxValidator;
+		&rich_beanValidator;
+		&rich_graphValidator;
+	</section>
+	<section id="ajaxOutput" xreflabel="ajaxOutput">
+		<?dbhtml filename="ajaxOutput.html"?>
+		<title>Ajax Output</title>
+		<para>The components described in this section render some content dynamically using Ajax capabilities.</para>
+		<?forseChanks?>
+		&a4j_include;
+		&a4j_mediaOutput;
+		&a4j_outputPanel;
+	</section>
+	<section id="ajaxMiscellaneous" xreflabel="ajaxMiscellaneous">
+		<?dbhtml filename="ajaxMiscellaneous.html"?>
+		<title>Ajax Miscellaneous</title>
+		<para>A collection of Ajax Miscellaneous components</para>
+		<?forseChanks?>
+		&a4j_page;
+		&a4j_portlet;
+		&a4j_htmlCommandLink;
+		&a4j_log;
+	</section>
+	<section id="dataIteration" xreflabel="dataIteration">
+		<?dbhtml filename="dataIteration.html"?>
+		<title>Data Iteration</title>
+		
+		<para>	The following components iterate over a collection of data and represent it on the page.</para>
+		<?forseChanks?>
+		&rich_column;
+		&rich_columnGroup;
+		&rich_columns;
+		&rich_dataDefinitionList;
+		&rich_dataFilterSlider;
+		&rich_dataGrid;
+		&rich_dataList;
+		&rich_dataOrderedList;
+		&rich_datascroller;
+		&rich_dataTable;
+		&rich_subTable;
+		&rich_extendedDataTable;
+		&a4j_repeat;
+		&rich_scrollableDataTable;
+	</section>
+	<section id="dndSupport" xreflabel="dndSupport">
+		<?dbhtml filename="dndSupport.html"?>
+		<title>Drag-Drop Support</title>
+		<para>
+			In this section you will find components that help you build drag-and-drop controls, manage their behaviour and define the area on the page to be used as a drop zone. 
+		</para>
+		<?forseChanks?>
+		&rich_dragIndicator;
+		&rich_dragSupport;
+		&rich_dragListener;
+		&rich_dropListener;
+		&rich_dropSupport;
+		&rich_dndParam;
+	</section>
+	<section id="richMenu" xreflabel="richMenu">
+		<?dbhtml filename="richMenu.html"?>
+		<title>Rich Menu</title>
+		
+		<para>
+			This section tells how you  can create menus on your page: either navigational ones or context. 
+		</para>
+		
+		<?forseChanks?>
+		&rich_contextMenu;
+		&rich_dropDownMenu;
+		&rich_menuGroup;
+		&rich_menuItem;
+		&rich_menuSeparator;
+	</section>
+		<section id="richTrees" xreflabel="richTrees">
+		<?dbhtml filename="richTrees.html"?>
+		<title>Rich Trees</title>
+			
+			<para>
+				In this section you will learn how to build  hierarchical data presentation using the <emphasis role="bold"><property>&lt;rich:tree&gt;</property></emphasis> component.
+			</para>
+		<?forseChanks?>
+		&rich_tree;
+		&rich_treeNode;
+		&rich_treeNodesAdaptor;
+		&rich_recursiveTreeNodesAdaptor;
+		&rich_changeExpandListener;
+		&rich_nodeSelectListener;
+	</section>
+		<section id="richOutput" xreflabel="richOutput">
+		<?dbhtml filename="richOutput.html"?>
+		<title>Rich Output</title>
+			<para>
+				This section covers the components that are designed to be used as output and UI elements.
+			</para>
+		<?forseChanks?>
+		&rich_modalPanel;
+		&rich_paint2D;
+		&rich_panel;
+		&rich_panelBar;
+		&rich_panelBarItem;
+		&rich_panelMenu;
+		&rich_panelMenuGroup;
+		&rich_panelMenuItem;
+		&rich_progressBar;
+		&rich_separator;
+		&rich_simpleTogglePanel;
+		&rich_spacer;
+		&rich_tabPanel;
+		&rich_tab;
+		&rich_togglePanel;
+		&rich_toggleControl;
+		&rich_toolBar;
+		&rich_toolBarGroup;
+		&rich_toolTip;
+	</section>
+	<section id="richInput" xreflabel="richInput">
+		<?dbhtml filename="richInput.html"?>
+		<title>Rich Input</title>
+		<para>
+			In this section you will find the components that help you deal with various kinds of user inputs from picking a date, WYSIWYG text editing to uploading a file.
+		</para>
+		<?forseChanks?>
+		&rich_calendar;
+		&rich_colorPicker;
+		&rich_comboBox;
+		&rich_editor;
+		&rich_fileUpload;
+		&rich_inplaceInput;
+		&rich_inplaceSelect;
+		&rich_inputNumberSlider;
+		&rich_inputNumberSpinner;
+		&rich_suggestionbox;
+	</section>
+	<section id="richSelects" xreflabel="richSelects">
+		<?dbhtml filename="richSelects.html"?>
+		<title>Rich Selects</title>
+		<para>
+			RichFaces library provides desktop like complex controls to implement user select functionality. 
+		</para>
+		<?forseChanks?>
+		&rich_listShuttle;
+		&rich_orderingList;
+		&rich_pickList;
+	</section>
+	<section id="richSemanticLayouts" xreflabel="richSemanticLayouts">
+		<?dbhtml filename="richSemanticLayouts.html"?>
+		<title>Rich Semantic Layouts</title>
+		<para>
+			Layout components enrich RichFaces with functionality that enables you to create the whole page layout and define the parameters of the page. 
+			You can also create your custom theme and use it alongside with these components. 
+		</para>
+		<?forseChanks?>
+		&rich_page;
+		&rich_layout;
+		&rich_layoutPanel;
+	</section>
+	<section id="richMiscellaneous" xreflabel="richMiscellaneous">
+		<?dbhtml filename="richMiscellaneous.html"?>
+		<title>Rich Miscellaneous</title>
+		<para>A collection of Ajax Miscellaneous components</para>
+		<?forseChanks?>
+		&rich_componentControl;
+		&rich_effect;
+		&rich_gmap;
+		&rich_virtualEarth;
+		&rich_hotKey;
+		&rich_insert;
+		&rich_message;
+		&rich_messages;
+		&rich_jQuery;
+	</section>	
+</chapter>
+
+        &rfcidesupport;
+	  &rfclinks;
+	  
+</book>

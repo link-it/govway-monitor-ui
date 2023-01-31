@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:template xmlns:f='http:/jsf.exadel.com/template'
+   xmlns:u='http:/jsf.exadel.com/template/util' 
+   xmlns="http://www.w3.org/1999/xhtml" >
+   <f:verbatim><![CDATA[
+.rich-table{
+	border-top : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-left : 1px solid #c0c0c0; /*panelBorderColor*/
+	background-color : #ffffff;  /*tableBackgroundColor*/
+}
+
+.rich-table-cell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	font-size : 11px;  /*generalSizeFont*/
+	color : #000000; /*generalTextColor*/
+	font-family : verdana; /*generalFamilyFont*/
+}
+
+.rich-subtable-cell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	font-size : 11px;  /*generalSizeFont*/
+	color : #000000; /*generalTextColor*/
+	font-family : verdana; /*generalFamilyFont*/
+}
+
+.rich-table-header{
+	background-color : #4A75B5; /*headerBackgroundColor*/
+	background-image : url(dttbl_header_bg.gif); /*from headerGradientColor to headerBackgroundColor*/
+	background-position : top left;
+	background-repeat : repeat-x;
+}
+
+.rich-table-headercell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	color : #FFFFFF; /*headerTextColor*/
+	text-align : center;
+	font-weight : bold;
+}
+
+.rich-table-subheader{
+	background-color : #EAF0F8; /*additionalBackgroundColor*/
+}
+
+.rich-table-subheadercell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	text-align : center;
+}
+
+.rich-table-footer{
+	background-color : #cccccc; /*tableFooterBackgroundColor*/
+}
+
+.rich-table-footercell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	color : #FFFFFF; /*headerTextColor*/
+	text-align : center;
+	font-weight : bold;
+}
+.rich-table-subfooter{
+	background-color : #f1f1f1; /*tableSubfooterBackgroundColor*/
+}
+
+.rich-table-subfootercell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	text-align : center;
+}
+
+.rich-table-firstrow .rich-table-cell{
+	border-top : 2px solid #c0c0c0;
+}
+.rich-subtable-firstrow .rich-subtable-cell{
+	/* border-top : 2px solid #c0c0c0;*/
+}
+.rich-subtable-header{
+	background-color : #EAF0F8; /*additionalBackgroundColor*/
+}
+.rich-subtable-headercell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	text-align : center;
+}
+
+
+.rich-subtable-footer{
+	background-color : #f1f1f1; /*tableSubfooterBackgroundColor*/
+}
+
+.rich-subtable-footercell{
+	border-right : 1px solid #c0c0c0;  /*panelBorderColor*/
+	border-bottom : 1px solid #c0c0c0;  /*panelBorderColor*/
+	padding : 4px 4px 4px 4px;
+	text-align : center;
+}
+]]>
+</f:verbatim>
+</f:template>

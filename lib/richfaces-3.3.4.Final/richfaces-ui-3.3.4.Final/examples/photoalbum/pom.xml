@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.richfaces.examples</groupId>
+    <artifactId>photoalbum-root</artifactId>
+    <packaging>pom</packaging>
+    <version>3.3.4.Final</version>
+ 	<name>Photoalbum Demo Application Root</name>
+ 	<description>Photoalbum Demo Application Root</description>
+   
+	<modules>
+        <module>source</module>
+    </modules>
+    
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<javadocVersion>1.5</javadocVersion>
+							<reportOutputDirectory>${project.build.directory}/javadocs</reportOutputDirectory>
+							<aggregate>true</aggregate>
+						</configuration>
+						<executions>
+							<execution>
+								<id>generate-javadoc</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>javadoc</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+  <developers>
+      <developer>
+          <name>RichFaces committers</name>
+      </developer>
+  </developers>
+
+  <distributionManagement>
+    <downloadUrl>
+      http://labs.jboss.com/portal/jbossrichfaces/downloads
+    </downloadUrl>
+    <repository>
+      <id>repository.jboss.org</id>
+      <uniqueVersion>false</uniqueVersion>
+      <url>${releaseRepository}</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots.jboss.org</id>
+      <uniqueVersion>true</uniqueVersion>
+      <url>${snapshotRepository}</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <scm>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/richfaces/branches/community/3.3.X</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/richfaces/branches/community/3.3.X</developerConnection>
+    <url>https://svn.jboss.org/repos/richfaces/branches/community/3.3.X</url>
+  </scm>
+	
+</project>
