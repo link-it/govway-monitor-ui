@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:32:49 CET 2022
+maven-surefire-plugin-2.4.2.jar>central=
+maven-surefire-plugin-2.4.2.pom>central=
+maven-surefire-plugin-2.4.2.jar>nexus=
+maven-surefire-plugin-2.4.2.pom>nexus=

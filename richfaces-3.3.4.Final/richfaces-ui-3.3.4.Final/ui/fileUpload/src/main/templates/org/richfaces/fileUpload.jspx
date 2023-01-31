@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<f:root 
+	xmlns:f="http://ajax4jsf.org/cdk/template" 
+	xmlns:h=" http://ajax4jsf.org/cdk/headers"
+	class="org.richfaces.renderkit.html.FileUploadRenderer"
+	baseclass="org.richfaces.renderkit.FileUploadRendererBase"
+	component="org.richfaces.component.UIFileUpload"
+	>
+	<h:styles>
+		/org/richfaces/renderkit/html/css/fileUpload.xcss,
+		/org/richfaces/renderkit/html/css/progressBar.xcss
+	</h:styles>
+	
+	<h:scripts>
+			new org.ajax4jsf.javascript.PrototypeScript(),
+			new org.ajax4jsf.javascript.AjaxScript(),
+			/org/richfaces/renderkit/html/scripts/utils.js,
+			/org/richfaces/renderkit/html/scripts/json/json-dom.js,
+			/org/richfaces/renderkit/html/js/FileUpload.js,
+			/org/richfaces/renderkit/html/js/swfobject.js,
+			/org/richfaces/renderkit/html/js/progressBar.js,
+			/org/ajax4jsf/javascript/scripts/form.js,
+	</h:scripts>
+	
+	<f:clientId var="clientId" />
+	
+	<f:resource var="flashComponent" name="/org/richfaces/renderkit/html/swf/FileUploadComponent.swf"/>
+	
+	<jsp:scriptlet>
+		<![CDATA[
+ 		Integer max = initMaxFilesCount(context, component, clientId);
+		variables.setVariable("maxCount", max);
+
+		boolean disabled = (Boolean)component.getAttributes().get("disabled");
+		String addButtonClass = (disabled) ? "rich-fileupload-button-dis rich-fileupload-font " + (String)component.getAttributes().get("addButtonClassDisabled") 
+									: "rich-fileupload-button rich-fileupload-font " + (String)component.getAttributes().get("addButtonClass");
+		String addButtonClassContent = (disabled) ? "rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-add-dis " + (String)component.getAttributes().get("addButtonClassDisabled") 
+				: "rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-add " + (String)component.getAttributes().get("addButtonClass");
+		
+		String uploadListClass = (disabled) ? (String)component.getAttributes().get("uploadListClassDisabled") : (String)component.getAttributes().get("uploadListClass");
+		variables.setVariable("addButtonClass",addButtonClass);
+		variables.setVariable("addButtonClassContent",addButtonClassContent);
+		variables.setVariable("uploadListClass",uploadListClass);
+		
+		Map<String, String> labels = getLabels(context, component);
+		variables.setVariable("labels",labels);
+		variables.setVariable("addLabel",labels.get("add"));
+		variables.setVariable("uploadLabel",labels.get("upload"));
+		variables.setVariable("clearAllLabel",labels.get("clear_all"));
+		variables.setVariable("listWidth", getFileListWidth(component));
+		variables.setVariable("listHeight", getFileListHeight(component));
+	
+		  ]]>
+</jsp:scriptlet>
+	
+
+<div class="rich-fileupload-list-decor #{component.attributes['styleClass']}" 
+	 onclick="#{component.attributes['onclick']}"
+	 onmouseover="#{component.attributes['onmouseover']}" 
+	 ondblclick="#{component.attributes['ondblclick']}"
+	 onmouseout="#{component.attributes['onmouseout']}"
+	 onmouseup="#{component.attributes['onmouseup']}"
+	 onmousedown="#{component.attributes['onmousedown']}"
+	 onmousemove="#{component.attributes['onmousemove']}"
+	 style="width: #{listWidth}" id="#{clientId}">
+<f:call	name="utils.encodeBeginFormIfNessesary" />
+
+<span style="display: none;">
+	<jsp:scriptlet>
+		<![CDATA[
+	renderProgress(context, component);
+		  ]]>
+	</jsp:scriptlet>
+</span>
+	<table class="rich-fileupload-toolbar-decor">
+		<tr>
+			<td>
+				<div class="rich-fileupload-button-border" style=" float:left;">
+					<div class="#{addButtonClass}" onmouseover="this.className='rich-fileupload-button-light rich-fileupload-font'" onmousedown="this.className='rich-fileupload-button-press rich-fileupload-font'" onmouseup="this.className='rich-fileupload-button rich-fileupload-font'" onmouseout="this.className='rich-fileupload-button rich-fileupload-font'"
+						 style="position: relative;"
+						 id="#{clientId}:add1">
+						<div class="#{addButtonClassContent}"
+							 id="#{clientId}:add2"
+							 style="position: relative;">#{addLabel}</div>
+						<div style="overflow : hidden; position : absolute; top : 0px; left : 0px; padding: 0px;">
+							<input type="file" style="cursor: pointer; right: 0px; top: 0px; font-size: 10em; position: absolute; padding: 0px" 
+							   	   class="rich-fileupload-hidden"
+							   	   id="#{clientId}:file"
+							       name="#{clientId}:file"
+							       autocomplete="off"
+							       onchange="return $('#{clientId}').component.add(this);"/>
+						</div>
+						<div id="#{clientId}:flashContainer" style="display:none"></div>
+					</div>
+				</div>
+				<div class="rich-fileupload-button-border" style=" float:left; display: none;">
+					<div class="rich-file-upload-button rich-fileupload-font #{component.attributes['uploadButtonClass']}" onmouseover="this.className='rich-fileupload-button-light rich-fileupload-font'" onmousedown="this.className='rich-fileupload-button-press rich-fileupload-font'" onmouseup="this.className='rich-fileupload-button rich-fileupload-font'" 
+						 onmouseout="this.className='rich-fileupload-button rich-fileupload-font'"
+					     style="position: relative;"
+						 id="#{clientId}:upload1"
+						 onclick="return $('#{clientId}').component.upload();">
+							<div class="rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-start #{component.attributes['uploadButtonClass']}"
+								 id="#{clientId}:upload2">
+								#{uploadLabel}
+							</div>
+					</div>
+				</div>
+				
+				<div class="rich-fileupload-button-border" style=" float:right; display: none;">
+					<div class="rich-fileupload-button rich-fileupload-font #{component.attributes['cleanButtonClass']}" onmouseover="this.className='rich-fileupload-button-light rich-fileupload-font'" onmousedown="this.className='rich-fileupload-button-press rich-fileupload-font'" onmouseup="this.className='rich-fileupload-button rich-fileupload-font'" 
+						 onmouseout="this.className='rich-fileupload-button rich-fileupload-font'"
+						 onclick="return $('#{clientId}').component.clear();"
+						 style="position: relative;"
+						 id="#{clientId}:clean1">
+							<div class="rich-fileupload-button-content rich-fileupload-font rich-fileupload-ico rich-fileupload-ico-clear-dis #{component.attributes['cleanButtonClass']}"
+								 id="#{clientId}:clean2">#{clearAllLabel}</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class="rich-fileupload-list-overflow #{uploadListClass}" style="width: 100%; height: #{listHeight}" id="#{clientId}:fileItems"></div>
+
+	<jsp:scriptlet>
+	<![CDATA[
+		String useFlashComponent = ((String) component.getAttributes().get("allowFlash")).trim().toLowerCase();
+		variables.setVariable("allowFlash", useFlashComponent);
+	]]>
+	</jsp:scriptlet>
+
+	<span>
+		<c:scriptObject var="ADD">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['addButtonClass']}" />
+			<c:scriptOption name="DISABLED"  value="#{component.attributes['addButtonClassDisabled']}" />
+		</c:scriptObject>
+		<c:scriptObject var="UPDATE">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['uploadButtonClass']}" />
+			<c:scriptOption name="DISABLED"  value="#{component.attributes['uploadButtonClassDisabled']}" />
+		</c:scriptObject>
+		<c:scriptObject var="STOP">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['stopButtonClass']}" />
+			<c:scriptOption name="DISABLED"  value="#{component.attributes['stopButtonClassDisabled']}" />
+		</c:scriptObject>
+		<c:scriptObject var="CLEAN">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['cleanButtonClass']}" />
+			<c:scriptOption name="DISABLED"  value="#{component.attributes['cleanButtonClassDisabled']}" />
+		</c:scriptObject>
+		<c:scriptObject var="FILE_ENTRY">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['fileEntryClass']}" />
+			<c:scriptOption name="DISABLED"  value="#{component.attributes['fileEntryClassDisabled']}" />
+		</c:scriptObject>
+		<c:scriptObject var="FILE_ENTRY_CONTROL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['fileEntryControlClass']}" />
+			<c:scriptOption name="DISABLED"  value="#{component.attributes['fileEntryControlClassDisabled']}" />
+		</c:scriptObject>
+		<c:scriptObject var="UPLOAD_LIST">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['uploadListClass']}" />
+			<c:scriptOption name="DISABLED"  value="#{component.attributes['uploadListClassDisabled']}" />
+		</c:scriptObject>
+		<c:scriptObject var="DONE_LABEL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['doneLabelClass']}" />
+		</c:scriptObject>
+		<c:scriptObject var="SIZE_ERROR_LABEL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['sizeErrorLabelClass']}" />
+		</c:scriptObject>
+		<c:scriptObject var="TRANSFER_ERROR_LABEL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['transferErrorLabelClass']}" />
+		</c:scriptObject>
+		<c:scriptObject var="PROGRESS_LABEL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['progressLabelClass']}" />
+		</c:scriptObject>
+		<c:scriptObject var="ENTRY_CANCEL_LABEL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['entryCancelLabelClass']}" />
+		</c:scriptObject>
+		<c:scriptObject var="ENTRY_STOP_LABEL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['entryStopLabelClass']}" />
+		</c:scriptObject>
+		<c:scriptObject var="ENTRY_CLEAR_LABEL">
+			<c:scriptOption name="ENABLED"  value="#{component.attributes['entryClearLabelClass']}" />
+		</c:scriptObject>
+		<c:scriptObject var="classes">
+			<c:scriptOption variables="ADD, UPDATE, STOP, CLEAN, FILE_ENTRY, FILE_ENTRY_CONTROL, UPLOAD_LIST, DONE_LABEL, SIZE_ERROR_LABEL, TRANSFER_ERROR_LABEL, PROGRESS_LABEL, ENTRY_CANCEL_LABEL, ENTRY_STOP_LABEL, ENTRY_CLEAR_LABEL" />
+		</c:scriptObject>
+		<c:scriptObject var="events">
+			<c:scriptOption attributes="onupload, onuploadcomplete, onuploadcanceled, onerror, ontyperejected, onsizerejected, onclear, onadd, onfileuploadcomplete" wrapper="eventHandler"/>
+		</c:scriptObject>
+		<c:scriptObject var="internalOptions">
+			<c:scriptOption attributes="autoclear, noDuplicate, immediateUpload" />
+			<c:scriptOption name="allowFlash"  value="#{allowFlash}" defaultValue="false" />
+			<c:scriptOption name="flashComponentUrl"  value="#{flashComponent}" />
+		</c:scriptObject>
+		<c:scriptObject var="fields">
+			<c:scriptOption name="labelMarkup"  value="#{this:getLabelMarkup(context, component)}" />
+			<c:scriptOption name="maxFileBatchSize"  value="#{maxCount}" defaultValue="1" />
+			<c:scriptOption attributes="disabled" />
+			<c:scriptOption name="maxFileBatchSize"  value="#{maxCount}" defaultValue="1" />
+			<c:scriptOption name="acceptedTypes"  value="#{this:getAcceptedTypes(context, component)}" />
+			<c:scriptOption variables="events" />
+			<c:scriptOption name="options"  value="#{internalOptions}" />
+			<c:scriptOption name="parameters"  value="#{this:getChildrenParams(context, component)}" />
+		</c:scriptObject>
+		<c:scriptObject var="options">
+			<c:scriptOption variables="classes, fields" />
+			<c:scriptOption name="labels"  value="#{labels}" />
+		</c:scriptObject>
+		<script type="text/javascript">
+			new FileUpload('#{clientId}','#{this:getActionUrl(context)}', #{this:getActionScript(context, component)}, '#{this:getProgressBarId(context, component)}',
+					'#{this:getSessionId(context, component)}'
+						<c:if test="#{not empty options}">
+						, <f:writeAsScript value="#{options}" />
+						</c:if> 
+						);
+		</script>
+	</span>
+<f:call name="utils.encodeEndFormIfNessesary" />
+</div>
+</f:root>
+	

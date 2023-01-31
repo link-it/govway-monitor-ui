@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:33:05 CET 2022
+maven-filtering-3.3.0.pom>central=
+maven-filtering-3.3.0.jar>nexus=
+maven-filtering-3.3.0.pom>nexus=
+maven-filtering-3.3.0.jar>central=

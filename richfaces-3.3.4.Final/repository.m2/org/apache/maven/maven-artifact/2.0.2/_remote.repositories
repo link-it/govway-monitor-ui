@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:35:47 CET 2022
+maven-artifact-2.0.2.pom>repository.jboss.org=
+maven-artifact-2.0.2.pom>nexus=
+maven-artifact-2.0.2.pom>central=

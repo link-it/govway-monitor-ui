@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/layout/layout.xhtml">
+	<ui:define name="template">
+		<h:form id="form">
+			<h:panelGrid width="100%" columns="2"
+				rendered="#{!rf4553.useAjaxRendered}" id="default">
+				<a4j:keepAlive beanName="rf4553" />
+				<rich:panel styleClass="wizard">
+					<f:facet name="header">
+						<h:outputText value="Using a4j:include for Wizard-like behaviour" />
+					</f:facet>
+					<a4j:include viewId="/pages/examples/wstep1.xhtml"
+						id="defaultIncludeID" />
+				</rich:panel>
+			</h:panelGrid>
+
+			<h:panelGrid width="100%" columns="2"
+				rendered="#{rf4553.useAjaxRendered}" id="ajaxRenderedIsUsed">
+				<a4j:keepAlive beanName="rf4553" />
+				<rich:panel styleClass="wizard">
+					<f:facet name="header">
+						<h:outputText
+							value="Using a4j:include for Wizard-like behaviour(with ajaxRendered)" />
+					</f:facet>
+					<a4j:include viewId="/pages/examples/wstep1.xhtml"
+						id="ajaxRenderedIncludeID" ajaxRendered="#{rf4553.ajaxRendered}" />
+				</rich:panel>
+			</h:panelGrid>
+
+			<br />
+
+			<h:panelGrid columns="2" id="controls_panel" border="1">
+
+				<h:outputText value="useAjaxRendered" />
+				<h:selectBooleanCheckbox value="#{rf4553.useAjaxRendered}"
+					onclick="submit()" id="useAjaxRendered">
+				</h:selectBooleanCheckbox>
+
+				<h:outputText value="ajaxRendered" />
+				<h:selectBooleanCheckbox value="#{rf4553.ajaxRendered}" id="ajaxRendered">
+					<a4j:support event="onchange" reRender="ajaxRenderedIsUsed"></a4j:support>
+				</h:selectBooleanCheckbox>				
+			</h:panelGrid>
+			<h:commandButton action="#{rf4553.reset}" value="Reset counter" id="reset"/>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

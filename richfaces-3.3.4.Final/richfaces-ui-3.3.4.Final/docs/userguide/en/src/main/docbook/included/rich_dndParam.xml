@@ -1,0 +1,111 @@
+<section role="NotInToc" id="rich_dndParam">
+      <title>
+            &lt;rich:dndParam&gt; <emphasis role="since"><superscript> available since <emphasis role="version">3.0.0</emphasis></superscript></emphasis>
+      </title>
+      <section>
+            <title>Description</title>
+            <para>
+                  The component is used for passing parameters during drag-and-drop operations.
+            </para>
+      </section>
+      <section>
+            <title>Details of Usage</title>
+            <para>
+                  The <emphasis role="bold"><property>&lt;rich:dndParam&gt;</property></emphasis> is used during drag-and-drop operations for passing parameters to an indicator. 
+                  To use the component it is necessary to set <property>&quot;type&quot;</property> attribute that specifies what kind of functionality the component will provide: dragging or dropping. 
+                  Attributes <property>&quot;name&quot;</property> and <property>&quot;value&quot;</property> are also should be defiend.   
+                  Instead of the <property>&quot;value&quot;</property> attribute definition it is possible to define value of the component using nested contents.
+            </para>
+            <para>Variants of usage:</para>
+            <itemizedlist>
+                  <listitem>
+                        <para>
+                              Passing parameters for indicator's drag icon. 
+                              The <emphasis role="bold"><property>&lt;rich:dndParam&gt;</property></emphasis> can define the indicator's drag icon that will be used during dragging instead of indicator's default icon. 
+                              For example, a drag icon may be represented with a minimized image of a dragged element. 
+                              In this case <code>type=&quot;drag&quot;</code>: 
+                        </para>
+                  </listitem>
+            </itemizedlist>
+
+            <programlisting role="XML"><![CDATA[...
+      <rich:dragSupport ... > 
+		<rich:dndParam type="drag" name="dragging"> 
+       			<h:graphicImage value="/img/product1_small.png"/> 
+       	</rich:dndParam> 
+       	<h:graphicImage value="product1.png"/> 
+</rich:dragSupport>
+...
+]]></programlisting>
+            
+            <itemizedlist>
+                  <listitem>
+                        <para>
+                              Passing parameters for indicator's informational part. 
+                              The <emphasis role="bold"><property>&lt;rich:dndParam&gt;</property></emphasis> can transmit it's value into indicator's. 
+                              In this case <code>type=&quot;drag&quot;</code>:
+                        </para>
+                  </listitem>
+            </itemizedlist>
+
+      <programlisting role="XML"><![CDATA[...
+<rich:dragSupport ... > 
+		<rich:dndParam type="drag" name="label" value="#{msg.subj}"/>
+       	...
+</rich:dragSupport>
+...
+]]></programlisting>
+      <itemizedlist>
+            <listitem>
+                  <para>
+                        Passing parameters to a component that supports drop after drop happens.
+                        The <emphasis role="bold"><property>&lt;rich:dndParam&gt;</property></emphasis> can pass icons into an indicator, if dragged content of a comp type is above the given drop zone that processes it on the next drop event.
+                        In this case <code>type=&quot;drop&quot;</code>:
+                  </para>
+            </listitem>
+      </itemizedlist>
+
+      <programlisting role="XML"><![CDATA[...
+<rich:dropSupport ... > 
+		<rich:dndParam type="drop" name="comp" > 
+       			<h:graphicImage height="16" width="16" value="/images/comp.png"/> 
+       	</rich:dndParam>
+        ...
+</rich:dropSupport >
+...
+]]></programlisting>
+</section>
+      <section>
+            <title>Reference Data</title>
+            <para>
+                  <ulink url="&tlddoc;rich/dndParam.html">Table of &lt;rich:dndParam&gt; attributes</ulink>.
+            </para>
+
+            <table>
+                  <title>Component Identification Parameters</title>
+                  <tgroup cols="2">
+                        <thead>
+                              <row>
+                                    <entry>Name</entry>
+                                    <entry>Value</entry>
+                              </row>
+                        </thead>
+                        
+                        <tbody>
+                              <row>
+                                    <entry>component-type</entry>
+                                    <entry>org.richfaces.DndParam</entry>
+                              </row>
+                              <row>
+                                    <entry>component-class</entry>
+                                    <entry>org.richfaces.component.html.HtmlDndParam</entry>
+                              </row>
+                              <row>
+                                    <entry>tag-class</entry>
+                                    <entry>org.richfaces.taglib.DndParamTag</entry>
+                              </row>
+                        </tbody>
+                  </tgroup>
+            </table>
+      </section>
+</section>

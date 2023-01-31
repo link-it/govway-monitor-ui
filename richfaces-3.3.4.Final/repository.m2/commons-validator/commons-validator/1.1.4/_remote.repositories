@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:33:02 CET 2022
+commons-validator-1.1.4.jar>central=
+commons-validator-1.1.4.pom>central=
+commons-validator-1.1.4.pom>nexus=
+commons-validator-1.1.4.jar>nexus=

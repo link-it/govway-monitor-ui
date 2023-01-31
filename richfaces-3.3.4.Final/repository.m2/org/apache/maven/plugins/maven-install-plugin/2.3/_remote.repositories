@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:35:47 CET 2022
+maven-install-plugin-2.3.pom>nexus=
+maven-install-plugin-2.3.jar>nexus=
+maven-install-plugin-2.3.jar>central=
+maven-install-plugin-2.3.pom>central=

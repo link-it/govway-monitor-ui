@@ -1,0 +1,294 @@
+<section role="NotInToc" id="rich_page">
+   <title>
+				&lt;
+				rich:page
+				&gt;
+				<emphasis role="since">
+         <superscript> available since <emphasis role="version">3.3.1</emphasis>
+         </superscript>
+      </emphasis>
+   </title>
+   <section>
+        <title>Description</title>
+        <para>The <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+        </emphasis> component is used to create basic (X)HTML markup and define document parameters like DOCTYPE,  title etc. The component also allows to build top level layout: header, bottom, center and  left or right  layout areas.</para>
+        
+
+    </section>
+   <section>
+        <title>Key Features</title> 
+        <itemizedlist>
+            
+            
+            <listitem>
+            <para>Option to change the renderer of the component (themes support)</para>
+         </listitem>
+            <listitem>
+            <para>Possibility to define parameters of an HTML page</para>
+         </listitem>
+            <listitem>
+            <para>Possibility to create page layout with facets</para>
+         </listitem>
+            <listitem>
+            <para>Provides styling based on RichFaces skinnability</para>
+         </listitem>
+        </itemizedlist>  
+    </section>
+   <section>
+        <title>Details of Usage</title>
+        <para>The <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis>
+            
+            component together with the <emphasis role="bold">
+            <property>&lt;rich:layout&gt;</property>
+         </emphasis> component  provides
+            a full-fledged mechanism for markup creation. </para>
+        
+        
+        <para>
+            
+          First of all, to declare the document type of the page you should use the  <emphasis>
+            <property>"markupType"</property>
+         </emphasis> attribute which has the following values: 
+        </para>                                                                                                                                                                                                                                                                        
+      <itemizedlist>
+                <listitem>
+            <para>"html"</para>
+         </listitem>
+                <listitem>
+            <para>"html-transitional"</para>
+         </listitem>
+                <listitem>
+            <para>"xhtml"</para>
+         </listitem>
+                <listitem>
+            <para>"xhtml-transitional"</para>
+         </listitem>
+                <listitem>
+            <para>"html-frameset"</para>
+         </listitem>
+                <listitem>
+            <para>"html-3.2"</para>
+         </listitem>
+
+            </itemizedlist>
+        <para>The default value is "html".</para>
+            <para>
+            The <emphasis>
+            <property>"contentType"</property>
+         </emphasis> allows to specify the type of the content and encoding for the page. 
+        </para>
+          
+          <para>
+              The title of the page can be set with the <emphasis>
+            <property>"pageTitle"</property>
+         </emphasis> attribute. 
+              To place some other page parameters (like meta information, links to CSS style sheets etc.) in the &lt;head&gt; element of an HTML page use 
+          	&quot;pageHeader&quot; facet.        
+          </para>
+      <para>
+         <emphasis role="bold">Example:</emphasis>
+      </para>
+        
+      <programlisting role="XML">...
+&lt;rich:page pageTitle="The title of the page" markupType="xhtml"&gt;
+	&lt;f:facet name="pageHeader"&gt;
+		&lt;meta content="The rich:page component" name="keywords" /&gt;
+		&lt;link rel="shortcut icon" href="/images/favicon.ico" /&gt;
+		&lt;link href="/css/style.css" rel="stylesheet" type="text/css" /&gt;
+		&lt;script type="text/javascript" src="/js/menu.js"&gt;&lt;/script&gt;
+	&lt;/f:facet&gt;
+	&lt;!-- page content --&gt;
+&lt;/rich:page&gt;
+...</programlisting>                                                                                                                                                                                                                                                                    
+      <note>
+            <title>Note:</title>
+            <para>Note, the <emphasis role="bold">
+               <property>&lt;rich:page&gt;</property>
+            </emphasis> component encodes the full page structure. Therefore, be sure you don't 
+                use the doctype declaration, root html element, head and body elements  on the same page where you've put this component.</para>
+        </note>
+        
+        <para>The implementation of the <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis> component provides four facets that you can use to arrange the layout of the page: "header", "subheader",  "sidebar"  and "footer". Their behavior is quite self-explanatory. </para>
+        <para>The position of the panel rendered by the "sidebar" facet can be set with the <emphasis>
+            <property>"sidebarPosition"</property>
+         </emphasis> attribute that can take either "right" or "left" as values, you can also specify the width for this facet with  the <emphasis>
+            <property>"sidebarWidth"</property>
+         </emphasis> attribute. </para>
+       <para>
+           <emphasis role="bold">Example:</emphasis>
+       </para>
+        
+        
+        
+        <programlisting role="XML">...
+&lt;rich:page sidebarPosition="left" sidebarWidth="300"&gt;
+	&lt;f:facet name="header"&gt;
+		&lt;!-- header  content --&gt;
+	&lt;/f:facet&gt;
+	&lt;f:facet name="sidebar"&gt;
+		&lt;!-- side panel content --&gt;
+	&lt;/f:facet&gt;
+	&lt;!-- body content --&gt;
+	&lt;f:facet name="footer"&gt;
+		&lt;!-- footer  content --&gt;
+	&lt;/f:facet&gt;
+&lt;/rich:page&gt;
+...</programlisting>                                                                                                                                                                                                                                                                    
+        <para>The <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis> component also provides attributes  to define CSS classes for each nested facet as well as a body part of the page created with the component.</para>
+        
+        
+        <para>Several templates are available for the <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis> component. A template can be activated with the <emphasis>
+            <property>"theme"</property>
+         </emphasis> attribute.</para>
+       
+        <para>The theme defines the way the <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis> is rendered. Default renderer (default theme) of the <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis> has no mappings to skin parameters and just provides CSS classes for the page part. However, the <property>simple</property> theme, which is an extension of the default theme, has mappings to skin parameters and adds the RichFaces skinning for the page elements. </para>
+        
+        <para>As a whole, RichFaces provides 4 themes for the <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis> component out-of-the-box: "simple", "violetRays", "oldschool", "smooth". The <ulink url="http://www.jboss.org/community/docs/DOC-13635">Creating a Theme for &lt;rich:page&gt;</ulink> article tells how you can create your custom theme for the <emphasis role="bold">
+            <property>&lt;rich:page&gt;</property>
+         </emphasis> component. </para>
+        
+    </section>
+   <section>
+      <title>Reference Data</title>
+      <para>
+         <ulink url="&tlddoc;rich/page.html">Table of 
+							&lt;rich:page&gt; 
+							 attributes</ulink>.
+						</para>
+      <table>
+        <title>Component Identification Parameters</title>
+        <tgroup cols="2">
+            <thead>
+                <row>
+                    <entry>Name</entry>
+                    <entry>Value</entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>component-type</entry>
+                	<entry>org.richfaces.Page</entry>
+                </row>
+                <row>
+                    <entry>component-class</entry>
+                    <entry>org.richfaces.component.html.HtmlPage</entry>
+                </row>
+                <row>
+                    <entry>component-family</entry>
+                    <entry>org.richfaces.Page</entry>
+                </row>
+                <row>
+                    <entry>renderer-type</entry>
+                    <entry>org.richfaces.PageRenderer</entry>
+                </row>
+                <row>
+                    <entry>tag-class</entry>
+                    <entry>org.richfaces.taglib.PageTag</entry>
+                </row>
+            </tbody>
+        </tgroup>
+      </table>
+      <table>
+            <title>Facets</title>
+            <tgroup cols="2">
+                <thead>
+                    <row>
+                        <entry>Facet Name</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>pageHeader</entry>
+                        <entry>Creates the &lt;head/&gt; part of the HTML page</entry>
+                    </row>
+                    <row>
+                        <entry>header</entry>
+                        <entry>Creates a header</entry>
+                    </row>
+                    
+                    <row>
+                        <entry>subheader</entry>
+                        <entry>Creates a horizontal panel under the header</entry>
+                    </row>
+                    <row>
+                        <entry>footer</entry>
+                        <entry>Creates a footer</entry>
+                    </row>                                                                                                                                                                                                                                                                                
+               <row>
+                        <entry>sidebar</entry>
+                        <entry>Creates a left/right panel</entry>
+                    </row>                                                                                                                                                                                                                                                                            
+            </tbody>
+            </tgroup>
+        </table>
+      <table id="RichpageSelectors">
+            <title>CSS Selectors that define the representation of the component's blocks</title>
+            <tgroup cols="2">
+                <thead>
+                    <row>
+                        <entry>CSS Selector</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                   
+                   
+                    <row>
+                        <entry>.rich-page</entry>
+                        <entry>Defines styles for the whole page</entry>
+                    </row>                                                                                                                                                                                                                                                                                
+                    <row>
+                        <entry>.rich-page-header</entry>
+                        <entry>Defines styles for the header</entry>
+                    </row>
+                    
+                    <row>
+                        <entry>.rich-page-subheader</entry>
+                        <entry>Defines styles for the block under the header</entry>
+                    </row>
+                    
+                    <row>
+                        <entry>.rich-page-sidebar</entry>
+                        <entry>Defines styles for the sidebar</entry>
+                    </row>                                                                                                                                                                                                                                                                                
+               <row>
+                      <entry>.rich-page-body</entry>
+                        <entry>Defines styles for the body part of the page</entry>
+                    </row>                                                                                                                                                                                                                                                                                
+               <row>
+                        <entry>.rich-page-footer</entry>
+                        <entry>Defines styles for the footer</entry>
+                    </row>                                                                                                                                                                                                                                                                                
+                </tbody>
+            </tgroup>
+        </table>
+   </section>
+   <section>
+        <title>Relevant Resources Links</title>
+        <para>
+            <ulink url="http://livedemo.exadel.com/richfaces-demo/richfaces/layouts.jsf">On the component Live Demo page</ulink> you can see the example of <emphasis role="bold">
+                    <property>&lt;rich:page&gt;</property>
+                </emphasis> component usage and sources for the given example. </para>
+        <para>The <ulink url="http://www.jboss.org/community/docs/DOC-13336">Layout components for RichFaces 3.3.1</ulink> on  the JBoss.org Wiki</para>
+	<para>
+	Refer to the <ulink url="https://www.jboss.org/community/wiki/Changingthelayoutofthepagedynamically">"Changing the layout of the page dynamically"</ulink> to find out how to change the layout of a page on the fly with <emphasis role="bold">
+                    <property>&lt;rich:page&gt;</property></emphasis>.	
+	</para>    
+    </section>
+</section>

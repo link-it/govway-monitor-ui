@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:35:48 CET 2022
+maven-monitor-2.0.2.jar>nexus=
+maven-monitor-2.0.2.pom>nexus=
+maven-monitor-2.0.2.jar>central=
+maven-monitor-2.0.2.pom>central=

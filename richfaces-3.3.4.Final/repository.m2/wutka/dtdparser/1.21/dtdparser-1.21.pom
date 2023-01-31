@@ -1,0 +1,13 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>wutka</groupId>
+  <artifactId>dtdparser</artifactId>
+  <version>1.21</version>
+
+  <distributionManagement>
+    <relocation>
+      <groupId>com.wutka</groupId>
+    </relocation>
+  </distributionManagement>
+
+</project>

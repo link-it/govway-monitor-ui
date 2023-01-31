@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:32:53 CET 2022
+maven-core-2.0.jar>central=
+maven-core-2.0.pom>nexus=
+maven-core-2.0.jar>nexus=
+maven-core-2.0.pom>central=

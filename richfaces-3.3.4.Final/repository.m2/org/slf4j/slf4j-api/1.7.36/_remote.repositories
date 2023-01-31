@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:33:05 CET 2022
+slf4j-api-1.7.36.pom>nexus=
+slf4j-api-1.7.36.jar>nexus=
+slf4j-api-1.7.36.jar>central=
+slf4j-api-1.7.36.pom>central=

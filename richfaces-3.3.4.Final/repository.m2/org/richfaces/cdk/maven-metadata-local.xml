@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.richfaces</groupId>
+  <artifactId>cdk</artifactId>
+  <versioning>
+    <release>3.3.4.Final</release>
+    <versions>
+      <version>3.3.4.Final</version>
+    </versions>
+    <lastUpdated>20221110183247</lastUpdated>
+  </versioning>
+  <plugins>
+    <plugin>
+      <name>Maven plugin for JSF components code generation</name>
+      <prefix>cdk</prefix>
+      <artifactId>maven-cdk-plugin</artifactId>
+    </plugin>
+    <plugin>
+      <name>YUI Compressor Maven Mojo</name>
+      <prefix>javascript</prefix>
+      <artifactId>maven-javascript-plugin</artifactId>
+    </plugin>
+    <plugin>
+      <name>maven-resource-dependency-plugin</name>
+      <prefix>resource-dependency</prefix>
+      <artifactId>maven-resource-dependency-plugin</artifactId>
+    </plugin>
+  </plugins>
+</metadata>

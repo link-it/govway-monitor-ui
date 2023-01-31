@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:35:49 CET 2022
+jtb-1.3.2.pom>nexus=
+jtb-1.3.2.jar>nexus=
+jtb-1.3.2.jar>central=
+jtb-1.3.2.pom>central=

@@ -1,0 +1,204 @@
+<section role="NotInToc" id="rich_messages">
+   <title>
+         &lt;rich:messages&gt; <emphasis role="since"><superscript> available since <emphasis role="version">3.1.0</emphasis></superscript></emphasis>
+   </title>
+      <section>
+            <title>Description</title>
+            <para>
+                  The <emphasis role="bold"><property>&lt;rich:messages&gt;</property></emphasis> component is similar to <emphasis role="bold"><property>&lt;rich:message&gt;</property></emphasis> component but used for rendering all messages for the components.
+            </para>
+            <figure>
+                  <title><emphasis role="bold"><property>&lt;rich:messages&gt;</property></emphasis> component</title>
+                  <mediaobject>
+                        <imageobject>
+                              <imagedata fileref="images/messages_init.png"/>
+                        </imageobject>
+                  </mediaobject>
+            </figure>
+      </section>
+         
+      <section>
+            <title>Key Features</title>
+            <itemizedlist>
+                  <listitem>
+                        <para>Consists of three parts to be defined optionally: marker (pictogram), label (text message) and header</para>
+                  </listitem>
+                  <listitem>
+                        <para>Provides set of facets for marker customization</para>
+                  </listitem>
+                  <listitem>
+                        <para>Supports tooltip to display extra portion of message</para>
+                  </listitem>
+                  <listitem>
+                        <para>Tracks both traditional and Ajax requests</para>
+                  </listitem>
+                  <listitem>
+                        <para>Customizable look and feel </para>
+                  </listitem>
+            </itemizedlist>
+      </section>
+      
+   <section>
+                    <title>Details of Usage</title>
+               
+         <para>
+               The component has the same behavior as standard <emphasis role="bold"><property>&lt;h:message&gt;</property></emphasis> component. 
+               Besides some extra features:
+               </para>
+               <itemizedlist>
+                     <listitem>
+                           <para>auto rerendering after Ajax request without help of <emphasis role="bold"><property>&lt;a4j:outputPanel&gt;</property></emphasis>;</para>
+                     </listitem>
+                     <listitem>
+                           <para>providing <code>passed</code> message after validation has been passed (optional);</para>
+                     </listitem>
+                     <listitem>
+                           <para>possibility to add marker to a message;</para>
+                     </listitem>
+                     <listitem>
+                           <para>set of predefined CSS classes for customizing messages appearance.</para>
+                     </listitem>   
+               </itemizedlist>
+                
+  
+                
+                <para>The following example shows different variants of customization of the component.</para>
+
+                 <programlisting role="XML"><![CDATA[<rich:messages layout="table" tooltip="true" showDetail="false" showSummary="true">
+      <f:facet name="errorMarker">
+            <h:graphicImage url="/image/error.png"/>
+      </f:facet>
+      <f:facet name="infoMarker">
+            <h:graphicImage url="/image/info.png"/>
+      </f:facet>
+ </rich:messages>]]></programlisting>
+                
+                <para>The <emphasis role="bold">
+            <property>&lt;rich:messages&gt;</property>
+         </emphasis> component keeps all messages for all components even after only one Ajax-validated component  was updated.</para>                
+
+          </section>
+   <section>
+      <title>Reference Data</title>
+      <para>
+         <ulink url="&tlddoc;rich/messages.html">Table of 
+							&lt;rich:messages&gt; 
+							 attributes</ulink>.
+						</para>
+      <table>
+                    <title>Component Identification Parameters </title>
+                    <tgroup cols="2">
+                              <thead>
+                                        <row>
+                                                  <entry>Name</entry>
+                                                  <entry>Value</entry>
+                                        </row>
+                              </thead>
+                              <tbody>
+                                        <row>
+                                                  <entry>component-type</entry>
+                                              <entry>org.richfaces.component.RichMessages</entry>
+                                        </row>
+                                        <row>
+                                                  <entry>component-class</entry>
+                                              <entry>org.richfaces.component.html.HtmlRichMessages</entry>
+                                        </row>
+                                        <row>
+                                                  <entry>component-family</entry>
+                                              <entry>org.richfaces.component.RichMessages</entry>
+                                        </row>
+                                        <row>
+                                                  <entry>renderer-type</entry>
+                                              <entry>org.richfaces.RichMessagesRenderer</entry>
+                                        </row>
+                                        <row>
+                                                  <entry>tag-class</entry>
+                                              <entry>org.richfaces.taglib.RichMessagesTag</entry>
+                                        </row>
+                              </tbody>
+                    </tgroup>
+          </table>
+         
+         <table>
+         <title>Facets</title>
+         <tgroup cols="2">
+               <thead>
+                     <row>
+                           <entry>Facet</entry>
+                           <entry>Description</entry>
+                     </row>
+               </thead>
+               <tbody>
+                     <row>
+                           <entry>errorMarker</entry>
+                           <entry>Defines pictogram for message with <emphasis>error</emphasis> severity class</entry>
+                     </row>
+                     <row> 
+                           <entry>fatalMarker</entry>
+                           <entry>Defines pictogram for message with <emphasis>fatal</emphasis> severity class</entry>
+                     </row>
+                     <row>
+                           <entry>infoMarker</entry>
+                           <entry>Defines pictogram for message with <emphasis>info</emphasis> severity class</entry>
+                     </row>
+                     <row>
+                           <entry>passedMarker</entry>
+                           <entry>Defines pictogram if there is no <emphasis>fatal</emphasis>, <emphasis>error</emphasis>, <emphasis>warn</emphasis> or <emphasis>info</emphasis> message</entry>
+                     </row>
+                     <row>
+                           <entry>warnMarker</entry>
+                           <entry>Defines pictogram for message with <emphasis>warn</emphasis> severity class</entry>
+                     </row>
+               </tbody>
+         </tgroup>
+        </table>
+         
+      <table id="tab_msC">
+                              <title>Classes names that define a component appearance</title>
+
+                              <tgroup cols="2">
+                                        <thead>
+                                                  <row>
+                                                  <entry>Class name</entry>
+
+                                                  <entry>Description</entry>
+                                                  </row>
+                                        </thead>
+
+                                        <tbody>
+                                                  <row>
+                                                  <entry>rich-messages</entry>
+
+                                                  <entry>Defines styles for a wrapper
+                                                  element</entry>
+                                                  </row>
+
+                                                  <row>
+                                                  <entry>rich-messages-marker</entry>
+
+                                                  <entry>Defines styles for a
+                                                  marker</entry>
+                                                  </row>
+
+                                                  <row>
+                                                  <entry>rich-messages-label</entry>
+
+                                                  <entry>Defines styles for a
+                                                  label</entry>
+                                                  </row>
+
+                                        </tbody>
+                              </tgroup>
+                    </table>
+							You can find all necessary information about style classes redefinition in 
+						<link linkend="customstyles">Definition of Custom Style Classes</link> 
+							section.
+						</section>
+   <section>
+                    <title>Relevant Resources Links</title>
+         <para>
+               Visit the <ulink url="http://livedemo.exadel.com/richfaces-demo/richfaces/messages.jsf?c=messages&amp;tab=usage">Messages page</ulink> at RichFaces LiveDemo for examples of component usage and their sources.
+         </para>           
+         
+          </section>
+</section>

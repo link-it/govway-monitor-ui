@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<description>RichFaces JSP Project web.xml</description>
+
+		<context-param>
+		<param-name>org.richfaces.SKIN</param-name>
+		<param-value>#{pageContent.skin}</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.richfaces.CONTROL_SKINNING_CLASSES</param-name>
+		<param-value>enable</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.richfaces.CONTROL_SKINNING</param-name>
+		<param-value>enable</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.richfaces.CONTROL_SKINNING_LEVEL</param-name>
+		<param-value>extended</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.ajax4jsf.handleViewExpiredOnClient</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.richfaces.LoadScriptStrategy</param-name>
+		<param-value>ALL</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.ajax4jsf.xmlfilter.forcenotrf</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>
+			/WEB-INF/auto/auto-config.xml,/WEB-INF/config/pickList.xml,/WEB-INF/config/dropDownMenu.xml,/WEB-INF/config/suggestionBox.xml,/WEB-INF/config/comboBox.xml,/WEB-INF/config/extendedDataTable.xml
+		</param-value>
+	</context-param>	
+	
+
+	<context-param>
+		<param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.ajax4jsf.COMPRESS_STYLE</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.richfaces.queue.global.enabled</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<!-- FOR JBOSS CONTAINER!!! -->
+	<context-param>
+		<param-name>
+			org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL
+		</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<context-param>
+		<description>
+			Define partial state saving as true/false.
+		</description>
+		<param-name>javax.faces.PARTIAL_STATE_SAVING_METHOD</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.DISABLE_FACELET_JSF_VIEWHANDLER</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<filter>
+		<display-name>Ajax4jsf Filter</display-name>
+		<filter-name>ajax4jsf</filter-name>
+		<filter-class>org.ajax4jsf.Filter</filter-class>
+		<init-param>
+			<param-name>createTempFiles</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>maxRequestSize</param-name>
+			<param-value>143482880</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ajax4jsf</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>	
+
+	<session-config>
+		<session-timeout>500</session-timeout>
+	</session-config>
+
+	<!-- Listener, to allow Jetty serving MyFaces apps -->
+	<!--listener>
+		<listener-class>
+		org.apache.myfaces.webapp.StartupServletContextListener
+		</listener-class>
+		</listener-->
+
+	<!-- Faces Servlet -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- Faces Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+
+	<!-- Welcome files -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

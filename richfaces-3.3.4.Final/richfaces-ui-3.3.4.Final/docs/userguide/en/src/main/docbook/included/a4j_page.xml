@@ -1,0 +1,140 @@
+<section role="NotInToc" id="a4j_page">
+   <title>
+				&lt;
+				a4j:page
+				&gt;
+				<emphasis role="since">
+         <superscript> available since <emphasis role="version">3.0.0</emphasis>
+         </superscript>
+      </emphasis>
+   </title>
+   <section>
+            <sectioninfo>
+                  <keywordset>
+                        <keyword>component</keyword>
+                        <keyword>page</keyword>
+                  </keywordset>
+            </sectioninfo>
+            <title>Description</title>
+            <para>
+                  The <emphasis role="bold">
+            <property>&lt;a4j:page&gt;</property>
+         </emphasis> component encodes the full HTML-page structure and used for solving some incompatibility in JSP environment with MyFaces in early Ajax4Jsf versions.
+            </para>
+      </section>
+   <section>
+      <title>Details of Usage</title>
+      <para>
+            The component solves the problem with MyFaces for early Ajax4Jsf versions: in MyFaces implementation the <emphasis role="bold">
+            <property>&lt;f:view&gt;</property>
+         </emphasis> JSP tag doesn't get control for encoding contents during the <property>RENDER_RESPONSE</property> phase, 
+            thus Ajax can't neiher get a control nor make a response. 
+            The <emphasis role="bold">
+            <property>&lt;a4j:page&gt;</property>
+         </emphasis> solves this problem by wrapping the Ajax updatable areas. 
+            In the last versions of both frameworks the problem is successfully  fixed and no <emphasis role="bold">
+            <property>&lt;a4j:page&gt;</property>
+         </emphasis> usage is required.
+      </para>
+      
+      <para>
+          The component uses <property>facet</property> 
+         <emphasis>
+            <property>"head"</property>
+         </emphasis> for defining the contents corresponding to the HTML HEAD.
+          There is no need to use <emphasis>
+            <property>"body"</property>
+         </emphasis> facet in order to define first <property>body</property> section.
+          The attribute <emphasis>
+            <property>"format"</property>
+         </emphasis> defines page layout format  for encoding DOCTYPE. 
+          The attribute <emphasis>
+            <property>"pageTitle"</property>
+         </emphasis> is  rendered as <property>title</property> section.
+    </para>
+                 
+                  <para>
+                        According to the described above, the component defined at page as following
+                  </para>
+                  <programlisting role="XML"><![CDATA[<a4j:page format="xhtml" pageTitle="myPage">
+      <f:facet name="head">
+            <!--Head Content here-->
+      </f:facet>
+      <!--Page Content Here-->
+</a4j:page>]]></programlisting>
+      
+      <para id="exampl">
+          will be rendered on a page as
+    </para>
+      <programlisting role="XML"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head> 
+        <title>myPage</title>
+        <!--Head Content here-->
+    </head> 
+    <body>
+        <!--Page Content Here-->
+    </body> 
+</html>]]></programlisting>
+  </section>
+   <section>
+      <title>Reference Data</title>
+      <para>
+         <ulink url="&tlddoc;a4j/page.html">Table of 
+							&lt;a4j:page&gt; 
+							 attributes</ulink>.
+						</para>
+      <table>
+         <title>Component Identification Parameters </title>
+         <tgroup cols="2">
+            <thead>
+               <row>
+                  <entry>Name</entry>
+                  <entry>Value</entry>
+               </row>
+            </thead>
+            <tbody>
+               <row>
+                  <entry>component-type</entry>
+                  <entry>org.ajax4jsf.components.Page</entry>
+               </row>
+               <row>
+                  <entry>component-family</entry>
+                  <entry>org.ajax4jsf.components.AjaxRegion</entry>
+               </row>
+               <row>
+                  <entry>component-class</entry>
+                  <entry>org.ajax4jsf.component.html.HtmlPage</entry>
+               </row>
+               <row>
+                  <entry>renderer-type</entry>
+                  <entry>org.ajax4jsf.components.AjaxPageRenderer</entry>
+               </row>
+            </tbody>
+         </tgroup>
+      </table>
+      <table>
+                  <title>Facets</title>
+                  <tgroup cols="2">
+                        <thead>
+                              <row>
+                                    <entry>Facet name</entry>
+                                    <entry>Description</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry>head</entry>
+                                    <entry>Defines a head content</entry>
+                              </row>
+                        </tbody>
+                  </tgroup>
+            </table>
+   </section>
+   <section>
+      <title>Relevant Resources Links</title>
+        <para>
+              Visit the <ulink url="http://livedemo.exadel.com/richfaces-demo/richfaces/page.jsf?c=page">AjaxPage page</ulink> at RichFaces LiveDemo for examples of component usage and their sources.
+        </para>  	
+  </section>
+</section>

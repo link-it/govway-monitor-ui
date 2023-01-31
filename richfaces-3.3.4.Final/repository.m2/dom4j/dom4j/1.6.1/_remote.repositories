@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:32:47 CET 2022
+dom4j-1.6.1.jar>central=
+dom4j-1.6.1.pom>central=
+dom4j-1.6.1.pom>nexus=
+dom4j-1.6.1.jar>nexus=

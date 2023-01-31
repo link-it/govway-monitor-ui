@@ -1,0 +1,84 @@
+<properties>
+    <property>
+        <name>accesskey</name>
+        <classname>java.lang.String</classname>
+        <description>This attribute assigns an access key to an element. An access key is a single character from the document character set. Note: Authors should consider the input method of the expected reader when specifying an accesskey</description>
+    </property>
+    <property>
+        <name>charset</name>
+        <classname>java.lang.String</classname>
+        <description> The character encoding of a resource designated by this hyperlink</description>
+    </property>
+    
+    <property>
+        <name>coords</name>
+        <classname>java.lang.String</classname>
+        <description>
+        The attribute specifies shape and it position on the screen. 
+        Possible values: "rect: left-x, top-y, right-x, bottom-y", "circle: center-x, center-y, radius", "poly: x1, y1, x2, y2, ..., xN, yN". 
+        Notes: 
+        a) when giving the radius value in percents, user agents should calculate the final radius value in pixels based on the associated object's width and height; 
+        b) the radius value should be smaller than center-x and center-y values; 
+        c) for a polygon, the first and last coordinate pairs should have same x and y to close the shape (x1=xN; y1=yN) 
+        (when these coordinates are different, user agents should infer an additional pair to close a polygon). 
+        Coordinates are relative to the top left corner of an object. All values are lengths. All values are comma separated. 
+        </description>
+    </property>
+    
+    <property>
+        <name>hreflang</name>
+        <classname>java.lang.String</classname>
+        <description>Base language of a resource specified with the href attribute; hreflang may only be used with href</description>
+    </property>
+    
+    <property>
+        <name>rel</name>
+        <classname>java.lang.String</classname>
+        <description>The relationship from the current document to the anchor specified by this hyperlink. The value of this attribute is a space-separated list of link types</description>
+    </property>
+    <property>
+        <name>rev</name>
+        <classname>java.lang.String</classname>
+        <description>A reverse link from the anchor specified by this hyperlink to the current document. The value of this attribute is a space-separated list of link types</description>
+    </property>
+    <property>
+        <name>shape</name>
+        <classname>java.lang.String</classname>
+        <description>
+            This attribute specifies the shape of a region. The possible values are &quot;default&quot;, &quot;rect&quot;, &quot;circle&quot; and &quot;poly&quot;.
+        </description>
+    </property>
+    <property>
+        <name>tabindex</name>
+        <classname>java.lang.String</classname>
+        <description>This attribute specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767. User agents should ignore leading zeros</description>
+    </property>
+    <property>
+        <name>type</name>
+        <classname>java.lang.String</classname>
+        <description>The content type of the resource designated by this hyperlink</description>
+    </property>
+    
+    <property>
+        <name>onblur</name>
+        <classname>java.lang.String</classname>
+        <description>The client-side script method to be called when the element loses the focus either when pointing a device or tabbing navigation. The attribute may be used with the same elements as onfocus</description>
+    </property>
+    <property>
+        <name>onfocus</name>
+        <classname>java.lang.String</classname>
+        <description>The client-side script method to be called when the element gets the focus</description>
+    </property>
+    
+    <property>
+        <name>target</name>
+        <classname>java.lang.String</classname>
+        <description>This attribute specifies the name of a frame where a document is to be opened.
+            
+            By assigning a name to a frame via the name attribute, authors can refer to it as the "target" of links defined by other elements 
+        </description>
+    </property>
+    
+    
+    
+</properties>

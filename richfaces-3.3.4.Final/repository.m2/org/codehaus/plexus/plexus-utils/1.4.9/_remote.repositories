@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:32:53 CET 2022
+plexus-utils-1.4.9.jar>central=
+plexus-utils-1.4.9.pom>nexus=
+plexus-utils-1.4.9.pom>central=
+plexus-utils-1.4.9.jar>nexus=

@@ -1,0 +1,8 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:35:49 CET 2022
+plexus-velocity-1.1.2.pom>repository.jboss.org=
+plexus-velocity-1.1.2.jar>central=
+plexus-velocity-1.1.2.jar>repository.jboss.org=
+plexus-velocity-1.1.2.pom>central=
+plexus-velocity-1.1.2.pom>nexus=
+plexus-velocity-1.1.2.jar>nexus=

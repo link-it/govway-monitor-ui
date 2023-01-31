@@ -1,0 +1,7 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Sat Oct 29 09:52:00 CEST 2022
+http\://repository.jboss.org/maven2/.lastUpdated=1667029920480
+http\://download.java.net/maven/2/.lastUpdated=1667029919857
+@default-maven-repository.dev.java.net-http\://download.java.net/maven/1/.lastUpdated=1667029918512
+http\://download.java.net/maven/1/.error=Could not transfer artifact javax.faces\:jsf-api\:pom\:1.2_12 from/to maven-repository.dev.java.net (http\://download.java.net/maven/1)\: Connect to download.java.net\:443 [download.java.net/184.87.212.89] failed\: Connection timed out (Connection timed out)
+http\://download.java.net/maven/2/.error=

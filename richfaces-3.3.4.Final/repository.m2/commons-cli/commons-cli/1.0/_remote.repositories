@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:32:47 CET 2022
+commons-cli-1.0.jar>nexus=
+commons-cli-1.0.jar>central=
+commons-cli-1.0.pom>central=
+commons-cli-1.0.pom>nexus=

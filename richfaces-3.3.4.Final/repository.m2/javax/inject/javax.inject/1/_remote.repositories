@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:33:05 CET 2022
+javax.inject-1.jar>central=
+javax.inject-1.pom>central=
+javax.inject-1.pom>nexus=
+javax.inject-1.jar>nexus=

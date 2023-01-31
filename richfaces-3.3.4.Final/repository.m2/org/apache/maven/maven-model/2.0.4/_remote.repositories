@@ -1,0 +1,8 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:35:49 CET 2022
+maven-model-2.0.4.pom>central=
+maven-model-2.0.4.jar>nexus=
+maven-model-2.0.4.pom>nexus=
+maven-model-2.0.4.jar>repository.jboss.org=
+maven-model-2.0.4.pom>repository.jboss.org=
+maven-model-2.0.4.jar>central=

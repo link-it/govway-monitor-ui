@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Mon Nov 14 14:31:23 CET 2022
+tree-3.3.4.Final.pom>=
+tree-3.3.4.Final-sources.jar>=
+tree-3.3.4.Final.jar>=

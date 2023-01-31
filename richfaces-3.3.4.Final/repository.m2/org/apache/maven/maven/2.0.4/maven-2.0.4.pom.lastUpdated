@@ -1,0 +1,11 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:35:48 CET 2022
+https\://maven.atlassian.com/content/repositories/atlassian-public/.error=
+http\://repository.jboss.org/maven2/.lastUpdated=1667030048173
+https\://repo1.maven.org/maven2/.lastUpdated=1668105348454
+http\://download.java.net/maven/2/.lastUpdated=1667030047448
+http\://download.java.net/maven/1/.lastUpdated=1667030045400
+http\://download.java.net/maven/2/.error=
+http\://download.java.net/maven/1/.error=
+https\://repo.maven.apache.org/maven2/.lastUpdated=1667030555653
+https\://maven.atlassian.com/content/repositories/atlassian-public/.lastUpdated=1667030555629

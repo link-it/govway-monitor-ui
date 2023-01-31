@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:root 
+	xmlns:f="http://ajax4jsf.org/cdk/template" 
+	xmlns:c=" http://java.sun.com/jsf/core" 
+	xmlns:ui=" http://ajax4jsf.org/cdk/ui"
+	xmlns:u=" http://ajax4jsf.org/cdk/u"
+	xmlns:jsp=" http://ajax4jsf.org/cdk/jsp"
+	xmlns:x=" http://ajax4jsf.org/cdk/x"
+	baseclass="org.richfaces.renderkit.InplaceInputBaseRenderer"
+	class="org.richfaces.renderkit.html.InplaceInputRenderer"
+	component="org.richfaces.component.UIInplaceInput"> 
+	
+	
+	<h:styles>css/inplaceinput.xcss</h:styles>
+	<h:scripts>
+			new org.ajax4jsf.javascript.PrototypeScript(),
+			scripts/comboboxUtils.js,
+			scripts/utils.js,
+			scripts/inplaceinputstyles.js,
+			scripts/inplaceinput.js
+	</h:scripts>
+	<f:resource var="saveIcon" name="org.richfaces.renderkit.html.images.SaveControlIcon"/>
+	<f:resource var="cancelIcon" name="org.richfaces.renderkit.html.images.CancelControlIcon"/>
+	<f:resource var="spacer" name="images/spacer.gif"/>
+		
+ 	
+	<f:clientid var="clientId" />
+	<jsp:scriptlet>
+		<![CDATA[
+		String value = (String)component.getSubmittedValue();         
+		if (value == null) {         
+			value = getConvertedStringValue(context, component,component.getValue());
+		}
+		
+		String fieldValue = value;
+	   	if (value == null || value.trim().equals("")) {
+	   		fieldValue = "";
+	   		String defaultValue = (String)component.getAttributes().get("defaultLabel"); 
+	   		if(defaultValue == null || defaultValue.trim().equals("")) {
+	   		 	defaultValue = "\u00a0\u00a0\u00a0";    
+	   		}
+	   		value = defaultValue; 
+	   	}
+	   	
+	   	variables.setVariable("value", value);
+	   	variables.setVariable("fieldValue", fieldValue);
+	   	
+	   	String saveIcon =  (String)component.getAttributes().get("saveControlIcon");
+	   	if (saveIcon != null && saveIcon.length() != 0 ) {
+	   		variables.setVariable("saveIcon", org.richfaces.component.util.ViewUtil.getResourceURL(saveIcon ,context));
+	   	}
+	   	
+	   	String cancelIcon =  (String)component.getAttributes().get("cancelControlIcon");
+	   	if (cancelIcon != null && cancelIcon.length() != 0 ) {
+	   		variables.setVariable("cancelIcon", org.richfaces.component.util.ViewUtil.getResourceURL(cancelIcon ,context));
+	   	}
+	   	
+	   	String controlClass = (String)component.getAttributes().get("controlClass");
+	   	variables.setVariable("controlClass", controlClass);
+	   	String controlHoverClass = (String)component.getAttributes().get("controlHoverClass"); 
+	   	variables.setVariable("controlHoverClass", controlHoverClass);
+	   	String controlPressedClass = (String)component.getAttributes().get("controlPressedClass"); 
+	   	variables.setVariable("controlPressedClass", controlPressedClass);
+	   	
+	   	String styleClass = (String)component.getAttributes().get("styleClass");
+	   	styleClass = styleClass != null ? styleClass.trim() : "";
+	   	variables.setVariable("styleClass", styleClass.trim());
+	   	
+	   	String changedClass = (String)component.getAttributes().get("changedClass");
+	   	changedClass = (changedClass != null ? changedClass.trim() : "") + " " + styleClass;
+	   	variables.setVariable("changedClass", changedClass.trim());
+	   	
+	   	String viewClass = (String)component.getAttributes().get("viewClass");
+	   	viewClass = (viewClass != null ? viewClass.trim() : "") + " " + styleClass;
+	   	variables.setVariable("viewClass", viewClass.trim());
+	   	
+	   	String editClass = (String)component.getAttributes().get("editClass");
+	   	editClass = (editClass != null ? editClass.trim() : "") + " " + styleClass;
+	   	variables.setVariable("editClass", editClass.trim());
+		
+	   	String layout = (String)component.getAttributes().get("layout");
+	   	if (layout != null && layout.length() != 0) {
+	   		if (!layout.equals("block")) {
+	   			layout = "inline";
+	   		}
+	   	} else {
+			layout = "inline";
+	   	}
+		
+	   	if (layout.equals("inline")) {
+	   		   	
+	   	]]>
+	</jsp:scriptlet>
+		<span id="#{clientId}" class='rich-inplace rich-inplace-input rich-inplace-view #{viewClass}'
+			  x:passThruWithExclusions="id,styleClass,class" style="zoom: 1; #{component.attributes['style']}">
+	<jsp:scriptlet>
+	   	} else {
+	</jsp:scriptlet>
+		<div id="#{clientId}" class='rich-inplace rich-inplace-input rich-inplace-view #{viewClass}'
+			  x:passThruWithExclusions="id,styleClass,class" style="zoom: 1; #{component.attributes['style']}">
+	<jsp:scriptlet>
+	   	} 
+	</jsp:scriptlet>		  
+	
+		<input id='#{clientId}tempValue'
+			   class='rich-inplace-field' 
+			   style='clip:rect(0px 0px 0px 0px)' 
+			   type='text'
+			   autocomplete="off"
+			   value='#{fieldValue}'
+			   onselect='#{component.attributes["onselect"]}'
+			   onblur='#{component.attributes["onblur"]}'
+			   onfocus='#{component.attributes["onfocus"]}'
+			   onclick='#{component.attributes["oninputclick"]}'
+			   ondblclick='#{component.attributes["oninputdblclick"]}'
+			   onkeydown='#{component.attributes["oninputkeydown"]}'
+			   onkeypress='#{component.attributes["oninputkeypress"]}'
+			   onkeyup='#{component.attributes["oninputkeyup"]}'
+			   onmousedown='#{component.attributes["oninputmousedown"]}'
+			   onmousemove='#{component.attributes["oninputmousemove"]}'
+			   onmouseout='#{component.attributes["oninputmouseout"]}'
+			   onmouseover='#{component.attributes["oninputmouseover"]}'
+			   onmouseup='#{component.attributes["oninputmouseup"]}'
+			   maxlength='#{component.attributes["maxlength"]}'
+			   />
+		<input id='#{clientId}value' name='#{clientId}' autocomplete="off" type='hidden' value='#{fieldValue}'/>
+		<div id="#{clientId}bar" class="rich-inplace-input-controls-set" style="display:none;">
+			<jsp:scriptlet>
+				<![CDATA[
+				 if (isControlsFacetExists(context, component)) {
+				     encodeControlsFacet(context, component);
+				 } else {
+				]]>
+			</jsp:scriptlet>
+			<div id="#{clientId}btns_shadow" class="rich-inplace-shadow">
+				<table class="rich-inplace-shadow-size" cellspacing="0" cellpadding="0" border="0">
+					<tbody>
+						<tr>
+							<td class="rich-inplace-shadow-tl">
+								<img width="10" height="1" style="border:0" alt="" src="#{spacer}"/>
+							</td>
+							<td class="rich-inplace-shadow-tr">
+								<img width="1" height="10" style="border:0" alt="" src="#{spacer}"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="rich-inplace-shadow-bl">
+								<img width="1" height="10" style="border:0" alt="" src="#{spacer}"/>
+							</td>
+							<td class="rich-inplace-shadow-br">
+								<img width="10" height="1" style="border:0" alt="" src="#{spacer}"/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div id="#{clientId}buttons" style="position:relative; width: 1px">
+				<input id='#{clientId}ok' class='rich-inplace-control #{controlClass}' 
+					   type='image' 
+					   onmouseup="this.className='rich-inplace-control #{controlClass}'"
+					   onmouseout="this.className='rich-inplace-control #{controlClass}'"
+					   onmousedown="this.className='rich-inplace-control-press #{controlPressedClass}'"
+					   onmouseover="this.className='rich-inplace-control #{controlHoverClass}'"
+					   src='#{saveIcon}'/>
+				<input id='#{clientId}cancel' class='rich-inplace-control #{controlClass}' 
+					   type='image' 
+					   onmouseup="this.className='rich-inplace-control #{controlClass}'"
+					   onmouseout="this.className='rich-inplace-control #{controlClass}'" 
+					   onmousedown="this.className='rich-inplace-control-press  #{controlPressedClass}'"
+					   onmouseover="this.className='rich-inplace-control #{controlHoverClass}'"
+					   src='#{cancelIcon}'/>
+			</div>
+			<jsp:scriptlet>
+				<![CDATA[
+				 }
+				 ]]>
+			</jsp:scriptlet>
+			<c:scriptObject var="attributes">
+				<c:scriptOption name="defaultLabel" value="#{this:getDefaultLabel(context, component)}" defaultValue="\u00a0\u00a0\u00a0" />
+				<c:scriptOption attributes="showControls, selectOnEdit, inputWidth" />
+				<c:scriptOption attributes="editEvent" defaultValue="onclick"/>
+				<c:scriptOption name="verticalPosition" value="#{component.attributes['controlsVerticalPosition']}" defaultValue="center" />
+				<c:scriptOption name="horizontalPosition" value="#{component.attributes['controlsHorizontalPosition']}" defaultValue="right" />
+				<c:scriptOption attributes="minInputWidth" defaultValue="40px"/>
+				<c:scriptOption attributes="maxInputWidth" defaultValue="500px"/>
+			</c:scriptObject>
+			<c:scriptObject var="events">
+				<c:scriptOption attributes="oneditactivation, onviewactivation, oneditactivated, onviewactivated, onchange" wrapper="eventHandler" /> 
+			</c:scriptObject>
+			<c:scriptObject var="view">
+				<c:scriptOption name="normal" value="#{viewClass}" />
+				<c:scriptOption name="hovered" value="#{component.attributes['viewHoverClass']}" />
+			</c:scriptObject>
+			<c:scriptObject var="changed">
+				<c:scriptOption name="normal" value="#{changedClass}" />
+				<c:scriptOption name="hovered" value="#{component.attributes['changedHoverClass']}" />
+			</c:scriptObject>
+			<c:scriptObject var="componentStyles">
+				<c:scriptOption variables="view, changed" />
+				<c:scriptOption name="editable" value="#{editClass}" />
+			</c:scriptObject>
+			<c:scriptObject var="userStyles">
+				<c:scriptOption name="component" value="#{componentStyles}" />
+			</c:scriptObject>
+			<c:scriptObject var="options">
+				<c:scriptOption variables="attributes, events, userStyles" />
+			</c:scriptObject>
+			<script type="text/javascript">
+		
+			var inplaceInput = new Richfaces.InplaceInput('#{clientId}'
+				<c:if test="#{not empty options}">
+				, <f:writeAsScript value="#{options}" />
+				</c:if> 					
+			);
+		</script>			
+		</div>
+				
+	<jsp:scriptlet>
+		if(isEmptyDefaultLabel(convertToString(variables.getVariable("value")))) {
+			writer.write(convertToString(variables.getVariable("value")));
+		} else {
+			writer.writeText(convertToString(variables.getVariable("value")),null);
+		}
+		if (!layout.equals("inline")) {
+	</jsp:scriptlet>	
+		</div>
+	<jsp:scriptlet>	
+	   	} else {
+	</jsp:scriptlet>
+		</span>
+	<jsp:scriptlet>
+	   	}
+	</jsp:scriptlet>
+</f:root>	

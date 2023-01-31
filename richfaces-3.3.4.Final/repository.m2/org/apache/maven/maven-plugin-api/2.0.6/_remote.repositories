@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:32:26 CET 2022
+maven-plugin-api-2.0.6.jar>central=
+maven-plugin-api-2.0.6.pom>central=
+maven-plugin-api-2.0.6.jar>nexus=
+maven-plugin-api-2.0.6.pom>nexus=

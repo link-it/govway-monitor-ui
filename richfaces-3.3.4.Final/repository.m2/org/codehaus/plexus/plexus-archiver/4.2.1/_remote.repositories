@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Nov 10 19:32:56 CET 2022
+plexus-archiver-4.2.1.jar>nexus=
+plexus-archiver-4.2.1.pom>nexus=
+plexus-archiver-4.2.1.jar>central=
+plexus-archiver-4.2.1.pom>central=

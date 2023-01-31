@@ -1,0 +1,244 @@
+<section role="NotInToc" id="rich_panel">
+      <title>&lt; rich:panel &gt; <emphasis role="since"><superscript> available since <emphasis role="version">3.0.0</emphasis></superscript></emphasis></title>
+      <section>
+            <title>Description</title>
+            <para>The component implements a bordered rectangular panel with or without header.</para>
+            <figure>
+                  <title>
+                        The &lt;rich:panel&gt;</title>
+                  <mediaobject>
+                        <imageobject>
+                              <imagedata fileref="images/panel_init.png"/>
+                        </imageobject>
+                  </mediaobject>
+            </figure>
+      </section>
+      
+      <section>
+            <title>Key Features</title>
+            <itemizedlist>
+                  <listitem>
+                        <para>May have any content inside</para>
+                  </listitem>
+                  <listitem>
+                        <para>May have header</para>
+                  </listitem>
+                  <listitem>
+                        <para>Has customizable look and feel</para>
+                  </listitem>
+            </itemizedlist>
+      </section>
+      
+      <section>
+            <title>Details of Usage</title>
+            <para>
+                  The component groups page contents into notional blocks. 
+                  Borders separate this content visually from the rest of page. 
+                  To define the <emphasis role="bold"><property>&lt;rich:panel&gt;</property></emphasis> on a page the following code will be enough:
+            </para>
+            <programlisting role="XML"><![CDATA[<rich:panel />]]></programlisting>
+            
+            <para>The result:</para>
+                  <figure>
+                        <title>Empty &lt;rich:panel&gt;</title>
+                        <mediaobject>
+                              <imageobject>
+                                    <imagedata fileref="images/panel2.png"/>
+                              </imageobject>
+                        </mediaobject>
+                  </figure>
+                  
+                  <para>
+                        The <emphasis role="bold"><property>&lt;rich:panel&gt;</property></emphasis> supports <code>header</code> facet that defines header and text label on it. 
+                        Besides that there is <emphasis><property>&quot;header&quot;</property></emphasis> attribute that does the same job. 
+                        The following two entries
+                  </para>
+            <programlisting role="XML"><![CDATA[<-- A -->
+<rich:panel header="I'm panel header" />
+
+<-- B -->
+<rich:panel>
+      <f:facet name="header">
+            <h:outputText value="I'm panel header"/>
+      </f:facet>
+</rich:panel>]]></programlisting>
+                  
+                  <para>
+                        have the same output:
+                  </para>
+            <figure>
+                  <title>The &lt;rich:panel&gt; with header</title>
+                  <mediaobject>
+                        <imageobject>
+                              <imagedata fileref="images/panel3.png"/>
+                        </imageobject>
+                  </mediaobject>
+            </figure>
+      </section>
+      
+      <section>
+            <title>Reference Data</title>
+            <para>
+                  <ulink url="&tlddoc;rich/panel.html">Table of &lt;rich:panel&gt; attributes</ulink>. 
+            </para>
+            
+            <table>
+                  <title>Component Identification Parameters </title>
+                  <tgroup cols="2">
+                        <thead>
+                              <row>
+                                    <entry>Name</entry>
+                                    <entry>Value</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry>component-type</entry>
+                                    <entry>org.richfaces.panel</entry>
+                              </row>
+                              <row>
+                                    <entry>component-class</entry>
+                                    <entry>org.richfaces.component.html.HtmlPanel</entry>
+                              </row>
+                              <row>
+                                    <entry>component-family</entry>
+                                    <entry>org.richfaces.panel</entry>
+                              </row>
+                              <row>
+                                    <entry>renderer-type</entry>
+                                    <entry>org.richfaces.PanelRenderer</entry>
+                              </row>
+                              <row>
+                                    <entry>tag-class</entry>
+                                    <entry>org.richfaces.taglib.PanelTag</entry>
+                              </row>
+                        </tbody>
+                  </tgroup>
+            </table>
+            
+            <table>
+                  <title>Facets</title>
+                  <tgroup cols="2">
+                        <thead>
+                              <row>
+                                    <entry>Facet name</entry>
+                                    <entry>Description</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry>header</entry>
+                                    <entry>Defines panel header and text label on it</entry>
+                              </row>
+                        </tbody>
+                  </tgroup>
+            </table>
+            
+            <table id="tab_cn11">
+                  <title>Style classes (selectors) and mapped skin parameters</title>
+                  <tgroup cols="4">
+                        <thead>
+                              <row>
+                                    <entry>Class name</entry>
+                                    <entry>Description</entry>
+                                    <entry>Skin parameter</entry>
+                                    <entry>CSS property</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry morerows="1">.rich-panel</entry>
+                                    <entry morerows="1">Defines styles for a wrapper &lt;div&gt; element of a component</entry>
+                                    <entry>generalBackgroundColor</entry>
+                                    <entry>background-color</entry>
+                              </row>
+                              <row>
+                                    <entry>panelBorderColor</entry>
+                                    <entry>border-color</entry>
+                              </row>
+                              
+                              <row>
+                                    <entry morerows="2">.rich-panel-body</entry>
+                                    <entry morerows="2">Defines styles for a body element</entry>
+                                    <entry>generalFamilyFont</entry>
+                                    <entry>font-family</entry>
+                              </row>
+                              <row>
+                                    <entry>generalSizeFont</entry>
+                                    <entry>font-size</entry>
+                              </row>
+                              <row>
+                                    <entry>generalTextColor</entry>
+                                    <entry>color</entry>
+                              </row>
+                              <row>
+                                    <entry morerows="5">.rich-panel-header</entry>
+                                    <entry morerows="5">Defines styles for a header element</entry>
+                                    <entry>headerFamilyFont</entry>
+                                    <entry>font-family</entry>
+                              </row>
+                              <row>
+                                    <entry>headerSizeFont</entry>
+                                    <entry>font-size</entry>
+                              </row>
+                              <row>
+                                    <entry>headerWeightFont</entry>
+                                    <entry>font-weight</entry>
+                              </row>
+                              <row>
+                                    <entry>headerTextColor</entry>
+                                    <entry>color</entry>
+                              </row>
+                              <row>
+                                    <entry>headerBackgroundColor</entry>
+                                    <entry>background-color</entry>
+                              </row>
+                              <row>
+                                    <entry>headerBackgroundColor</entry>
+                                    <entry>border-color</entry>
+                              </row>
+                        </tbody>
+                  </tgroup>
+            </table>
+            
+            <table>
+                  <title>Internal style classes (selectors)</title>
+                  <tgroup cols="2">
+                        <thead>
+                              <row>
+                                    <entry>Class name (selector)</entry>
+                                    <entry>Description</entry>
+                              </row>
+                        </thead>
+                        <tbody>
+                              <row>
+                                    <entry>.rich-panel</entry>
+                                    <entry>Defines styles for a wrapper &lt;div&gt; element of a component</entry>
+                              </row>
+                              <row>
+                                    <entry>.rich-panel-body</entry>
+                                    <entry>Defines styles for a body element</entry>
+                              </row>
+                              <row>
+                                    <entry>.rich-panel-header</entry>
+                                    <entry>Defines styles for a header element</entry>
+                              </row>
+                        </tbody>
+                  </tgroup>
+            </table>
+            
+            <para>
+                  You can find all necessary information about style classes redefinition in <link linkend="customstyles">Definition of Custom Style Classes</link> section.       
+            </para>
+      </section>
+            
+      <section>
+            <title>Relevant Resources Links</title>
+            <para>
+                  Visit <ulink url="http://livedemo.exadel.com/richfaces-demo/richfaces/panel.jsf?c=panel">Panel page</ulink> at RichFaces LiveDemo for examples of component usage and their sources.
+            </para>
+            <para>
+                  If you have any questions or ideas regarding the <emphasis role="bold"><property>&lt;rich:panel&gt;</property></emphasis> tell about them at the <ulink url="http://www.jboss.com/index.html?module=bb&amp;op=viewtopic&amp;p=4064191">RichFaces Users Forum</ulink>.
+            </para>  
+      </section>
+</section>
