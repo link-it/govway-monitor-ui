@@ -104,7 +104,8 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 				// IE Can throw exception for any responses
 						}
 		      			// Prepare XML, if exist.
-		      			if(_this._request.responseXML ){
+//		      			if(_this._request.responseXML ){
+		      			if(_this._request.responseText && _this._request.responseText.startsWith('<?xml version')){
 			      			_this._parsingStatus = Sarissa.getParseErrorText(_this._request.responseXML);
 			      			if(_this._parsingStatus == Sarissa.PARSED_OK && Sarissa.setXpathNamespaces ){
 			      				Sarissa.setXpathNamespaces(_this._request.responseXML,"xmlns='http://www.w3.org/1999/xhtml'");
@@ -301,7 +302,8 @@ A4J.AJAX.XMLHttpRequest.prototype = {
         	  		if(dataElement){
         	  			try {
         	  				data = Sarissa.getText(dataElement,true);
-        	  				data = window.eval('('+data+')');
+        	  				data = this.customJSONEval('('+data+')');
+//        	  				data = window.eval('('+data+')');
         	  			} catch(e){
         	  				LOG.error("Error on parsing JSON data "+e.message,data);
         	  			}
@@ -318,13 +320,51 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 			if (window.execScript) {
 				window.execScript( newscript );
 			} else {
-				window.eval(newscript);
+				//window.eval(newscript);
+				this.customEval(newscript);
 			}
 			LOG.debug("Script evaluation succeeded");
 		} catch(e){
 			LOG.error("ERROR Evaluate script:  Error name: " + e.name + e.message?". Error message: "+e.message:"");
 		}
 	},
+	
+	customJSONEval: function(data) {
+		var result;
+
+	    // Define callback
+	    window.evalCallback = function(r){
+	        result = r;
+	    };
+	
+	    var newScript = document.createElement("script");
+	    newScript.innerHTML = "evalCallback(" + data + ");";
+	    /*
+	     * // Add CSP nonce if relevant
+	     * newScript.setAttribute("nonce", nonce);
+	    */
+	    document.body.appendChild(newScript);
+	
+	    // Now clean up DOM and global scope
+	    document.body.removeChild(newScript);
+	    delete window.evalCallback;
+	
+	    return result;
+	},
+	
+	customEval: function(data) {
+        if (data && /\S/.test(data)) {
+            var head = document.getElementsByTagName("head")[0] || document.documentElement
+              , script = document.createElement("script");
+            script.type = "text/javascript";
+            if (jQuery.support.scriptEval)
+                script.appendChild(document.createTextNode(data));
+            else
+                script.text = data;
+            head.insertBefore(script, head.firstChild);
+            head.removeChild(script);
+        }
+    },
 	
 	evaluateQueueScript: function() {
 	    var queueScript = this.getElementById('org.ajax4jsf.queue_script');
