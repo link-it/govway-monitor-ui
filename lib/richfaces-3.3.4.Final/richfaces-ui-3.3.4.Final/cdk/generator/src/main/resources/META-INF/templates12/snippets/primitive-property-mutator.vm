@@ -1,2 +1,0 @@
-this.${field1.name} = ${field1.name};
-this.${field2.name} = true;

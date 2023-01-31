@@ -1,4 +1,0 @@
- <application>
-  <navigation-handler>org.richfaces.ui.application.StateNavigationHandler</navigation-handler>
-  <el-resolver>org.richfaces.el.StateELResolver</el-resolver>
- </application>

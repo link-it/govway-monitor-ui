@@ -1,2 +1,0 @@
-if ( Boolean.valueOf( String.valueOf($if) ).booleanValue() ) {
-
