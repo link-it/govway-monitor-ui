@@ -474,8 +474,8 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 	   		        }
    		        }
 				var v = this.IEVersion();
-				var _serialized = this.serializeXmlNode(newnode, v);
 				if(v != 11) {
+					var _serialized = this.serializeXmlNode(newnode, v);
 					oldnode.outerHTML = _serialized;
 				} else {
 					var _node = newnode.cloneNode(true);
@@ -1312,6 +1312,30 @@ A4J.AJAX.replaceViewState = function(inputs,newinputs){
         	  		}
 	
 };
+A4J.AJAX.customJSONEval = function() {
+	
+	//console.log(arguments);
+	
+    var renderNode = document.createElement("script"),
+        len = arguments.length,
+        source = arguments[len-1],
+        args = [];
+
+    if ( 1 < len ) {
+        for ( var i=0; i<(len-1); i++ ) {
+            args.push(arguments[i]);
+        }
+    }
+
+    renderNode.text = "function __ifYouAbsolutelyMustUseIt() { return function("+args.join(", ")+") {" + source + "}}";
+    renderNode.nonce = document.getElementById('expiredMsgScript').nonce;
+   // renderNode.setAttribute('nonce', nonce);
+
+    document.head.appendChild(renderNode).parentNode.removeChild(renderNode);
+    return __ifYouAbsolutelyMustUseIt();
+};
+
+
 /**
  * 
  */
@@ -1351,7 +1375,7 @@ A4J.AJAX.finishRequest = function(request){
 					}
 
 					var newscript = Sarissa.getText(oncomp,true);
-					var oncomplete = new Function("request","event","data",newscript);
+					var oncomplete = A4J.AJAX.customJSONEval("request","event","data",newscript);
 					oncomplete.call(target,request,event,data);					
 
 					if (options.queueoncomplete) {

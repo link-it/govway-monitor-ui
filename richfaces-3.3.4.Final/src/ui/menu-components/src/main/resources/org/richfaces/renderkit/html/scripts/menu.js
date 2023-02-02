@@ -278,7 +278,7 @@ RichFaces.Menu.Layers = {
 		}
 		if (this.useTimeouts) {
 			clearTimeout(this.timeoutFlag);
-			this.timeoutFlag = setTimeout('RichFaces.Menu.Layers.shutdown()', ratio);
+			this.timeoutFlag = setTimeout(function () {RichFaces.Menu.Layers.shutdown();}, ratio);
 		}
 	},
 
