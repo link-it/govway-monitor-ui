@@ -3,4 +3,4 @@
 # N.B. --> Utilizzare mvn versione 3.6.1 o superiore e jdk 1.8
 
 cd src
-mvn clean install -Dmaven.repo.local=repository.m2
+mvn clean install -Dmaven.repo.local=../repository.m2
