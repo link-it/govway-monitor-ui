@@ -40,18 +40,13 @@
 				<td class="rich-tabhdr-side-cell #{cssId}-tab-td-side-cell-style">
 					<table class="#{cssId}-tab-td-side-cell-table-style" border="0" cellpadding="0" cellspacing="0" >
 						<tr>
-							<td id="#{clientId}_lbl" 
-								onclick="#{component.attributes['onlabelclick']}"
-								onkeypress="#{component.attributes['onlabelkeypress']}"
-								ondblclick="#{component.attributes['onlabeldblclick']}"
-								onkeyup="#{component.attributes['onlabelkeyup']}"
-								onkeydown="#{component.attributes['onlabelkeydown']}"
-								onmousedown="#{component.attributes['onlabelmousedown']}"
-								onmouseup="#{component.attributes['onlabelmouseup']}"
-								onmousemove="#{component.attributes['onlabelmousemove']}"
-								>
-								
+							<td id="#{clientId}_lbl" >
 								<f:call name="writeLabel" />
+								<script type="text/javascript" nonce="#{cspValue}">
+									jQuery(document).ready(function() {
+										 #{this:getLabelEventsHandler(context, component)}
+									 }); 
+								</script>
 							</td>
 						</tr>
 					</table>
@@ -59,7 +54,13 @@
 				<td class="rich-tabhdr-side-border"><img src="#{spacer}" width="1" height="1" alt="" class="#{cssId}-tab-side-border-img-style" /></td>
 			</tr>
 		</table>
-
+		<script type="text/javascript" nonce="#{cspValue}">
+			jQuery(document).ready(function() {
+				 jQuery("table[id$='#{clientId}_shifted']").click(function(event) {
+					 #{this:getOnClickEventHandler(context, component)}
+				});
+			 }); 
+		</script>
 	</td>
 	<td><img src="#{spacer}" height="1" alt="" class="#{cssId}-tab-header-spacer-img-style"/></td>
 
