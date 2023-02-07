@@ -50,6 +50,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 
 import org.ajax4jsf.Messages;
+import org.ajax4jsf.component.UIDataAdaptorBase;
 import org.ajax4jsf.javascript.JSEncoder;
 import org.ajax4jsf.javascript.JSFunctionDefinition;
 import org.ajax4jsf.renderkit.compiler.TemplateContext;
@@ -237,6 +238,26 @@ public class RendererUtils {
 				"shape", "disabled", "readonly", "ismap", "align"
 
 		};
+		
+		public static final String[] PASS_THRU_EVENT_HANDLER = {
+				onblur_ATTRIBUTE, onchange_ATTRIBUTE, onclick_ATTRIBUTE, ondblclick_ATTRIBUTE, onfocus_ATTRIBUTE,
+				onkeydown_ATTRIBUTE, onkeypress_ATTRIBUTE, onkeyup_ATTRIBUTE, onload_ATTRIBUTE,
+				onmousedown_ATTRIBUTE, onmousemove_ATTRIBUTE, onmouseout_ATTRIBUTE, onmouseover_ATTRIBUTE,
+				onmouseup_ATTRIBUTE, onreset_ATTRIBUTE, onselect_ATTRIBUTE, onsubmit_ATTRIBUTE, onunload_ATTRIBUTE
+		};
+		
+		public static final String[] PASS_THRU_NO_EVENT_HANDLER = {
+				"accesskey", "alt", "cols", "height", "lang", "longdesc",
+				"maxlength",
+				//"onblur", "onchange", "onclick", "ondblclick", "onfocus", "onkeydown", "onkeypress", "onkeyup", "onload",
+				//"onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onreset", "onselect", "onsubmit", "onunload",
+				"rows", "size", "tabindex", "title", "width", "dir", "rules",
+				"frame", "border", "cellspacing", "cellpadding", "summary",
+				"bgcolor", "usemap", "enctype", "accept-charset", "accept",
+				"target", "charset", "coords", "hreflang", "rel", "rev",
+				"shape", "disabled", "readonly", "ismap", "align"
+
+		};
 
 		/**
 		 * HTML attributes allowed boolean-values only
@@ -362,6 +383,18 @@ public class RendererUtils {
 	public void encodePassThru(FacesContext context, UIComponent component)
 			throws IOException {
 		encodeAttributesFromArray(context, component, HTML.PASS_THRU);
+	}
+	
+	/**
+	 * Encode common pass-thru html attributes.
+	 * 
+	 * @param context
+	 * @param component
+	 * @throws IOException
+	 */
+	public void encodePassThruNoEventHandler(FacesContext context, UIComponent component)
+			throws IOException {
+		encodeAttributesFromArray(context, component, HTML.PASS_THRU_NO_EVENT_HANDLER);
 	}
 
 	/**
@@ -921,15 +954,31 @@ public class RendererUtils {
 		String actionURL = getActionUrl(context);
 		String encodeActionURL = context.getExternalContext().encodeActionURL(
 				actionURL);
+		
+		// modifica per eliminare la generazione dello style inline
+		String cssId = getCssId(clientId);
+		String cspNonceValue = getCspNonceValue(context);
+		String formClassName = cssId + "-form-style";
+		String stile =  "margin:0; padding:0; display: inline;";
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(".").append(formClassName).append(" {").append(stile).append("}");
+		
+		writer.startElement(HTML.STYLE_ELEM, component);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+		if(cspNonceValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspNonceValue, null);
+		}
+		
+		writer.write(sb.toString());
+		writer.endElement(HTML.STYLE_ELEM);
 
 		writer.startElement(HTML.FORM_ELEMENT, component);
 		writer.writeAttribute(HTML.id_ATTRIBUTE, clientId, null);
 		writer.writeAttribute(HTML.NAME_ATTRIBUTE, clientId, null);
 		writer.writeAttribute(HTML.METHOD_ATTRIBUTE, "post", null);
-		writer.writeAttribute(HTML.style_ATTRIBUTE, "margin:0; padding:0; display: inline;",
-				null);
-		writer.writeURIAttribute(HTML.ACTION_ATTRIBUTE, encodeActionURL,
-				"action");
+		writer.writeAttribute(HTML.class_ATTRIBUTE, formClassName, null);
+		writer.writeURIAttribute(HTML.ACTION_ATTRIBUTE, encodeActionURL, "action");
 	}
 
 	/**
@@ -1010,12 +1059,22 @@ public class RendererUtils {
 	 * @param tab
 	 * @param string
 	 */
-
 	public void writeScript(FacesContext context, UIComponent component,
 			Object script) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
+		writeScript(writer, context, component, script);
+	}
+
+	public void writeScript(ResponseWriter writer, FacesContext context, UIComponent component,
+			Object script) throws IOException {
+		
+		String cspNonceValue = getCspNonceValue(context);
+		
 		writer.startElement(HTML.SCRIPT_ELEM, component);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", "type");
+		if(cspNonceValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspNonceValue, null);
+		}
 		writer.writeText(script, null);
 		writer.endElement(HTML.SCRIPT_ELEM);
 	}
@@ -1182,9 +1241,148 @@ public class RendererUtils {
 		return null;
 	}
 	
+	public static String getCssId(FacesContext context, UIComponent component) {
+		String componentId = component.getClientId(context);
+		return getCssId(componentId).concat("-styleAttr");
+	}
+	
 	public static String getCssId(String componentId) {
 		if(componentId == null) return null;
 		
 		return componentId.replace(":", "-").replace(".", "-");
+	}
+	
+	/**
+	 * Decide se generare il tag script in funzione degli attributi di un elemento.
+	 * 
+	 * @param attributes
+	 * @return
+	 */
+	public boolean shouldRenderScriptForEventHandler(FacesContext context, UIComponent component) {
+		Map<String, Object> attributes = component.getAttributes();
+//		String clientId = component.getClientId(context);
+		
+		boolean b = _shouldRenderScriptForEventHandler(attributes);
+//		System.out.println("CHECK EVENTI PANEL: " + clientId + ": " + b); 
+		return b;
+	}
+
+	private boolean _shouldRenderScriptForEventHandler(Map<String, Object> attributes) {
+		if(attributes == null || attributes.isEmpty()) return false;
+		
+		String[] attributesToWrite = HTML.PASS_THRU_EVENT_HANDLER;
+		for (int i = 0; i < attributesToWrite.length; i++) {
+			String attribute = attributesToWrite[i];
+			Object value = attributeValue(attribute, attributes.get(getComponentAttributeName(attribute)));
+			if (null != value && shouldRenderAttribute(attribute, value)) {
+//				System.out.println("TROVATO EVENTO: " + attribute);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	/*
+	 *jQuery(document).ready(function() {
+	 		 jQuery("a[id$='#{clientId}']").click(function() {
+	 			#{this:getOnClick(context,component)};
+	 		});
+		 }); 
+		 onblur_ATTRIBUTE, onchange_ATTRIBUTE, onclick_ATTRIBUTE, ondblclick_ATTRIBUTE, onfocus_ATTRIBUTE,
+				onkeydown_ATTRIBUTE, onkeypress_ATTRIBUTE, onkeyup_ATTRIBUTE, onload_ATTRIBUTE,
+				onmousedown_ATTRIBUTE, onmousemove_ATTRIBUTE, onmouseout_ATTRIBUTE, onmouseover_ATTRIBUTE,
+				onmouseup_ATTRIBUTE, onreset_ATTRIBUTE, onselect_ATTRIBUTE, onsubmit_ATTRIBUTE, onunload_ATTRIBUTE
+	 * */
+	public String getScriptContentForEventHandler(ResponseWriter writer, FacesContext context, UIComponent component, String tag) {
+		String[] attributersToWrite = HTML.PASS_THRU_EVENT_HANDLER;
+		return getScriptContentForEventHandler(writer, context, component, attributersToWrite, tag);
+	}
+	
+	public String getScriptContentForEventHandler(ResponseWriter writer, FacesContext context, UIComponent component, String[] attributersToWrite, String tag) {
+		Map<String, Object> attributes = component.getAttributes();
+		StringBuffer sb = new StringBuffer();
+		
+		String clientId = component.getClientId(context);
+		sb.append("jQuery(document).ready(function() {");
+		for (int i = 0; i < attributersToWrite.length; i++) {
+			String attribute = attributersToWrite[i];
+			// estrazione codice 
+			Object value = attributeValue(attribute, attributes.get(getComponentAttributeName(attribute)));
+			if (null != value && shouldRenderAttribute(attribute, value)) {
+				String jQueryEvent = attribute.substring(attribute.indexOf("on")+ "on".length());
+				
+				sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
+				sb.append(value);
+				sb.append("});");
+				
+//				if(attribute.equals(HTML.onclick_ATTRIBUTE)) {
+//					sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\").click(function() {");
+//					sb.append(value);
+//					sb.append("});");
+//				}
+			}
+		}
+		sb.append("});");
+		return sb.toString();
+	}
+	
+	public String getScriptContentForEventHandler(ResponseWriter writer, FacesContext context, UIComponent component, String tag, String attrs) {
+		if (null != attrs) {
+			String[] attributersToWrite = attrs.split(",");
+			return getScriptContentForEventHandler(writer, context, component, attributersToWrite, tag);
+		}
+		return "";
+	}
+	
+	/**
+	 * Write style with start/end elements and type.
+	 * 
+	 * @param context
+	 * @param tab
+	 * @param string
+	 */
+	public void writeStyle(FacesContext context, UIComponent component,
+			String cssClassName, String style) throws IOException {
+		ResponseWriter writer = context.getResponseWriter();
+		writeStyle(writer, context, component, cssClassName, style);
+	}
+
+	public void writeStyle(ResponseWriter writer, FacesContext context, UIComponent component, String cssClassName, String style) throws IOException {
+		
+		String cspNonceValue = getCspNonceValue(context);
+		
+		writer.startElement(HTML.STYLE_ELEM, component);
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", HTML.TYPE_ATTR);
+		if(cspNonceValue != null) {
+			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspNonceValue, null);
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append(".").append(cssClassName).append(" {").append(style).append("}");
+		
+		writer.writeText(sb.toString(), null);
+		writer.endElement(HTML.STYLE_ELEM);
+	}
+	
+	public String concatStyleClasses(String styleClassOrig, String cssClassToAdd) {
+		if(styleClassOrig != null) {
+			return styleClassOrig.concat(" ").concat(cssClassToAdd);
+		} else {
+			return cssClassToAdd;
+		}
+	}
+	
+	public String getTableRowsScripts(ResponseWriter writer, FacesContext context, UIDataAdaptorBase component) {
+		Set<String> rowEventHandlers = component.getRowEventHandlers();
+		
+		StringBuffer sb = new StringBuffer();
+		
+		if(rowEventHandlers.size() > 0) {
+			for (Iterator<String> iterator = rowEventHandlers.iterator(); iterator.hasNext();) {
+				String string = iterator.next();
+				sb.append(string).append("\n");
+			}
+		}
+
+		return sb.toString();
 	}
 }

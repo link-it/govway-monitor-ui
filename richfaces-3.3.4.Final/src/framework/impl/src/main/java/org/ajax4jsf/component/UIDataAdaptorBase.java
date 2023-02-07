@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.ajax4jsf.component;
 
@@ -206,6 +211,8 @@ public abstract class UIDataAdaptorBase extends UIData implements AjaxDataEncode
 	private Object _ajaxRowKey = null;
 
 	private Map<String, Object> _ajaxRowKeysMap = new HashMap<String, Object>();
+	
+	private Set<String> _rowEventHandlers = new HashSet<String>();
 
 	/**
 	 * Get name of EL variable for component state.
@@ -1658,5 +1665,13 @@ public abstract class UIDataAdaptorBase extends UIData implements AjaxDataEncode
 		if (null != childState && !keepSaved(context)) {
 			childState.clear();
 		}
+	}
+
+	public Set<String> getRowEventHandlers() {
+		return _rowEventHandlers;
+	}
+
+	public void setRowEventHandlers(Set<String> _rowEventHandlers) {
+		this._rowEventHandlers = _rowEventHandlers;
 	}
 }
