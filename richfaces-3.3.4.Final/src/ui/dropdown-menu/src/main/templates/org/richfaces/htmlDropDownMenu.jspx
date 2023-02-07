@@ -25,21 +25,27 @@
 		        if (!menu.getSubmitMode().equalsIgnoreCase("none"))
 		        	org.richfaces.component.util.FormUtil.throwEnclFormReqExceptionIfNeed(context,component);
 		        
-    			if (!menu.isDisabled()) {]]>
+    			if (!menu.isDisabled()) {
+    				String jQueryScript = getUtils().getScriptContentForEventHandler(writer, context, component, "div", "onmousemove,onmousedown,onmouseup");
+    		    	variables.setVariable("jQueryScript",jQueryScript);
+    			]]>
     </jsp:scriptlet>
+    <script type="text/javascript" nonce="#{cspValue}">
+			#{jQueryScript}
+		</script>
 	<div id="#{clientId}" 
-		class="rich-ddmenu-label rich-ddmenu-label-unselect #{component.attributes['styleClass']} #{component.attributes['labelClass']}"
-		onmouseover="#{component.attributes['onmouseover']}"
-		onmouseout="#{component.attributes['onmouseout']}"
-		onmousemove="#{component.attributes['onmousemove']}">
+		class="rich-ddmenu-label rich-ddmenu-label-unselect #{component.attributes['styleClass']} #{component.attributes['labelClass']}" >
 	<jsp:scriptlet>	
-		<![CDATA[ } else { ]]> 
+		<![CDATA[ } else { 
+			String jQueryScript = getUtils().getScriptContentForEventHandler(writer, context, component, "div", "onmousemove,onmousedown,onmouseup");
+	    	variables.setVariable("jQueryScript",jQueryScript);
+		]]> 
 	</jsp:scriptlet>
+	<script type="text/javascript" nonce="#{cspValue}">
+			#{jQueryScript}
+		</script>
 	<div id="#{clientId}" 
-		class="rich-ddmenu-label-disabled rich-ddmenu-label-unselect #{component.attributes['styleClass']} #{component.attributes['disabledLabelClass']}"
-		onmouseover="#{component.attributes['onmouseover']}"
-		onmouseout="#{component.attributes['onmouseout']}"
-		onmousemove="#{component.attributes['onmousemove']}">
+		class="rich-ddmenu-label-disabled rich-ddmenu-label-unselect #{component.attributes['styleClass']} #{component.attributes['disabledLabelClass']}" >
 	<jsp:scriptlet>
 		<![CDATA[ } if (menu.isDisabled() &&
 			(component.getFacet("labelDisabled")!=null && component.getFacet("labelDisabled").isRendered())) {]]>

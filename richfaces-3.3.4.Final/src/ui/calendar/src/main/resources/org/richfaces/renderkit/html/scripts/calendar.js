@@ -782,7 +782,7 @@ Object.extend(Calendar.prototype, {
 		// add onclick event handlers to input field and popup button
 		if (this.params.popup && !this.params.disabled)
 		{
-			var handler = new Function ('event', "$('"+this.id+"').component.doSwitch();").bindAsEventListener(); 
+			var handler = this.customFunctionEval('event', "$('"+this.id+"').component.doSwitch();").bindAsEventListener();
 			Event.observe(this.POPUP_BUTTON_ID, "click", handler, false);
 			if (!this.params.enableManualInput) 
 			{
@@ -794,6 +794,27 @@ Object.extend(Calendar.prototype, {
 		
 		//alert(new Date().getTime()-_d.getTime());
 		
+	},
+	
+	
+	customFunctionEval: function() {
+	    var renderNode = document.createElement("script"),
+	        len = arguments.length,
+	        source = arguments[len-1],
+	        args = [];
+	
+	    if ( 1 < len ) {
+	        for ( var i=0; i<(len-1); i++ ) {
+	            args.push(arguments[i]);
+	        }
+	    }
+	
+	    renderNode.text = "function __ifYouAbsolutelyMustUseIt() { return function("+args.join(", ")+") {" + source + "}}";
+	    renderNode.nonce = document.getElementById('expiredMsgScript').nonce;
+	   // renderNode.setAttribute('nonce', nonce);
+	
+	    document.head.appendChild(renderNode).parentNode.removeChild(renderNode);
+	    return __ifYouAbsolutelyMustUseIt();
 	},
 	
 	destructor: function()

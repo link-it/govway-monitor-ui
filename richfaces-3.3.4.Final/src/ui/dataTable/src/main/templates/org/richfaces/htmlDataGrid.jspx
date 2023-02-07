@@ -28,4 +28,14 @@
 				</vcp:body>
 		</tbody>
 	</table>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			String tableRowsScript = getUtils().getTableRowsScripts(writer, context, component);
+			variables.setVariable("tableRowsScript", tableRowsScript);
+	]]>
+	</jsp:scriptlet>
+	<script type="text/javascript" nonce="#{cspValue}">
+			#{tableRowsScript}
+		</script>
 </f:root>

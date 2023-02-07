@@ -47,7 +47,7 @@ import org.ajax4jsf.renderkit.RendererUtils.HTML;
 public class AjaxOutputPanelRenderer extends RendererBase {
 	
 	private final String[] STYLE_ATTRIBUTES = new String[]{"style","class"};
-
+	
 	/* (non-Javadoc)
 	 * @see javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
 	 */
@@ -103,9 +103,15 @@ public class AjaxOutputPanelRenderer extends RendererBase {
 	protected void doEncodeBegin(ResponseWriter writer, FacesContext context, UIComponent component) throws IOException {
 		UIAjaxOutputPanel panel = (UIAjaxOutputPanel) component;
 		if (!"none".equals(panel.getLayout())) {
+			
+			if(getUtils().shouldRenderScriptForEventHandler(context, component)) { // se sono presenti degli eventi impostati come attributi converto il codice in un tag script
+				String scriptContentForEventHandler = getUtils().getScriptContentForEventHandler(writer, context, component, this.getTag(panel));
+				getUtils().writeScript(writer, context, component, scriptContentForEventHandler);
+			}
+
 			writer.startElement(getTag(panel), panel);
 			getUtils().encodeId(context, component);
-			getUtils().encodePassThru(context, component);
+			getUtils().encodePassThruNoEventHandler(context, component); // ora vengono inseriti solo gli attributi che non sono eventhandler
 			getUtils().encodeAttributesFromArray(context,component,STYLE_ATTRIBUTES);
 		}
 	}

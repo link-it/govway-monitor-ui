@@ -39,17 +39,33 @@
             if (disabled) {
         ]]> 
     </jsp:scriptlet>
-    <div id="#{clientId}" 
-        class="#{menuGroupClass}" 
-        onmousemove="#{menuItemMouseMove}" >
+    <script type="text/javascript" nonce="#{cspValue}">
+		jQuery(document).ready(function() {
+			 jQuery("div[id$='#{clientId}']").mousemove(function(event) {
+				 #{menuItemMouseMove}
+			});
+		 }); 
+	</script>
+    <div id="#{clientId}" class="#{menuGroupClass}" >
     <jsp:scriptlet> 
         <![CDATA[} else {]]> 
     </jsp:scriptlet>
-    <div id="#{clientId}" 
-        class="#{menuGroupClass}" 
-        onmousemove="#{menuItemMouseMove}"
-        onmouseout="RichFaces.Menu.groupMouseOut(event, this, '#{menuGroupCustomClass}', '#{onmouseoutInlineStyles}');"
-        onmouseover="RichFaces.Menu.groupMouseOver(event, this, '#{menuGroupHoverClass}', '#{onmouseoverInlineStyles}');">
+    <script type="text/javascript" nonce="#{cspValue}">
+		jQuery(document).ready(function() {
+			 jQuery("div[id$='#{clientId}']").mousemove(function(event) {
+				 #{menuItemMouseMove}
+			});
+			 
+			 jQuery("div[id$='#{clientId}']").mouseout(function(event) {
+				 RichFaces.Menu.groupMouseOut(event, this, '#{menuGroupCustomClass}', '#{onmouseoutInlineStyles}');
+			});
+			 
+			 jQuery("div[id$='#{clientId}']").mouseover(function(event) {
+				 RichFaces.Menu.groupMouseOver(event, this, '#{menuGroupHoverClass}', '#{onmouseoverInlineStyles}');
+			});
+		 }); 
+	</script>
+    <div id="#{clientId}" class="#{menuGroupClass}" >
     <jsp:scriptlet> 
         <![CDATA[}]]> 
     </jsp:scriptlet>

@@ -125,11 +125,11 @@ Richfaces.Slider.prototype = {
             this.eventDecreaseUp    = this.decreaseUp.bindAsEventListener(this);
 
 			if (this.options.onerror) {
-				this.eventError = new Function("event","clientErrorMessage",this.options.onerror);
+				this.eventError = this.customFunctionEval("event","clientErrorMessage",this.options.onerror);
 			}
 			
 			if (this.options.onchange != ""){
-				this.eventChanged = new Function("event",this.options.onchange).bindAsEventListener(this);
+				this.eventChanged = this.customFunctionEval("event",this.options.onchange).bindAsEventListener(this);
 			}
 				
 			Event.observe(this.track, "mousedown", this.eventMouseDown);
@@ -161,6 +161,26 @@ Richfaces.Slider.prototype = {
 		this.mainTable.component = this;
 		this["rich:destructor"] = "destroy";
 		
+	},
+	
+	customFunctionEval: function() {
+	    var renderNode = document.createElement("script"),
+	        len = arguments.length,
+	        source = arguments[len-1],
+	        args = [];
+	
+	    if ( 1 < len ) {
+	        for ( var i=0; i<(len-1); i++ ) {
+	            args.push(arguments[i]);
+	        }
+	    }
+	
+	    renderNode.text = "function __ifYouAbsolutelyMustUseIt() { return function("+args.join(", ")+") {" + source + "}}";
+	    renderNode.nonce = document.getElementById('expiredMsgScript').nonce;
+	   // renderNode.setAttribute('nonce', nonce);
+	
+	    document.head.appendChild(renderNode).parentNode.removeChild(renderNode);
+	    return __ifYouAbsolutelyMustUseIt();
 	},
 	
 	destroy: function ()

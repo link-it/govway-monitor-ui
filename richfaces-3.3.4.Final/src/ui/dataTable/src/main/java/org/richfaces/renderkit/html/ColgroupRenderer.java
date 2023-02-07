@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit.html;
 
@@ -29,6 +34,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.Column;
 import org.richfaces.component.UIColumnGroup;
@@ -141,7 +147,6 @@ public class ColgroupRenderer extends AbstractRowsRenderer {
 
 	private void encodeRowStart(FacesContext context, UIComponent colspan,
 			ResponseWriter writer, int currentRow) throws IOException {
-		writer.startElement(HTML.TR_ELEMENT, colspan);
 		String styleClass;
 		String rowClasses = (String) colspan.getAttributes().get("rowClasses");
 		String style = (String) colspan.getAttributes().get("style");
@@ -151,6 +156,20 @@ public class ColgroupRenderer extends AbstractRowsRenderer {
 		} else {
 			styleClass = (String) colspan.getAttributes().get("styleClass");
 		}
+		
+		if (style != null) {
+			style = getEncodedStyle(context.getResponseWriter(), null, null, null, style);
+			
+    		String cssClassName = RendererUtils.getCssId(context, colspan);
+    		getUtils().writeStyle(writer, context, colspan, cssClassName, style);
+    		styleClass = getUtils().concatStyleClasses(styleClass, cssClassName);
+    	}
+		
+		String eventScript = creaScriptEventHandler(writer, context, colspan, HTML.TR_ELEMENT);
+		getUtils().writeScript(writer, context, colspan, eventScript);
+		
+		writer.startElement(HTML.TR_ELEMENT, colspan);
+		
 		Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 		Object skinRowClass = currentRow == 0 ? requestMap
 				.get(AbstractRowsRenderer.SKIN_FIRST_ROW_CLASS_KEY)
@@ -158,22 +177,41 @@ public class ColgroupRenderer extends AbstractRowsRenderer {
 		encodeStyleClass(context.getResponseWriter(), skinRowClass,
 				"rich-tablerow", requestMap
 						.get(AbstractRowsRenderer.ROW_CLASS_KEY), styleClass);
-		encodeStyle(context.getResponseWriter(),null, null, null, style);
 		getUtils().encodePassThruWithExclusionsArray(context, colspan,EVENT_ATTRS);
+		
+	}
+
+	protected String creaScriptEventHandler(ResponseWriter writer, FacesContext context, UIComponent colspan, String tag) throws IOException {
+		String clientId = colspan.getClientId(context);
+		return creaScriptEventHandler(writer, context, colspan, tag, clientId);
+	}
+
+	protected String creaScriptEventHandler(ResponseWriter writer, FacesContext context, UIComponent colspan, String tag, String clientId) throws IOException {
+		
+		StringBuffer sb = new StringBuffer();
 		// Search for enclosed DataAdaptor.
 		UIComponent parent = colspan.getParent();
 		// ENCODE event attributes. If component don't have own attribute, search in the parent table.
 		boolean inRow = null != parent && parent.getChildren().contains(colspan);
+		
+		sb.append("jQuery(document).ready(function() {");
 		for (int i = 0; i < AbstractRowsRenderer.TABLE_EVENT_ATTRS.length; i++) {
 		    String[] attrs = AbstractRowsRenderer.TABLE_EVENT_ATTRS[i];
 		    String event = (String) colspan.getAttributes().get(attrs[0]);
 		    if(null == event && inRow){
-			event = (String) parent.getAttributes().get(attrs[1]);
+		    	event = (String) parent.getAttributes().get(attrs[1]);
 		    }
 		    if(null != event){
-			writer.writeAttribute(attrs[0], event, attrs[0]);
+		    	String jQueryEvent = attrs[0].substring(attrs[0].indexOf("on")+ "on".length());
+		    	
+		    	sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
+				sb.append(event);
+				sb.append("});");
 		    }
 		}
+		
+		sb.append("});");
+		return sb.toString();
 	}
 
 	/*

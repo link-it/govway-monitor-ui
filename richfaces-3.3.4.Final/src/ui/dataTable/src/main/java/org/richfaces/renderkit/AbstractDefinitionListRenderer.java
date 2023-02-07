@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -28,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.component.UIDataAdaptor;
+import org.ajax4jsf.renderkit.RendererUtils.HTML;
 
 /**
  * @author shura
@@ -54,7 +60,11 @@ public abstract class AbstractDefinitionListRenderer extends AbstractRowsRendere
 		getUtils().encodeId(context, table);
 		String rowClass = holder.getRowClass();
 		encodeStyleClass(writer, null, "rich-definition", null, rowClass);
-		encodeRowEvents(context, table);
+		
+		String clientId = table.getClientId(context);
+		String script = this.getScriptRowEvents(context, table, clientId, "dd");
+		table.getRowEventHandlers().add(script);
+		
 		renderChildren(context, table);
 		writer.endElement("dd");
 	}

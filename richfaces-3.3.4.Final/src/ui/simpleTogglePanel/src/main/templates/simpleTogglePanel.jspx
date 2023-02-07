@@ -37,16 +37,23 @@ scripts/simpleTogglePanel.js
             													}
             													
             							 ));
+            
+            
         </script>
 		<style type="text/css" nonce="#{cspValue}">
 			.#{cssId}-hidden-panel {
 				display:none;
 			}
 		</style>
+		<script type="text/javascript" nonce="#{cspValue}">
+			jQuery(document).ready(function() {
+				 jQuery("div[id$='#{clientId}_header']").click(function() {
+					 #{this:getOnClick(context,component)}
+				});
+			 }); 
+		</script>
         <f:call name="utils.encodeBeginFormIfNessesary"/>
-        <div id="#{clientId}_header"
-             class="rich-stglpanel-header #{component.attributes['headerClass']}"
-             onclick="#{this:getOnClick(context,component)}">
+        <div id="#{clientId}_header" class="rich-stglpanel-header #{component.attributes['headerClass']}">
                     
 			<div class="rich-stglpanel-marker">
                 <jsp:scriptlet>

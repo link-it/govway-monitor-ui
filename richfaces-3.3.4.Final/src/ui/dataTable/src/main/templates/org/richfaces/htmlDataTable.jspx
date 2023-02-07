@@ -36,4 +36,13 @@
 			   <f:call name="encodeTBody"/>
 			</vcp:body>
 	</table>
+	<jsp:scriptlet>
+	<![CDATA[ 
+			String tableRowsScript = getUtils().getTableRowsScripts(writer, context, component);
+			variables.setVariable("tableRowsScript", tableRowsScript);
+	]]>
+	</jsp:scriptlet>
+	<script type="text/javascript" nonce="#{cspValue}">
+			#{tableRowsScript}
+		</script>
 </f:root>

@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -86,8 +91,11 @@ public abstract class AbstractGridRenderer extends AbstractRowsRenderer {
 			writer.startElement(HTML.TR_ELEMENT, table);
 			String rowClass = holder.getRowClass(gridRowCounter);
 			encodeStyleClass(writer, null, "rich-table-row", null, rowClass);
-			encodeRowEvents(context, table);
 			
+			String clientId = table.getClientId(context) + "-" + currentRow;
+			String script = this.getScriptRowEvents(context, table, clientId, HTML.TR_ELEMENT);
+			table.getRowEventHandlers().add(script);
+//			getUtils().writeScript(writer, context, table, script);
 		}
 		writer.startElement(HTML.td_ELEM, table);
 		getUtils().encodeId(context, table);

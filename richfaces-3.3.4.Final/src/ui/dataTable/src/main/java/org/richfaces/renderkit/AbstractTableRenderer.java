@@ -374,7 +374,7 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 				}
 				
 				encodeRowStart(context, rowSkinClass, 
-				        holder.getRowClass(), table, writer);
+				        holder.getRowClass(), table, writer, holder.getRowCounter());
 			}
 			if (column instanceof Column) {
 				boolean breakBefore = ((Column) column).isBreakBefore()
@@ -388,9 +388,11 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 					// will be insert own row.
 					if (!(column instanceof Row)) {
 						holder.nextRow();
-						encodeRowStart(context, holder.getRowClass(), table, writer);
+						encodeRowStart(context, holder.getRowClass(), table, writer, holder.getRowCounter());
 					}
 				}
+				
+				
 				
 				encodeCellChildren(context, column,
 						firstRow ? getFirstRowSkinClass() : null,
@@ -400,7 +402,7 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 				if ((column instanceof Row) && iter.hasNext()) {
 					// Start new row for remained columns.
 					holder.nextRow();
-					encodeRowStart(context, holder.getRowClass(), table, writer);
+					encodeRowStart(context, holder.getRowClass(), table, writer, holder.getRowCounter());
 					// reset columns counter.
 					currentColumn = -1;
 				}
@@ -425,8 +427,8 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 	}
 
 	protected void encodeRowStart(FacesContext context, String rowClass,
-			UIDataTable table, ResponseWriter writer) throws IOException {
-		encodeRowStart(context, getRowSkinClass(), rowClass, table, writer);
+			UIDataTable table, ResponseWriter writer, int row) throws IOException {
+		encodeRowStart(context, getRowSkinClass(), rowClass, table, writer, row);
 	}
 
 	/**
@@ -451,11 +453,17 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 	}
 
 	protected void encodeRowStart(FacesContext context, String skinClass,
-			String rowClass, UIDataTable table, ResponseWriter writer)
+			String rowClass, UIDataTable table, ResponseWriter writer, int row)
 			throws IOException {
+		String clientId = table.getClientId(context) + ":tr-" + row;
+		
 		writer.startElement(HTML.TR_ELEMENT, table);
+		writer.writeAttribute("id", clientId , null);
 		encodeStyleClass(writer, null, skinClass, null, rowClass);
-		encodeRowEvents(context, table);
+		
+		String script = this.getScriptRowEvents(context, table, clientId, HTML.TR_ELEMENT);
+		table.getRowEventHandlers().add(script);
+//		getUtils().writeScript(writer, context, table, script);
 	}
 
 	/**
@@ -810,12 +818,34 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 		}
 	}
 	
+//	@Override
+//	protected void encodeRowEvents(FacesContext context, UIDataAdaptor table)
+//			throws IOException {
+//		super.encodeRowEvents(context, table);
+//		RendererUtils utils2 = getUtils();
+//		utils2.encodeAttribute(context, table, "onRowContextMenu", "oncontextmenu" );
+//		
+//	}
+	
 	@Override
-	protected void encodeRowEvents(FacesContext context, UIDataAdaptor table)
-			throws IOException {
-		super.encodeRowEvents(context, table);
-		RendererUtils utils2 = getUtils();
-		utils2.encodeAttribute(context, table, "onRowContextMenu", "oncontextmenu" );
+	protected String getScriptRowEvents(FacesContext context, UIDataAdaptor table, String clientId, String tag ) throws IOException {
+		String superEvents = super.getScriptRowEvents(context, table, clientId, tag);
 		
+		StringBuffer sb = new StringBuffer();
+		Object event = table.getAttributes().get("onRowContextMenu");
+		
+		if(superEvents != null && superEvents.length() > 0)
+			sb.append(superEvents);
+		
+		if(null != event){
+		    String jQueryEvent = "oncontextmenu".substring("oncontextmenu".indexOf("on")+ "on".length());
+		    
+		    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
+			sb.append(event);
+			sb.append("});");
+			sb.append("\n");
+	    }
+		
+		return sb.toString();
 	}
 }
