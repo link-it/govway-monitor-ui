@@ -740,4 +740,24 @@ public class CalendarRendererBase extends TemplateEncoderRendererBase {
 		}
 		return labels;
 	}
+	
+	public boolean addCellsEventHandlers(FacesContext context, UICalendar calendar) {
+		// !(options[disabled] == false || options[readonly] == false)
+		Object readOnlyObj = calendar.getAttributes().get("readonly");
+		boolean readOnly = false;
+		if(readOnlyObj != null) {
+			String r = readOnlyObj.toString();
+			readOnly = Boolean.parseBoolean(r);
+		}
+		
+		return !(calendar.isDisabled() || readOnly);
+	}
+	
+	public boolean isDisabled(FacesContext context, UICalendar calendar) {
+		return calendar.isDisabled();
+	}
+	
+	public boolean isEnabled(FacesContext context, UICalendar calendar) {
+		return !this.isDisabled(context, calendar);
+	}
 }

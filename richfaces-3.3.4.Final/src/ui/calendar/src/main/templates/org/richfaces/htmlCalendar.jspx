@@ -195,6 +195,8 @@
 		<c:scriptOption attributes="ondateselected, ondateselect, ontimeselect, ontimeselected, onchanged, ondatemouseover, ondatemouseout, onexpand, oncollapse, oncurrentdateselect, oncurrentdateselected" wrapper="eventHandler" />
 		<c:scriptOption name="labels" value="#{this:getLabels(context, component)}" />
 		<c:scriptOption name="defaultTime" value="#{this:getPreparedDefaultTime(component)}" />
+		<c:scriptOption name="nonceValue" value="#{cspValue}" />
+		<c:scriptOption name="cssId" value="#{cssId}" />
 	</c:scriptObject>
 	<script type="text/javascript" nonce="#{cspValue}">
 		<f:call name="writeDefaultSymbols" />
@@ -212,6 +214,17 @@
 				writePreloadBody(context, component);
 			/*]]>*/</jsp:scriptlet>
 			);
+	</script>
+	<script type="text/javascript" nonce="#{cspValue}">
+		jQuery(document).ready(function() {
+			jQuery("table[id$='#{clientId}']").click(function() { $('#{clientId}').component.skipEventOnCollapse=true; });
+			
+			<c:if test="#{this:addCellsEventHandlers(context, component)}">
+					jQuery("td[id*='#{clientId}DayCell']").click(function() { $('#{clientId}').component.eventCellOnClick(event, this); });
+					jQuery("td[id*='#{clientId}DayCell']").mouseover(function() { $('#{clientId}').component.eventCellOnMouseOver(event, this); });
+					jQuery("td[id*='#{clientId}DayCell']").mouseout(function() { $('#{clientId}').component.eventCellOnMouseOut(event, this); });
+			</c:if>
+		});
 	</script>
 	</div>
 </f:root>
