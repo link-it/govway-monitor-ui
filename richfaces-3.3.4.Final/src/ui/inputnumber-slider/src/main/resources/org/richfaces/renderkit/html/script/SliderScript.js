@@ -49,7 +49,13 @@ Richfaces.Slider.prototype = {
 		this.classes = {};
 		this.classes.arrow = "rich-inslider-handler";
 		this.classes.arrowSelected = "rich-inslider-handler-selected";
-		this.classes.temp = this.handle.className;
+		// this.classes.temp = this.handle.className;
+		if(this.handle.className.indexOf('rich-inslider-visibility-hidden') > -1){
+			this.classes.temp = this.trim(this.handle.className.replace("rich-inslider-visibility-hidden",""));
+		} else{
+			this.classes.temp = this.handle.className;
+		}
+		
 		this.classes.base = " " + this.trim(this.classes.temp.replace("rich-inslider-handler",""));
 		
 		if(this.orientation=="vertical"){

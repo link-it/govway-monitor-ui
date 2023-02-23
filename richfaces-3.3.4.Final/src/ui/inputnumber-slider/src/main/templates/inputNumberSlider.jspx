@@ -89,24 +89,13 @@
                                         class="rich-inslider-field-top rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
                                         readonly="#{inputReadOnly}"
                                         disabled="#{inputDisabled}"
-                                        onselect="#{component.attributes['onselect']}"
-                                        onfocus="#{component.attributes['onfocus']}"
-                                        onblur="#{component.attributes['onblur']}"
                                         accesskey="#{component.attributes['accesskey']}"
                                         size="#{inputSize}"
                                         maxlength="#{component.attributes['maxlength']}"
-                                        
-                                        onclick='#{component.attributes["oninputclick"]}'
-                                        ondblclick='#{component.attributes["oninputdblclick"]}'
-                                        onkeydown='#{component.attributes["oninputkeydown"]}'
-                                        onkeypress='#{component.attributes["oninputkeypress"]}'
-                                        onkeyup='#{component.attributes["oninputkeyup"]}'
-                                        onmousedown='#{component.attributes["oninputmousedown"]}'
-                                        onmousemove='#{component.attributes["oninputmousemove"]}'
-                                        onmouseout='#{component.attributes["oninputmouseout"]}'
-                                        onmouseover='#{component.attributes["oninputmouseover"]}'
-                                        onmouseup='#{component.attributes["oninputmouseup"]}'
                                 />
+                                <script type="text/javascript" nonce="#{cspValue}">
+									#{this:getInputEventHandlersScript(context,component)}
+								</script>
                             <jsp:scriptlet><![CDATA[
                             } else {
                                 ]]></jsp:scriptlet>
@@ -258,24 +247,13 @@
                                         class="rich-inslider-field-bottom rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
                                         readonly="#{inputReadOnly}"
                                         disabled="#{inputDisabled}"
-                                        onselect="#{component.attributes['onselect']}"
-                                        onfocus="#{component.attributes['onfocus']}"
-                                        onblur="#{component.attributes['onblur']}"
                                         accesskey="#{component.attributes['accesskey']}"
                                         size="#{inputSize}"
                                         maxlength="#{component.attributes['maxlength']}"
-                                        
-                                        onclick='#{component.attributes["oninputclick"]}'
-                                        ondblclick='#{component.attributes["oninputdblclick"]}'
-                                        onkeydown='#{component.attributes["oninputkeydown"]}'
-                                        onkeypress='#{component.attributes["oninputkeypress"]}'
-                                        onkeyup='#{component.attributes["oninputkeyup"]}'
-                                        onmousedown='#{component.attributes["oninputmousedown"]}'
-                                        onmousemove='#{component.attributes["oninputmousemove"]}'
-                                        onmouseout='#{component.attributes["oninputmouseout"]}'
-                                        onmouseover='#{component.attributes["oninputmouseover"]}'
-                                        onmouseup='#{component.attributes["oninputmouseup"]}'
                                 />
+                                <script type="text/javascript" nonce="#{cspValue}">
+									#{this:getInputEventHandlersScript(context,component)}
+								</script>
                             <jsp:scriptlet><![CDATA[
                             } else {
                                 ]]></jsp:scriptlet>
@@ -353,24 +331,13 @@
                                         class="rich-inslider-field-left rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
                                         readonly="#{inputReadOnly}"
                                         disabled="#{inputDisabled}"
-                                        onselect="#{component.attributes['onselect']}"
-                                        onfocus="#{component.attributes['onfocus']}"
-                                        onblur="#{component.attributes['onblur']}"
                                         accesskey="#{component.attributes['accesskey']}"
                                         size="#{inputSize}"
                                         maxlength="#{component.attributes['maxlength']}"
-                                        
-										onclick='#{component.attributes["oninputclick"]}'
-										ondblclick='#{component.attributes["oninputdblclick"]}'
-										onkeydown='#{component.attributes["oninputkeydown"]}'
-										onkeypress='#{component.attributes["oninputkeypress"]}'
-										onkeyup='#{component.attributes["oninputkeyup"]}'
-										onmousedown='#{component.attributes["oninputmousedown"]}'
-										onmousemove='#{component.attributes["oninputmousemove"]}'
-										onmouseout='#{component.attributes["oninputmouseout"]}'
-										onmouseover='#{component.attributes["oninputmouseover"]}'
-										onmouseup='#{component.attributes["oninputmouseup"]}'
                                 />
+                                <script type="text/javascript" nonce="#{cspValue}">
+									#{this:getInputEventHandlersScript(context,component)}
+								</script>
                             <jsp:scriptlet><![CDATA[
                             } else {
                                 ]]></jsp:scriptlet>
@@ -469,24 +436,13 @@
 										class="rich-inslider-field-right rich-inslider-field #{component.attributes['inputClass']} #{cssId}-slider-input-style"
 										readonly="#{inputReadOnly}"
 										disabled="#{inputDisabled}"
-										onselect="#{component.attributes['onselect']}"
-										onfocus="#{component.attributes['onfocus']}"
-										onblur="#{component.attributes['onblur']}"
 										accesskey="#{component.attributes['accesskey']}"
 										size="#{inputSize}"
 										maxlength="#{component.attributes['maxlength']}"
-										
-										onclick='#{component.attributes["oninputclick"]}'
-										ondblclick='#{component.attributes["oninputdblclick"]}'
-										onkeydown='#{component.attributes["oninputkeydown"]}'
-										onkeypress='#{component.attributes["oninputkeypress"]}'
-										onkeyup='#{component.attributes["oninputkeyup"]}'
-										onmousedown='#{component.attributes["oninputmousedown"]}'
-										onmousemove='#{component.attributes["oninputmousemove"]}'
-										onmouseout='#{component.attributes["oninputmouseout"]}'
-										onmouseover='#{component.attributes["oninputmouseover"]}'
-										onmouseup='#{component.attributes["oninputmouseup"]}'
 								/>
+								<script type="text/javascript" nonce="#{cspValue}">
+									#{this:getInputEventHandlersScript(context,component)}
+								</script>
 							<jsp:scriptlet><![CDATA[
 							} else {
 								]]></jsp:scriptlet>
