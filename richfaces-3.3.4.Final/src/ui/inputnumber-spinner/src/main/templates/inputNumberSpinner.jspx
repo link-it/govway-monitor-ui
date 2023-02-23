@@ -5,7 +5,7 @@
 	xmlns:ui=" http://ajax4jsf.org/cdk/ui"
 	xmlns:u=" http://ajax4jsf.org/cdk/u"
 	xmlns:x=" http://ajax4jsf.org/cdk/x"
-	baseclass="org.richfaces.renderkit.InputRendererBase"
+	baseclass="org.richfaces.renderkit.InputNumberSpinnerBaseRenderer"
 	class="org.richfaces.renderkit.html.InputNumberSpinnerRenderer"
 	component="org.richfaces.component.UIInputNumberSpinner" 
 	>
@@ -32,13 +32,10 @@
 		.#{cssId}-spinner-td-for-style { width:1%; }
 		.#{cssId}-spinner-input-border-zero-style { border:0; }
 	</style>
-<table width="2%" class="rich-spinner-c #{component.attributes['styleClass']} #{cssId}-spinner-style" id="#{clientId}" cellspacing="0" cellpadding="0" border="0" onclick="#{component.attributes['onclick']}"
-					ondblclick="#{component.attributes['ondblclick']}"
-					onmousedown="#{component.attributes['onmousedown']}"
-					onmousemove="#{component.attributes['onmousemove']}"
-					onmouseout="#{component.attributes['onmouseout']}"
-					onmouseover="#{component.attributes['onmouseover']}"
-					onmouseup="#{component.attributes['onmouseup']}">
+	<script type="text/javascript" nonce="#{cspValue}">
+		#{this:getTableEventHandlersScript(context,component)}
+	</script>
+	<table width="2%" class="rich-spinner-c #{component.attributes['styleClass']} #{cssId}-spinner-style" id="#{clientId}" cellspacing="0" cellpadding="0" border="0" >
 	<tbody>
 	  	<tr>
 			<td class="rich-spinner-input-container #{cssId}-spinner-td-edit-style" id="#{clientId}Edit">
@@ -52,31 +49,19 @@
 			    variables.setVariable("autocomplete", autocomplete);
 			]]></jsp:scriptlet>
 			
-				<input 
+				<input id="#{clientId}Input"
 					class="rich-spinner-input #{component.attributes['inputClass']} #{cssId}-spinner-input-style" 
-				    onchange="#{component.attributes['onchange']}" 
-					onselect="#{component.attributes['onselect']}" 
-					onfocus="#{component.attributes['onfocus']}"
-					onblur="#{component.attributes['onblur']}"
 					type="text" 
 					size="#{component.attributes['inputSize']}" 
 					name="#{clientId}" 
 					value="#{this:getInputValue(context, component)}" 
 					accesskey="#{component.attributes['accesskey']}" 
 					tabindex="#{component.attributes['tabindex']}"
-					
-					onclick='#{component.attributes["oninputclick"]}'
-					ondblclick='#{component.attributes["oninputdblclick"]}'
-					onkeydown='#{component.attributes["oninputkeydown"]}'
-					onkeypress='#{component.attributes["oninputkeypress"]}'
-					onkeyup='#{component.attributes["oninputkeyup"]}'
-					onmousedown='#{component.attributes["oninputmousedown"]}'
-					onmousemove='#{component.attributes["oninputmousemove"]}'
-					onmouseout='#{component.attributes["oninputmouseout"]}'
-					onmouseover='#{component.attributes["oninputmouseover"]}'
-					onmouseup='#{component.attributes["oninputmouseup"]}'
 					autocomplete='#{autocomplete}'
 					/>
+					<script type="text/javascript" nonce="#{cspValue}">
+						#{this:getInputEventHandlersScript(context,component)}
+					</script>
 			</td>	
 			<td id="#{clientId}For" class="rich-spinner-buttons #{cssId}-spinner-td-for-style">
 				<table id="#{clientId}Buttons" border="0" cellspacing="0" cellpadding="0">
@@ -87,24 +72,45 @@
 				                	boolean disabled = ((Boolean) component.getAttributes().get("disabled")).booleanValue();
 				                	if (! disabled) {
                 				]]></jsp:scriptlet>
-                					<input 
+                					<input id="#{clientId}BtnUp"
                 						type="image" 
                 						src="#{up_arrow}" 
                 						class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" 
-                						onclick="return false"
-										onmousedown="this.className='rich-spinner-btn-press rich-spinner-button'" 
-										onmouseup="this.className='rich-spinner-btn rich-spinner-button'" 
-										onmouseout="this.className='rich-spinner-btn rich-spinner-button'" 
 										tabindex="#{component.attributes['tabindex']}" />
+										<script type="text/javascript" nonce="#{cspValue}">
+											jQuery(document).ready(function() {
+												jQuery("input[id$='#{clientId}BtnUp']").click(function() {
+													return false;
+										 		});	
+												
+												jQuery("input[id$='#{clientId}BtnUp']").mousedown(function() {
+													this.className='rich-spinner-btn-press rich-spinner-button';
+										 		});	
+												
+												jQuery("input[id$='#{clientId}BtnUp']").mouseup(function() {
+													this.className='rich-spinner-btn rich-spinner-button';
+										 		});	
+												
+												jQuery("input[id$='#{clientId}BtnUp']").mouseout(function() {
+													this.className='rich-spinner-btn rich-spinner-button';
+										 		});
+			                				});
+                						</script>
 								<jsp:scriptlet><![CDATA[
 				                	} else {
                 				]]></jsp:scriptlet>
-                					<input 
+                					<input id="#{clientId}BtnUp"
                 						type="image" 
                 						src="#{up_arrow}" 
                 						class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" 
-                						onclick="return false" 
                 						tabindex="#{component.attributes['tabindex']}" /> 
+                						<script type="text/javascript" nonce="#{cspValue}">
+											jQuery(document).ready(function() {
+													jQuery("input[id$='#{clientId}BtnUp']").click(function() {
+														return false;
+											 		});	
+			                				});
+                						</script>
                 				<jsp:scriptlet><![CDATA[
 				                	}
                 				]]></jsp:scriptlet>
@@ -115,12 +121,37 @@
 								<jsp:scriptlet><![CDATA[				                	
 				                	if (! disabled) {
                 				]]></jsp:scriptlet>
-                					<input type="image" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style"  onclick="return false"
-									onmousedown="this.className='rich-spinner-btn-press rich-spinner-button'" onmouseup="this.className='rich-spinner-btn rich-spinner-button'" onmouseout="this.className='rich-spinner-btn rich-spinner-button'" />
+                					<input type="image" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" id="#{clientId}BtnDown" />
+									<script type="text/javascript" nonce="#{cspValue}">
+										jQuery(document).ready(function() {
+											jQuery("input[id$='#{clientId}BtnDown']").click(function() {
+												return false;
+									 		});
+											
+											jQuery("input[id$='#{clientId}BtnDown']").mousedown(function() {
+												this.className='rich-spinner-btn-press rich-spinner-button';
+									 		});	
+											
+											jQuery("input[id$='#{clientId}BtnDown']").mouseup(function() {
+												this.className='rich-spinner-btn rich-spinner-button';
+									 		});	
+											
+											jQuery("input[id$='#{clientId}BtnDown']").mouseout(function() {
+												this.className='rich-spinner-btn rich-spinner-button';
+									 		});	
+	            						});
+                					</script>
 								<jsp:scriptlet><![CDATA[
 				                	} else {
                 				]]></jsp:scriptlet>
-                					<input type="image" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style"  onclick="return false" />
+                					<input type="image" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" id="#{clientId}BtnDown" />
+                					<script type="text/javascript" nonce="#{cspValue}">
+                						jQuery(document).ready(function() {
+                							jQuery("input[id$='#{clientId}BtnDown']").click(function() {
+												return false;
+									 		});
+                						});
+                					</script>
                 				<jsp:scriptlet><![CDATA[
 				                	}
                 				]]></jsp:scriptlet>

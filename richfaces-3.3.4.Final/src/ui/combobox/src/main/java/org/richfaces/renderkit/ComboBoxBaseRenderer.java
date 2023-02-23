@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit;
 
 import java.io.IOException;
@@ -28,14 +33,10 @@ import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
-import org.ajax4jsf.javascript.JSFunctionDefinition;
-import org.ajax4jsf.javascript.ScriptUtils;
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
-import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.util.InputUtils;
 import org.ajax4jsf.util.SelectUtils;
 import org.apache.commons.logging.Log;
@@ -50,7 +51,7 @@ import org.richfaces.component.UIComboBox;
  */
 public class ComboBoxBaseRenderer extends HeaderResourcesRendererBase {
 	
-    private static final String RICH_COMBOBOX_ITEM_CLASSES = "rich-combobox-item rich-combobox-item-normal";
+    public static final String RICH_COMBOBOX_ITEM_CLASSES = "rich-combobox-item rich-combobox-item-normal";
     private static Log logger = LogFactory.getLog(ComboBoxBaseRenderer.class);
 
     protected Class<? extends UIComponent> getComponentClass() {
@@ -114,6 +115,7 @@ public class ComboBoxBaseRenderer extends HeaderResourcesRendererBase {
 	    Object suggestionValues = combobox.getSuggestionValues();
 		if (suggestionValues != null) {
 		    if (suggestionValues instanceof Collection) {
+				@SuppressWarnings("rawtypes")
 				Collection collection = (Collection) suggestionValues;
 				for (Object suggestionValue : collection) {
 				    String convertedValue = getConvertedStringValue(context, combobox, suggestionValue); 

@@ -1334,6 +1334,20 @@ public class RendererUtils {
 		return "";
 	}
 	
+	public String getScriptContentForEventHandler(FacesContext context, UIComponent component, String clientId, String attributeToWrite, String jQueryEvent, String tag) {
+		Map<String, Object> attributes = component.getAttributes();
+		StringBuffer sb = new StringBuffer();
+		
+		// estrazione codice 
+		Object value = attributeValue(attributeToWrite, attributes.get(getComponentAttributeName(attributeToWrite)));
+		if (null != value && shouldRenderAttribute(attributeToWrite, value)) {
+			sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
+			sb.append(value);
+			sb.append("});");
+		}
+		return sb.toString();
+	}
+	
 	/**
 	 * Write style with start/end elements and type.
 	 * 
