@@ -50,30 +50,36 @@
             </tfoot>
         </f:if>
         <tbody>
+        	<f:call name="initCssChildRules" />
+        	
             <u:insertChildren context="rows">
                 <tr>
                 	<f:attribute name="class">
 			            <f:call name="getEntryClass"/>
 			        </f:attribute>
                     <f:if property="fetchValue">
-                        <td style="display: none;">
+                         <td class="rich-sb-display-none">
                             <f:attribute name="class" property="selectValueClass" mantadory="false"/> 
                             <f:verbatim property="fetchValue" escape="true"/>
                         </td>
                     </f:if>
                     
                     <u:insertChildren context="columns">
-                        <td nowrap="nowrap" class="rich-sb-cell-padding">
-                            <f:attribute name="style">
-                                <f:call name="cellPadding"/>
-                            </f:attribute>
-                            <u:insertChild/>
-                        </td>
+                        <f:call name="getCssPaddingClassStyleDef"/>
+						  <td nowrap="nowrap">
+						  	<f:attribute name="class">
+						  		<f:verbatim value="rich-sb-cell-padding "/>
+								            <f:call name="getCssPaddingClassStyle"/>
+								        </f:attribute>
+						      <u:insertChild/>
+						  </td>
                     </u:insertChildren>
                 </tr>
             </u:insertChildren>
             
             <f:call name="insertNothingLabel" />
+            
+            <f:call name="insertCssChildRules" />
             
         </tbody>
     </table>

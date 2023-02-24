@@ -58,7 +58,7 @@ Suggestion.Base.prototype = {
 
 		options.selection = update + "_selection";
 
-        var needIframe = (RichFaces.navigatorType() == RichFaces.MSIE);
+        var needIframe = false; //(RichFaces.navigatorType() == RichFaces.MSIE);
 
         if (needIframe) {
             options.iframeId = update + "_iframe";
@@ -85,14 +85,21 @@ Suggestion.Base.prototype = {
                                       update.style.position = 'absolute';
                                       RichFaces.Position.smartClone(element, update, options);
                                   }
+                                  var classesNameDisplayNone = ['rich-sb-display-none','rich-sb-visibility-hidden'];
+                                  var classesNameDisplay = ['rich-sb-display','rich-sb-visibility'];
+                                  
                                   if (!window.opera) {
-	                                  Effect.Appear(update, {duration:0.15});
+	                                  // Effect.Appear(update, {duration:0.15});
+//	                                   Effect.AppearCheckClass(update, 'rich-sb-display-none', 'rich-sb-display', {duration:0.15});
+	                                  Effect.AppearCheckClasses(update, classesNameDisplayNone, classesNameDisplay, {duration:0.15});
 	                                  if (options.iframeId) {
 	                                      Effect.Appear($(options.iframeId), {duration:0.15, to: 0.01});
 	                                  }
                                   } else {
                                   	  // workaround for RF-205
-	                                  Effect.Appear(update, {duration:0.15, to: 0.999999});
+//	                                  Effect.Appear(update, {duration:0.15, to: 0.999999});
+//	                                   Effect.AppearCheckClass(update, 'rich-sb-display-none', 'rich-sb-display',  {duration:0.15, to: 0.999999});
+	                                  Effect.AppearCheckClasses(update, classesNameDisplayNone, classesNameDisplay,  {duration:0.15, to: 0.999999});
                                   }
                               };
         this.options.onHide = this.options.onHide ||
@@ -100,7 +107,13 @@ Suggestion.Base.prototype = {
                                   if (options.iframeId) {
                                       new Effect.Fade($(options.iframeId), {duration:0.15});
                                   }
-                                  new Effect.Fade(update, {duration:0.15});
+                                  
+                                  var classesNameDisplayNone = ['rich-sb-display-none','rich-sb-visibility-hidden'];
+                                  var classesNameDisplay = ['rich-sb-display','rich-sb-visibility'];
+                                  
+//                                  new Effect.Fade(update, {duration:0.15});
+//                                  new Effect.FadeCheckClass(update, 'rich-sb-display-none', 'rich-sb-display', {duration:0.15});
+                                  new Effect.FadeCheckClasses(update, classesNameDisplayNone, classesNameDisplay, {duration:0.15});
                               };
 
         this.options.width = this.options.width || "auto";
@@ -117,8 +130,9 @@ Suggestion.Base.prototype = {
 
         this.element.setAttribute('autocomplete', 'off');
 
-        Element.hide(this.update);
-		
+        // Element.hide(this.update);
+		var jqUpdate = jQuery(this.update);		
+		jqUpdate.removeClass( "rich-sb-display" ).addClass( "rich-sb-display-none" );
 		
         this.onBlurListener = this.onBlur.bindAsEventListener(this);
         Event.observe(this.element, "blur", this.onBlurListener);
@@ -238,8 +252,11 @@ Suggestion.Base.prototype = {
 			}	
 	       	Event.observe(this.overflow, "scroll", this.onScrollListener);
 		}
-        if (Element.getStyle(this.update, 'display')
-                == 'none') this.options.onShow(this.element, this.update, this.options);
+		// if (Element.getStyle(this.update, 'display') == 'none') 
+		var jqUpdate = jQuery(this.update);
+		
+		if(jqUpdate.hasClass('rich-sb-display-none'))
+	  	this.options.onShow(this.element, this.update, this.options);
         this.disableSubmit();
         
        Richfaces.removeScrollEventHandlers(this.scrollElements, this.eventOnScroll);
@@ -256,8 +273,12 @@ Suggestion.Base.prototype = {
 			Event.stopObserving(this.overflow, "scroll", this.onScrollListener)
 		}
         this.stopIndicator();
-        if (Element.getStyle(this.update, 'display')
-                != 'none') this.options.onHide(this.element, this.update, this.options);
+        // if (Element.getStyle(this.update, 'display') != 'none') 
+        var jqUpdate = jQuery(this.update);
+
+		if(jqUpdate.hasClass('rich-sb-display'))
+			this.options.onHide(this.element, this.update, this.options);
+                
         this.enableSubmit();
 		this.hasFocus = false;
         this.active = false;
@@ -270,7 +291,9 @@ Suggestion.Base.prototype = {
     hideNLabel: function(event) {
 	var nothingLabel = $(this.update.id + "NothingLabel");
     	if (nothingLabel) {
-	    	Element.hide(nothingLabel);
+//	    	Element.hide(nothingLabel);
+	    	var jqNL = jQuery(nothingLabel);		
+			jqNL.removeClass( "rich-sb-display" ).addClass( "rich-sb-display-none" );
 	    	Event.stopObserving(nothingLabel, "click", this.onNothingLabelClick);
 	    	Event.stopObserving(this.element, "blur", this.onNothingLabelClick);
 	    	this.hide();
@@ -278,11 +301,19 @@ Suggestion.Base.prototype = {
     },
 
     startIndicator: function() {
-        if (this.options.indicator) Element.show(this.options.indicator);
+        if (this.options.indicator) {
+			// Element.show(this.options.indicator);
+			var jqEl = jQuery(this.options.indicator);		
+			jqEl.removeClass( "rich-sb-display-none" ).addClass( "rich-sb-display" );
+        }
     },
 
     stopIndicator: function() {
-        if (this.options.indicator) Element.hide(this.options.indicator);
+        if (this.options.indicator) {
+			// Element.hide(this.options.indicator);
+			var jqEl = jQuery(this.options.indicator);		
+			jqEl.removeClass( "rich-sb-display" ).addClass( "rich-sb-display-none" );
+		}
     },
 
     isUnloaded: function() {
@@ -845,7 +876,9 @@ Suggestion.Base.prototype = {
 		var nothingLabel = $(this.update.id + "NothingLabel");
 		if (nothingLabel && this.hasFocus && !this.wasBlur) {
 			if (this.entryCount < 1) {
-				Element.show(nothingLabel);
+				// Element.show(nothingLabel);
+				var jqEl = jQuery(nothingLabel);		
+				jqEl.removeClass( "rich-sb-display-none" ).addClass( "rich-sb-display" );
 				Event.observe(nothingLabel, "click", this.onNothingLabelClick);
 				Event.observe(this.element, "blur", this.onNothingLabelClick);
 				this.show();
@@ -1168,10 +1201,10 @@ Object.extend(Object.extend(RichFaces.Suggestion.prototype, Suggestion.Base.prot
 
     create: function(element, suggestion, content, options) {
         if (!$(element)) return;
-        var style = "display:none;" + ( options.popupStyle
-                || "border:1px solid black;position:absolute; background-color:white;");
-        var styleClass = options.popupClass ? ' class="' + options.popupClass
-                + '" ':'';
+        var style = ( options.popupStyle || "border:1px solid black;position:absolute; background-color:white;");
+		var styleClasses = (options.popupClass ? (options.popupClass + ' ') : '') + 'rich-sb-display-none';
+		var styleClass = ' class="' + styleClasses + '" ';
+
         new Insertion.Top($(element).ownerDocument.body,
                 '<div id="' + suggestion + '"' + styleClass + ' style="' + style
                         + '">' +
@@ -1259,12 +1292,17 @@ RichFaces.Position = {
     	var jqs = jQuery(source);
     	var so = jqs.offset();
     	
-    	var hidden = (jqt.css('display') == 'none');
+//    	var hidden = (jqt.css('display') == 'none');
+    	var hidden = (jqt.hasClass('rich-sb-display-none'));
     	var oldVisibility;
     	
     	if (hidden) {
-    		oldVisibility = jqt.css('visibility');
-    		jqt.css('visibility', 'hidden').css('display', '');
+//    		oldVisibility = jqt.css('visibility');
+//    		jqt.css('visibility', 'hidden').css('display', '');
+    		
+    		oldVisibility = jqt.hasClass('rich-sb-visibility');
+    		jqt.removeClass( "rich-sb-display-none" ).addClass( "rich-sb-display" );
+    		jqt.removeClass( "rich-sb-visibility" ).addClass( "rich-sb-visibility-hidden" );
     	}
     	
     	var left = this.parseToPx(jqt.css('left'));
@@ -1282,7 +1320,16 @@ RichFaces.Position = {
     	var to = jqt.offset();
 
     	if (hidden) {
-    		jqt.css('display', 'none').css('visibility', oldVisibility);
+//    		jqt.css('display', 'none').css('visibility', oldVisibility);
+    		
+    		jqt.removeClass( "rich-sb-display" ).addClass( "rich-sb-display-none" );
+    		jqt.removeClass( "rich-sb-visibility-hidden" );
+    		
+    		if(oldVisibility){
+				jqt.addClass( "rich-sb-visibility" );
+			} else {
+				jqt.addClass( "rich-sb-visibility-hidden" );
+			}
     	}
     	
     	// set position

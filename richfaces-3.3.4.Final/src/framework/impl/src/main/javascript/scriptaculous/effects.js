@@ -560,10 +560,37 @@ Effect.FadeCheckClass = function(element, classNameDisplayNone, classNameDisplay
       effect.element.setStyle({opacity: oldOpacity});
 //      .hide()
     }
-  }, arguments[1] || { });
+  }, arguments[3] || { });
   return new Effect.Opacity(element,options);
 };
 
+Effect.FadeCheckClasses = function(element, classesNameDisplayNone, classesNameDisplay) {
+  element = $(element);
+  var oldOpacity = element.getInlineOpacity();
+  var options = Object.extend({
+    from: element.getOpacity() || 1.0,
+    to:   0.0,
+    afterFinishInternal: function(effect) {
+      if (effect.options.to!=0) return;
+      
+       var jqElement = jQuery(effect.element);
+       
+       for(var i = 0; i < classesNameDisplay.length; i++){
+			var classNameDisplay = classesNameDisplay[i];
+			jqElement.removeClass(classNameDisplay);
+		}
+		
+		for(var i = 0; i < classesNameDisplayNone.length; i++){
+			var classNameDisplayNone = classesNameDisplayNone[i];
+			jqElement.addClass(classNameDisplayNone);
+		}
+      
+      effect.element.setStyle({opacity: oldOpacity});
+//      .hide()
+    }
+  }, arguments[3] || { });
+  return new Effect.Opacity(element,options);
+};
 
 Effect.Appear = function(element) {
   element = $(element);
@@ -595,7 +622,35 @@ Effect.AppearCheckClass = function(element, classNameDisplayNone, classNameDispl
     var jqElement = jQuery(effect.element); // uso jQuey per comodita'
     jqElement.removeClass(classNameDisplayNone).addClass( classNameDisplay );
 //    .show();
-  }}, arguments[1] || { });
+  }}, arguments[3] || { });
+  return new Effect.Opacity(element,options);
+};
+
+Effect.AppearCheckClasses = function(element, classesNameDisplayNone, classesNameDisplay) {
+  element = $(element);
+  var jqElement = jQuery(element);
+  var options = Object.extend({
+  from: (jqElement.hasClass(classesNameDisplayNone[0]) ? 0.0 : element.getOpacity() || 0.0),
+  to:   1.0,
+  // force Safari to render floated elements properly
+  afterFinishInternal: function(effect) {
+    effect.element.forceRerendering();
+  },
+  beforeSetup: function(effect) {
+    effect.element.setOpacity(effect.options.from);
+    var jqElement = jQuery(effect.element); // uso jQuey per comodita'
+    
+    for(var i = 0; i < classesNameDisplayNone.length; i++){
+		var classNameDisplayNone = classesNameDisplayNone[i];
+		jqElement.removeClass(classNameDisplay);
+	}
+    
+     for(var i = 0; i < classesNameDisplay.length; i++){
+		var classNameDisplay = classesNameDisplay[i];
+		jqElement.addClass(classNameDisplay);
+	}
+//    .show();
+  }}, arguments[3] || { });
   return new Effect.Opacity(element,options);
 };
 
