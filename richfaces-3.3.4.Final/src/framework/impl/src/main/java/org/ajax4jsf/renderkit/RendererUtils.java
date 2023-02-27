@@ -1252,6 +1252,12 @@ public class RendererUtils {
 		return componentId.replace(":", "-").replace(".", "-");
 	}
 	
+	public static String getIdFunctionPrefix(String componentId) {
+		if(componentId == null) return null;
+		
+		return componentId.replace(":", "_").replace(".", "_");
+	}
+	
 	/**
 	 * Decide se generare il tag script in funzione degli attributi di un elemento.
 	 * 

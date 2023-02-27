@@ -20,9 +20,11 @@
 	</jsp:scriptlet>
 	<script type="text/javascript" nonce="#{cspValue}">			
 	 	jQuery(document).ready(function() {
-	 		 jQuery("a[id$='#{clientId}']").click(function() {
+	 		 jQuery("a[id$='#{clientId}']").not('.clickbind').click(function() {
 	 			#{this:getOnClick(context,component)};
 	 		});
+	 		 
+	 		jQuery("a[id$='#{clientId}']").not('.clickbind').addClass('clickbind');
 		 });
 	</script>
 	<a

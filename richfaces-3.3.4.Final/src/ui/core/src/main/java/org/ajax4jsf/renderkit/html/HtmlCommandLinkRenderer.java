@@ -40,7 +40,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.ajax4jsf.Messages;
-import org.ajax4jsf.javascript.AjaxScript;
 import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
 import org.ajax4jsf.renderkit.RendererUtils;
@@ -133,13 +132,13 @@ public class HtmlCommandLinkRenderer extends HeaderResourcesRendererBase {
 		submit.addParameter(clientId);
 		submit.addParameter(form.getClientId(context));
 		submit.addParameter(component.getAttributes().get("target"));
-		Map parameters = new HashMap();
-		for (Iterator iter = component.getChildren().iterator(); iter.hasNext();) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		for (Iterator<?> iter = component.getChildren().iterator(); iter.hasNext();) {
 			Object child =  iter.next();
 			if (child instanceof UIParameter) {
 				UIParameter param = (UIParameter) child;
-				String name = ((UIParameter) child).getName();
-				Object value = ((UIParameter) child).getValue();
+				String name = param.getName();
+				Object value = param.getValue();
 				
 				if (name == null) {
 					throw new IllegalArgumentException(Messages.getMessage(
@@ -242,6 +241,7 @@ private boolean isDisabled(FacesContext context, UIComponent command){
 	/* (non-Javadoc)
 	 * @see org.ajax4jsf.renderkit.RendererBase#getComponentClass()
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected Class getComponentClass() {
 		// TODO Auto-generated method stub
 		return UICommand.class;
