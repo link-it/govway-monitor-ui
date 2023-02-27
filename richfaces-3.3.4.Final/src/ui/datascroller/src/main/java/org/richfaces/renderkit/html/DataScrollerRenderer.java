@@ -18,7 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
@@ -39,18 +43,21 @@ import org.ajax4jsf.javascript.JSFunctionDefinition;
 import org.ajax4jsf.javascript.JSLiteral;
 import org.ajax4jsf.renderkit.AjaxRendererUtils;
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
+import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.UIDatascroller;
 import org.richfaces.event.DataScrollerEvent;
 
 
 public class DataScrollerRenderer extends HeaderResourcesRendererBase {
 
-    protected Class getComponentClass() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Class getComponentClass() {
         return UIDatascroller.class;
     }
     
     public void doDecode(FacesContext context, UIComponent component) {
-    	Map paramMap = getParamMap(context);
+    	Map<String, String> paramMap = getParamMap(context);
     	String clientId = component.getClientId(context);
     	String param = (String) paramMap.get(clientId);
     	if (param != null) {
@@ -194,6 +201,12 @@ public class DataScrollerRenderer extends HeaderResourcesRendererBase {
 
         for (int i = start, size = start + pages; i < size; i++) {
 
+        	String tdPagerId = component.getClientId(context) + "Pager_" + i;
+			String tdPagerIdCssClass = RendererUtils.getCssId(tdPagerId).concat("-styleAttr");
+			String cspNonceValue = RendererUtils.getCspNonceValue(context);
+			String tag = "td";
+			String jQueryEvent = "click";
+			
             boolean isCurrentPage = (i + 1 == currentPage);
             String styleClass;
             String style;
@@ -207,8 +220,12 @@ public class DataScrollerRenderer extends HeaderResourcesRendererBase {
 			if (styleClass==null){
 			    styleClass="";
 			}
-
+			if (null != style) {
+				styleClass = styleClass.concat(" ").concat(tdPagerIdCssClass);
+			}
+			
             out.startElement("td", component);
+            out.writeAttribute("id", tdPagerId, null);
             
             if (isCurrentPage) {
                 out.writeAttribute("class", "rich-datascr-act "+
@@ -216,9 +233,38 @@ public class DataScrollerRenderer extends HeaderResourcesRendererBase {
             } else {
                 out.writeAttribute("class", "rich-datascr-inact "+
                 		styleClass, null);
-                out.writeAttribute("onclick", getOnClick(Integer.toString(i + 1)), null);
             }
-            if (null != style) out.writeAttribute("style", style, null);
+            if (null != style) {
+	            StringBuffer sb = new StringBuffer();
+	    		sb.append(".").append(tdPagerIdCssClass).append(" {").append(style).append("}");
+	    		
+	    		out.startElement(HTML.STYLE_ELEM, component);
+	    		out.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+	    		if(cspNonceValue != null) {
+	    			out.writeAttribute(HTML.nonce_ATTRIBUTE, cspNonceValue, null);
+	    		}
+	    		
+	    		out.write(sb.toString());
+	    		out.endElement(HTML.STYLE_ELEM);
+            }
+            
+            if (!isCurrentPage) { // onclik
+            	StringBuffer sb = new StringBuffer();
+            	sb.append("jQuery(document).ready(function() {");
+            	sb.append("jQuery(\""+tag+"[id$='"+tdPagerId+"']\")."+jQueryEvent+"(function() {");
+				sb.append(getOnClick(Integer.toString(i + 1)));
+				sb.append("});");
+				sb.append("});");
+	    		
+	    		out.startElement(HTML.SCRIPT_ELEM, component);
+	    		out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+	    		if(cspNonceValue != null) {
+	    			out.writeAttribute(HTML.nonce_ATTRIBUTE, cspNonceValue, null);
+	    		}
+	    		
+	    		out.write(sb.toString());
+	    		out.endElement(HTML.SCRIPT_ELEM);
+            }
             out.writeText(Integer.toString(i + 1), null);
             //renderChild(context, link);
             out.endElement("td");
@@ -242,27 +288,27 @@ public class DataScrollerRenderer extends HeaderResourcesRendererBase {
         String varName = (String) scroller.getAttributes().get("pageIndexVar");
         if (varName != null && varName.length() > 0) {
             context.getExternalContext()
-                    .getRequestMap().put(varName, new Integer(currentPage));
+                    .getRequestMap().put(varName, Integer.valueOf(currentPage));
         }
         varName = (String) scroller.getAttributes().get("pagesVar");
         if (varName != null && varName.length() > 0) {
             context.getExternalContext()
-                    .getRequestMap().put(varName, new Integer(pageCount));
+                    .getRequestMap().put(varName, Integer.valueOf(pageCount));
         }
     }
 
-    private Map getParamMap(FacesContext context) {
+    private Map<String, String> getParamMap(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap();
     }
 
     //get UIParameter's Map
-    protected Map getParameters(FacesContext context, UIComponent component){
-    	Map parameters = new HashMap(); 
+    protected Map<String, Object> getParameters(FacesContext context, UIComponent component){
+    	Map<String, Object> parameters = new HashMap<String, Object>(); 
     	
     	if(component instanceof UIDatascroller){
     		UIDatascroller datascroller = (UIDatascroller)component;
-    		List children = datascroller.getChildren();
-    		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+    		List<UIComponent> children = datascroller.getChildren();
+    		for (Iterator<UIComponent> iterator = children.iterator(); iterator.hasNext();) {
 				UIComponent child = (UIComponent) iterator.next();
 				if(child instanceof UIParameter) {
 					UIParameter param = (UIParameter)child;
@@ -282,11 +328,13 @@ public class DataScrollerRenderer extends HeaderResourcesRendererBase {
         
 	JSFunction function = AjaxRendererUtils.buildAjaxFunction(component,
                 context);
-        Map eventOptions = AjaxRendererUtils.buildEventOptions(context,
+        Map<String, Object> eventOptions = AjaxRendererUtils.buildEventOptions(context,
                 component, true);
-        Map parameters = (Map) eventOptions.get("parameters");
         
-        Map params = getParameters(context,component);
+        @SuppressWarnings("unchecked")
+		Map<String, Object> parameters = (Map<String, Object>) eventOptions.get("parameters");
+        
+        Map<String, Object> params = getParameters(context,component);
         if(!params.isEmpty()){
         	parameters.putAll(params);
         }

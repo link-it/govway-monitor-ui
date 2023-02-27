@@ -33,7 +33,9 @@
 	cursor : pointer;
 	text-align: center;
 }
-
+.rich-datascr-display-none{
+	display: none;
+}
 
 ]]>
 
