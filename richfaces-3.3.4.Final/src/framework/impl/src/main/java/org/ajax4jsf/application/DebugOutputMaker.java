@@ -31,6 +31,8 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -62,10 +64,10 @@ public class DebugOutputMaker {
     private final static String LT = "&lt;";
     private final static String GT = "&gt;";
 	// Attributes that should not be printed
-	static public final HashSet IGNORE_ATTRIBUTES;
+	static public final Set<String> IGNORE_ATTRIBUTES;
 
 	static {
-		IGNORE_ATTRIBUTES = new HashSet();
+		IGNORE_ATTRIBUTES = new HashSet<String>();
 		IGNORE_ATTRIBUTES.add("attributes");
 		IGNORE_ATTRIBUTES.add("children");
 		IGNORE_ATTRIBUTES.add("childCount");
@@ -295,9 +297,9 @@ public class DebugOutputMaker {
 
 		// out bindings
 		// out attributes map
-		for (Iterator it = component.getAttributes().entrySet().iterator(); it
+		for (Iterator<Entry<String, Object>> it = component.getAttributes().entrySet().iterator(); it
 				.hasNext();) {
-			Map.Entry entry = (Map.Entry) it.next();
+			Map.Entry<String, Object> entry = it.next();
 			writeAttribute(out, (String) entry.getKey(), entry.getValue());
 		}
 		// out listeners
@@ -306,16 +308,16 @@ public class DebugOutputMaker {
 			out.println("<dd class='tree_childs'><dl class='tree_childs'>");
 			// out childs of this component
 			// facets
-			for (Iterator facetEntry = component.getFacets().entrySet()
+			for (Iterator<Entry<String, UIComponent>> facetEntry = component.getFacets().entrySet()
 					.iterator(); facetEntry.hasNext();) {
-				Map.Entry entry = (Map.Entry) facetEntry.next();
+				Map.Entry<String, UIComponent> entry = facetEntry.next();
 				writeComponent(context, out,
 						(UIComponent) entry.getValue(), (String) entry.getKey());
 			}
 			// childs components
-			for (Iterator childIter = component.getChildren().iterator(); childIter
+			for (Iterator<UIComponent> childIter = component.getChildren().iterator(); childIter
 					.hasNext();) {
-				UIComponent child = (UIComponent) childIter.next();
+				UIComponent child = childIter.next();
 				writeComponent(context, out, child, null);
 			}
 			out.println("</dl></dd>");

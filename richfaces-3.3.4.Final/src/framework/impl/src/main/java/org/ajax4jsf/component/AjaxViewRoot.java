@@ -71,6 +71,11 @@ import org.apache.commons.logging.LogFactory;
  * @version $Revision: 1.1.2.4 $ $Date: 2007/02/28 17:01:01 $
  * 
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 public class AjaxViewRoot extends UIViewRoot implements AjaxContainer {
 
 	public static final String ROOT_ID = "_viewRoot";
@@ -717,7 +722,7 @@ public class AjaxViewRoot extends UIViewRoot implements AjaxContainer {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	protected void restoreAdditionalState(FacesContext context, Object state) {
 		if (null != state) {
 			boolean isAjax = AjaxContext.getCurrentInstance(context).isAjaxRequest();

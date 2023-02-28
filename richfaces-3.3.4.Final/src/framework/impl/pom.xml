@@ -7,7 +7,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces.framework</groupId>
-	<artifactId>${classifiedArtifactId}</artifactId>
+	<artifactId>richfaces-impl</artifactId>
 	<name>Java Server Faces AJAX framework implementation</name>
 	<version>3.3.4.Final</version>
 	<build>
@@ -60,18 +60,6 @@
 				<artifactId>build-helper-maven-plugin</artifactId> 
 				<version>1.4</version> 
 				<executions> 
-					<execution> 
-						<id>add-source</id> 
-						<phase>generate-sources</phase> 
-						<goals> 
-							<goal>add-source</goal> 
-						</goals> 
-						<configuration> 
-							<sources> 
-								<source>${frameworkAdditionalSourceFolder}</source> 
-							</sources>
-						</configuration> 
-					</execution> 
 					<execution>
 						<id>attach-artifacts</id>
 						<phase>package</phase>
@@ -203,35 +191,6 @@
 			</build>
 		</profile>
 		<profile>
-			<id>jsf2_0</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-deploy-plugin</artifactId>
-						<configuration>
-							<skip>false</skip>
-						</configuration>
-					</plugin>
-				</plugins>
-				<resources>
-					<resource>
-						<directory>src/main/resources-jsf20</directory>
-					</resource>
-				</resources>
-			</build>
-			<dependencies>
-				<dependency>
-					<groupId>com.sun.faces</groupId>
-					<artifactId>jsf-api</artifactId>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-			<properties>
-				<frameworkAdditionalSourceFolder>src/main/java-jsf20</frameworkAdditionalSourceFolder>
-				<classifiedArtifactId>richfaces-impl-jsf2</classifiedArtifactId>
-			</properties>
-		</profile>
-		<profile>
 			<id>jsf1_2</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -244,7 +203,6 @@
 				</dependency>
 			</dependencies>
 			<properties>
-				<frameworkAdditionalSourceFolder>src/main/java-jsf12</frameworkAdditionalSourceFolder>
 				<classifiedArtifactId>richfaces-impl</classifiedArtifactId>
 			</properties>
 		</profile>
