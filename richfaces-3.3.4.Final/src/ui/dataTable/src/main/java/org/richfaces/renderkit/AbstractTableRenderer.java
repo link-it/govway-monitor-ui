@@ -46,7 +46,6 @@ import org.ajax4jsf.javascript.AjaxScript;
 import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.PrototypeScript;
 import org.ajax4jsf.renderkit.AjaxRendererUtils;
-import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 import org.richfaces.component.Column;
@@ -840,10 +839,7 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 		if(null != event){
 		    String jQueryEvent = "oncontextmenu".substring("oncontextmenu".indexOf("on")+ "on".length());
 		    
-		    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
-			sb.append(event);
-			sb.append("});");
-			sb.append("\n");
+		    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {").append(event).append("});");
 	    }
 		
 		return sb.toString();

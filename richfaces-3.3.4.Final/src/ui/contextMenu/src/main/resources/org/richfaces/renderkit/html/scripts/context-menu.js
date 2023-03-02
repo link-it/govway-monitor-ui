@@ -127,7 +127,8 @@ Richfaces.ContextMenu.prototype = {
 		
 		var div = document.createElement("div");
 		div.id = this.id + ":_auto_created";
-		div.style.zoom="1";
+		var jqDiv = jQuery(div);
+		jqDiv.addClass( "rich-zoom-1" );
 		this.element.appendChild(div);
 		
 		var html = this.evaluator.invoke('getContent', context||{}).join('');

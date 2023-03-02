@@ -43,9 +43,7 @@
 							<td id="#{clientId}_lbl" >
 								<f:call name="writeLabel" />
 								<script type="text/javascript" nonce="#{cspValue}">
-									jQuery(document).ready(function() {
-										 #{this:getLabelEventsHandler(context, component)}
-									 }); 
+									jQuery(document).ready(function() { #{this:getLabelEventsHandler(context, component)} }); 
 								</script>
 							</td>
 						</tr>

@@ -33,7 +33,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.component.UIDataAdaptor;
-import org.ajax4jsf.renderkit.RendererUtils.HTML;
 
 /**
  * @author shura

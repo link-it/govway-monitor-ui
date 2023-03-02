@@ -291,13 +291,13 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
     	sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+"mouseover"+"(function() {");
 		sb.append(ONMOUSEOVER);
 		sb.append("});");
-		sb.append("\n");
+//		sb.append("\n");
     	
     	// writer.writeAttribute(HTML.onmouseout_ATTRIBUTE, ONMOUSEOUT, "tabOnMouseOut");
 		sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+"mouseout"+"(function() {");
 		sb.append(ONMOUSEOUT);
 		sb.append("});");
-		sb.append("\n");
+//		sb.append("\n");
     	
     	// onclick="#{component.attributes['onlabelclick']}"
 		addEvent(tab, sb, tag, clientId, "onlabelclick", "click");
@@ -333,7 +333,7 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
 		    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
 			sb.append(event);
 			sb.append("});");
-			sb.append("\n");
+//			sb.append("\n");
 	    }
 	}
 

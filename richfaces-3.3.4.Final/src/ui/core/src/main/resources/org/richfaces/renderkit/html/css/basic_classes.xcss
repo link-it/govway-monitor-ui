@@ -61,6 +61,10 @@
 		.rich-output-panel-display-none { 
 			display: none;
 		}
+		
+		.rich-zoom-1 {
+			zoom: 1;
+		}
 		]]>
 	</f:verbatim>
 

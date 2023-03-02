@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.component;
 
@@ -50,7 +55,8 @@ public abstract class UITabPanel extends UISwitchablePanel {
         return true;
     }
 
-    protected Iterator getSwitchedFacetsAndChildren() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Iterator getSwitchedFacetsAndChildren() {
     	
         final Object renderedValue = null != this.restoredRenderedValue?this.restoredRenderedValue:getRenderedValue();
 
@@ -191,7 +197,7 @@ public abstract class UITabPanel extends UISwitchablePanel {
      *
      * @return Iterator
      */
-    public Iterator getRenderedTabs() {
+    public Iterator<?> getRenderedTabs() {
 	if (getChildCount() > 0) {
 	    return new FilterIterator(getChildren().iterator(), RENDERED_TAB_PREDICATE);
 	} else {
@@ -247,9 +253,9 @@ public abstract class UITabPanel extends UISwitchablePanel {
     //TODO use getTabs() iterator
     private UITab getTabWithName(Object tabName){
     
-    	List children = getChildren();
-    	for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-			UIComponent childComponent = (UIComponent) iterator.next();
+    	List<UIComponent> children = getChildren();
+    	for (Iterator<UIComponent> iterator = children.iterator(); iterator.hasNext();) {
+			UIComponent childComponent = iterator.next();
 			if(childComponent instanceof UITab && ((UITab)childComponent).getName().equals(tabName)){
 				return (UITab)childComponent; 
 			}

@@ -41,8 +41,6 @@ import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.Row;
 
-import com.sun.faces.renderkit.RenderKitUtils;
-
 /**
  * @author shura
  * 
@@ -205,10 +203,7 @@ public abstract class AbstractRowsRenderer extends HeaderResourcesRendererBase
 		    if(null != event){
 			    String jQueryEvent = attrs[0].substring(attrs[0].indexOf("on")+ "on".length());
 			    
-			    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
-				sb.append(event);
-				sb.append("});");
-				sb.append("\n");
+			    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {").append(event).append("});");
 		    }
 		}
 		
