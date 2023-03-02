@@ -133,25 +133,25 @@
 	</profiles>
 	<modules>
 		<module>core</module>
-		<module>colorPicker</module>
+<!-- 		<module>colorPicker</module> -->
 		<module>drag-drop</module>
-		<module>effect</module>
+<!-- 		<module>effect</module> -->
 		<module>panel</module>
 		<module>panelbar</module>
-		<module>dataFilterSlider</module>
-		<module>gmap</module>
+<!-- 		<module>dataFilterSlider</module> -->
+<!-- 		<module>gmap</module> -->
 		<module>jQuery</module>
-		<module>virtualEarth</module>
-		<module>separator</module>
+<!-- 		<module>virtualEarth</module> -->
+<!-- 		<module>separator</module> -->
 		<module>spacer</module>
-		<module>paint2D</module>
+<!-- 		<module>paint2D</module> -->
 		<module>togglePanel</module>
 		<module>tabPanel</module>
 		<module>simpleTogglePanel</module>
-		<module>toolBar</module>
+<!-- 		<module>toolBar</module> -->
 		<module>inputnumber-slider</module>
 		<module>inputnumber-spinner</module>
-		<module>tree</module>
+<!-- 		<module>tree</module> -->
 		<module>suggestionbox</module>
 		<module>dataTable</module>
 		<module>modal-panel</module>
@@ -161,7 +161,7 @@
 		<module>tooltip</module>
 		<module>panelmenu</module>
 		<module>calendar</module>
-		<module>treeModel</module>
+<!-- 		<module>treeModel</module> -->
 		<module>message</module>
 		<module>scrollableDataTable</module>
 		<module>insert</module>
@@ -172,16 +172,16 @@
 		<module>columns</module>
 		<module>combobox</module>
 		<module>pickList</module>
-	    <module>progressBAR</module>
-		<module>fileUpload</module>
-		<module>inplaceInput</module>
-		<module>inplaceSelect</module>
+<!-- 	    <module>progressBAR</module> -->
+<!-- 		<module>fileUpload</module> -->
+<!-- 		<module>inplaceInput</module> -->
+<!-- 		<module>inplaceSelect</module> -->
 		<module>functions</module>
 		<module>hotKey</module>
 		<module>beanValidator</module>
 		<module>state</module>
 		<module>extendedDataTable</module>
-		<module>editor</module>
+<!-- 		<module>editor</module> -->
 		<module>layout</module>
   </modules>
 	<dependencies>
