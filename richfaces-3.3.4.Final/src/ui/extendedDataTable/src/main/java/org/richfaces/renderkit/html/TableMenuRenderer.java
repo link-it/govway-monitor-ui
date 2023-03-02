@@ -19,6 +19,11 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
@@ -40,7 +45,12 @@ import org.richfaces.component.UIExtendedDataTable;
  */
 public abstract class TableMenuRenderer implements Serializable {
 
-    public final static String CHANGE_COL_VISIBILITY = "change_col_v";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public final static String CHANGE_COL_VISIBILITY = "change_col_v";
 
     protected FacesContext context;
     protected UIExtendedDataTable table;

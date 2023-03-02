@@ -19,14 +19,17 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.component;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import javax.faces.component.UIComponent;
-
-import org.richfaces.component.UIColumn;
 
 /**
  * Columns iterator that work exactly like org.richfaces.component.ColumnsIterator

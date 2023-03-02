@@ -19,6 +19,11 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
@@ -32,6 +37,7 @@ import javax.faces.context.ResponseWriter;
 import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.JSFunctionDefinition;
 import org.ajax4jsf.org.w3c.tidy.EntityTable;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.richfaces.component.UIColumn;
 import org.richfaces.component.UIDataTable;
@@ -163,9 +169,13 @@ public class TableDragDropRenderer implements Serializable {
         }
 
         ResponseWriter writer = context.getResponseWriter();
+        
+        String cspNonceValue = RendererUtils.getCspNonceValue(context);
 
         writer.startElement(HTML.SCRIPT_ELEM, column);
         writer.writeAttribute("id", dragSourceScriptId, "id");
+        writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", HTML.TYPE_ATTR);
+        writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspNonceValue, HTML.nonce_ATTRIBUTE);
         writer.write(escapeHtmlEntities(buffer));
         writer.endElement(HTML.SCRIPT_ELEM);
     }// renderDragSupport
@@ -210,9 +220,13 @@ public class TableDragDropRenderer implements Serializable {
         }
 
         ResponseWriter writer = context.getResponseWriter();
+        
+        String cspNonceValue = RendererUtils.getCspNonceValue(context);
 
         writer.startElement(HTML.SCRIPT_ELEM, column);
         writer.writeAttribute("id", dropTargetScriptId, "id");
+        writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", HTML.TYPE_ATTR);
+        writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspNonceValue, HTML.nonce_ATTRIBUTE);
         writer.write(escapeHtmlEntities(buffer));
         writer.endElement(HTML.SCRIPT_ELEM);
     }// renderDropSupport

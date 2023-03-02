@@ -281,6 +281,30 @@
 	    width: 80%;
 	}
 	
+	.extdt-display-none {
+		display: none;
+	}
+	
+	.extdt-display {
+		display: ;
+	}
+	
+	.extdt-font-weight-bold-style {
+		font-weight: bold;
+	}
+	
+	.extdt-cursor-pointer-style {
+		cursor: pointer;
+	}
+	
+	.extdt-visibility-hidden {
+		visibility: hidden;
+	}
+	
+	.extdt-height-zero-style {
+		height: 0px;
+	}
+	
 	</f:verbatim>
 
 <u:selector name=".extdt-menu-div-on" >
