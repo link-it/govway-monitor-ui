@@ -1317,9 +1317,7 @@ public class RendererUtils {
 			if (null != value && shouldRenderAttribute(attribute, value)) {
 				String jQueryEvent = attribute.substring(attribute.indexOf("on")+ "on".length());
 				
-				sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
-				sb.append(value);
-				sb.append("});");
+				sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {").append(value).append("});");
 				
 //				if(attribute.equals(HTML.onclick_ATTRIBUTE)) {
 //					sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\").click(function() {");
@@ -1347,9 +1345,7 @@ public class RendererUtils {
 		// estrazione codice 
 		Object value = attributeValue(attributeToWrite, attributes.get(getComponentAttributeName(attributeToWrite)));
 		if (null != value && shouldRenderAttribute(attributeToWrite, value)) {
-			sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
-			sb.append(value);
-			sb.append("});");
+			sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {").append(value).append("});");
 		}
 		return sb.toString();
 	}

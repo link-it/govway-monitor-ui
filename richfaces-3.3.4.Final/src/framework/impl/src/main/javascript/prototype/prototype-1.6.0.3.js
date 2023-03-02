@@ -401,7 +401,21 @@ Object.extend(String.prototype, {
   },
 
   evalScripts: function() {
-    return this.extractScripts().map(function(script) { return eval(script) });
+    return this.extractScripts().map(function(data) {
+		if (data && /\S/.test(data)) {
+            var head = document.getElementsByTagName("head")[0] || document.documentElement
+              , script = document.createElement("script");
+            script.type = "text/javascript";
+            if (jQuery.support.scriptEval)
+                script.appendChild(document.createTextNode(data));
+            else
+                script.text = data;
+            head.insertBefore(script, head.firstChild);
+            head.removeChild(script);
+        } 
+        
+        return;
+	});
   },
 
   escapeHTML: function() {
