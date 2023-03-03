@@ -209,8 +209,7 @@ DefaultDragIndicatorView =
 [
 	new E('table', 
 			{
-				'style':'height : 100%; z-index: 2;', 
-				'className':'drgind_internal', 
+				'className':'drgind_internal drgind_internal-style', 
 				'cellspacing':'0', 
 				'cellpadding':'3', 
 				'border':'0'

@@ -43,9 +43,11 @@
 	]]></jsp:declaration>
 	<script type="text/javascript" nonce="#{cspValue}">			
 	 	jQuery(document).ready(function() {
-	 		 jQuery("input[id$='#{clientId}']").click(function() {
+	 		 jQuery("input[id$='#{clientId}']").not('.clickbind').click(function() {
 	 			#{this:getOnClick(context,component)};
 	 		});
+	 		 
+	 		jQuery("input[id$='#{clientId}']").not('.clickbind').addClass('clickbind');
 		 });
 	</script>
 	<input 
