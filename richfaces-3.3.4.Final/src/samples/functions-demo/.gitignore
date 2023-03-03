@@ -1,9 +1,0 @@
-# Ignore everything in this directory
-.project
-.classpath
-.settings/
-target
-
-# Except this file
-!.gitignore
-

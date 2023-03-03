@@ -25,23 +25,6 @@
 				<artifactId>postgresql</artifactId>
 				<version>8.2-504.jdbc3</version>
 			</extension>
-			<!-- scm deployment wagon 
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-scm</artifactId>
-				<version>1.0-alpha-5</version>
-			</extension>
-			<extension>
-				<groupId>org.apache.maven.scm</groupId>
-				<artifactId>maven-scm-manager-plexus</artifactId>
-				<version>1.0</version>
-			</extension>
-			<extension>
-				<groupId>org.apache.maven.scm</groupId>
-				<artifactId>maven-scm-provider-svnexe</artifactId>
-				<version>1.0</version>
-			</extension>
-			-->
 		</extensions>
 		<pluginManagement>
 			<plugins>
@@ -97,8 +80,8 @@
 		<module>extensions</module>
 		<module>docs</module>
 		<module>ui/assembly</module>
-		<module>samples</module>
 		<!--
+			<module>samples</module>
 			<module>sandbox</module>
 		-->
 	</modules>
