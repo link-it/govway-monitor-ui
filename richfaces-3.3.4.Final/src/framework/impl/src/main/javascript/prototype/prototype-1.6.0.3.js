@@ -2533,7 +2533,11 @@ Element._getContentFromAnonymousElement = function(tagName, html) {
   if (t) {
     div.innerHTML = t[0] + html + t[1];
     t[2].times(function() { div = div.firstChild });
-  } else div.innerHTML = html;
+  } else {
+	 //div.innerHTML = html;
+		var dom = new DOMParser().parseFromString(html, 'text/html').body;
+		while (dom.hasChildNodes()) div.appendChild(dom.firstChild);
+	}
   return $A(div.childNodes);
 };
 

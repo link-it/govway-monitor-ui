@@ -193,14 +193,38 @@ Richfaces.eval = function(template, object) {
 	var value = '';
 	
 	try { 
-		with (object) {
-			value = eval(template) ;
-		} 
+//		with (object) {
+//			value = eval(template) ;
+			value = Richfaces.customJSONEval(object.template) ;
+//		} 
 	} catch (e) { 
 		LOG.warn('Exception: ' + e.message + '\n[' + template + ']'); 
 	}
 
 	return value;
+};
+
+Richfaces.customJSONEval = function(data) {
+		var result;
+
+	    // Define callback
+	    window.evalCallback = function(r){
+	        result = r;
+	    };
+	
+	    var newScript = document.createElement("script");
+	    newScript.innerHTML = "evalCallback(" + data + ");";
+	    /*
+	     * // Add CSP nonce if relevant
+	     * newScript.setAttribute("nonce", nonce);
+	    */
+	    document.head.appendChild(newScript);
+	
+	    // Now clean up DOM and global scope
+	    document.head.removeChild(newScript);
+	    delete window.evalCallback;
+	
+	    return result;
 };
 
 Richfaces.interpolate = function (placeholders, context) {
