@@ -77,13 +77,8 @@
 		<module>cdk</module>
 		<module>framework</module>
 		<module>ui</module>
-		<module>extensions</module>
 		<module>docs</module>
 		<module>ui/assembly</module>
-		<!--
-			<module>samples</module>
-			<module>sandbox</module>
-		-->
 	</modules>
 	<repositories>
 		<repository>
