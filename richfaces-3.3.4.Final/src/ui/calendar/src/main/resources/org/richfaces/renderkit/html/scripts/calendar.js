@@ -2224,11 +2224,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled){
-			jQuery("div[id$='" + myId + "NextYearControl']").click(function() { Richfaces.getComponent('calendar',this).nextYear(); return true; });
-			jQuery("div[id$='" + myId + "NextYearControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "NextYearControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "NextYearControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "NextYearControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "NextYearControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "NextYearControl']").click(function() { Richfaces.getComponent('calendar',this).nextYear(); return true; });
+				jQuery("div[id$='" + myId + "NextYearControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "NextYearControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "NextYearControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "NextYearControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "NextYearControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando previous year
@@ -2238,11 +2241,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled){
-			jQuery("div[id$='" + myId + "PreviousYearControl']").click(function() { Richfaces.getComponent('calendar',this).prevYear(); return true; });
-			jQuery("div[id$='" + myId + "PreviousYearControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "PreviousYearControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "PreviousYearControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "PreviousYearControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "PreviousYearControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "PreviousYearControl']").click(function() { Richfaces.getComponent('calendar',this).prevYear(); return true; });
+				jQuery("div[id$='" + myId + "PreviousYearControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "PreviousYearControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "PreviousYearControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "PreviousYearControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "PreviousYearControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando next month
@@ -2252,11 +2258,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled){
-			jQuery("div[id$='" + myId + "NextMonthControl']").click(function() { Richfaces.getComponent('calendar',this).nextMonth(); return true; });
-			jQuery("div[id$='" + myId + "NextMonthControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "NextMonthControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "NextMonthControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "NextMonthControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "NextMonthControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "NextMonthControl']").click(function() { Richfaces.getComponent('calendar',this).nextMonth(); return true; });
+				jQuery("div[id$='" + myId + "NextMonthControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "NextMonthControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "NextMonthControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "NextMonthControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "NextMonthControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando previous month
@@ -2266,11 +2275,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled){
-			jQuery("div[id$='" + myId + "PreviousMonthControl']").click(function() { Richfaces.getComponent('calendar',this).prevMonth(); return true; });
-			jQuery("div[id$='" + myId + "PreviousMonthControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "PreviousMonthControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "PreviousMonthControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "PreviousMonthControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "PreviousMonthControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "PreviousMonthControl']").click(function() { Richfaces.getComponent('calendar',this).prevMonth(); return true; });
+				jQuery("div[id$='" + myId + "PreviousMonthControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "PreviousMonthControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "PreviousMonthControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "PreviousMonthControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "PreviousMonthControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando close
@@ -2280,11 +2292,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(this.params.popup){
-			jQuery("div[id$='" + myId + "CloseControl']").click(function() { Richfaces.getComponent('calendar',this).close(false); return true; });
-			jQuery("div[id$='" + myId + "CloseControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "CloseControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "CloseControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "CloseControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "CloseControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "CloseControl']").click(function() { Richfaces.getComponent('calendar',this).close(false); return true; });
+				jQuery("div[id$='" + myId + "CloseControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "CloseControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "CloseControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "CloseControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "CloseControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando currentMonth
@@ -2294,11 +2309,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled){
-			jQuery("div[id$='" + myId + "CurrentMonthControl']").click(function() { Richfaces.getComponent('calendar',this).showDateEditor(); return true; });
-			jQuery("div[id$='" + myId + "CurrentMonthControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "CurrentMonthControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "CurrentMonthControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "CurrentMonthControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "CurrentMonthControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "CurrentMonthControl']").click(function() { Richfaces.getComponent('calendar',this).showDateEditor(); return true; });
+				jQuery("div[id$='" + myId + "CurrentMonthControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "CurrentMonthControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "CurrentMonthControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "CurrentMonthControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "CurrentMonthControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando today
@@ -2308,11 +2326,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled && this.params.todayControlMode!='hidden'){
-			jQuery("div[id$='" + myId + "TodayControl']").click(function() { Richfaces.getComponent('calendar',this).today(); return true; });
-			jQuery("div[id$='" + myId + "TodayControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "TodayControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "TodayControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "TodayControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "TodayControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "TodayControl']").click(function() { Richfaces.getComponent('calendar',this).today(); return true; });
+				jQuery("div[id$='" + myId + "TodayControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "TodayControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "TodayControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "TodayControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "TodayControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando clean  
@@ -2322,11 +2343,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled && !this.params.readonly && this.selectedDate){
-			jQuery("div[id$='" + myId + "CleanControl']").click(function() { Richfaces.getComponent('calendar',this).resetSelectedDate(); return true; });
-			jQuery("div[id$='" + myId + "CleanControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "CleanControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "CleanControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "CleanControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "CleanControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "CleanControl']").click(function() { Richfaces.getComponent('calendar',this).resetSelectedDate(); return true; });
+				jQuery("div[id$='" + myId + "CleanControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "CleanControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "CleanControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "CleanControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "CleanControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando time editor 
@@ -2336,11 +2360,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled && !this.params.readonly){
-			jQuery("div[id$='" + myId + "TimeControl']").click(function() { Richfaces.getComponent('calendar',this).showTimeEditor(); return true; });
-			jQuery("div[id$='" + myId + "TimeControl']").mouseover(function() { Element.removeClassName(this, 'rich-calendar-tool-btn-press'); });
-			jQuery("div[id$='" + myId + "TimeControl']").mouseout(function() { Element.addClassName(this, 'rich-calendar-tool-btn-press'); });
-			jQuery("div[id$='" + myId + "TimeControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "TimeControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "TimeControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "TimeControl']").click(function() { Richfaces.getComponent('calendar',this).showTimeEditor(); return true; });
+				jQuery("div[id$='" + myId + "TimeControl']").mouseover(function() { Element.removeClassName(this, 'rich-calendar-tool-btn-press'); });
+				jQuery("div[id$='" + myId + "TimeControl']").mouseout(function() { Element.addClassName(this, 'rich-calendar-tool-btn-press'); });
+				jQuery("div[id$='" + myId + "TimeControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "TimeControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "TimeControl']").attr('clickbind','clickbind');
+			}
 		}
 		
 		// eventi del comando selected date
@@ -2350,11 +2377,14 @@ Object.extend(Calendar.prototype, {
 			// onmousedown:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'", 
 			// onmouseup:"this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'"
 		if(!this.params.disabled){
-			jQuery("div[id$='" + myId + "SelectedDateControl']").click(function() { Richfaces.getComponent('calendar',this).showSelectedDate(); return true; });
-			jQuery("div[id$='" + myId + "SelectedDateControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
-			jQuery("div[id$='" + myId + "SelectedDateControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
-			jQuery("div[id$='" + myId + "SelectedDateControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
-			jQuery("div[id$='" + myId + "SelectedDateControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+			if(!jQuery("div[id$='" + myId + "SelectedDateControl']").attr('clickbind')){
+				jQuery("div[id$='" + myId + "SelectedDateControl']").click(function() { Richfaces.getComponent('calendar',this).showSelectedDate(); return true; });
+				jQuery("div[id$='" + myId + "SelectedDateControl']").mouseover(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "SelectedDateControl']").mouseout(function() { this.className='rich-calendar-tool-btn'; });
+				jQuery("div[id$='" + myId + "SelectedDateControl']").mousedown(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover rich-calendar-tool-btn-press'; });
+				jQuery("div[id$='" + myId + "SelectedDateControl']").mouseup(function() { this.className='rich-calendar-tool-btn rich-calendar-tool-btn-hover'; });
+				jQuery("div[id$='" + myId + "SelectedDateControl']").attr('clickbind','clickbind');
+			}
 		}
 	},
 	
@@ -2538,10 +2568,9 @@ CalendarView.getSelectedDateControl = function(calendar) {
 	var calendarId = calendar.id;
 	var elementId = calendarId + 'SelectedDateControl';
 	var text = Richfaces.Calendar.formatDate(calendar.selectedDate,(calendar.timeType ? calendar.datePattern : calendar.params.datePattern), calendar.params.monthLabels, calendar.params.monthLabelsShort);
-	var onclick = "Richfaces.getComponent('calendar',this).showSelectedDate(); return true;"
 	var markup = ( calendar.params.disabled ? 
 					new E('div', {'class': 'rich-calendar-tool-btn-disabled', 'id' : elementId}, [new ET(text)]) : 
-					new E('div', {'class': 'rich-calendar-tool-btn', 'id' : elementId, 'onclick': onclick}, [new ET(text)]) );
+					new E('div', {'class': 'rich-calendar-tool-btn', 'id' : elementId}, [new ET(text)]) );
 
 	return markup;
 };
