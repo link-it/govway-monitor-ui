@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit;
 
 import java.io.IOException;
@@ -30,7 +35,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.javascript.JSFunction;
 import org.ajax4jsf.javascript.JSLiteral;
-import org.ajax4jsf.javascript.JSReference;
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
 import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
@@ -49,7 +53,7 @@ public class EffectRendererBase extends HeaderResourcesRendererBase {
 	/* (non-Javadoc)
 	 * @see org.ajax4jsf.renderkit.RendererBase#getComponentClass()
 	 */
-	protected Class getComponentClass() {
+	protected Class<UIEffect> getComponentClass() {
 		return UIEffect.class;
 	}
 	
@@ -173,8 +177,8 @@ public class EffectRendererBase extends HeaderResourcesRendererBase {
 		}
 		
 		String event = (String)attributes.get("event");
-        Boolean needsFunction = new Boolean(! "".equals(attributes.get("name")) && "".equals(event));
-        Boolean needsObserver = new Boolean(! "".equals(event) && ! "".equals(attachId) );
+        Boolean needsFunction = Boolean.valueOf(! "".equals(attributes.get("name")) && "".equals(event));
+        Boolean needsObserver = Boolean.valueOf(! "".equals(event) && ! "".equals(attachId) );
         
 		if (needsFunction || needsObserver) {
 		
@@ -208,8 +212,14 @@ public class EffectRendererBase extends HeaderResourcesRendererBase {
 			
 			ResponseWriter writer = context.getResponseWriter();
 			
+			String cspNonceValue = RendererUtils.getCspNonceValue(context);
+			
 			writer.startElement(HTML.SCRIPT_ELEM, component);
 			getUtils().writeAttribute(writer, HTML.TYPE_ATTR, "text/javascript");
+			if(cspNonceValue != null) {
+				getUtils().writeAttribute(writer, HTML.nonce_ATTRIBUTE, cspNonceValue);
+			}
+			
 			writer.writeText(function.toScript(), component, null);
 			writer.endElement(HTML.SCRIPT_ELEM);
 		}

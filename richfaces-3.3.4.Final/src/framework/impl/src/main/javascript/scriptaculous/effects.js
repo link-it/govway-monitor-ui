@@ -545,6 +545,10 @@ Effect.Fade = function(element) {
   return new Effect.Opacity(element,options);
 };
 
+Effect.FadeCheckClassWrapped = function(element) {
+	Effect.FadeCheckClass(element, 'display-none', 'display-block', arguments[1]);
+};
+
 Effect.FadeCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
   element = $(element);
   var oldOpacity = element.getInlineOpacity();
@@ -605,6 +609,10 @@ Effect.Appear = function(element) {
     effect.element.setOpacity(effect.options.from).show();
   }}, arguments[1] || { });
   return new Effect.Opacity(element,options);
+};
+
+Effect.AppearCheckClassWrapped = function(element) {
+	Effect.AppearCheckClass(element, 'display-none', 'display-block', arguments[1]);
 };
 
 Effect.AppearCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
@@ -692,6 +700,27 @@ Effect.BlindUp = function(element) {
   );
 };
 
+Effect.BlindUpCheckClassWrapped = function(element) {
+	Effect.BlindUpCheckClass(element, 'display-none', 'display-block', arguments[1]);
+};
+
+Effect.BlindUpCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
+  element = $(element);
+  element.makeClipping();
+  return new Effect.Scale(element, 0,
+    Object.extend({ scaleContent: false,
+      scaleX: false,
+      restoreAfterFinish: true,
+      afterFinishInternal: function(effect) {
+        effect.element.undoClipping();
+        var jqElement = jQuery(effect.element); // uso jQuey per comodita'
+    	jqElement.removeClass(classNameDisplay).addClass( classNameDisplayNone );
+    	//      .hide()
+      }
+    }, arguments[3] || { })
+  );
+};
+
 Effect.BlindDown = function(element) {
   element = $(element);
   var elementDimensions = element.getDimensions();
@@ -709,6 +738,32 @@ Effect.BlindDown = function(element) {
     }
   }, arguments[1] || { }));
 };
+
+Effect.BlindDownCheckClassWrapped = function(element) {
+	Effect.BlindDownCheckClass(element, 'display-none', 'display-block', arguments[1]);
+};
+
+Effect.BlindDownCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
+  element = $(element);
+  var elementDimensions = element.getDimensions();
+  return new Effect.Scale(element, 100, Object.extend({
+    scaleContent: false,
+    scaleX: false,
+    scaleFrom: 0,
+    scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
+    restoreAfterFinish: true,
+    afterSetup: function(effect) {
+      effect.element.makeClipping().setStyle({height: '0px'});
+      var jqElement = jQuery(effect.element); // uso jQuey per comodita'
+      jqElement.removeClass(classNameDisplayNone).addClass( classNameDisplay );
+      //.show();
+    },
+    afterFinishInternal: function(effect) {
+      effect.element.undoClipping();
+    }
+  }, arguments[3] || { }));
+};
+
 
 Effect.SwitchOff = function(element) {
   element = $(element);
