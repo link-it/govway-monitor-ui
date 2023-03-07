@@ -351,6 +351,10 @@ PanelMenuItem.prototype = {
 				this.trigger(e);
 			}
 		} else {
+			if(this.mode == 'none'){
+				return;
+			}
+			
 			if (this.expanded){
 				if ("node" == this.type){
 					if (new Function(this.onclose + ";return true;")()){
