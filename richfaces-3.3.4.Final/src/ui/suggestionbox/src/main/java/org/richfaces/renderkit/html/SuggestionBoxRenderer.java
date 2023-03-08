@@ -66,13 +66,14 @@ import org.richfaces.util.ReferenceMap;
 /**
  * Renderer for SuggestionBox component.
  */
+@SuppressWarnings("deprecation")
 public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 
 	private static final Map<String, Pattern> tokensCache = new ReferenceMap<String, Pattern>();
 
 	private static final String cssDisplayNoneClass = "rich-sb-display-none";
 
-	private List<String> tableTdCssRules = new ArrayList();
+	private List<String> tableTdCssRules = new ArrayList<String>();
 
 	/**
 	 * Shadow depth.
@@ -115,7 +116,7 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 *
 	 * @return component class
 	 */
-	protected final Class getComponentClass() {
+	protected final Class<UISuggestionBox> getComponentClass() {
 		return UISuggestionBox.class;
 	}
 
@@ -306,11 +307,11 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 			writer.endElement(HTML.SCRIPT_ELEM);
 			writer.endElement(HTML.DIV_ELEM);
 
-//			writer.startElement("iframe", component);
-//			writer.writeAttribute("src", getResource("/org/richfaces/renderkit/html/images/spacer.gif").getUri(context, null), null);
-//			writer.writeAttribute("id", component.getClientId(context) + "_iframe", null);
-//			writer.writeAttribute("style", "position:absolute;display:none;z-index:" + zIndex + ";", null);
-//			writer.endElement("iframe");
+			//			writer.startElement("iframe", component);
+			//			writer.writeAttribute("src", getResource("/org/richfaces/renderkit/html/images/spacer.gif").getUri(context, null), null);
+			//			writer.writeAttribute("id", component.getClientId(context) + "_iframe", null);
+			//			writer.writeAttribute("style", "position:absolute;display:none;z-index:" + zIndex + ";", null);
+			//			writer.endElement("iframe");
 
 			writer.startElement("input", component);
 			writer.writeAttribute("type", "hidden", null);
@@ -870,22 +871,26 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 			final UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		UISuggestionBox suggestionBox = (UISuggestionBox)component;
-		
-		String clientId = suggestionBox.getClientId(context);
-		String cssId = RendererUtils.getCssId(clientId);
-		String cspValue = RendererUtils.getCspNonceValue(context);
-		 String cssCellPaddingClass = cssId + "NothingLabel-sb-cell-padding-style";
-		 
-		 StringBuilder sbStyle = new StringBuilder();
-		 sbStyle.append("<style type=\"text/css\" nonce=\"" + cspValue + "\">\n");
-			sbStyle.append(".").append(cssCellPaddingClass).append(" {").append(this.cellPadding(context, component)).append("}\n");
-			sbStyle.append("</style>");
 
+		String cp = suggestionBox.getCellpadding();
+		StringBuilder sbStyle = new StringBuilder();
+		String clientId = suggestionBox.getClientId(context);
+		String cssCellPaddingClass = "";
+		
+		if(cp !=null) {
+			String cellPadding = this.cellPadding(context, component);
+			String cssId = RendererUtils.getCssId(clientId);
+			String cspValue = RendererUtils.getCspNonceValue(context);
+			cssCellPaddingClass = cssId + "NothingLabel-sb-cell-padding-style";
+			
+			sbStyle.append("<style type=\"text/css\" nonce=\"" + cspValue + "\">\n");
+			sbStyle.append(".").append(cssCellPaddingClass).append(" {").append(cellPadding).append("}\n");
+			sbStyle.append("</style>");
+		}
+		
 		final String startHtml = 
 				"<tr id=\"" + clientId + "NothingLabel\" class=\"rich-sb-int " + suggestionBox.getRowClasses() + 
-				" " + cssDisplayNoneClass + "\""
-				+ ">" +
-				sbStyle.toString() + 
+				" " + cssDisplayNoneClass + "\">" + sbStyle.toString() + 
 				"<td nowrap=\"nowrap\" class=\"rich-sb-cell-padding " + cssCellPaddingClass + "\">";
 		final String endHtml = "</td></tr>";
 
@@ -924,26 +929,26 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 
 		return "rich-sb-int " + entryClass + " " + rowClass;
 	}
-	
+
 	public void initCssChildRules(final FacesContext context,
-	        final UIComponent component) throws IOException {
+			final UIComponent component) throws IOException {
 		this.tableTdCssRules = new ArrayList<String>();
 	}
 
 	public void insertCssChildRules(final FacesContext context,
-	        final UIComponent component) throws IOException {
+			final UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String cspValue = RendererUtils.getCspNonceValue(context);
-		
+
 		StringBuilder sbStyle = new StringBuilder();
 		sbStyle.append("<style type=\"text/css\" nonce=\"" + cspValue + "\">\n");
-		
+
 		for(int i = 0 ; i < this.tableTdCssRules.size(); i++) {
 			sbStyle.append(this.tableTdCssRules.get(i)).append("\n");
 		}
-		
+
 		sbStyle.append("</style>");
-		
+
 		writer.write(sbStyle.toString());
 	}
 
@@ -955,7 +960,7 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 * @return nome classe padding-style.
 	 */
 	public final String getCssPaddingClassStyleDef(final FacesContext context,
-	                                 final UIComponent component) {
+			final UIComponent component) {
 		String newRule = "." + getCssPaddingClassStyle(context,component) + "{" +  this.cellPadding(context,component) + "}";
 		this.tableTdCssRules.add(newRule);
 		return newRule;
@@ -969,8 +974,8 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 * @return nome classe padding-style.
 	 */
 	public final String getCssPaddingClassStyle(final FacesContext context,
-	                                 final UIComponent component) {
-	    return getCssId(context,component)  + "-sb-cell-padding-style";
+			final UIComponent component) {
+		return getCssId(context,component)  + "-sb-cell-padding-style";
 	}
 
 	/**
@@ -981,11 +986,11 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 * @return cssId context identifier
 	 */
 	public final String getCssId(final FacesContext context,
-	                                 final UIComponent component) {
+			final UIComponent component) {
 		String clientId = component.getClientId(context);
 		String cssId = RendererUtils.getCssId(clientId);
-		
-	    return cssId;
+
+		return cssId;
 	}
 
 	/**
@@ -996,10 +1001,10 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 * @return cspValue context identifier
 	 */
 	public final String getCspValue(final FacesContext context,
-	                                 final UIComponent component) {
+			final UIComponent component) {
 		String cspValue = RendererUtils.getCspNonceValue(context);
-		
-	    return cspValue;
+
+		return cspValue;
 	}
 
 	/**
@@ -1010,30 +1015,30 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 * @return nome classe padding-style.
 	 */
 	public final String getCssExtDecorClassStyle(final FacesContext context,
-	                                 final UIComponent component) {
-	    return getCssId(context,component)  + "-sb-ext-decor-2-style";
+			final UIComponent component) {
+		return getCssId(context,component)  + "-sb-ext-decor-2-style";
 	}
 
 	public void insertCssExtDecorRules(final FacesContext context,
-	        final UIComponent component) throws IOException {
+			final UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String cspValue = RendererUtils.getCspNonceValue(context);
 		String cssRuleName = getCssExtDecorClassStyle(context,component);
-		
+
 		StringBuilder sbStyle = new StringBuilder();
 		sbStyle.append("<style type=\"text/css\" nonce=\"" + cspValue + "\">\n");
-		
+
 		// <f:call name="bgcolor"/> <f:call name="border"/>
 		String newRule = "." + cssRuleName + "{" +
 				this.bgcolor(context,component)  +
 				" " +
 				this.border(context,component)  +
-		"}";
-		
+				"}";
+
 		sbStyle.append(newRule).append("\n");
-				
+
 		sbStyle.append("</style>");
-		
+
 		writer.write(sbStyle.toString());
 	}
 
@@ -1045,35 +1050,35 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 * @return nome classe padding-style.
 	 */
 	public final String getCssSbOverflowClassStyle(final FacesContext context,
-	                                 final UIComponent component) {
-	    return getCssId(context,component)  + "-sb-ext-decor-2-style";
+			final UIComponent component) {
+		return getCssId(context,component)  + "-sb-ext-decor-2-style";
 	}
 
 	public void insertCssSbOverflowRules(final FacesContext context,
-	        final UIComponent component) throws IOException {
+			final UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 		String cspValue = RendererUtils.getCspNonceValue(context);
 		String cssRuleName = getCssSbOverflowClassStyle(context,component);
-		
+
 		StringBuilder sbStyle = new StringBuilder();
 		sbStyle.append("<style type=\"text/css\" nonce=\"" + cspValue + "\">\n");
-		
+
 		// <f:call name="overflowSize"/>
 		String newRule = "." + cssRuleName + "{" +
 				this.overflowSize(context,component)  +
-		"}";
-		
+				"}";
+
 		sbStyle.append(newRule).append("\n");
-				
+
 		sbStyle.append("</style>");
-		
+
 		writer.write(sbStyle.toString());
 	}
 
 	public final String getCssSbShadowClassStyle(final FacesContext context, final UIComponent component) {
 		return getCssId(context,component)  + "-sb-shadow-style";
 	}
-	
+
 	public final String getNonce(final FacesContext context, final UIComponent component) {
 		return RendererUtils.getCspNonceValue(context);
 	}	

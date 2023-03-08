@@ -639,7 +639,7 @@ Suggestion.Base.prototype = {
             }
         } else {
 		var nothingLabel = $(this.update.id + "NothingLabel");
-		if (!nothingLabel || 'none' == nothingLabel.style.display) {
+		if (!nothingLabel || H.classList.contains('rich-sb-display-none')) {
 			this.active = false;
 			this.hide();
 		}
@@ -669,6 +669,9 @@ Suggestion.Base.prototype = {
     },
     
     createHighlightItem: function(test, subString){
+		if(!subString || subString == '')
+			return test;
+	
   	  var tokens = this.occurrences(test,test.toUpperCase(), subString.toUpperCase());
   	  
   	  var html = '';
