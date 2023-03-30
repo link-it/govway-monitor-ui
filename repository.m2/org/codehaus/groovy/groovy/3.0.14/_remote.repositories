@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 30 15:42:52 CEST 2023
+groovy-3.0.14.jar>nexus=
+groovy-3.0.14.pom>nexus=
