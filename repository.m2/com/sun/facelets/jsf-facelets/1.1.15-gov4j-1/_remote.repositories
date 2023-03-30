@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 30 16:21:21 CEST 2023
+jsf-facelets-1.1.15-gov4j-1.jar>=
+jsf-facelets-1.1.15-gov4j-1.pom>=
