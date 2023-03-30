@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 30 16:37:00 CEST 2023
+maven-javascript-plugin-3.3.4.Final-gov4j-1.jar>=
+maven-javascript-plugin-3.3.4.Final-gov4j-1.pom>=

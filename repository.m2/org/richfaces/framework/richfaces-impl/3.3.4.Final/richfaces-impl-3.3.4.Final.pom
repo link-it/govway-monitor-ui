@@ -116,7 +116,7 @@
 			<plugin>
 				<groupId>org.richfaces.cdk</groupId>
 				<artifactId>maven-javascript-plugin</artifactId>
-				<version>${project.version}</version>
+				<version>${org-richfaces-cdk-maven-javascript-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
