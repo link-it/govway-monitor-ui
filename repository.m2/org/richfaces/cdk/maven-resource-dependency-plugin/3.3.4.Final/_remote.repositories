@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 30 15:54:39 CEST 2023
+maven-resource-dependency-plugin-3.3.4.Final.jar>=
+maven-resource-dependency-plugin-3.3.4.Final.pom>=

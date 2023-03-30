@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 30 15:59:08 CEST 2023
+insert-3.3.4.Final.pom>=
+insert-3.3.4.Final-sources.jar>=
+insert-3.3.4.Final.jar>=

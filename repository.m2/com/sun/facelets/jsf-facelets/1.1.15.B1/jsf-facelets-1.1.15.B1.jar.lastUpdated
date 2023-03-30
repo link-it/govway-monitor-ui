@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 30 15:55:08 CEST 2023
+http\://repository.jboss.org/maven2/.lastUpdated=1680184508061
+http\://download.java.net/maven/2/.lastUpdated=1680184507343
+@legacy-maven-repository.dev.java.net-http\://download.java.net/maven/1/.lastUpdated=1680184504880
+https\://repo1.maven.org/maven2/.error=
+https\://repo1.maven.org/maven2/.lastUpdated=1680184504880
+http\://download.java.net/maven/1/.error=Could not transfer artifact com.sun.facelets\:jsf-facelets\:jar\:1.1.15.B1 from/to maven-repository.dev.java.net (http\://download.java.net/maven/1)\: Cannot access http\://download.java.net/maven/1 with type legacy using the available connector factories\: BasicRepositoryConnectorFactory
+http\://download.java.net/maven/2/.error=
