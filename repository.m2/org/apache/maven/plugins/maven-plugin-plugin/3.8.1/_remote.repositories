@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Mar 30 17:31:16 CEST 2023
+maven-plugin-plugin-3.8.1.jar>nexus=
+maven-plugin-plugin-3.8.1.pom>nexus=

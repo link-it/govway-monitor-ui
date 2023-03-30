@@ -52,7 +52,7 @@
 	</reporting>
 
 	<properties>
-		<finalName>${artifactId}-${version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<java.src.version>1.8</java.src.version>
 		<runtime.log>target/velocity.log</runtime.log>
 	</properties>
