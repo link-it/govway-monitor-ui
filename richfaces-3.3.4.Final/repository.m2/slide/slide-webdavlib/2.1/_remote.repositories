@@ -1,6 +1,0 @@
-#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Thu Nov 10 19:32:25 CET 2022
-slide-webdavlib-2.1.jar>central=
-slide-webdavlib-2.1.jar>nexus=
-slide-webdavlib-2.1.pom>nexus=
-slide-webdavlib-2.1.pom>central=

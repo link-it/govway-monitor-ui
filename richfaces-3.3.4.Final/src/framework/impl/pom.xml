@@ -10,6 +10,9 @@
 	<artifactId>richfaces-impl</artifactId>
 	<name>Java Server Faces AJAX framework implementation</name>
 	<version>3.3.4.Final</version>
+	<properties>
+		<org-richfaces-cdk-maven-javascript-plugin.version>${version}-gov4j-1</org-richfaces-cdk-maven-javascript-plugin.version>
+	</properties>
 	<build>
 		<resources>
 			<resource>

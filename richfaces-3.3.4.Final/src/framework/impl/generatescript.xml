@@ -47,6 +47,10 @@
 	          dir="${basedir}/src/main/javascript/prototype"
 	          files="empty.js,base.js,string.js,enumerable.js,array.js,hash.js,range.js"
 	>
+	
+	<filelist id="jquery"
+	          dir="${basedir}/src/main/javascript/jquery"
+	          files="jquery-1.3.2.js,../memory.js,patches.js">
 -->	
 	<filelist id="jquery"
 	          dir="${basedir}/src/main/javascript/jquery"

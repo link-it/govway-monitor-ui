@@ -19,6 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
+
 package org.richfaces.renderkit;
 
 import javax.faces.FacesException;
@@ -32,7 +38,7 @@ import org.richfaces.component.util.HtmlUtil;
 
 public class JQueryRendererBase extends HeaderResourcesRendererBase {
 
-		protected Class getComponentClass() {
+		protected Class<UIJQuery> getComponentClass() {
 			return UIJQuery.class;
 		}
 

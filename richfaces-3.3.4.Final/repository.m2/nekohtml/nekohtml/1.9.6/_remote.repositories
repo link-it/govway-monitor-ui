@@ -1,6 +1,0 @@
-#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Thu Nov 10 19:35:47 CET 2022
-nekohtml-1.9.6.jar>central=
-nekohtml-1.9.6.pom>nexus=
-nekohtml-1.9.6.jar>nexus=
-nekohtml-1.9.6.pom>central=

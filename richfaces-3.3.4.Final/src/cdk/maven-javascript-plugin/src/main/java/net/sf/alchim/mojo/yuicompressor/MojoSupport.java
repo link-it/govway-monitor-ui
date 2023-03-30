@@ -18,7 +18,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
- 
+ /*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
+
 package net.sf.alchim.mojo.yuicompressor;
 
 import java.io.File;
@@ -37,7 +42,6 @@ import org.codehaus.plexus.util.DirectoryScanner;
  * @author David Bernard
  * @created 2007-08-29
  */
-// @SuppressWarnings("unchecked")
 public abstract class MojoSupport extends AbstractMojo {
 	private static final String[] EMPTY_STRING_ARRAY = {};
 
@@ -115,7 +119,7 @@ public abstract class MojoSupport extends AbstractMojo {
 	protected boolean failOnWarning;
 	protected ErrorReporter4Mojo jsErrorReporter_;
 
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
 			if (failOnWarning) {

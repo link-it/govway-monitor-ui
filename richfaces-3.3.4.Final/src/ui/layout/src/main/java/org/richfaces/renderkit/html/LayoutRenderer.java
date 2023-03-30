@@ -12,19 +12,15 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
 import org.ajax4jsf.renderkit.RendererBase;
 import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
-import org.richfaces.component.LayoutPosition;
 import org.richfaces.component.LayoutStructure;
 import org.richfaces.component.UILayout;
-import org.richfaces.component.UILayoutPanel;
 
 /**
  * @author asmirnov
