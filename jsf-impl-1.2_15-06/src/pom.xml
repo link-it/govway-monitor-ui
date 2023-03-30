@@ -40,7 +40,7 @@
 	<groupId>javax.faces</groupId>
 	<artifactId>jsf-impl</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2_15-06</version>
+	<version>1.2_15-06-gov4j-1</version>
 	<description>This is the master POM file for Sun's Implementation of the JSF 1.2 Specification.</description>
 	<name> Oracle's implementation of the JSF 1.2 specification API. </name>
 	<url>http://java.sun.com/javaee/javaserverfaces/</url>
@@ -137,7 +137,7 @@
 	<properties>
 		<javaVersion>1.8</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<finalName>${artifactId}-${version}-gov4j-1</finalName>
+		<finalName>${artifactId}-${version}</finalName>
 		
 		<jaxb.api.version>2.3.1</jaxb.api.version>
 	</properties>
