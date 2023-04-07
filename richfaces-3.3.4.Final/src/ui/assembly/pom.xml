@@ -9,7 +9,9 @@
 	<artifactId>richfaces-ui</artifactId>
 	<name>RichFaces JSF components library</name>
 	<packaging>jar</packaging>
-
+	<properties>
+		<org-richfaces-cdk-maven-javascript-plugin.version>${version}-gov4j-1</org-richfaces-cdk-maven-javascript-plugin.version>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -107,7 +109,8 @@
 			<plugin>
 				<groupId>org.richfaces.cdk</groupId>
 				<artifactId>maven-javascript-plugin</artifactId>
-				<version>${project.version}</version>
+<!-- 				<version>${project.version}</version> -->
+				<version>${org-richfaces-cdk-maven-javascript-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -129,7 +132,8 @@
 							<insertNewLine>true</insertNewLine>
 							
 							<!-- insert semicolon after each concatenation (default: false) -->
-							<insertSemicolon>true</insertSemicolon>
+<!-- 							<insertSemicolon>true</insertSemicolon> -->
+<!-- 							<fixLastSemicolon>true</fixLastSemicolon> -->
 							
 							<output>
 								${project.build.outputDirectory}/org/richfaces/ui.pack.js
@@ -184,7 +188,31 @@
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/common-scrollable-data-table-min.js
 								</include>
-								<include>**/*-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/SliderScript-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/controlUtils-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/processEffect-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/SpinnerScript-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/datascroller-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/extended-data-table-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/combobox-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/panelbar-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/hotKey-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/menu-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/panelMenu-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-dropzone-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tooltip-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/calendar-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/togglePanel-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/controls-scrollable-data-table-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-draggable-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/jquery.hotkeys-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simpleTogglePanel-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/JQuerySpinBtn-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/comboboxstyles-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tabPanel-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-drag-indicator-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/context-menu-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/suggestionbox-min.js</include>
 							</includes>
 							<!-- files to exclude, path relative to output's directory -->
 							<excludes>
