@@ -1,46 +1,29 @@
-/* -*- Mode: java; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
- *
- * ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1/GPL 2.0
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is Rhino code, released
- * May 6, 1999.
- *
- * The Initial Developer of the Original Code is
- * Netscape Communications Corporation.
- * Portions created by the Initial Developer are Copyright (C) 1997-1999
- * the Initial Developer. All Rights Reserved.
- *
- * Contributor(s):
- *   Roger Lawrence
- *   Mike McCabe
- *   Igor Bukanov
- *   Ethan Hugg
- *   Bob Jervis
- *   Terry Lucas
- *   Milen Nankov
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU General Public License Version 2 or later (the "GPL"), in which
- * case the provisions of the GPL are applicable instead of those above. If
- * you wish to allow use of your version of this file only under the terms of
- * the GPL and not to allow others to use your version of this file under the
- * MPL, indicate your decision by deleting the provisions above and replacing
- * them with the notice and other provisions required by the GPL. If you do
- * not delete the provisions above, a recipient may use your version of this
- * file under either the MPL or the GPL.
- *
- * ***** END LICENSE BLOCK ***** */
+/* ***** BEGIN LICENSE BLOCK *****
+*
+* Version: MPL 1.1
+*
+* The contents of this file are subject to the Mozilla Public License
+* Version 1.1 (the "License"); you may not use this file except in
+* compliance with the License. You may obtain a copy of the License
+* at http://www.mozilla.org/MPL/
+*
+* Software distributed under the License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.
+* See the License for the specific language governing rights and
+* limitations under the License.
+*
+* The Original Code is org/mozilla/javascript/TokenStream.java,
+* a component of the Rhino Library ( http://www.mozilla.org/rhino/ )
+* This file is a modification of the Original Code developed
+* for YUI Compressor.
+*
+* The Initial Developer of the Original Code is Mozilla Foundation
+*
+* Copyright (c) 2009 Mozilla Foundation. All Rights Reserved.
+*
+* Contributor(s): Yahoo! Inc. 2009
+*
+* ***** END LICENSE BLOCK ***** */
 
 package org.mozilla.javascript;
 
@@ -133,6 +116,7 @@ class TokenStream
             Id_function      = Token.FUNCTION,
             Id_if            = Token.IF,
             Id_in            = Token.IN,
+            Id_let           = Token.LET,
             Id_new           = Token.NEW,
             Id_null          = Token.NULL,
             Id_return        = Token.RETURN,
@@ -144,6 +128,7 @@ class TokenStream
             Id_void          = Token.VOID,
             Id_while         = Token.WHILE,
             Id_with          = Token.WITH,
+            Id_yield         = Token.YIELD,
 
             // the following are #ifdef RESERVE_JAVA_KEYWORDS in jsscan.c
             Id_abstract      = Token.RESERVED,
@@ -153,7 +138,7 @@ class TokenStream
             Id_char          = Token.RESERVED,
             Id_class         = Token.RESERVED,
             Id_const         = Token.CONST,
-            Id_debugger      = Token.RESERVED,
+            Id_debugger      = Token.DEBUGGER,
             Id_double        = Token.RESERVED,
             Id_enum          = Token.RESERVED,
             Id_extends       = Token.RESERVED,
@@ -195,6 +180,7 @@ class TokenStream
             case 3: switch (s.charAt(0)) {
                 case 'f': if (s.charAt(2)=='r' && s.charAt(1)=='o') {id=Id_for; break L0;} break L;
                 case 'i': if (s.charAt(2)=='t' && s.charAt(1)=='n') {id=Id_int; break L0;} break L;
+                case 'l': if (s.charAt(2)=='t' && s.charAt(1)=='e') {id=Id_let; break L0;} break L;
                 case 'n': if (s.charAt(2)=='w' && s.charAt(1)=='e') {id=Id_new; break L0;} break L;
                 case 't': if (s.charAt(2)=='y' && s.charAt(1)=='r') {id=Id_try; break L0;} break L;
                 case 'v': if (s.charAt(2)=='r' && s.charAt(1)=='a') {id=Id_var; break L0;} break L;
@@ -221,7 +207,10 @@ class TokenStream
                 } break L;
             case 5: switch (s.charAt(2)) {
                 case 'a': X="class";id=Id_class; break L;
-                case 'e': X="break";id=Id_break; break L;
+                case 'e': c=s.charAt(0);
+                    if (c=='b') { X="break";id=Id_break; }
+                    else if (c=='y') { X="yield";id=Id_yield; }
+                    break L;
                 case 'i': X="while";id=Id_while; break L;
                 case 'l': X="false";id=Id_false; break L;
                 case 'n': c=s.charAt(0);
@@ -394,6 +383,14 @@ class TokenStream
                     // Return the corresponding token if it's a keyword
                     int result = stringToKeyword(str);
                     if (result != Token.EOF) {
+                        if ((result == Token.LET || result == Token.YIELD) &&
+                            parser.compilerEnv.getLanguageVersion()
+                            < Context.VERSION_1_7)
+                        {
+                            // LET and YIELD are tokens only in 1.7 and later
+                            string = result == Token.LET ? "let" : "yield";
+                            result = Token.NAME;
+                        }
                         if (result != Token.RESERVED) {
                             return result;
                         } else if (!parser.compilerEnv.
@@ -536,21 +533,32 @@ class TokenStream
                             case 'd':  // octal sequence
                             case 'u':  // unicode sequence
                             case 'x':  // hexadecimal sequence
-
                                 // Only keep the '\' character for those
                                 // characters that need to be escaped...
                                 // Don't escape quoting characters...
                                 addToString('\\');
+                                addToString(c);
                                 break;
 
                             case '\n':
                                 // Remove line terminator after escape
-                                c = getChar();
+                                break;
+
+                            default:
+                                if (isDigit(c)) {
+                                    // Octal representation of a character.
+                                    // Preserve the escaping (see Y! bug #1637286)
+                                    addToString('\\');
+                                }
+                                addToString(c);
                                 break;
                         }
+
+                    } else {
+
+                        addToString(c);
                     }
 
-                    addToString(c);
                     c = getChar();
                 }
 
@@ -637,9 +645,9 @@ class TokenStream
                             skipLine();
                             continue retry;
                         }
-                        ungetChar('-');
+                        ungetCharIgnoreLineEnd('-');
                     }
-                    ungetChar('!');
+                    ungetCharIgnoreLineEnd('!');
                 }
                 if (matchChar('<')) {
                     if (matchChar('=')) {
@@ -706,14 +714,19 @@ class TokenStream
                         } else if (c == '/') {
                             if (lookForSlash) {
                                 sb.delete(sb.length()-2, sb.length());
-                                String s = sb.toString();
-                                if (s.startsWith("@cc_on") ||
-                                        s.startsWith("@if") ||
-                                        s.startsWith("@elif") ||
-                                        s.startsWith("@else") ||
-                                        s.startsWith("@end")) {
-                                    this.string = s;
-                                    return Token.IECC;
+                                String s1 = sb.toString();
+                                String s2 = s1.trim();
+                                if (s1.startsWith("!")) {
+                                    // Remove the leading '!'
+                                    this.string = s1.substring(1);
+                                    return Token.KEEPCOMMENT;
+                                } else if (s2.startsWith("@cc_on") ||
+                                           s2.startsWith("@if")    ||
+                                           s2.startsWith("@elif")  ||
+                                           s2.startsWith("@else")  ||
+                                           s2.startsWith("@end")) {
+                                    this.string = s1;
+                                    return Token.CONDCOMMENT;
                                 } else {
                                     continue retry;
                                 }
@@ -824,7 +837,8 @@ class TokenStream
         }
 
         int c;
-        while ((c = getChar()) != '/') {
+        boolean inClass = false;
+        while ((c = getChar()) != '/' || inClass) {
             if (c == '\n' || c == EOF_CHAR) {
                 ungetChar(c);
                 throw parser.reportError("msg.unterminated.re.lit");
@@ -832,8 +846,11 @@ class TokenStream
             if (c == '\\') {
                 addToString(c);
                 c = getChar();
+            } else if (c == '[') {
+                inClass = true;
+            } else if (c == ']') {
+                inClass = false;
             }
-
             addToString(c);
         }
         int reEnd = stringBufferTop;
@@ -1164,11 +1181,11 @@ class TokenStream
 
     private boolean matchChar(int test) throws IOException
     {
-        int c = getChar();
+        int c = getCharIgnoreLineEnd();
         if (c == test) {
             return true;
         } else {
-            ungetChar(c);
+            ungetCharIgnoreLineEnd(c);
             return false;
         }
     }
@@ -1230,6 +1247,53 @@ class TokenStream
             }
             return c;
         }
+    }
+
+    private int getCharIgnoreLineEnd() throws IOException
+    {
+        if (ungetCursor != 0) {
+            return ungetBuffer[--ungetCursor];
+        }
+
+        for(;;) {
+            int c;
+            if (sourceString != null) {
+                if (sourceCursor == sourceEnd) {
+                    hitEOF = true;
+                    return EOF_CHAR;
+                }
+                c = sourceString.charAt(sourceCursor++);
+            } else {
+                if (sourceCursor == sourceEnd) {
+                    if (!fillSourceBuffer()) {
+                        hitEOF = true;
+                        return EOF_CHAR;
+                    }
+                }
+                c = sourceBuffer[sourceCursor++];
+            }
+
+            if (c <= 127) {
+                if (c == '\n' || c == '\r') {
+                    lineEndChar = c;
+                    c = '\n';
+                }
+            } else {
+                if (isJSFormatChar(c)) {
+                    continue;
+                }
+                if (ScriptRuntime.isJSLineTerminator(c)) {
+                    lineEndChar = c;
+                    c = '\n';
+                }
+            }
+            return c;
+        }
+    }
+
+    private void ungetCharIgnoreLineEnd(int c)
+    {
+        ungetBuffer[ungetCursor++] = c;
     }
 
     private void skipLine() throws IOException
@@ -1323,8 +1387,8 @@ class TokenStream
 
     String regExpFlags;
 
-    // Set this to an inital non-null value so that the Parser has
-    // something to retrieve even if an error has occured and no
+    // Set this to an initial non-null value so that the Parser has
+    // something to retrieve even if an error has occurred and no
     // string is found.  Fosters one class of error, but saves lots of
     // code.
     private String string = "";
