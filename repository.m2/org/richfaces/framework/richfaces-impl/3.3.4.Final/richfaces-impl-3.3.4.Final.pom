@@ -149,8 +149,7 @@
 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/utils-min.js</include>
 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/browser_info-min.js</include>
 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/form-min.js</include>
-<!-- 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ui.core-min.js</include> -->
-										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/jquery-ui-1.13.2-min.js</include>
+<!-- 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/jquery-ui-1.13.2-min.js</include> -->
 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/json/json-dom-min.js</include>
 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/json/json-mini-min.js</include>
 										<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/events-min.js</include>

@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.ajax4jsf.resource;
 
@@ -27,8 +32,6 @@ import java.io.OutputStream;
 
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.javascript.JSMin;
-import org.ajax4jsf.resource.InternetResource;
-import org.ajax4jsf.resource.ResourceContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

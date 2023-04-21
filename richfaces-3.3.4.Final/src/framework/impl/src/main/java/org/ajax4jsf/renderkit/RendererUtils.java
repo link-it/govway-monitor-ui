@@ -320,6 +320,7 @@ public class RendererUtils {
 		/* CSP */
 		public static final String REQUEST_ATTRIBUTE_CSP_RANDOM_NONCE = "_csp_random_nonce";
 		public static final String HEADER_NAME_CONTENT_SECURITY_POLICY = "Content-Security-Policy";
+		public static final String REQUEST_ATTRIBUTE_JQUERY_VERSION = "__jquery_version__";
 	}
 
 	/**
