@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.builder.component;
 
-import javax.el.Expression;
+import jakarta.el.Expression;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 

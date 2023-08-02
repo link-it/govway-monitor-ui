@@ -20,9 +20,9 @@
  */
 package org.richfaces.model.impl.expressive;
 
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ELResolver;
+import jakarta.el.ELContext;
+import jakarta.el.ELException;
+import jakarta.el.ELResolver;
 
 /**
  * Expression evaluated by applying application

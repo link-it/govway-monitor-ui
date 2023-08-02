@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.webapp.taglib;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;

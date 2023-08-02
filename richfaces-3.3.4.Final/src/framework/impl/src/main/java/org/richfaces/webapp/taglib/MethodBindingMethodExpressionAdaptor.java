@@ -22,8 +22,8 @@ package org.richfaces.webapp.taglib;
 
 import java.io.Serializable;
 
-import javax.el.ELException;
-import javax.el.MethodExpression;
+import jakarta.el.ELException;
+import jakarta.el.MethodExpression;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -64,7 +64,7 @@ public class MethodBindingMethodExpressionAdaptor extends MethodBinding implemen
 	public Class<?> getType(FacesContext context) throws MethodNotFoundException {
 		try {
 			return expression.getMethodInfo(context.getELContext()).getReturnType();
-		} catch (javax.el.MethodNotFoundException e) {
+		} catch (jakarta.el.MethodNotFoundException e) {
 			throw new MethodNotFoundException(e);
 		}
 	}
@@ -77,7 +77,7 @@ public class MethodBindingMethodExpressionAdaptor extends MethodBinding implemen
 			throws EvaluationException, MethodNotFoundException {
 		try {
 			return expression.invoke(context.getELContext(), params);
-		} catch (javax.el.MethodNotFoundException e) {
+		} catch (jakarta.el.MethodNotFoundException e) {
 			throw new MethodNotFoundException(e);
 		} catch (ELException e) {
 			throw new EvaluationException(e);

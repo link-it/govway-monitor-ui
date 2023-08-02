@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.webapp.FacesServlet;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;

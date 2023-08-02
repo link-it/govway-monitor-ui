@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -32,7 +37,6 @@ import org.ajax4jsf.component.SequenceDataAdaptor;
 import org.ajax4jsf.component.UIDataAdaptor;
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.renderkit.HeaderResourcesRendererBase;
-import org.ajax4jsf.renderkit.RendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 import org.richfaces.component.Row;
@@ -225,14 +229,37 @@ public abstract class AbstractExtendedRowsRenderer extends
      * @param table
      * @throws IOException
      */
-    protected void encodeRowEvents(FacesContext context, UIDataAdaptor table)
-            throws IOException {
-        RendererUtils utils2 = getUtils();
-        for (int i = 0; i < TABLE_EVENT_ATTRS.length; i++) {
-            String[] attrs = TABLE_EVENT_ATTRS[i];
-            utils2.encodeAttribute(context, table, attrs[1], attrs[0]);
-        }
-    }
+//    protected void encodeRowEvents(FacesContext context, UIDataAdaptor table)
+//            throws IOException {
+//        RendererUtils utils2 = getUtils();
+//        for (int i = 0; i < TABLE_EVENT_ATTRS.length; i++) {
+//            String[] attrs = TABLE_EVENT_ATTRS[i];
+//            utils2.encodeAttribute(context, table, attrs[1], attrs[0]);
+//        }
+//    }
+    
+	/**
+	 * @param context
+	 * @param table
+	 * @throws IOException
+	 */
+	protected String getScriptRowEvents(FacesContext context, UIDataAdaptor table, String clientId, String tag ) throws IOException {
+		StringBuffer sb = new StringBuffer();
+		
+		for (int i = 0; i < TABLE_EVENT_ATTRS.length; i++) {
+		    String[] attrs = TABLE_EVENT_ATTRS[i];
+		    
+		    Object event = table.getAttributes().get(attrs[1]);
+		    
+		    if(null != event){
+			    String jQueryEvent = attrs[0].substring(attrs[0].indexOf("on")+ "on".length());
+			    
+			    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {").append(event).append("});");
+		    }
+		}
+		
+		return sb.toString();
+	}
 
     /**
      * Encode HTML "class" attribute, if is not empty. Classes combined from

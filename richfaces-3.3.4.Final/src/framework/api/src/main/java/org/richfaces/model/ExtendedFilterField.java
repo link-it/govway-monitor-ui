@@ -20,7 +20,7 @@
  */
 package org.richfaces.model;
 
-import javax.el.Expression;
+import jakarta.el.Expression;
 
 /**
  * @author Konstantin Mishin

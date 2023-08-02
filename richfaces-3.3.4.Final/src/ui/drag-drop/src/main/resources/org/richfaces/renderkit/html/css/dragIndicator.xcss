@@ -55,6 +55,11 @@
 	filter:Alpha(opacity=0);
 }
 
+.drgind_internal-style {
+	height : 100%; 
+	z-index: 2;
+}
+
 ]]></f:verbatim>
 
 <f:verbatim><![CDATA[

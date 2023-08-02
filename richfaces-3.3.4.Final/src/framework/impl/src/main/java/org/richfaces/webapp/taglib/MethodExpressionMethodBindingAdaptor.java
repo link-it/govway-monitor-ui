@@ -23,10 +23,10 @@ package org.richfaces.webapp.taglib;
 
 import java.io.Serializable;
 
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.MethodExpression;
-import javax.el.MethodInfo;
+import jakarta.el.ELContext;
+import jakarta.el.ELException;
+import jakarta.el.MethodExpression;
+import jakarta.el.MethodInfo;
 import javax.faces.FacesException;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
@@ -57,7 +57,7 @@ public class MethodExpressionMethodBindingAdaptor extends MethodExpression
 
 
 	/* (non-Javadoc)
-	 * @see javax.el.MethodExpression#getMethodInfo(javax.el.ELContext)
+	 * @see jakarta.el.MethodExpression#getMethodInfo(jakarta.el.ELContext)
 	 */
 	@Override
 	public MethodInfo getMethodInfo(ELContext context) {
@@ -67,14 +67,14 @@ public class MethodExpressionMethodBindingAdaptor extends MethodExpression
 			return new MethodInfo(null, binding.getType(context2), null);
 			
 		} catch (MethodNotFoundException e) {
-			throw new javax.el.MethodNotFoundException(e);
+			throw new jakarta.el.MethodNotFoundException(e);
 		} catch(EvaluationException e) {
 			throw new ELException(e);
 		}
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.MethodExpression#invoke(javax.el.ELContext, java.lang.Object[])
+	 * @see jakarta.el.MethodExpression#invoke(jakarta.el.ELContext, java.lang.Object[])
 	 */
 	@Override
 	public Object invoke(ELContext context, Object[] params) {
@@ -82,7 +82,7 @@ public class MethodExpressionMethodBindingAdaptor extends MethodExpression
 		try {
 			return binding.invoke(context2, params);
 		} catch (MethodNotFoundException e) {
-			throw new javax.el.MethodNotFoundException(e);
+			throw new jakarta.el.MethodNotFoundException(e);
 		} catch (EvaluationException e) {
 			throw new ELException(e);
 		} 
@@ -90,7 +90,7 @@ public class MethodExpressionMethodBindingAdaptor extends MethodExpression
 
 
 	/* (non-Javadoc)
-	 * @see javax.el.Expression#getExpressionString()
+	 * @see jakarta.el.Expression#getExpressionString()
 	 */
 	@Override
 	public String getExpressionString() {
@@ -122,7 +122,7 @@ public class MethodExpressionMethodBindingAdaptor extends MethodExpression
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.Expression#isLiteralText()
+	 * @see jakarta.el.Expression#isLiteralText()
 	 */
 	@Override
 	public boolean isLiteralText() {

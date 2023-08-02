@@ -54,7 +54,7 @@ public class $tag.simpleClassName extends $tag.superclass {
 	        if (meta.isTargetInstanceOf(${component.simpleClassName}.class)) {
 		#foreach($prop in $component.properties)
 		 #if( !$prop.existintag )
-		  #if( $prop.isInstanceof("javax.faces.el.MethodBinding") || $prop.isInstanceof("javax.el.MethodExpression") )
+		  #if( $prop.isInstanceof("javax.faces.el.MethodBinding") || $prop.isInstanceof("jakarta.el.MethodExpression") )
 	            #if ( $prop.name != "actionExpression" )
 	            
 	            if ("${prop.name}".equals(name)) {
@@ -78,7 +78,7 @@ public class $tag.simpleClassName extends $tag.superclass {
 #foreach($prop in $component.properties)
 #if( !$prop.existintag )
 
-  #if( $prop.isInstanceof("javax.faces.el.MethodBinding") || $prop.isInstanceof("javax.el.MethodExpression") )
+  #if( $prop.isInstanceof("javax.faces.el.MethodBinding") || $prop.isInstanceof("jakarta.el.MethodExpression") )
 	#if ( $prop.name != "actionExpression" )
 	
 	static class ${prop.name}Mapper extends Metadata {

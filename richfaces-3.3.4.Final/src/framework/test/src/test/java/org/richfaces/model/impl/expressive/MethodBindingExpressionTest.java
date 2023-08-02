@@ -37,7 +37,7 @@ public class MethodBindingExpressionTest extends AbstractJsfTestCase {
 	}
 
 	/**
-	 * Test method for {@link org.richfaces.model.impl.expressive.MethodBindingExpression#MethodBindingExpression(javax.faces.context.FacesContext, javax.el.MethodExpression)}
+	 * Test method for {@link org.richfaces.model.impl.expressive.MethodBindingExpression#MethodBindingExpression(javax.faces.context.FacesContext, jakarta.el.MethodExpression)}
 	 * and {@link org.richfaces.model.impl.expressive.MethodBindingExpression#evaluate(java.lang.Object)}.
 	 */
 	public final void testMethodBindingExpression() {

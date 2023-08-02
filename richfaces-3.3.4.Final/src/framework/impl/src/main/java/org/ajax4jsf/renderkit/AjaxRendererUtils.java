@@ -40,7 +40,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.component.AjaxComponent;

@@ -73,14 +73,37 @@ var ClientUILib = {
 		var pckg = null;
 		var packages = $A(libName.split("."));
 		packages.each( function(s) {
-			if(pckg == null)
-				pckg = eval(s);
-			else {
+			if(pckg == null) {
+//				pckg = eval(s);
+				pckg = ClientUILib.customJSONEval(s);
+			} else {
 				if(!pckg[s]) pckg[s] = {};
 				pckg = pckg[s];
 			}
 	  	});
 	  	this.packages[libName] = true;
+	},
+	customJSONEval: function(data) {
+		var result;
+
+	    // Define callback
+	    window.evalCallback = function(r){
+	        result = r;
+	    };
+	
+	    var newScript = document.createElement("script");
+	    newScript.innerHTML = "evalCallback(" + data + ");";
+	    /*
+	     * // Add CSP nonce if relevant
+	     * newScript.setAttribute("nonce", nonce);
+	    */
+	    document.head.appendChild(newScript);
+	
+	    // Now clean up DOM and global scope
+	    document.head.removeChild(newScript);
+	    delete window.evalCallback;
+	
+	    return result;
 	},
 	log: function(level, infoText) {
 		if(ClientUILogger.isCreated){

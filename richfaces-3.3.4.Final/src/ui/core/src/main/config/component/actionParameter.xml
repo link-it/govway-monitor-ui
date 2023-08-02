@@ -92,7 +92,7 @@
 		</property>
      	<property exist="true" el="true" elonly="true" existintag="true">
      		<name>actionListener</name>
-     		<classname>javax.el.MethodExpression</classname>
+     		<classname>jakarta.el.MethodExpression</classname>
      		<methodargs>javax.faces.event.ActionEvent</methodargs>
 		<description>A method binding that refers to a method with this signature: void methodName(ActionEvent)</description>
      	</property>

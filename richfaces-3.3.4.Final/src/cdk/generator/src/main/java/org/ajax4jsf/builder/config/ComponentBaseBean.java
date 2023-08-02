@@ -58,8 +58,8 @@ public class ComponentBaseBean extends JsfBean {
 			"java.util.List",
 			"javax.faces.el.MethodBinding",
 			"javax.faces.el.ValueBinding",
-			"javax.el.MethodExpression",
-			"javax.el.ValueExpression",
+			"jakarta.el.MethodExpression",
+			"jakarta.el.ValueExpression",
 			"javax.faces.convert.Converter"
 		};
 	

@@ -22,7 +22,7 @@
 
 package org.ajax4jsf.tests;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;

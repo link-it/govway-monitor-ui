@@ -31,13 +31,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.io.FastBufferOutputStream;
 import org.ajax4jsf.io.FastBufferWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import jakarta.servlet.WriteListener;
 
 /**
  * @author shura (latest modification by $Author: alexsmirnov $)
@@ -248,6 +250,16 @@ public class CacheContent implements Serializable {
 				public void write(int b) throws IOException {
 					outputStream.write(b);
 				}
+				
+				@Override
+				public boolean isReady() {
+					return true;
+				}
+
+				@Override
+				public void setWriteListener(WriteListener writeListener) {
+					// not implemented
+				}
 
 			};
 		}
@@ -335,4 +347,5 @@ public class CacheContent implements Serializable {
 	public void setContentLength(int contentLength) {
 		this.contentLength = contentLength;
 	}
+	
 }

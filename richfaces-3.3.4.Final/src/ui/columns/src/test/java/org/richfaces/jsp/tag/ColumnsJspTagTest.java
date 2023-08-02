@@ -30,8 +30,8 @@ package org.richfaces.jsp.tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentClassicTagBase;
 import javax.servlet.jsp.JspException;

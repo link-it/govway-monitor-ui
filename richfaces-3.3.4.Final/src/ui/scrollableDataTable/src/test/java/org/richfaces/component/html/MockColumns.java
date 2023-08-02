@@ -21,7 +21,7 @@
 
 package org.richfaces.component.html;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;

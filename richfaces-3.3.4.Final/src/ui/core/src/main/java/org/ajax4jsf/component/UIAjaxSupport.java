@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.component;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

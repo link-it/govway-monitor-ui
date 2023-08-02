@@ -24,8 +24,8 @@ package org.richfaces.component;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.el.ELException;
-import javax.el.ValueExpression;
+import jakarta.el.ELException;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIInput;
 import javax.faces.el.ValueBinding;

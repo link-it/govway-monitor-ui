@@ -22,7 +22,7 @@ package org.richfaces.model;
 
 import java.io.Serializable;
 
-import javax.el.Expression;
+import jakarta.el.Expression;
 
 /**
  * @author Konstantin Mishin

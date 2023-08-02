@@ -26,13 +26,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.el.FunctionMapper;
-import javax.el.PropertyNotFoundException;
-import javax.el.PropertyNotWritableException;
-import javax.el.ValueExpression;
-import javax.el.VariableMapper;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
+import jakarta.el.FunctionMapper;
+import jakarta.el.PropertyNotFoundException;
+import jakarta.el.PropertyNotWritableException;
+import jakarta.el.ValueExpression;
+import jakarta.el.VariableMapper;
 import javax.faces.context.FacesContext;
 
 import org.richfaces.ui.model.State;
@@ -70,7 +70,7 @@ public class StateELResolver extends ELResolver {
 		/**
 		 * @param key
 		 * @return
-		 * @see javax.el.ELContext#getContext(java.lang.Class)
+		 * @see jakarta.el.ELContext#getContext(java.lang.Class)
 		 */
 		public Object getContext(Class key) {
 			return context.getContext(key);
@@ -78,7 +78,7 @@ public class StateELResolver extends ELResolver {
 
 		/**
 		 * @return
-		 * @see javax.el.ELContext#getLocale()
+		 * @see jakarta.el.ELContext#getLocale()
 		 */
 		public Locale getLocale() {
 			return context.getLocale();
@@ -86,7 +86,7 @@ public class StateELResolver extends ELResolver {
 
 		/**
 		 * @return
-		 * @see javax.el.ELContext#isPropertyResolved()
+		 * @see jakarta.el.ELContext#isPropertyResolved()
 		 */
 		public boolean isPropertyResolved() {
 			return resolved;
@@ -95,7 +95,7 @@ public class StateELResolver extends ELResolver {
 		/**
 		 * @param key
 		 * @param contextObject
-		 * @see javax.el.ELContext#putContext(java.lang.Class, java.lang.Object)
+		 * @see jakarta.el.ELContext#putContext(java.lang.Class, java.lang.Object)
 		 */
 		public void putContext(Class key, Object contextObject) {
 			context.putContext(key, contextObject);
@@ -103,7 +103,7 @@ public class StateELResolver extends ELResolver {
 
 		/**
 		 * @param locale
-		 * @see javax.el.ELContext#setLocale(java.util.Locale)
+		 * @see jakarta.el.ELContext#setLocale(java.util.Locale)
 		 */
 		public void setLocale(Locale locale) {
 			context.setLocale(locale);
@@ -111,7 +111,7 @@ public class StateELResolver extends ELResolver {
 
 		/**
 		 * @param resolved
-		 * @see javax.el.ELContext#setPropertyResolved(boolean)
+		 * @see jakarta.el.ELContext#setPropertyResolved(boolean)
 		 */
 		public void setPropertyResolved(boolean resolved) {
 			this.resolved = resolved;
@@ -129,7 +129,7 @@ public class StateELResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getCommonPropertyType(javax.el.ELContext, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getCommonPropertyType(jakarta.el.ELContext, java.lang.Object)
 	 */
 	@Override
 	public Class<?> getCommonPropertyType(ELContext context, Object base) {
@@ -140,7 +140,7 @@ public class StateELResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getFeatureDescriptors(javax.el.ELContext, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getFeatureDescriptors(jakarta.el.ELContext, java.lang.Object)
 	 */
 	@Override
 	public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context,
@@ -152,7 +152,7 @@ public class StateELResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getType(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getType(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public Class<?> getType(ELContext context, Object base, Object property) {
@@ -177,7 +177,7 @@ public class StateELResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getValue(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getValue(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public Object getValue(final ELContext context, Object base, Object property) {
@@ -203,7 +203,7 @@ public class StateELResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#isReadOnly(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#isReadOnly(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public boolean isReadOnly(ELContext context, Object base, Object property) {
@@ -223,7 +223,7 @@ public class StateELResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#setValue(javax.el.ELContext, java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#setValue(jakarta.el.ELContext, java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public void setValue(ELContext context, Object base, Object property,

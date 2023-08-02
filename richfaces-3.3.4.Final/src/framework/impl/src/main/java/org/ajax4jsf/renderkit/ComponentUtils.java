@@ -24,7 +24,7 @@ package org.ajax4jsf.renderkit;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.el.MethodNotFoundException;
+import jakarta.el.MethodNotFoundException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

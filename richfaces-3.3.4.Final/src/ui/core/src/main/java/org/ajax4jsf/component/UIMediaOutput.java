@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.component;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 
 import javax.faces.component.UIOutput;
 import javax.faces.el.MethodBinding;

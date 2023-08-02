@@ -27,8 +27,8 @@
 
 package org.ajax4jsf.tests;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
 
 /**
  * TODO Class description goes here.
@@ -51,7 +51,7 @@ public class MockValueExpression extends ValueExpression {
     }
 
     /* (non-Javadoc)
-     * @see javax.el.ValueExpression#getExpectedType()
+     * @see jakarta.el.ValueExpression#getExpectedType()
      */
     @Override
     public Class<?> getExpectedType() {
@@ -59,7 +59,7 @@ public class MockValueExpression extends ValueExpression {
     }
 
     /* (non-Javadoc)
-     * @see javax.el.ValueExpression#getType(javax.el.ELContext)
+     * @see jakarta.el.ValueExpression#getType(jakarta.el.ELContext)
      */
     @Override
     public Class<?> getType(ELContext context) {
@@ -67,7 +67,7 @@ public class MockValueExpression extends ValueExpression {
     }
 
     /* (non-Javadoc)
-     * @see javax.el.ValueExpression#getValue(javax.el.ELContext)
+     * @see jakarta.el.ValueExpression#getValue(jakarta.el.ELContext)
      */
     @Override
     public Object getValue(ELContext context) {
@@ -76,7 +76,7 @@ public class MockValueExpression extends ValueExpression {
     }
 
     /* (non-Javadoc)
-     * @see javax.el.ValueExpression#isReadOnly(javax.el.ELContext)
+     * @see jakarta.el.ValueExpression#isReadOnly(jakarta.el.ELContext)
      */
     @Override
     public boolean isReadOnly(ELContext context) {
@@ -85,7 +85,7 @@ public class MockValueExpression extends ValueExpression {
     }
 
     /* (non-Javadoc)
-     * @see javax.el.ValueExpression#setValue(javax.el.ELContext, java.lang.Object)
+     * @see jakarta.el.ValueExpression#setValue(jakarta.el.ELContext, java.lang.Object)
      */
     @Override
     public void setValue(ELContext context, Object value) {
@@ -93,7 +93,7 @@ public class MockValueExpression extends ValueExpression {
     }
 
     /* (non-Javadoc)
-     * @see javax.el.Expression#getExpressionString()
+     * @see jakarta.el.Expression#getExpressionString()
      */
     @Override
     public String getExpressionString() {
@@ -127,7 +127,7 @@ public class MockValueExpression extends ValueExpression {
 	}
 
 	/* (non-Javadoc)
-     * @see javax.el.Expression#isLiteralText()
+     * @see jakarta.el.Expression#isLiteralText()
      */
     @Override
     public boolean isLiteralText() {

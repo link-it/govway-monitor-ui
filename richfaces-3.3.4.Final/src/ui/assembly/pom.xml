@@ -2,20 +2,22 @@
 	<parent>
 		<artifactId>ui</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces.ui</groupId>
 	<artifactId>richfaces-ui</artifactId>
 	<name>RichFaces JSF components library</name>
 	<packaging>jar</packaging>
-
+	<properties>
+		<org-richfaces-cdk-maven-javascript-plugin.version>${govway-monitor-ui.version}</org-richfaces-cdk-maven-javascript-plugin.version>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.richfaces.cdk</groupId>
 				<artifactId>maven-cdk-plugin</artifactId>
-				<version>3.3.4.Final</version>
+				<version>${govway-monitor-ui.version}</version>
 				<configuration>
 					<library>
 						<prefix>org.richfaces</prefix>
@@ -107,7 +109,8 @@
 			<plugin>
 				<groupId>org.richfaces.cdk</groupId>
 				<artifactId>maven-javascript-plugin</artifactId>
-				<version>${project.version}</version>
+<!-- 				<version>${project.version}</version> -->
+				<version>${org-richfaces-cdk-maven-javascript-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -129,7 +132,8 @@
 							<insertNewLine>true</insertNewLine>
 							
 							<!-- insert semicolon after each concatenation (default: false) -->
-							<insertSemicolon>true</insertSemicolon>
+<!-- 							<insertSemicolon>true</insertSemicolon> -->
+<!-- 							<fixLastSemicolon>true</fixLastSemicolon> -->
 							
 							<output>
 								${project.build.outputDirectory}/org/richfaces/ui.pack.js
@@ -146,25 +150,10 @@
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simple-dropzone-min.js
 								</include>
 								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-selection-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-item-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-item-dnd-min.js
-								</include>
-								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/modalPanel-min.js
 								</include>
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/modalPanelBorders-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ShuttleUtils-min.js
 								</include>
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/SelectItem-min.js
@@ -197,39 +186,33 @@
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/combolist-min.js
 								</include>
 								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceinputstyles-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceinput-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceselectstyles-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceselectlist-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceselect-min.js
-								</include>
-								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/common-scrollable-data-table-min.js
 								</include>
-
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tiny_mce/tiny_mce_src-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/editor-min.js
-								</include>
-
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/pngFix-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ui.colorpicker-min.js
-								</include>
-								
-								<include>**/*-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/SliderScript-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/controlUtils-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/processEffect-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/script/SpinnerScript-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/datascroller-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/extended-data-table-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/combobox-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/panelbar-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/hotKey-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/menu-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/panelMenu-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-dropzone-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tooltip-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/calendar-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/togglePanel-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/controls-scrollable-data-table-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-draggable-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/jquery.hotkeys-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simpleTogglePanel-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/JQuerySpinBtn-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/comboboxstyles-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tabPanel-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-drag-indicator-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/context-menu-min.js</include>
+								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/suggestionbox-min.js</include>
 							</includes>
 							<!-- files to exclude, path relative to output's directory -->
 							<excludes>
@@ -440,17 +423,12 @@
 				<dependency>
 					<groupId>org.richfaces.framework</groupId>
 					<artifactId>richfaces-api</artifactId>
-					<version>3.3.4.Final</version>
+					<version>${govway-monitor-ui.version}</version>
 				</dependency>
 				<dependency>
 					<groupId>org.richfaces.framework</groupId>
 					<artifactId>richfaces-impl</artifactId>
-					<version>3.3.4.Final</version>
-				</dependency>
-				<dependency>
-					<groupId>org.richfaces.framework</groupId>
-					<artifactId>richfaces-impl-jsf2</artifactId>
-					<version>3.3.4.Final</version>
+					<version>${govway-monitor-ui.version}</version>
 				</dependency>
 			</dependencies>
 		</profile>

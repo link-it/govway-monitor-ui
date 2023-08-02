@@ -1,34 +1,26 @@
-Compilazione del progetto:
+# Compilazione del progetto:
 
 # N.B. --> Utilizzare mvn versione 3.6.1 o superiore e jdk 1.8
+# Utilizzare il repository condiviso con gli altri progetti per utilizzare le versioni patchate di tutte le librerie.
 
-cd richfaces-ui-3.3.4.Final
-mvn clean install -N -Dmaven.test.skip=true -Dmaven.repo.local=../repository.m2
+cd src
+mvn clean install -N -Dmaven.test.skip=true -Dmaven.repo.local=../../repository.m2
 cd cdk
-mvn  clean install -Dmaven.test.skip=true -Dmaven.repo.local=../../repository.m2
+mvn  clean install -Dmaven.test.skip=true -Dmaven.repo.local=../../../repository.m2
 cd ..
 cd framework
-mvn  clean install -Dmaven.test.skip=true -Dmaven.repo.local=../../repository.m2
+mvn  clean install -Dmaven.test.skip=true -Dmaven.repo.local=../../../repository.m2
 cd ..
 cd ui
 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=1024m"
-mvn clean install -Dmaven.test.skip=true -Dmaven.repo.local=../../repository.m2
-cd assembly
 mvn clean install -Dmaven.test.skip=true -Dmaven.repo.local=../../../repository.m2
-mkdir build
-cd build
-unzip -q ../target/dist/richfaces-ui-3.3.4.Final.jar org/richfaces/ui.pack.js
+cd assembly
+mvn clean install -Dmaven.test.skip=true -Dmaven.repo.local=../../../../repository.m2
 cd ..
 cd ..
 cd ..
-cd ..
 
-JAR presenti in:
-- richfaces-ui-3.3.4.Final/framework/api/target/richfaces-api-3.3.4.Final.jar
-- richfaces-ui-3.3.4.Final/framework/impl/target/richfaces-impl-3.3.4.Final.jar
-- richfaces-ui-3.3.4.Final/ui/assembly/target/dist/richfaces-ui-3.3.4.Final.jar
-
-
-
-
-
+# JAR presenti in:
+# - src/framework/api/target/richfaces-api-3.3.4.Final.jar
+# - src/framework/impl/target/richfaces-impl-3.3.4.Final.jar
+# - src/ui/assembly/target/dist/richfaces-ui-3.3.4.Final.jar

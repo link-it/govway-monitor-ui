@@ -20,12 +20,12 @@
  */
 package org.richfaces.taglib;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.webapp.UIComponentClassicTagBase;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 import org.ajax4jsf.webapp.taglib.UIComponentTagBase;
 import org.richfaces.component.UIAjaxValidator;

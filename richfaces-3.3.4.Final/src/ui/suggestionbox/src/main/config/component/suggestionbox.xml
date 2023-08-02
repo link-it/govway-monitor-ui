@@ -83,7 +83,7 @@
         &html_table_attributes;
         <property elonly="true">
             <name>suggestionAction</name>
-            <classname>javax.el.MethodExpression</classname>
+            <classname>jakarta.el.MethodExpression</classname>
             <methodargs>
                 java.lang.Object
             </methodargs>

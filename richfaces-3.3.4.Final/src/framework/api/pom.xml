@@ -2,29 +2,30 @@
 	<parent>
 		<artifactId>framework</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces.framework</groupId>
 	<artifactId>richfaces-api</artifactId>
 	<name>Java Server Faces AJAX framework API</name>
-	<version>3.3.4.Final</version>
+	<version>${govway-monitor-ui.version}</version>
 	
 	<dependencies>
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
+			<version>${govway-monitor-ui.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>3.2</version>
+			<version>${commons-collections.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.0</version>
+			<version>${commons-beanutils.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>

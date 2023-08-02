@@ -26,9 +26,9 @@ import java.util.EmptyStackException;
 import java.util.Properties;
 import java.util.regex.PatternSyntaxException;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.io.parser.FastHtmlParser;

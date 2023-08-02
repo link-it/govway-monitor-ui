@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.taglib.html.jsp;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import org.ajax4jsf.component.UIAjaxStatus;

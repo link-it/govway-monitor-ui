@@ -24,7 +24,7 @@ package org.richfaces.renderkit.html;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;

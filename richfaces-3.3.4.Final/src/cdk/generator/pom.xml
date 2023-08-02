@@ -3,12 +3,11 @@
 	<parent>
 		<artifactId>cdk</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces.cdk</groupId>
 	<artifactId>generator</artifactId>
-	<version>3.3.4.Final</version>
 	<name>Java Server Faces component generator</name>
 	<build>
 		<plugins>
@@ -16,8 +15,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<inherited>true</inherited>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
       <plugin>
@@ -53,33 +52,34 @@
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.6</version>
+			<version>${commons-beanutils.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
-			<version>1.5</version>
+			<version>${commons-digester.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
-			<version>1.2_12</version>
+			<version>${govway-monitor-ui.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+			<version>${jakarta.servlet-jsp-api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
-			<version>1.0</version>
+			<groupId>jakarta.el</groupId>
+			<artifactId>jakarta.el-api</artifactId>
+			<version>${jakarta.el-api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>el-impl</groupId>
-			<artifactId>el-impl</artifactId>
-			<version>1.0</version>
+			<groupId>org.glassfish</groupId>
+			<artifactId>jakarta.el</artifactId>
+			<version>${jakarta.el-impl.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>qdox</groupId>
 			<artifactId>qdox</artifactId>

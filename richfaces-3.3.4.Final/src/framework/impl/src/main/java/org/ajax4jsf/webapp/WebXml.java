@@ -24,9 +24,9 @@ package org.ajax4jsf.webapp;
 import java.io.Serializable;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.ajax4jsf.config.WebXMLParser;
 import org.apache.commons.logging.Log;

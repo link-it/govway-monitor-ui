@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.component;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 
 /**
   * Base interface for controller component, managed AJAX Requests.

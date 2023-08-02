@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
 import javax.faces.context.FacesContext;
 
 import org.richfaces.component.UIGraphValidator.GraphValidatorState;
@@ -22,7 +22,7 @@ import org.richfaces.component.UIGraphValidator.GraphValidatorState;
 public class ClonedObjectResolver extends ELResolver {
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getCommonPropertyType(javax.el.ELContext, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getCommonPropertyType(jakarta.el.ELContext, java.lang.Object)
 	 */
 	@Override
 	public Class<?> getCommonPropertyType(ELContext context, Object base) {
@@ -31,7 +31,7 @@ public class ClonedObjectResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getFeatureDescriptors(javax.el.ELContext, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getFeatureDescriptors(jakarta.el.ELContext, java.lang.Object)
 	 */
 	@Override
 	public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context,
@@ -41,7 +41,7 @@ public class ClonedObjectResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getType(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getType(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public Class<?> getType(ELContext context, Object base, Object property) {
@@ -54,7 +54,7 @@ public class ClonedObjectResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#getValue(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getValue(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public Object getValue(ELContext context, Object base, Object property) {
@@ -67,7 +67,7 @@ public class ClonedObjectResolver extends ELResolver {
 		
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#isReadOnly(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#isReadOnly(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public boolean isReadOnly(ELContext context, Object base, Object property) {
@@ -76,7 +76,7 @@ public class ClonedObjectResolver extends ELResolver {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELResolver#setValue(javax.el.ELContext, java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#setValue(jakarta.el.ELContext, java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public void setValue(ELContext context, Object base, Object property,

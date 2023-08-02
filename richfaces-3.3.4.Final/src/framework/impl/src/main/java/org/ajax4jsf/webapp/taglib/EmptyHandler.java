@@ -22,7 +22,7 @@ package org.ajax4jsf.webapp.taglib;
 
 import java.io.IOException;
 
-import javax.el.ELException;
+import jakarta.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 

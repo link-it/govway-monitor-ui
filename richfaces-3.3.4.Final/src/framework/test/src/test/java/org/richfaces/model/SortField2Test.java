@@ -20,7 +20,7 @@
  */
 package org.richfaces.model;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 
 import org.ajax4jsf.tests.MockValueExpression;
 
@@ -82,7 +82,7 @@ public class SortField2Test extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link org.richfaces.model.SortField2#SortField2(javax.el.ValueExpression)}.
+	 * Test method for {@link org.richfaces.model.SortField2#SortField2(jakarta.el.ValueExpression)}.
 	 */
 	public final void testSortField2ValueExpression() {
 		SortField2 sortField2 = new SortField2(expression);
@@ -91,7 +91,7 @@ public class SortField2Test extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link org.richfaces.model.SortField2#SortField2(javax.el.ValueExpression, org.richfaces.model.Ordering)}.
+	 * Test method for {@link org.richfaces.model.SortField2#SortField2(jakarta.el.ValueExpression, org.richfaces.model.Ordering)}.
 	 */
 	public final void testSortField2ValueExpressionOrdering() {
 		SortField2 sortField2 = new SortField2(expression, ordering);

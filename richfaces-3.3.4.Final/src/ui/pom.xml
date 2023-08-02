@@ -2,15 +2,15 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.richfaces</groupId>
 	<artifactId>ui</artifactId>
 	<packaging>pom</packaging>
 	<name>RichFaces Components</name>
 	<properties>
 		<!-- -->
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 	<build>
 		<plugins>
@@ -29,12 +29,13 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<!-- Verificare perche' aggiornando il plugin la compilazione fallisce perche' mancano classi nel classpath -->
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.0</version>
 					<configuration>
-						<source>1.5</source>
-						<target>1.5</target>
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -82,43 +83,18 @@
 			</build>
 		</profile>
 		<profile>
-			<id>jsf2_0</id>
-			<dependencies>
-				<dependency>
-					<groupId>com.sun.faces</groupId>
-					<artifactId>jsf-api</artifactId>
-					<version>2.0.2</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>com.sun.faces</groupId>
-					<artifactId>jsf-impl</artifactId>
-					<version>2.0.2</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.richfaces.framework</groupId>
-					<artifactId>richfaces-impl-jsf2</artifactId>
-					<version>${project.version}</version>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
 			<id>jsf1_2</id>
 			<dependencies>
-				<dependency>
-					<groupId>javax.faces</groupId>
-					<artifactId>jsf-api</artifactId>
-					<version>1.2_12</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>javax.faces</groupId>
-					<artifactId>jsf-impl</artifactId>
-					<version>1.2_12</version>
-					<scope>provided</scope>
-				</dependency>
+			<dependency>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-api</artifactId>
+				<version>${govway-monitor-ui.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-impl</artifactId>
+				<version>${govway-monitor-ui.version}</version>
+			</dependency>
 				<dependency>
 					<groupId>org.richfaces.framework</groupId>
 					<artifactId>richfaces-impl</artifactId>
@@ -133,35 +109,26 @@
 	</profiles>
 	<modules>
 		<module>core</module>
-		<module>colorPicker</module>
 		<module>drag-drop</module>
 		<module>effect</module>
 		<module>panel</module>
 		<module>panelbar</module>
-		<module>dataFilterSlider</module>
-		<module>gmap</module>
 		<module>jQuery</module>
-		<module>virtualEarth</module>
-		<module>separator</module>
 		<module>spacer</module>
-		<module>paint2D</module>
 		<module>togglePanel</module>
 		<module>tabPanel</module>
 		<module>simpleTogglePanel</module>
-		<module>toolBar</module>
-		<module>inputnumber-slider</module>
+		<module>inputnumber-slider</module> <!-- very slow -->
 		<module>inputnumber-spinner</module>
-		<module>tree</module>
 		<module>suggestionbox</module>
 		<module>dataTable</module>
 		<module>modal-panel</module>
-		<module>datascroller</module>
+		<module>datascroller</module> <!-- very slow -->
 		<module>menu-components</module>
 		<module>dropdown-menu</module>
 		<module>tooltip</module>
 		<module>panelmenu</module>
 		<module>calendar</module>
-		<module>treeModel</module>
 		<module>message</module>
 		<module>scrollableDataTable</module>
 		<module>insert</module>
@@ -172,38 +139,28 @@
 		<module>columns</module>
 		<module>combobox</module>
 		<module>pickList</module>
-	    <module>progressBAR</module>
-		<module>fileUpload</module>
-		<module>inplaceInput</module>
-		<module>inplaceSelect</module>
 		<module>functions</module>
 		<module>hotKey</module>
 		<module>beanValidator</module>
 		<module>state</module>
 		<module>extendedDataTable</module>
-		<module>editor</module>
 		<module>layout</module>
   </modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-api</artifactId>
-			<version>3.3.4.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.richfaces.framework</groupId>
-			<artifactId>richfaces-api</artifactId>
-			<version>3.3.4.Final</version>
+			<version>${govway-monitor-ui.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>3.2</version>
+			<version>${commons-collections.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.0</version>
+			<version>${commons-beanutils.version}</version>
 		</dependency>		
 		<dependency>
 			<groupId>opensymphony</groupId>
@@ -238,7 +195,7 @@
 		<dependency>
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
-			<version>1.8.1</version>
+			<version>${commons-digester.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-logging</artifactId>
@@ -246,47 +203,40 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<!--<dependency>
-			<groupId>org.richfaces.framework</groupId>
-			<artifactId>richfaces-test</artifactId>
-			<version>3.3.4.Final</version>
-			<scope>test</scope>
-		</dependency>-->
 		<dependency>
 			<groupId>com.sun.facelets</groupId>
 			<artifactId>jsf-facelets</artifactId>
-			<version>1.1.15.B1</version>
+			<version>${govway-monitor-ui.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
-			<version>1.0</version>
+			<groupId>jakarta.el</groupId>
+			<artifactId>jakarta.el-api</artifactId>
+			<version>${jakarta.el-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.0.4</version>
+			<version>${commons-logging.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+		    	<groupId>jakarta.servlet</groupId>
+		    	<artifactId>jakarta.servlet-api</artifactId>
+		   	<version>${jakarta.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+			<version>${jakarta.servlet-jsp-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.1.2</version>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+			<version>${jakarta.jstl.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

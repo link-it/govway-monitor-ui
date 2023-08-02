@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.ajax4jsf.resource;
 
@@ -26,7 +31,6 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.nio.ByteBuffer;
 
-import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -72,42 +76,38 @@ public class TemplateCSSRenderer extends StyleRenderer {
 					   		.getInitParameter(COMPRESS_STYLE_PARAMETER));
 		Writer writer = context.getWriter();
 		int bytesLength;
-		if(null != facesContext) {
-			// Create responseWriter.
-			String defaultRenderKitId = facesContext.getApplication().getDefaultRenderKitId();
-			if (null == defaultRenderKitId) {
-				defaultRenderKitId = RenderKitFactory.HTML_BASIC_RENDER_KIT;
-			}
-			RenderKitFactory renderKitFactory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
-			RenderKit renderKit = renderKitFactory.getRenderKit(facesContext,defaultRenderKitId);
-			// TODO - handle response encoding 
-				
-			ResponseWriter responseWriter = renderKit.createResponseWriter(countingOutputWriter,null,"UTF-8");
-			facesContext.setResponseWriter(responseWriter);
-			responseWriter.startDocument();
-			
-			// TODO - parameters and mock renderer/component ?
-			// for first time, this template only allow skin or faces variables interaction
-			template.encode(renderer,facesContext,null);
-			responseWriter.endDocument();
-			responseWriter.flush();
-			responseWriter.close();
-			
-			if (_CompressStyleOn) {    
-			    	CssCompressor compressor = new CssCompressor(countingOutputWriter.getContent()); // Compressing css document and printing result in response stream
-			    	bytesLength = compressor.compress(writer, -1);
-			    	writer.flush();
-			    	writer.close();
-			} else {
-			    	writer.write(countingOutputWriter.getContent().toString());  // Write not compressed style content
-			    	bytesLength = countingOutputWriter.getWritten();
-			    	writer.flush();
-			    	writer.close();
-			}
-			
-		} else {
-			throw new FacesException("FacesContext for resource from template "+base.getKey()+" is null");
+		// Create responseWriter.
+		String defaultRenderKitId = facesContext.getApplication().getDefaultRenderKitId();
+		if (null == defaultRenderKitId) {
+			defaultRenderKitId = RenderKitFactory.HTML_BASIC_RENDER_KIT;
 		}
+		RenderKitFactory renderKitFactory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+		RenderKit renderKit = renderKitFactory.getRenderKit(facesContext,defaultRenderKitId);
+		// TODO - handle response encoding 
+			
+		ResponseWriter responseWriter = renderKit.createResponseWriter(countingOutputWriter,null,"UTF-8");
+		facesContext.setResponseWriter(responseWriter);
+		responseWriter.startDocument();
+		
+		// TODO - parameters and mock renderer/component ?
+		// for first time, this template only allow skin or faces variables interaction
+		template.encode(renderer,facesContext,null);
+		responseWriter.endDocument();
+		responseWriter.flush();
+		responseWriter.close();
+		
+		if (_CompressStyleOn) {    
+		    	CssCompressor compressor = new CssCompressor(countingOutputWriter.getContent()); // Compressing css document and printing result in response stream
+		    	bytesLength = compressor.compress(writer, -1);
+		    	writer.flush();
+		    	writer.close();
+		} else {
+		    	writer.write(countingOutputWriter.getContent().toString());  // Write not compressed style content
+		    	bytesLength = countingOutputWriter.getWritten();
+		    	writer.flush();
+		    	writer.close();
+		}
+		
 		return bytesLength;
 	}
 

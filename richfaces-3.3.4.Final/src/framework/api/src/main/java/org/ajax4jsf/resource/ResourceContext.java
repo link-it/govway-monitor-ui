@@ -42,21 +42,21 @@ public abstract class ResourceContext  {
 	private Object resourceData;
 	// response headers
 	/**
-	 * Delegate to {@link javax.servlet.ServletResponse} setHeader
+	 * Delegate to {@link jakarta.servlet.ServletResponse} setHeader
 	 * @param name name of header
 	 * @param value new value
 	 */
 	public abstract void setHeader(String name, String value);
 	
 	/**
-	 * Delegate to {@link javax.servlet.ServletResponse} setHeader
+	 * Delegate to {@link jakarta.servlet.ServletResponse} setHeader
 	 * @param name name of header
 	 * @param value new value
 	 */
 	public abstract void setIntHeader(String name, int value);
 
 	/**
-	 * Delegate to {@link javax.servlet.ServletResponse} setHeader
+	 * Delegate to {@link jakarta.servlet.ServletResponse} setHeader
 	 * @param name name of header
 	 * @param value new value
 	 */
@@ -102,7 +102,7 @@ public abstract class ResourceContext  {
      * specified path, if it exists; otherwise, return <code>null</code>.</p>
      *
      * <p><em>Servlet:</em> This must be the value returned by the
-     * <code>javax.servlet.ServletContext</code> method
+     * <code>jakarta.servlet.ServletContext</code> method
      * <code>getResource(path)</code>.</p>
      *
      * <p><em>Portlet:</em> This must be the value returned by the
@@ -126,7 +126,7 @@ public abstract class ResourceContext  {
      * <code>null</code>.</p>
      *
      * <p><em>Servlet:</em> This must be the value returned by the
-     * <code>javax.servlet.ServletContext</code> method
+     * <code>jakarta.servlet.ServletContext</code> method
      * <code>getResourceAsStream(path)</code>.</p>
      *
      * <p><em>Portlet:</em> This must be the value returned by the
@@ -147,7 +147,7 @@ public abstract class ResourceContext  {
      * resources whose resource path starts with the specified argument.</p>
      *
      * <p><em>Servlet:</em> This must be the value returned by the
-     * <code>javax.servlet.ServletContext</code> method
+     * <code>jakarta.servlet.ServletContext</code> method
      * <code>getResourcePaths(path).</code></p>
      *
      * <p><em>Portlet:</em> This must be the value returned by the
@@ -190,13 +190,13 @@ public abstract class ResourceContext  {
 	public abstract PrintWriter getWriter() throws IOException;
 
 	/**
-	 * Setup response content type as {@see javax.servlet.ServletResponse#setContentType(java.lang.String)}
+	 * Setup response content type as {@see jakarta.servlet.ServletResponse#setContentType(java.lang.String)}
 	 * @param contentType
 	 */
 	public abstract void setContentType(String contentType);
 	
 	/**
-	 * Setup response content length as {@see javax.servlet.ServletResponse#setContentLength(int)}
+	 * Setup response content length as {@see jakarta.servlet.ServletResponse#setContentLength(int)}
 	 * @param contentLength
 	 */
 	public abstract void setContentLength(int contentLength);

@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+        <parent>
+                <groupId>org.govway-monitor-ui</groupId>
+                <artifactId>org.govway-monitor-ui</artifactId>
+                <version>${govway-monitor-ui.version}</version>
+                <relativePath>../../pom.xml</relativePath>
+        </parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sun.facelets</groupId>
+	<artifactId>jsf-facelets</artifactId>
+	<version>${govway-monitor-ui.version}</version>
+	<name>jsf-facelets</name>
+	<properties>
+		<javaVersion>1.8</javaVersion>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<finalName>${artifactId}-${version}</finalName>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>${govway-monitor-ui.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.el</groupId>
+			<artifactId>jakarta.el-api</artifactId>
+			<version>${jakarta.el-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		    	<groupId>jakarta.servlet</groupId>
+		    	<artifactId>jakarta.servlet-api</artifactId>
+		   	<version>${jakarta.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<target>${javaVersion}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>${finalName}</finalName>
+	</build>
+	<licenses>
+		<license>
+			<name>COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0</name>
+			<url>http://www.opensource.org/licenses/cddl1.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+</project>

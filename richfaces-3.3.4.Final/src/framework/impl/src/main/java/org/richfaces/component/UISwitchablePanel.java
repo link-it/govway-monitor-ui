@@ -23,7 +23,7 @@ package org.richfaces.component;
 
 import java.util.Iterator;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;

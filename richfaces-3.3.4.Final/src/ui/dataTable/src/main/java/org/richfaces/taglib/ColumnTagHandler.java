@@ -20,7 +20,7 @@
  */
 package org.richfaces.taglib;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 

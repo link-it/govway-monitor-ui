@@ -442,7 +442,7 @@ public class BuilderConfig implements LoaderHolder {
 					listenerProperty = new PropertyBean();
 					listenerProperty.setName(listener.getName());
 					bean.addProperty(listenerProperty);
-				    listenerProperty.setClassname("javax.el.MethodExpression");
+				    listenerProperty.setClassname("jakarta.el.MethodExpression");
 			    }
 			    
 			    Map<String, PropertyDescriptor> map = 

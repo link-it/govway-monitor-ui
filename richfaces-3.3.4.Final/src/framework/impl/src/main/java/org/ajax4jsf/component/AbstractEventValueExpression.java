@@ -21,9 +21,9 @@
  */ 
 package org.ajax4jsf.component;
 
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ELException;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import org.ajax4jsf.Messages;
@@ -50,7 +50,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.Expression#equals(java.lang.Object)
+	 * @see jakarta.el.Expression#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -60,7 +60,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.ValueExpression#getExpectedType()
+	 * @see jakarta.el.ValueExpression#getExpectedType()
 	 */
 	@Override
 	public Class<?> getExpectedType() {
@@ -70,7 +70,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.Expression#getExpressionString()
+	 * @see jakarta.el.Expression#getExpressionString()
 	 */
 	@Override
 	public String getExpressionString() {
@@ -81,7 +81,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.ValueExpression#getType(javax.el.ELContext)
+	 * @see jakarta.el.ValueExpression#getType(jakarta.el.ELContext)
 	 */
 	@Override
 	public Class<?> getType(ELContext context) {
@@ -91,7 +91,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.ValueExpression#getValue(javax.el.ELContext)
+	 * @see jakarta.el.ValueExpression#getValue(jakarta.el.ELContext)
 	 */
 	@Override
 	public Object getValue(ELContext context) {
@@ -106,7 +106,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.Expression#hashCode()
+	 * @see jakarta.el.Expression#hashCode()
 	 */
 	@Override
 	public int hashCode() {
@@ -117,7 +117,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.Expression#isLiteralText()
+	 * @see jakarta.el.Expression#isLiteralText()
 	 */
 	@Override
 	public boolean isLiteralText() {
@@ -128,7 +128,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.ValueExpression#isReadOnly(javax.el.ELContext)
+	 * @see jakarta.el.ValueExpression#isReadOnly(jakarta.el.ELContext)
 	 */
 	@Override
 	public boolean isReadOnly(ELContext context) {
@@ -138,7 +138,7 @@ public abstract class AbstractEventValueExpression extends ValueExpression {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see javax.el.ValueExpression#setValue(javax.el.ELContext,
+	 * @see jakarta.el.ValueExpression#setValue(jakarta.el.ELContext,
 	 * java.lang.Object)
 	 */
 	@Override

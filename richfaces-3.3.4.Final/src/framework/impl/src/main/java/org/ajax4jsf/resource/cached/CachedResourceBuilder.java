@@ -213,7 +213,7 @@ public class CachedResourceBuilder extends ResourceBuilderImpl {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.ajax4jsf.resource.ResourceBuilderImpl#init(javax.servlet.ServletContext,
+	 * @see org.ajax4jsf.resource.ResourceBuilderImpl#init(jakarta.servlet.ServletContext,
 	 *      java.lang.String)
 	 */
 	public void init() throws FacesException {

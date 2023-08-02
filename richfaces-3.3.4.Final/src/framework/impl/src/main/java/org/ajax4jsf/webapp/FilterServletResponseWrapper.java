@@ -47,10 +47,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.io.FastBufferInputStream;
@@ -60,6 +60,8 @@ import org.ajax4jsf.io.FastBufferWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
+
+import jakarta.servlet.WriteListener;
 
 /**
  * Base wrapper save JSF page response, for parse to XML with different parsers
@@ -279,6 +281,16 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 				byteStream.write(b, off, len);
 			}
 		}
+		
+		@Override
+		public boolean isReady() {
+			return true;
+		}
+
+		@Override
+		public void setWriteListener(WriteListener writeListener) {
+			// not implemented
+		}
     }
     
     public static  class NullServletOutputStream extends ServletOutputStream {
@@ -301,6 +313,16 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 		public void write(int b) throws IOException {
 			// this-is null stream, do nothing !
 			
+		}
+		
+		@Override
+		public boolean isReady() {
+			return true;
+		}
+
+		@Override
+		public void setWriteListener(WriteListener writeListener) {
+			// not implemented
 		}
     	
     }
@@ -374,7 +396,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
         return afterCharset.trim();
     }
     /* (non-Javadoc)
-     * @see javax.servlet.http.HttpServletResponse#addHeader(java.lang.String, java.lang.String)
+     * @see jakarta.servlet.http.HttpServletResponse#addHeader(java.lang.String, java.lang.String)
      */
     public void addHeader(String name, String value) {
     	if("Content-Type".equals(name)){
@@ -385,7 +407,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
     	}
     }
     /* (non-Javadoc)
-     * @see javax.servlet.http.HttpServletResponse#setHeader(java.lang.String, java.lang.String)
+     * @see jakarta.servlet.http.HttpServletResponse#setHeader(java.lang.String, java.lang.String)
      */
     public void setHeader(String name, String value) {
     	// HACK - weblogic do not use setContentType, instead directly set header !
@@ -401,7 +423,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
         return this.headers;
     }
     /* (non-Javadoc)
-     * @see javax.servlet.ServletResponse#getCharacterEncoding()
+     * @see jakarta.servlet.ServletResponse#getCharacterEncoding()
      */
     public String getCharacterEncoding() {
 //        return this.charterEncoding;
@@ -413,7 +435,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 		}
     }
     /* (non-Javadoc)
-     * @see javax.servlet.ServletResponse#setCharacterEncoding(java.lang.String)
+     * @see jakarta.servlet.ServletResponse#setCharacterEncoding(java.lang.String)
      */
     public void setCharacterEncoding(String charset) {
         this.charterEncoding = charset;
@@ -520,7 +542,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.ServletResponseWrapper#flushBuffer()
+	 * @see jakarta.servlet.ServletResponseWrapper#flushBuffer()
 	 */
 	public void flushBuffer() throws IOException {
 		if(isUseStream()){
@@ -531,7 +553,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.ServletResponseWrapper#getBufferSize()
+	 * @see jakarta.servlet.ServletResponseWrapper#getBufferSize()
 	 */
 	public int getBufferSize() {
 		// TODO Auto-generated method stub
@@ -539,7 +561,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.ServletResponseWrapper#resetBuffer()
+	 * @see jakarta.servlet.ServletResponseWrapper#resetBuffer()
 	 */
 	public void resetBuffer() {
 		this.printWriter = null;
@@ -551,7 +573,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.ServletResponseWrapper#setBufferSize(int)
+	 * @see jakarta.servlet.ServletResponseWrapper#setBufferSize(int)
 	 */
 	public void setBufferSize(int arg0) {
 		// TODO Auto-generated method stub
@@ -559,7 +581,7 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.ServletResponseWrapper#reset()
+	 * @see jakarta.servlet.ServletResponseWrapper#reset()
 	 */
 	public void reset() {
 		// TODO Auto-generated method stub
@@ -665,4 +687,5 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 	public int getStatus() {
 		return status;
 	}
+
 }

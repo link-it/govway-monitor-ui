@@ -18,12 +18,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -75,9 +79,9 @@ public class InputNumberSliderRendererBase extends InputRendererBase {
         boolean showInput = attributeToBoolean(slider, "showInput");
         boolean manualInput = attributeToBoolean(slider, "enableManualInput");
 
-        variables.setVariable("showInput",new Boolean(showInput));
-        variables.setVariable("inputReadOnly",new Boolean(!manualInput));
-        variables.setVariable("inputDisabled",new Boolean(disabled));
+        variables.setVariable("showInput", Boolean.valueOf(showInput));
+        variables.setVariable("inputReadOnly", Boolean.valueOf(!manualInput));
+        variables.setVariable("inputDisabled", Boolean.valueOf(disabled));
 
         if (!manualInput || disabled){
             variables.setVariable("color", "color: gray;");
@@ -92,7 +96,7 @@ public class InputNumberSliderRendererBase extends InputRendererBase {
         variables.setVariable("orientation", slider.getAttributes().get(
 				"orientation"));
 		boolean showArrows = attributeToBoolean(slider, "showArrows");
-		variables.setVariable("showArrows", new Boolean(showArrows));
+		variables.setVariable("showArrows", Boolean.valueOf(showArrows));
 		variables.setVariable("delay", slider.getAttributes().get("delay"));
 	}
 	
@@ -117,4 +121,50 @@ public class InputNumberSliderRendererBase extends InputRendererBase {
 		return buf.toString();
 	}
 
+	/**
+	 * id="#{clientId}Input"
+	 * 
+	 	onselect="#{component.attributes['onselect']}"
+		onfocus="#{component.attributes['onfocus']}"
+		onblur="#{component.attributes['onblur']}"
+		onclick='#{component.attributes["oninputclick"]}'
+		ondblclick='#{component.attributes["oninputdblclick"]}'
+		onkeydown='#{component.attributes["oninputkeydown"]}'
+		onkeypress='#{component.attributes["oninputkeypress"]}'
+		onkeyup='#{component.attributes["oninputkeyup"]}'
+		onmousedown='#{component.attributes["oninputmousedown"]}'
+		onmousemove='#{component.attributes["oninputmousemove"]}'
+		onmouseout='#{component.attributes["oninputmouseout"]}'
+		onmouseover='#{component.attributes["oninputmouseover"]}'
+		onmouseup='#{component.attributes["oninputmouseup"]}'
+
+	 * @param context
+	 * @param component
+	 * @return
+	 */
+	public String getInputEventHandlersScript(FacesContext context, UIInputNumberSlider component) {
+		StringBuffer sb = new StringBuffer();
+		
+		String clientId = component.getClientId(context) + "Input";
+		sb.append("jQuery(document).ready(function() {");
+		
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "onselect", "select", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "onfocus", "focus", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "onblur", "blur", "input"));
+		
+		// sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "onchange", "change", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputclick", "click", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputdblclick", "dblclick", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputkeydown", "keydown", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputkeypress", "keypress", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputkeyup", "keyup", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputmousedown", "mousedown", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputmousemove", "mousemove", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputmouseout", "mouseout", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputmouseover", "mouseover", "input"));
+		sb.append(getUtils().getScriptContentForEventHandler(context, component, clientId, "oninputmouseup", "mouseup", "input"));
+		
+		sb.append("});");
+		return sb.toString();
+	}
 }

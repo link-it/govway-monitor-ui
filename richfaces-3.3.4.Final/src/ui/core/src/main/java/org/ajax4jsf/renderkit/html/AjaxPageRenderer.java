@@ -35,7 +35,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.ajax4jsf.component.AjaxContainer;
+//import org.ajax4jsf.component.AjaxContainer;
 import org.ajax4jsf.context.AjaxContext;
 import org.ajax4jsf.renderkit.AjaxContainerRenderer;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
@@ -51,11 +51,11 @@ public class AjaxPageRenderer extends AjaxContainerRenderer {
 
 	public static final String RENDERER_TYPE = "org.ajax4jsf.components.AjaxPageRenderer";
 
-	private static final Map doctypes ;
+	private static final Map<String, String[]> doctypes ;
 
 	static {
 		// Fill doctype, content-type and namespace map for different formats.
-		doctypes = new HashMap();
+		doctypes = new HashMap<String, String[]>();
 		doctypes
 				.put(
 						"html-transitional",
@@ -117,10 +117,10 @@ public class AjaxPageRenderer extends AjaxContainerRenderer {
 	 */
 	public void doEncodeBegin(ResponseWriter out, FacesContext context,
 			UIComponent component) throws IOException {
-		AjaxContainer ajax = (AjaxContainer) component;
+//		AjaxContainer ajax = (AjaxContainer) component;
 		// ServletResponse response = (ServletResponse)
 		// context.getExternalContext().getResponse();
-		Map attributes = component.getAttributes();
+		Map<String, Object> attributes = component.getAttributes();
 		String format = (String) attributes.get("format");
 		String contentType = null;
 		String namespace = null;
@@ -130,7 +130,7 @@ public class AjaxPageRenderer extends AjaxContainerRenderer {
 			docType = (String[]) doctypes.get(format);
 		} else {
 			contentType = out.getContentType();
-			for (Iterator iterator = doctypes.values().iterator(); iterator.hasNext();) {
+			for (Iterator<String[]> iterator = doctypes.values().iterator(); iterator.hasNext();) {
 				String[] types = (String[]) iterator.next();
 				if(types[1].equals(contentType)){
 					docType = types;

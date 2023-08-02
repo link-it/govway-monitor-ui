@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.taglib.html.jsp;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import org.ajax4jsf.renderkit.html.AjaxPageRenderer;
@@ -46,7 +46,7 @@ public class AjaxPageTag extends AjaxRegionTag {
         return AjaxPageRenderer.RENDERER_TYPE;
     }
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.tagext.Tag#release()
+     * @see jakarta.servlet.jsp.tagext.Tag#release()
      */
     public void release() {
         this.onload = null;

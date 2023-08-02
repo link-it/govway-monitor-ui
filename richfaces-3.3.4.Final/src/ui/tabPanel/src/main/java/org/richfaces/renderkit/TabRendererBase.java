@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -34,6 +39,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Map;
@@ -50,14 +56,22 @@ public class TabRendererBase extends RendererBase implements TabEncoder {
     	if (tabHeaderRenderer == null) {
             Package pkg = this.getClass().getPackage();
             try {
-                tabHeaderRenderer = (RendererBase) Class.forName(pkg.getName() + ".TabHeaderRenderer").newInstance();
+                tabHeaderRenderer = (RendererBase) Class.forName(pkg.getName() + ".TabHeaderRenderer").getDeclaredConstructor().newInstance();
             } catch (InstantiationException e) {
                 throw new FacesException(e);
             } catch (IllegalAccessException e) {
                 throw new FacesException(e);
             } catch (ClassNotFoundException e) {
                 throw new FacesException(e);
-            }
+            } catch (IllegalArgumentException e) {
+            	throw new FacesException(e);
+			} catch (InvocationTargetException e) {
+				throw new FacesException(e);
+			} catch (NoSuchMethodException e) {
+				throw new FacesException(e);
+			} catch (SecurityException e) {
+				throw new FacesException(e);
+			}
     	}
 
     	return tabHeaderRenderer;
@@ -154,7 +168,7 @@ public class TabRendererBase extends RendererBase implements TabEncoder {
         }
     }
 
-    protected Class getComponentClass() {
+    protected Class<UITab> getComponentClass() {
         return UITab.class;
     }
 

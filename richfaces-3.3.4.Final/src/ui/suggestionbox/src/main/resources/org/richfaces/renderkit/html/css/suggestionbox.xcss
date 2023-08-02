@@ -60,6 +60,22 @@
 	cursor : pointer;
 }
 
+.rich-sb-display-none {
+	display: none; 
+}
+
+.rich-sb-display {
+	display: ;
+}
+
+.rich-sb-visibility-hidden {
+	visibility: hidden; 
+}
+
+.rich-sb-visibility {
+	visibility: visible;
+}
+
 </f:verbatim>
 
 <u:selector name=".rich-sb-ext-decor-2">

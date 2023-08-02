@@ -19,6 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
 
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
+
 package org.richfaces.component;
 
 import javax.faces.component.UIComponentBase;
@@ -31,6 +37,6 @@ public abstract class UIJQuery extends UIComponentBase {
 	
 	public static final String COMPONENT_TYPE = "org.richfaces.JQuery";
 	
-	private static final String COMPONENT_FAMILY = "org.richfaces.JQuery";
+	public static final String COMPONENT_FAMILY = "org.richfaces.JQuery";
 	
 }

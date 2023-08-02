@@ -71,7 +71,7 @@
 		</property>
 		<property elonly="true" hidden="true">
 			<name>filterMethod</name>
-			<classname>javax.el.MethodExpression</classname>
+			<classname>jakarta.el.MethodExpression</classname>
 			<methodargs>java.lang.Object</methodargs>
 			<returntype>boolean</returntype>
 			<description>This attribute is defined with method binding. This method accepts on Object parameter and return boolean value</description>

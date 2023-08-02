@@ -1,10 +1,14 @@
 /**
  * 
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html.images;
 
 import org.richfaces.renderkit.html.Base2WayGradient;
-import org.richfaces.renderkit.html.BaseGradient;
 
 /**
  * @author asmirnov

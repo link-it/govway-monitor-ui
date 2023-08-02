@@ -20,11 +20,11 @@
  */
 package org.richfaces.ui.application;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodInfo;
-import javax.el.MethodNotFoundException;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.MethodInfo;
+import jakarta.el.MethodNotFoundException;
+import jakarta.el.ValueExpression;
 import javax.faces.context.FacesContext;
 
 /**
@@ -47,7 +47,7 @@ public class StateMethodExpressionWrapper extends MethodExpression {
 
 	/**
 	 * @return
-	 * @see javax.el.Expression#getExpressionString()
+	 * @see jakarta.el.Expression#getExpressionString()
 	 */
 	public String getExpressionString() {
 		return parent.getExpressionString();
@@ -56,7 +56,7 @@ public class StateMethodExpressionWrapper extends MethodExpression {
 	/**
 	 * @param context
 	 * @return
-	 * @see javax.el.MethodExpression#getMethodInfo(javax.el.ELContext)
+	 * @see jakarta.el.MethodExpression#getMethodInfo(jakarta.el.ELContext)
 	 */
 	public MethodInfo getMethodInfo(ELContext context) {
 		MethodInfo methodInfo = parent.getMethodInfo(context);
@@ -67,7 +67,7 @@ public class StateMethodExpressionWrapper extends MethodExpression {
 	 * @param context
 	 * @param params
 	 * @return
-	 * @see javax.el.MethodExpression#invoke(javax.el.ELContext,
+	 * @see jakarta.el.MethodExpression#invoke(jakarta.el.ELContext,
 	 *      java.lang.Object[])
 	 */
 	public Object invoke(ELContext context, Object[] params) {
@@ -88,7 +88,7 @@ public class StateMethodExpressionWrapper extends MethodExpression {
 
 	/**
 	 * @return
-	 * @see javax.el.Expression#isLiteralText()
+	 * @see jakarta.el.Expression#isLiteralText()
 	 */
 	public boolean isLiteralText() {
 		return parent.isLiteralText();
@@ -97,7 +97,7 @@ public class StateMethodExpressionWrapper extends MethodExpression {
 	/**
 	 * @param obj
 	 * @return
-	 * @see javax.el.Expression#equals(java.lang.Object)
+	 * @see jakarta.el.Expression#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
 		return parent.equals(obj);
@@ -105,7 +105,7 @@ public class StateMethodExpressionWrapper extends MethodExpression {
 
 	/**
 	 * @return
-	 * @see javax.el.Expression#hashCode()
+	 * @see jakarta.el.Expression#hashCode()
 	 */
 	public int hashCode() {
 		return parent.hashCode();

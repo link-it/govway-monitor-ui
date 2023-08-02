@@ -26,7 +26,7 @@
 
 package org.richfaces.iterator;
 
-import javax.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.JspTagException;
 
 /**
  * TODO Class description goes here.

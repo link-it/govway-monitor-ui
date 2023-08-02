@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.resource;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 
 /**
  * Interface for the ResourceComponent introduced after refactoring

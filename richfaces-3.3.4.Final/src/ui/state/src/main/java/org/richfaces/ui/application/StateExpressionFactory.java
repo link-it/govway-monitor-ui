@@ -25,10 +25,10 @@
  */
 package org.richfaces.ui.application;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
 
 /**
  * @author asmirnov
@@ -41,7 +41,7 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @param obj
 	 * @param targetType
 	 * @return
-	 * @see javax.el.ExpressionFactory#coerceToType(java.lang.Object, java.lang.Class)
+	 * @see jakarta.el.ExpressionFactory#coerceToType(java.lang.Object, java.lang.Class)
 	 */
 	/*public Object coerceToType(Object obj, Class<?> targetType) {
 		return getDefaultFactory().coerceToType(obj, targetType);
@@ -53,7 +53,7 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @param expectedReturnType
 	 * @param expectedParamTypes
 	 * @return
-	 * @see javax.el.ExpressionFactory#createMethodExpression(javax.el.ELContext, java.lang.String, java.lang.Class, java.lang.Class<?>[])
+	 * @see jakarta.el.ExpressionFactory#createMethodExpression(jakarta.el.ELContext, java.lang.String, java.lang.Class, java.lang.Class<?>[])
 	 */
 	/*public MethodExpression createMethodExpression(ELContext context,
 			String expression, Class<?> expectedReturnType,
@@ -69,7 +69,7 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @param expression
 	 * @param expectedType
 	 * @return
-	 * @see javax.el.ExpressionFactory#createValueExpression(javax.el.ELContext, java.lang.String, java.lang.Class)
+	 * @see jakarta.el.ExpressionFactory#createValueExpression(jakarta.el.ELContext, java.lang.String, java.lang.Class)
 	 */
 	/*public ValueExpression createValueExpression(ELContext context,
 			String expression, Class<?> expectedType) {
@@ -81,7 +81,7 @@ public abstract class StateExpressionFactory extends ExpressionFactory {
 	 * @param instance
 	 * @param expectedType
 	 * @return
-	 * @see javax.el.ExpressionFactory#createValueExpression(java.lang.Object, java.lang.Class)
+	 * @see jakarta.el.ExpressionFactory#createValueExpression(java.lang.Object, java.lang.Class)
 	 */
 	/*public ValueExpression createValueExpression(Object instance,
 			Class<?> expectedType) {

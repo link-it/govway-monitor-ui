@@ -31,7 +31,7 @@ import javax.faces.component.UIPanel;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.event.EventsQueue;
 import org.ajax4jsf.resource.InternetResource;

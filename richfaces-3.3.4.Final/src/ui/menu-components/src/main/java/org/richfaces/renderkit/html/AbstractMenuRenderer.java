@@ -254,8 +254,27 @@ public abstract class AbstractMenuRenderer extends HeaderResourcesRendererBase {
         writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-strut",
                 null);
         writer.startElement(HTML.DIV_ELEM, layer);
-        String cssId = RendererUtils.getCssId(clientId);
-        writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-strut", null);
+        
+        if(width != null && width.length() > 0) {
+        	String cssId = RendererUtils.getCssId(clientId);
+        	String cssClass = cssId+"-menu-list-strut-width";
+        	writer.writeAttribute(HTML.class_ATTRIBUTE, cssClass + " rich-menu-list-strut", null);
+			
+	        writer.startElement("style", layer);
+			writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
+			if(cspValue != null) {
+				writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
+			}
+			
+			writer.write("."+cssClass+" { width: "+ HtmlUtil.qualifySize(width) +";}");
+	        String layerStyle = getLayerStyle(context, layer, writer);
+	        if(layerStyle != null) {
+	        	writer.write(layerStyle);
+	        }
+	        writer.endElement("style");
+        } else {
+        	writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-menu-list-strut", null);
+        }
         writer.write("&#160;");
         writer.endElement(HTML.DIV_ELEM);
         
@@ -272,22 +291,6 @@ public abstract class AbstractMenuRenderer extends HeaderResourcesRendererBase {
 		}
         encodeScript(context, layer);
         writer.endElement(HTML.SCRIPT_ELEM);
-        
-        writer.startElement("style", layer);
-		writer.writeAttribute(HTML.TYPE_ATTR, "text/css", null);
-		writer.writeAttribute(HTML.id_ATTRIBUTE, clientId + "_menu_style",null);
-		if(cspValue != null) {
-			writer.writeAttribute(HTML.nonce_ATTRIBUTE, cspValue, null);
-		}
-        if(width != null && width.length() > 0) {
-		//	writer.write("#"+cssId+"-menu-list-strut { width: "+ HtmlUtil.qualifySize(width) +";}\n");
-        }
-        String layerStyle = getLayerStyle(context, layer, writer);
-        if(layerStyle != null) {
-        	writer.write(layerStyle);
-        }
-        
-        writer.endElement("style");
     }
     
     public void encodeItems(FacesContext context, UIComponent component)

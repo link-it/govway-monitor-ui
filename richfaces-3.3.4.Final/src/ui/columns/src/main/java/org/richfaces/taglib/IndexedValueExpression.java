@@ -22,8 +22,8 @@
  */
 package org.richfaces.taglib;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
 
 
 final class IndexedValueExpression extends ValueExpression {
@@ -45,7 +45,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.ValueExpression#getValue(javax.el.ELContext)
+     * @see jakarta.el.ValueExpression#getValue(jakarta.el.ELContext)
      */
     public Object getValue(ELContext context) {
 	Object base = this.orig.getValue(context);
@@ -59,7 +59,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.ValueExpression#setValue(javax.el.ELContext,
+     * @see jakarta.el.ValueExpression#setValue(jakarta.el.ELContext,
      *      java.lang.Object)
      */
     public void setValue(ELContext context, Object value) {
@@ -73,7 +73,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.ValueExpression#isReadOnly(javax.el.ELContext)
+     * @see jakarta.el.ValueExpression#isReadOnly(jakarta.el.ELContext)
      */
     public boolean isReadOnly(ELContext context) {
 	Object base = this.orig.getValue(context);
@@ -87,7 +87,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.ValueExpression#getType(javax.el.ELContext)
+     * @see jakarta.el.ValueExpression#getType(jakarta.el.ELContext)
      */
     public Class getType(ELContext context) {
 	Object base = this.orig.getValue(context);
@@ -101,7 +101,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.ValueExpression#getExpectedType()
+     * @see jakarta.el.ValueExpression#getExpectedType()
      */
     public Class getExpectedType() {
 	return Object.class;
@@ -110,7 +110,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.Expression#getExpressionString()
+     * @see jakarta.el.Expression#getExpressionString()
      */
     public String getExpressionString() {
 	return this.orig.getExpressionString();
@@ -119,7 +119,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.Expression#equals(java.lang.Object)
+     * @see jakarta.el.Expression#equals(java.lang.Object)
      */
     public boolean equals(Object obj) {
 	return this.orig.equals(obj);
@@ -128,7 +128,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.Expression#hashCode()
+     * @see jakarta.el.Expression#hashCode()
      */
     public int hashCode() {
 	return this.orig.hashCode();
@@ -137,7 +137,7 @@ final class IndexedValueExpression extends ValueExpression {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.el.Expression#isLiteralText()
+     * @see jakarta.el.Expression#isLiteralText()
      */
     public boolean isLiteralText() {
 	return false;

@@ -26,12 +26,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.el.ELContext;
+import jakarta.el.ELContext;
 import javax.faces.component.UIOutput;
 import javax.faces.webapp.UIComponentELTag;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Administrator

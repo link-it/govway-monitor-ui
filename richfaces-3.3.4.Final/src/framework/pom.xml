@@ -2,36 +2,26 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces</groupId>
 	<artifactId>framework</artifactId>
-	<version>3.3.4.Final</version>
+	<version>${govway-monitor-ui.version}</version>
 	<packaging>pom</packaging>
 	<name>Java Server Faces AJAX framework</name>
 	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.sun.faces</groupId>
-				<artifactId>jsf-api</artifactId>
-				<version>2.0.2</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.faces</groupId>
-				<artifactId>jsf-impl</artifactId>
-				<version>2.0.2</version>
-			</dependency>
-			<dependency>
 				<groupId>javax.faces</groupId>
 				<artifactId>jsf-api</artifactId>
-				<version>1.2_12</version>
+				<version>${govway-monitor-ui.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.faces</groupId>
 				<artifactId>jsf-impl</artifactId>
-				<version>1.2_12</version>
+				<version>${govway-monitor-ui.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -40,6 +30,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-source</id>
@@ -73,9 +64,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -90,57 +82,49 @@
 		<dependency>
 			<groupId>com.sun.facelets</groupId>
 			<artifactId>jsf-facelets</artifactId>
-			<version>1.1.15.B1</version>
+			<version>${govway-monitor-ui.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
-			<version>1.0</version>
+			<groupId>jakarta.el</groupId>
+			<artifactId>jakarta.el-api</artifactId>
+			<version>${jakarta.el-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.0.4</version>
+			<version>${commons-logging.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+		    	<groupId>jakarta.servlet</groupId>
+		    	<artifactId>jakarta.servlet-api</artifactId>
+		   	<version>${jakarta.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+			<version>${jakarta.servlet-jsp-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+			<version>${jakarta.jstl.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>jsr250-api</artifactId>
-			<version>1.0</version>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>${jakarta.annotation-api.version}</version>
 			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	<modules>
-		<!--
-			<module>api-parent</module>
-			<module>impl-parent</module>
-		-->
 		<module>api</module>
 		<module>impl</module>
-		<!--
-		<module>test</module>
-		<module>jsf-test</module>
-		-->
 	</modules>
 	
 </project>

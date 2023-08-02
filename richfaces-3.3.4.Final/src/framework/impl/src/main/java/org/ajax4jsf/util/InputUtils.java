@@ -23,7 +23,7 @@ package org.ajax4jsf.util;
 
 import java.io.Serializable;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;

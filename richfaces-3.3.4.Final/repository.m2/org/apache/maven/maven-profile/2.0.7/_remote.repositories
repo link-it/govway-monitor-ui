@@ -1,6 +1,0 @@
-#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Thu Nov 10 19:33:00 CET 2022
-maven-profile-2.0.7.jar>nexus=
-maven-profile-2.0.7.jar>central=
-maven-profile-2.0.7.pom>central=
-maven-profile-2.0.7.pom>nexus=

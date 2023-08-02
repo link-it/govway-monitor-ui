@@ -2,12 +2,11 @@
 	<parent>
 		<artifactId>cdk</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces.cdk</groupId>
 	<artifactId>maven-cdk-plugin</artifactId>
-	<version>3.3.4.Final</version>
 	<packaging>maven-plugin</packaging>
 	<name>Maven plugin for JSF components code generation</name>
 	<dependencies>
@@ -55,7 +54,7 @@
 		<dependency>
 			<groupId>org.richfaces.cdk</groupId>
 			<artifactId>generator</artifactId>
-			<version>3.3.4.Final</version>
+			<version>${govway-monitor-ui.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

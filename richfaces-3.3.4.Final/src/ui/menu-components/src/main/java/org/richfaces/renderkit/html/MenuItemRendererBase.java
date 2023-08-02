@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit.html;
 
@@ -59,7 +64,7 @@ public class MenuItemRendererBase extends CompositeRenderer {
 		 delegate = new MenuItemRendererDelegate();
 	}
 
-    protected Class getComponentClass() {
+    protected Class<UIMenuItem> getComponentClass() {
         return UIMenuItem.class;
     }
 
@@ -72,7 +77,7 @@ public class MenuItemRendererBase extends CompositeRenderer {
         super.doDecode(context, component);
 
         ExternalContext exCtx = context.getExternalContext();
-        Map rqMap = exCtx.getRequestParameterMap();
+        Map<String, String> rqMap = exCtx.getRequestParameterMap();
         Object clnId = rqMap.get(component.getClientId(context));
         if (clnId == null) {
             clnId = rqMap.get(component.getClientId(context) + ":hidden");
@@ -108,15 +113,15 @@ public class MenuItemRendererBase extends CompositeRenderer {
         }
     }
     // find and encode UIParameter's components
-    public List encodeParams(FacesContext context, UIMenuItem component) throws IOException {
+    public List<String> encodeParams(FacesContext context, UIMenuItem component) throws IOException {
     	
     	UIMenuItem menuItem = component;
-    	List params = new ArrayList();
+    	List<String> params = new ArrayList<String>();
     	StringBuffer buff;
     	
-    	List children = menuItem.getChildren();
-    	for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-    		UIComponent child = (UIComponent) iterator.next();
+    	List<UIComponent> children = menuItem.getChildren();
+    	for (Iterator<UIComponent> iterator = children.iterator(); iterator.hasNext();) {
+    		UIComponent child = iterator.next();
 				
     		if(child instanceof UIParameter){
 					

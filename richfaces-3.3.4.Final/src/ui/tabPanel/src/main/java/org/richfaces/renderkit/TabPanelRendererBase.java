@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,7 +46,6 @@ import org.ajax4jsf.javascript.ScriptUtils;
 import org.ajax4jsf.renderkit.ComponentVariables;
 import org.ajax4jsf.renderkit.ComponentsVariableResolver;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
-import org.ajax4jsf.util.HtmlDimensions;
 import org.richfaces.component.UISwitchablePanel;
 import org.richfaces.component.UITab;
 import org.richfaces.component.UITabPanel;
@@ -60,7 +65,7 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
     public final static String DISABLED_CELL_CLASSES = "rich-tabhdr-cell-disabled";
     private final String TABS_WITH_SAME_NAMES_ERROR = "tabs with the same name not allowed";  
 
-    protected Class getComponentClass() {
+    protected Class<UITabPanel> getComponentClass() {
         return UITabPanel.class;
     }
 
@@ -70,11 +75,11 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
         UITabPanel panel = (UITabPanel) component;
 
         String clientId = component.getClientId(context);
-        Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
 
         UITab eventTab = null;
 
-        for (Iterator tabsIterator = panel.getRenderedTabs();
+        for (Iterator<?> tabsIterator = panel.getRenderedTabs();
              tabsIterator.hasNext() && eventTab == null;) {
 
             UITab tab = (UITab) tabsIterator.next();
@@ -122,7 +127,7 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
         private final JSReference JSR_ONTABENTER = new JSReference("ontabenter");
         
         public Object collectTabInfo(FacesContext context, UITab tab) {
-            Map info = new HashMap();
+            Map<JSReference, Object> info = new HashMap<JSReference, Object>();
             info.put(JSR_ID, tab.getClientId(context));
             info.put(JSR_ACTIVE_CLASS, TabPanelRendererBase.getActiveTabClass(tab));
             info.put(JSR_INACTIVE_CLASS, TabPanelRendererBase.getInactiveTabClass(tab));
@@ -144,7 +149,7 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
         private final JSReference JSR_ID = new JSReference("id");
            	
 		public Object collectTabPanelInfo(FacesContext context, UITabPanel tabPanel) {
-        	Map info = new HashMap();
+			Map<JSReference, Object> info = new HashMap<JSReference, Object>();
             info.put(JSR_ONTABCHANGE, tabPanel.getAttributes().get("ontabchange"));
             info.put(JSR_ID, tabPanel.getClientId(context));
             
@@ -222,13 +227,13 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
     }
     
     protected static class TabsIteratorHelper {
-    	private Iterator tabs;
+    	private Iterator<?> tabs;
     	
     	private UITab namedTab = null;
     	private UITab firstApplicableTab = null;
     	private boolean fallback;
     	
-		public TabsIteratorHelper(Iterator tabs, Object name) {
+		public TabsIteratorHelper(Iterator<?> tabs, Object name) {
 			super();
 			this.tabs = tabs;
 			
@@ -336,14 +341,14 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
         
         helper = null;
 
-        ArrayList tabs = new ArrayList();
+        List<Object> tabs = new ArrayList<Object>();
         boolean clientSide = UISwitchablePanel.CLIENT_METHOD.equals(pane.getSwitchType());
 
         TabInfoCollector tabInfoCollector = getTabInfoCollector();
         
         Set<Object> tabNamesSet = new HashSet<Object>();
         
-        for (Iterator iter = pane.getRenderedTabs(); iter.hasNext();) {
+        for (Iterator<?> iter = pane.getRenderedTabs(); iter.hasNext();) {
             UITab tab = (UITab) iter.next();
             boolean active = activeTab == tab;
             tab.setActive(active);
@@ -364,7 +369,7 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
         }
         
         // Store flag for exist client-side tabs.
-        componentVariables.setVariable("clientSide", new Boolean(clientSide));
+        componentVariables.setVariable("clientSide", Boolean.valueOf(clientSide));
         componentVariables.setVariable("tabs", tabs);
     }
 
@@ -401,7 +406,7 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
      */
     public void encodeTabsScript(FacesContext context, UITabPanel pane) throws IOException {
         ComponentVariables variables = ComponentsVariableResolver.getVariables(this, pane);
-        ArrayList tabs = (ArrayList) variables.getVariable("tabs");
+        List<?> tabs = (List<?>) variables.getVariable("tabs");
         // TODO - create tab control function.
         getUtils().writeScript(context, pane, "RichFaces.panelTabs['" + pane.getClientId(context) + "']=" + ScriptUtils.toScript(tabs) + ";");
     }
@@ -422,7 +427,7 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
     
     public String encodeHeaderSpacing(FacesContext context, UITabPanel pane) throws IOException {
         String headerSpacing = pane.getHeaderSpacing();
-        Double decoded = HtmlDimensions.decode(headerSpacing);
+//        Double decoded = HtmlDimensions.decode(headerSpacing);
         return "width: " + HtmlUtil.qualifySize(headerSpacing) + "; ";
     }
     

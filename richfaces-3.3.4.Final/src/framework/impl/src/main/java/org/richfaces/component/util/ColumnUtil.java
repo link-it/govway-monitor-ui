@@ -21,7 +21,7 @@
 
 package org.richfaces.component.util;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import org.richfaces.component.Column;

@@ -124,6 +124,33 @@
 .rich-calendar-visibility {
 	visibility: visible;
 }
+.rich-calendar-visibility-noattr {
+	visibility: ;
+}
+
+.rich-calendar-background-image-none { 
+	background-image:none;
+}
+
+.rich-calendar-float-right { 
+	float: right;
+}
+
+.rich-calendar-float-left { 
+	float: left;
+}
+
+.rich-calendar-position-absolute { 
+	position:absolute;
+}
+
+.rich-calendar-position-relative { 
+	position:relative;
+}
+
+.rich-calendar-width-centopercento { 
+	width:100%;
+}
 
 ]]>
    </f:verbatim>

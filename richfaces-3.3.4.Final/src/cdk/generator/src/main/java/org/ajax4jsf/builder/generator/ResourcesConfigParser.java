@@ -133,8 +133,17 @@ public class ResourcesConfigParser {
 
 	private String getResourceKey(String packageName, Object resource) {
 		try {
+			if(resource==null){
+				return null;			
+			}
 			Class<? extends Object> resourceClass = resource.getClass();
+			if(resourceClass==null){
+				return null;			
+			}
 			Method method = resourceClass.getMethod("getKey");
+			if(method==null){
+				return null;			
+			}
 			String resourceKey = (String) method.invoke(resource);
 			
 			if (resourceKey != null && !resourceKey.equals(resourceClass.getName())) {

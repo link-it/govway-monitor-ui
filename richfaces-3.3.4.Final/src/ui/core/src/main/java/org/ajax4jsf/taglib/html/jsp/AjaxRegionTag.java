@@ -21,8 +21,8 @@
 
 package org.ajax4jsf.taglib.html.jsp;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import org.ajax4jsf.Messages;
@@ -82,7 +82,7 @@ public class AjaxRegionTag extends UIComponentTagBase {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.servlet.jsp.tagext.Tag#release()
+     * @see jakarta.servlet.jsp.tagext.Tag#release()
      */
     public void release() {
         // release reources properties

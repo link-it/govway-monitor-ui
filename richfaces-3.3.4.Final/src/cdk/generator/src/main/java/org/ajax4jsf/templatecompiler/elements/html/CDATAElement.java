@@ -48,8 +48,12 @@ public class CDATAElement extends TemplateElementBase {
 		StringBuffer retValue = new StringBuffer();
 		if ((null != this.htmlText) && (this.htmlText.length() > 0)) {
 			retValue.append("     writer.write(\"<![CDATA[\");\n");
+			String varFix = ELParser.compileEL(this.htmlText, this.getComponentBean());
+			if(this.htmlText.contains("getFunction(context,component)")){
+				varFix = varFix.replace("getFunction()","getFunction(context,component)");		
+			}
 			retValue.append("     writer.write(convertToString(").append(
-					ELParser.compileEL(this.htmlText, this.getComponentBean()))
+					varFix)
 					.append("));\n");
 			retValue.append("     writer.write(\"]]>\");\n");
 		}

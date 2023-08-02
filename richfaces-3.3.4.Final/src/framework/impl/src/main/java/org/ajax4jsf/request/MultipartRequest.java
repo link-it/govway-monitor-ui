@@ -40,8 +40,8 @@ import java.util.regex.Pattern;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import org.ajax4jsf.exception.FileUploadException;
 import org.ajax4jsf.request.ByteSequenceMatcher.BytesHandler;

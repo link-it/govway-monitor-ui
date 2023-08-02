@@ -11,8 +11,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.validator.Validator;
 import org.apache.commons.beanutils.ConvertUtils;
 import javax.faces.context.FacesContext;
-import javax.servlet.jsp.JspException;
-import javax.el.ValueExpression;
+import jakarta.servlet.jsp.JspException;
+import jakarta.el.ValueExpression;
 import ${validator.classname};
 
 public class $tag.simpleClassName extends $tag.superclass {

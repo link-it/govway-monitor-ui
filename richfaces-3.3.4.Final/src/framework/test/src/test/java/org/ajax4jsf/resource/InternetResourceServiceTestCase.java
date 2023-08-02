@@ -69,7 +69,7 @@ public class InternetResourceServiceTestCase extends AbstractAjax4JsfTestCase {
 	}
 
 	/**
-	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#init(javax.servlet.FilterConfig)}.
+	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#init(jakarta.servlet.FilterConfig)}.
 	 * @throws Exception 
 	 */
 	public void testInit() throws Exception {
@@ -81,7 +81,7 @@ public class InternetResourceServiceTestCase extends AbstractAjax4JsfTestCase {
 	}
 
 	/**
-	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#serviceResource(java.lang.String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
+	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#serviceResource(java.lang.String, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)}.
 	 * @throws IOException 
 	 * @throws Exception 
 	 */
@@ -103,7 +103,7 @@ public class InternetResourceServiceTestCase extends AbstractAjax4JsfTestCase {
 	}
 
 	/**
-	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#serviceResource(java.lang.String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
+	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#serviceResource(java.lang.String, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)}.
 	 * @throws IOException 
 	 * @throws Exception 
 	 */
@@ -128,7 +128,7 @@ public class InternetResourceServiceTestCase extends AbstractAjax4JsfTestCase {
 	}
 
 	/**
-	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#serviceResource(java.lang.String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
+	 * Test method for {@link org.ajax4jsf.resource.InternetResourceService#serviceResource(java.lang.String, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)}.
 	 * @throws IOException 
 	 * @throws Exception 
 	 */

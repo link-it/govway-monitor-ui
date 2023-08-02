@@ -29,9 +29,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.resource.ResourceContext;
 
@@ -114,7 +114,7 @@ public class ServletResourceContext extends ResourceContext {
 	/**
 	 * @param name
 	 * @return
-	 * @see javax.servlet.ServletContext#getAttribute(java.lang.String)
+	 * @see jakarta.servlet.ServletContext#getAttribute(java.lang.String)
 	 */
 	public Object getContextAttribute(String name) {
 		return context.getAttribute(name);
@@ -124,7 +124,7 @@ public class ServletResourceContext extends ResourceContext {
 	 * @param path
 	 * @return
 	 * @throws MalformedURLException
-	 * @see javax.servlet.ServletContext#getResource(java.lang.String)
+	 * @see jakarta.servlet.ServletContext#getResource(java.lang.String)
 	 */
 	public URL getResource(String path) throws MalformedURLException {
 		return context.getResource(path);
@@ -133,7 +133,7 @@ public class ServletResourceContext extends ResourceContext {
 	/**
 	 * @param path
 	 * @return
-	 * @see javax.servlet.ServletContext#getResourcePaths(java.lang.String)
+	 * @see jakarta.servlet.ServletContext#getResourcePaths(java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
     public Set getResourcePaths(String path) {

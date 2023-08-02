@@ -23,7 +23,7 @@ package org.ajax4jsf.webapp;
 
 import java.io.InputStream;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
 import org.apache.shale.test.mock.MockServletContext;

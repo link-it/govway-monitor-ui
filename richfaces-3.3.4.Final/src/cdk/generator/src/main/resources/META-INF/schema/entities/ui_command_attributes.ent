@@ -18,7 +18,7 @@
     </property>
     <property  attachedstate="true" hidden="true">
         <name>actionExpression</name>
-        <classname>javax.el.MethodExpression</classname>
+        <classname>jakarta.el.MethodExpression</classname>
         <description>
             MethodExpression pointing at the application action to be invoked,
             if this UIComponent is activated by you, during the Apply

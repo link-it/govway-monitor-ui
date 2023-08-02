@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -202,7 +207,7 @@ public abstract class AbstractExtendedTableRenderer extends
             writer.endElement("th");
         }
         else{
-        	writer.writeAttribute(HTML.style_ATTRIBUTE, "height: 0px", null);
+        	encodeStyleClass(writer, null, "extdt-subheader rich-extdt-subheader", null,"extdt-height-zero-style");
         	for (int i = 0; i < numberOfColumns; i++) {
                 writer.startElement("th", header);
                 encodeNBSP(writer);
@@ -571,8 +576,7 @@ public abstract class AbstractExtendedTableRenderer extends
         writer.endElement(HTML.IMG_ELEMENT);
         writer.endElement(HTML.SPAN_ELEM);
         writer.startElement(HTML.SPAN_ELEM, table);
-        writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-group-text", null);
-        writer.writeAttribute(HTML.style_ATTRIBUTE, "font-weight: bold;", null);
+        writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-group-text extdt-font-weight-bold-style", null);
         String label = holder.getGroupingColumnLabel();
         writer.writeText((label == null) ? "" : label + ": ", null);
         writer.endElement(HTML.SPAN_ELEM);
@@ -759,7 +763,13 @@ public abstract class AbstractExtendedTableRenderer extends
         writer.startElement(HTML.TR_ELEMENT, table);
         encodeRowId(context, writer, table, holder.getRowCounter());
         encodeStyleClass(writer, null, skinClass, null, rowClass);
-        encodeRowEvents(context, table);
+        
+        String ownerId = table.getBaseClientId(context);
+        String clientId = createTrId(holder.getRowCounter(), ownerId);
+        
+		String script = this.getScriptRowEvents(context, table, clientId, HTML.TR_ELEMENT);
+		table.getRowEventHandlers().add(script);
+//        encodeRowEvents(context, table);
     }
 
     /**
@@ -779,8 +789,12 @@ public abstract class AbstractExtendedTableRenderer extends
     protected void encodeRowId(FacesContext context, ResponseWriter writer,
             UIDataTable table, int rowId) throws IOException {
         String ownerId = table.getBaseClientId(context);
-        getUtils().writeAttribute(writer, "id", ownerId + ":n:" + rowId);
+        getUtils().writeAttribute(writer, "id", createTrId(rowId, ownerId));
     }
+
+	private String createTrId(int rowId, String ownerId) {
+		return ownerId + ":n:" + rowId;
+	}
 
     /**
      * Calculate total number of columns in table.
@@ -1474,8 +1488,7 @@ public abstract class AbstractExtendedTableRenderer extends
                 writer.writeAttribute(HTML.onclick_ATTRIBUTE,
                         buildAjaxFunction(context, column, true, null)
                                 .toString(), null);
-                writer.writeAttribute(HTML.style_ATTRIBUTE, "cursor: pointer;",
-                        null);
+                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-cursor-pointer-style", null);
             }
 
             writer.startElement(HTML.DIV_ELEM, column);
@@ -1565,8 +1578,7 @@ public abstract class AbstractExtendedTableRenderer extends
                      * getOnAjaxCompleteFunction(context, (UIDataTable)
                      * column.getParent())) .toString(), null);
                      */
-                    writer.writeAttribute(HTML.style_ATTRIBUTE,
-                            "cursor: pointer;", null);
+                	writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-cursor-pointer-style", null);
                 }
                 writer.writeAttribute("sortable", String.valueOf(sortable),
                         null);
@@ -1663,21 +1675,12 @@ public abstract class AbstractExtendedTableRenderer extends
                         + "left";
                 writer.startElement(HTML.SPAN_ELEM, column);
                 writer.writeAttribute(HTML.id_ATTRIBUTE, spanId, null);
-                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop",
-                        null);
-                writer.writeAttribute(HTML.style_ATTRIBUTE,
-                        "visibility: hidden;", null);
+                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop extdt-visibility-hidden", null);
                 writer.startElement(HTML.SPAN_ELEM, column);
-                writer.writeAttribute(HTML.class_ATTRIBUTE,
-                        "extdt-hdrop-top extdt-hdrop-top-left", null);
-                writer.writeAttribute(HTML.style_ATTRIBUTE,
-                        "visibility: hidden;", null);
+                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop-top extdt-hdrop-top-left extdt-visibility-hidden", null);
                 writer.endElement(HTML.SPAN_ELEM);
                 writer.startElement(HTML.SPAN_ELEM, column);
-                writer.writeAttribute(HTML.class_ATTRIBUTE,
-                        "extdt-hdrop-bottom extdt-hdrop-bottom-left", null);
-                writer.writeAttribute(HTML.style_ATTRIBUTE,
-                        "visibility: hidden;", null);
+                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop-bottom extdt-hdrop-bottom-left extdt-visibility-hidden", null);
                 writer.endElement(HTML.SPAN_ELEM);
                 writer.endElement(HTML.SPAN_ELEM);
                 renderDropSupport(context, dataColumn, spanId, true);
@@ -1686,21 +1689,12 @@ public abstract class AbstractExtendedTableRenderer extends
                 spanId = tableId + "_hdrop_" + dataColumn.getId() + "right";
                 writer.startElement(HTML.SPAN_ELEM, column);
                 writer.writeAttribute(HTML.id_ATTRIBUTE, spanId, null);
-                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop",
-                        null);
-                writer.writeAttribute(HTML.style_ATTRIBUTE,
-                        "visibility: hidden;", null);
+                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop extdt-visibility-hidden", null);
                 writer.startElement(HTML.SPAN_ELEM, column);
-                writer.writeAttribute(HTML.class_ATTRIBUTE,
-                        "extdt-hdrop-top extdt-hdrop-top-right", null);
-                writer.writeAttribute(HTML.style_ATTRIBUTE,
-                        "visibility: hidden;", null);
+                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop-top extdt-hdrop-top-right extdt-visibility-hidden", null);
                 writer.endElement(HTML.SPAN_ELEM);
                 writer.startElement(HTML.SPAN_ELEM, column);
-                writer.writeAttribute(HTML.class_ATTRIBUTE,
-                        "extdt-hdrop-bottom extdt-hdrop-bottom-right", null);
-                writer.writeAttribute(HTML.style_ATTRIBUTE,
-                        "visibility: hidden;", null);
+                writer.writeAttribute(HTML.class_ATTRIBUTE, "extdt-hdrop-bottom extdt-hdrop-bottom-right extdt-visibility-hidden", null);
                 writer.endElement(HTML.SPAN_ELEM);
                 writer.endElement(HTML.SPAN_ELEM);
                 renderDropSupport(context, dataColumn, spanId, false);

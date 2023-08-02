@@ -1,30 +1,35 @@
 /*
  * YUI Compressor
- * Author: Julien Lecomte <jlecomte@yahoo-inc.com>
- * Copyright (c) 2007, Yahoo! Inc. All rights reserved.
- * Code licensed under the BSD License:
- *     http://developer.yahoo.net/yui/license.txt
+ * http://developer.yahoo.com/yui/compressor/
+ * Author: Julien Lecomte -  http://www.julienlecomte.net/
+ * Copyright (c) 2011 Yahoo! Inc.  All rights reserved.
+ * The copyrights embodied in the content of this file are licensed
+ * by Yahoo! Inc. under the BSD (revised) open source license.
+ */
+ /*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
  */
 
 package com.yahoo.platform.yui.compressor;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 
 class ScriptOrFnScope {
 
     private int braceNesting;
     private ScriptOrFnScope parentScope;
-    private ArrayList subScopes;
-    private Hashtable identifiers = new Hashtable();
-    private Hashtable hints = new Hashtable();
+    private ArrayList<ScriptOrFnScope> subScopes;
+    private Hashtable<String, JavaScriptIdentifier> identifiers = new Hashtable<String, JavaScriptIdentifier>();
+    private Hashtable<String, String> hints = new Hashtable<String, String>();
     private boolean markedForMunging = true;
+    private int varcount = 0;
 
     ScriptOrFnScope(int braceNesting, ScriptOrFnScope parentScope) {
         this.braceNesting = braceNesting;
         this.parentScope = parentScope;
-        this.subScopes = new ArrayList();
+        this.subScopes = new ArrayList<ScriptOrFnScope>();
         if (parentScope != null) {
             parentScope.subScopes.add(this);
         }
@@ -63,9 +68,9 @@ class ScriptOrFnScope {
         }
     }
 
-    private ArrayList getUsedSymbols() {
-        ArrayList result = new ArrayList();
-        Enumeration elements = identifiers.elements();
+    private ArrayList<String> getUsedSymbols() {
+        ArrayList<String> result = new ArrayList<String>();
+        Enumeration<JavaScriptIdentifier> elements = identifiers.elements();
         while (elements.hasMoreElements()) {
             JavaScriptIdentifier identifier = (JavaScriptIdentifier) elements.nextElement();
             String mungedValue = identifier.getMungedValue();
@@ -77,14 +82,38 @@ class ScriptOrFnScope {
         return result;
     }
 
-    private ArrayList getAllUsedSymbols() {
-        ArrayList result = new ArrayList();
+    private ArrayList<String> getAllUsedSymbols() {
+        ArrayList<String> result = new ArrayList<String>();
         ScriptOrFnScope scope = this;
         while (scope != null) {
             result.addAll(scope.getUsedSymbols());
             scope = scope.parentScope;
         }
         return result;
+    }
+
+    int incrementVarCount() {
+        varcount++;
+        return varcount;
+    }
+
+    public void getFullMapping(StringBuffer outBuffer, String mungedPrefix) {
+        Enumeration<JavaScriptIdentifier> elements = identifiers.elements();
+        while (elements.hasMoreElements()) {
+            JavaScriptIdentifier identifier = (JavaScriptIdentifier) elements.nextElement();
+            String mungedValue = identifier.getMungedValue();
+            if (mungedValue == null) {
+                mungedValue = identifier.getValue();
+            }
+            outBuffer.append(mungedPrefix + mungedValue);
+            outBuffer.append(": ");
+            outBuffer.append(identifier.getValue() + "\n");
+        }
+
+        for (int i = 0; i < subScopes.size(); i++) {
+            ScriptOrFnScope scope = (ScriptOrFnScope) subScopes.get(i);
+            scope.getFullMapping(outBuffer, "\t"+mungedPrefix);
+        }
     }
 
     void munge() {
@@ -99,7 +128,7 @@ class ScriptOrFnScope {
         // Do not munge symbols in the global scope!
         if (parentScope != null) {
 
-            ArrayList freeSymbols = new ArrayList();
+            LinkedHashSet<String> freeSymbols = new LinkedHashSet<String>(); 
 
             freeSymbols.addAll(JavaScriptCompressor.ones);
             freeSymbols.removeAll(getAllUsedSymbols());
@@ -114,11 +143,10 @@ class ScriptOrFnScope {
                 freeSymbols.removeAll(getAllUsedSymbols());
             }
             if (freeSymbols.size() == 0) {
-                System.err.println("The YUI Compressor ran out of symbols. Aborting...");
-                System.exit(1);
+                throw new IllegalStateException("The YUI Compressor ran out of symbols. Aborting...");
             }
 
-            Enumeration elements = identifiers.elements();
+            Enumeration<JavaScriptIdentifier> elements = identifiers.elements();
             while (elements.hasMoreElements()) {
                 if (freeSymbols.size() == 0) {
                     pickFromSet++;
@@ -127,8 +155,7 @@ class ScriptOrFnScope {
                     } else if (pickFromSet == 3) {
                         freeSymbols.addAll(JavaScriptCompressor.threes);
                     } else {
-                        System.err.println("The YUI Compressor ran out of symbols. Aborting...");
-                        System.exit(1);
+                        throw new IllegalStateException("The YUI Compressor ran out of symbols. Aborting...");
                     }
                     // It is essential to remove the symbols already used in
                     // the containing scopes, or some of the variables declared
@@ -140,7 +167,9 @@ class ScriptOrFnScope {
                 String mungedValue;
                 JavaScriptIdentifier identifier = (JavaScriptIdentifier) elements.nextElement();
                 if (identifier.isMarkedForMunging()) {
-                    mungedValue = (String) freeSymbols.remove(0);
+                    Iterator<String> freeSymIt = freeSymbols.iterator();
+                    mungedValue = (String) freeSymIt.next();
+                    freeSymIt.remove();
                 } else {
                     mungedValue = identifier.getValue();
                 }

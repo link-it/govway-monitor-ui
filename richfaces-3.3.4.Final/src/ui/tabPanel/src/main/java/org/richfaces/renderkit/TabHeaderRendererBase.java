@@ -65,7 +65,7 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
     public List<String> encodeParams(FacesContext context, UITab component) throws IOException {
     	
     	UITab menuItem = component;
-    	List<String> params = new ArrayList();
+    	List<String> params = new ArrayList<String>();
     	//TODO use StringBuilder
     	StringBuffer buff = new StringBuffer();
     	
@@ -102,11 +102,6 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
     public void encodeTabLabel(FacesContext context, UITab tab) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        boolean disabled = tab.isDisabled();
-        UITabPanel pane = tab.getPane();
-        String method = tab.getSwitchTypeOrDefault();
-        boolean ajax = UISwitchablePanel.AJAX_METHOD.equals(method);
-        boolean clientSide = UISwitchablePanel.CLIENT_METHOD.equals(method);
         String label = tab.getLabel();
 
         if (label == null) {
@@ -115,56 +110,78 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
 
         String clientId = tab.getClientId(context);
         
-        //TODO format code block properly
-        if (!disabled) {
-            if (clientSide) {
-        	//TODO use StringBuilder
-                writer.writeAttribute(HTML.onclick_ATTRIBUTE, "if (RichFaces.onTabChange(event, '"+pane.getClientId(context)+"','"+
-                	clientId+"')) RichFaces.switchTab('" + 
-                	pane.getClientId(context) + "','" + clientId + "','" + 
-                	getUtils().formatValue(context, pane, tab.getName()) + "');", "switchScript");
-            } else {
-                String activeCheck = "if (RichFaces.isTabActive('" + clientId + LABEL_SUFFIX + "')) return false;";
-                String eventCheck = " if (!RichFaces.onTabChange(event, '"+pane.getClientId(context)+"','"+clientId+"')) return false;";
-                
-                if (ajax) {
-                    JSFunction function = AjaxRendererUtils.buildAjaxFunction(tab,
-                            context);
-                    Map eventOptions = AjaxRendererUtils.buildEventOptions(context,
-                            tab, true);
-                    function.addParameter(eventOptions);
-
-                    StringBuffer buffer = new StringBuffer();
-                    function.appendScript(buffer);
-                    //TODO remove this.onclick = null
-                    buffer.append("; return false; this.onclick = null;");
-                    String script = buffer.toString();
-                    writer.writeAttribute(HTML.onclick_ATTRIBUTE, activeCheck + eventCheck +  script, null);
-                } else /* TODO if server */ {
-                    StringBuffer script = new StringBuffer("var _formName = A4J.findForm(this).id; var _paramName = '" + clientId + "_server_submit'; var _params = new Object(); _params[_paramName] = _paramName; ");
-                    List params = encodeParams(context, tab);
-                    
-                    for (Iterator iterator = params.iterator(); iterator.hasNext();) {
-						script.append(iterator.next());
-					}
-                    
-                    script.append("_JSFFormSubmit('");
-                    script.append(clientId);
-                    script.append("', _formName, null, _params);");
-                    //TODO remove this.onclick = null
-                    script.append("this.onclick = null; _clearJSFFormParameters(_formName, null, [_paramName]);");
-
-                    writer.writeAttribute(HTML.onclick_ATTRIBUTE, activeCheck + eventCheck + script.toString()
-                            /* "RichFaces.submitTab(this,'"+clientId + "_inp" +"','"+pane.getClientId(context)+"');"*/, null);
-                }
-            }
-        }
-        
         String cssId = RendererUtils.getCssId(clientId);
         String cssClassName = cssId + "-shifted-style";
         
         writer.writeAttribute(HTML.class_ATTRIBUTE, cssClassName, null);
     }
+
+	public String getOnClickEventHandler(FacesContext context, UITab tab) throws IOException {
+		String script = "";
+		boolean disabled = tab.isDisabled();
+		UITabPanel pane = tab.getPane();
+		String method = tab.getSwitchTypeOrDefault();
+        boolean ajax = UISwitchablePanel.AJAX_METHOD.equals(method);
+        boolean clientSide = UISwitchablePanel.CLIENT_METHOD.equals(method);
+        String clientId = tab.getClientId(context);
+		
+        if (!disabled) {
+        	StringBuffer sb = new StringBuffer();
+            if (clientSide) {
+                sb.append("if (RichFaces.onTabChange(event, '");
+				sb.append(pane.getClientId(context));
+				sb.append("','");
+				sb.append(clientId);
+				sb.append("')) RichFaces.switchTab('");
+				sb.append(pane.getClientId(context));
+				sb.append("','");
+				sb.append(clientId);
+				sb.append("','");
+				sb.append(getUtils().formatValue(context, pane, tab.getName()));
+				sb.append("');");
+            } else {
+                String activeCheck = "if (RichFaces.isTabActive('" + clientId + LABEL_SUFFIX + "')) return false;";
+                String eventCheck = " if (!RichFaces.onTabChange(event, '"+pane.getClientId(context)+"','"+clientId+"')) return false;";
+                
+                if (ajax) {
+                    JSFunction function = AjaxRendererUtils.buildAjaxFunction(tab, context);
+                    Map<String,Object> eventOptions = AjaxRendererUtils.buildEventOptions(context, tab, true);
+                    function.addParameter(eventOptions);
+                    
+                    //TODO remove this.onclick = null
+                    sb.append(activeCheck);
+                    sb.append(eventCheck);
+                    function.appendScript(sb);
+                    sb.append("; return false; this.onclick = null;");
+//                    String script = buffer.toString();
+//                    writer.writeAttribute(HTML.onclick_ATTRIBUTE, activeCheck + eventCheck +  script, null);
+                } else /* TODO if server */ {
+                	sb.append(activeCheck);
+                    sb.append(eventCheck);
+                    
+                	sb.append("var _formName = A4J.findForm(this).id; var _paramName = '" + clientId + "_server_submit'; var _params = new Object(); _params[_paramName] = _paramName; ");
+                    List<String> params = encodeParams(context, tab);
+                    
+                    for (Iterator<String> iterator = params.iterator(); iterator.hasNext();) {
+						sb.append(iterator.next());
+					}
+                    
+                    sb.append("_JSFFormSubmit('");
+                    sb.append(clientId);
+                    sb.append("', _formName, null, _params);");
+                    //TODO remove this.onclick = null
+                    sb.append("this.onclick = null; _clearJSFFormParameters(_formName, null, [_paramName]);");
+
+//                    writer.writeAttribute(HTML.onclick_ATTRIBUTE, activeCheck + eventCheck + script.toString()
+//                            /* "RichFaces.submitTab(this,'"+clientId + "_inp" +"','"+pane.getClientId(context)+"');"*/, null);
+                }
+            }
+            
+            script = sb.toString();
+        }
+        
+        return script;
+	}
     
     public void encodeTabLabelClass(FacesContext context, UITab tab) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -226,9 +243,6 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
             } else {
                 labelClass = TabPanelRendererBase.getInactiveTabClass(tab);
             }
-
-            writer.writeAttribute(HTML.onmouseover_ATTRIBUTE, ONMOUSEOVER, "tabOnMouseOver");
-            writer.writeAttribute(HTML.onmouseout_ATTRIBUTE, ONMOUSEOUT, "tabOnMouseOut");
         }
         writer.writeAttribute(HTML.class_ATTRIBUTE, labelClass, "tabClass");
         String title = tab.getTitle();
@@ -255,6 +269,73 @@ public class TabHeaderRendererBase extends org.ajax4jsf.renderkit.HeaderResource
         }
         
     }
+    
+    /**
+     *   writer.writeAttribute(HTML.onmouseover_ATTRIBUTE, ONMOUSEOVER, "tabOnMouseOver");
+            writer.writeAttribute(HTML.onmouseout_ATTRIBUTE, ONMOUSEOUT, "tabOnMouseOut");
+       onclick="#{component.attributes['onlabelclick']}"
+								onkeypress="#{component.attributes['onlabelkeypress']}"
+								ondblclick="#{component.attributes['onlabeldblclick']}"
+								onkeyup="#{component.attributes['onlabelkeyup']}"
+								onkeydown="#{component.attributes['onlabelkeydown']}"
+								onmousedown="#{component.attributes['onlabelmousedown']}"
+								onmouseup="#{component.attributes['onlabelmouseup']}"
+								onmousemove="#{component.attributes['onlabelmousemove']}"
+     */
+    public String getLabelEventsHandler(FacesContext context, UITab tab) throws IOException {
+    	StringBuffer sb = new StringBuffer();
+    	String tag = "td";
+    	String clientId = tab.getClientId(context) + "_lbl";
+    	
+    	// writer.writeAttribute(HTML.onmouseover_ATTRIBUTE, ONMOUSEOVER, "tabOnMouseOver");
+    	sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+"mouseover"+"(function() {");
+		sb.append(ONMOUSEOVER);
+		sb.append("});");
+//		sb.append("\n");
+    	
+    	// writer.writeAttribute(HTML.onmouseout_ATTRIBUTE, ONMOUSEOUT, "tabOnMouseOut");
+		sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+"mouseout"+"(function() {");
+		sb.append(ONMOUSEOUT);
+		sb.append("});");
+//		sb.append("\n");
+    	
+    	// onclick="#{component.attributes['onlabelclick']}"
+		addEvent(tab, sb, tag, clientId, "onlabelclick", "click");
+    	
+    	// onkeypress="#{component.attributes['onlabelkeypress']}"
+		addEvent(tab, sb, tag, clientId, "onlabelkeypress", "keypress");
+    	
+    	// ondblclick="#{component.attributes['onlabeldblclick']}"
+		addEvent(tab, sb, tag, clientId, "onlabeldblclick", "dblclick");
+    	
+    	// onkeyup="#{component.attributes['onlabelkeyup']}"
+		addEvent(tab, sb, tag, clientId, "onlabelkeyup", "keyup");
+    	
+    	// onkeydown="#{component.attributes['onlabelkeydown']}"
+		addEvent(tab, sb, tag, clientId, "onlabelkeydown", "keydown");
+    	
+    	// onmousedown="#{component.attributes['onlabelmousedown']}"
+		addEvent(tab, sb, tag, clientId, "onlabelmousedown", "mousedown");
+    	
+    	// onmouseup="#{component.attributes['onlabelmouseup']}"
+		addEvent(tab, sb, tag, clientId, "onlabelmouseup", "mouseup");
+    	
+    	// onmousemove="#{component.attributes['onlabelmousemove']}"
+		addEvent(tab, sb, tag, clientId, "onlabelmousemove", "mousemove");
+    	
+    	return sb.toString();
+    }
+
+	private void addEvent(UITab tab, StringBuffer sb, String tag, String clientId, String attribute,
+			String jQueryEvent) {
+		Object event = tab.getAttributes().get(attribute);
+    	if(null != event){
+		    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {");
+			sb.append(event);
+			sb.append("});");
+//			sb.append("\n");
+	    }
+	}
 
     protected String encodeTabLabelWidth(FacesContext context, UITab tab) {
         String labelWidth = tab.getLabelWidth();

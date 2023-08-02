@@ -8,6 +8,11 @@ maven-cdk-plugin/target/
 maven-javascript-plugin/target/
 maven-resource-dependency-plugin/target/
 richfaces-facelets/target/
+
+.project
+.classpath
+.settings/
+
 # Except this file
 !.gitignore
 

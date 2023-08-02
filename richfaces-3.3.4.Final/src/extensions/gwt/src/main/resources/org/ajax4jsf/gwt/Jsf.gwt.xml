@@ -1,6 +1,0 @@
-<module>
-
-	<inherits name='com.google.gwt.user.User'/>
-    <servlet path="/gwtFacesServlet" class="org.ajax4jsf.gwt.server.GwtFacesServlet" />
-
-</module>

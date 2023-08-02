@@ -4,13 +4,13 @@
 	<parent>
 		<artifactId>framework</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces.framework</groupId>
 	<artifactId>jsf-test</artifactId>
 	<name>jsf-test</name>
-	<version>3.3.4.Final</version>
+	<version>${govway-monitor-ui.version}</version>
 
 	<dependencies>
 		<dependency>

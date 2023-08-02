@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.component.UIData;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
@@ -144,7 +144,7 @@ public abstract class UISuggestionBox extends UIData
     /**
      * Setter for suggestionAction.
      *
-     * @param action {@link javax.el.MethodExpression}
+     * @param action {@link jakarta.el.MethodExpression}
      */
     public abstract void setSuggestionAction(MethodExpression action);
 

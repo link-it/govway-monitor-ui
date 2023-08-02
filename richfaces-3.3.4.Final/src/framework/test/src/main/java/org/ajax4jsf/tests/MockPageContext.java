@@ -30,18 +30,18 @@ package org.ajax4jsf.tests;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import javax.el.ELContext;
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.el.ExpressionEvaluator;
-import javax.servlet.jsp.el.VariableResolver;
+import jakarta.el.ELContext;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.el.ExpressionEvaluator;
+import jakarta.servlet.jsp.el.VariableResolver;
 
 /**
  * TODO Class description goes here.
@@ -65,7 +65,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#forward(java.lang.String)
+     * @see jakarta.servlet.jsp.PageContext#forward(java.lang.String)
      */
     @Override
     public void forward(String relativeUrlPath) throws ServletException,
@@ -75,7 +75,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#getException()
+     * @see jakarta.servlet.jsp.PageContext#getException()
      */
     @Override
     public Exception getException() {
@@ -84,7 +84,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#getPage()
+     * @see jakarta.servlet.jsp.PageContext#getPage()
      */
     @Override
     public Object getPage() {
@@ -93,7 +93,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#getRequest()
+     * @see jakarta.servlet.jsp.PageContext#getRequest()
      */
     @Override
     public ServletRequest getRequest() {
@@ -102,7 +102,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#getResponse()
+     * @see jakarta.servlet.jsp.PageContext#getResponse()
      */
     @Override
     public ServletResponse getResponse() {
@@ -111,7 +111,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#getServletConfig()
+     * @see jakarta.servlet.jsp.PageContext#getServletConfig()
      */
     @Override
     public ServletConfig getServletConfig() {
@@ -120,7 +120,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#getServletContext()
+     * @see jakarta.servlet.jsp.PageContext#getServletContext()
      */
     @Override
     public ServletContext getServletContext() {
@@ -129,7 +129,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#getSession()
+     * @see jakarta.servlet.jsp.PageContext#getSession()
      */
     @Override
     public HttpSession getSession() {
@@ -138,7 +138,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#handlePageException(java.lang.Exception)
+     * @see jakarta.servlet.jsp.PageContext#handlePageException(java.lang.Exception)
      */
     @Override
     public void handlePageException(Exception e) throws ServletException,
@@ -148,7 +148,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#handlePageException(java.lang.Throwable)
+     * @see jakarta.servlet.jsp.PageContext#handlePageException(java.lang.Throwable)
      */
     @Override
     public void handlePageException(Throwable t) throws ServletException,
@@ -158,7 +158,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#include(java.lang.String)
+     * @see jakarta.servlet.jsp.PageContext#include(java.lang.String)
      */
     @Override
     public void include(String relativeUrlPath) throws ServletException,
@@ -168,7 +168,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#include(java.lang.String, boolean)
+     * @see jakarta.servlet.jsp.PageContext#include(java.lang.String, boolean)
      */
     @Override
     public void include(String relativeUrlPath, boolean flush)
@@ -178,7 +178,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#initialize(javax.servlet.Servlet, javax.servlet.ServletRequest, javax.servlet.ServletResponse, java.lang.String, boolean, int, boolean)
+     * @see jakarta.servlet.jsp.PageContext#initialize(jakarta.servlet.Servlet, jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, java.lang.String, boolean, int, boolean)
      */
     @Override
     public void initialize(Servlet servlet, ServletRequest request,
@@ -190,7 +190,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.PageContext#release()
+     * @see jakarta.servlet.jsp.PageContext#release()
      */
     @Override
     public void release() {
@@ -199,7 +199,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#findAttribute(java.lang.String)
+     * @see jakarta.servlet.jsp.JspContext#findAttribute(java.lang.String)
      */
     @Override
     public Object findAttribute(String name) {
@@ -208,7 +208,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getAttribute(java.lang.String)
+     * @see jakarta.servlet.jsp.JspContext#getAttribute(java.lang.String)
      */
     @Override
     public Object getAttribute(String name) {
@@ -217,7 +217,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getAttribute(java.lang.String, int)
+     * @see jakarta.servlet.jsp.JspContext#getAttribute(java.lang.String, int)
      */
     @Override
     public Object getAttribute(String name, int scope) {
@@ -226,7 +226,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getAttributeNamesInScope(int)
+     * @see jakarta.servlet.jsp.JspContext#getAttributeNamesInScope(int)
      */
     @Override
     public Enumeration<String> getAttributeNamesInScope(int scope) {
@@ -235,7 +235,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getAttributesScope(java.lang.String)
+     * @see jakarta.servlet.jsp.JspContext#getAttributesScope(java.lang.String)
      */
     @Override
     public int getAttributesScope(String name) {
@@ -244,7 +244,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getELContext()
+     * @see jakarta.servlet.jsp.JspContext#getELContext()
      */
     @Override
     public ELContext getELContext() {
@@ -253,7 +253,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getExpressionEvaluator()
+     * @see jakarta.servlet.jsp.JspContext#getExpressionEvaluator()
      */
     @Override
     public ExpressionEvaluator getExpressionEvaluator() {
@@ -262,7 +262,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getOut()
+     * @see jakarta.servlet.jsp.JspContext#getOut()
      */
     @Override
     public JspWriter getOut() {
@@ -429,7 +429,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#getVariableResolver()
+     * @see jakarta.servlet.jsp.JspContext#getVariableResolver()
      */
     @Override
     public VariableResolver getVariableResolver() {
@@ -438,7 +438,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#removeAttribute(java.lang.String)
+     * @see jakarta.servlet.jsp.JspContext#removeAttribute(java.lang.String)
      */
     @Override
     public void removeAttribute(String name) {
@@ -447,7 +447,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#removeAttribute(java.lang.String, int)
+     * @see jakarta.servlet.jsp.JspContext#removeAttribute(java.lang.String, int)
      */
     @Override
     public void removeAttribute(String name, int scope) {
@@ -456,7 +456,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#setAttribute(java.lang.String, java.lang.Object)
+     * @see jakarta.servlet.jsp.JspContext#setAttribute(java.lang.String, java.lang.Object)
      */
     @Override
     public void setAttribute(String name, Object value) {
@@ -465,7 +465,7 @@ public class MockPageContext extends PageContext {
     }
 
     /* (non-Javadoc)
-     * @see javax.servlet.jsp.JspContext#setAttribute(java.lang.String, java.lang.Object, int)
+     * @see jakarta.servlet.jsp.JspContext#setAttribute(java.lang.String, java.lang.Object, int)
      */
     @Override
     public void setAttribute(String name, Object value, int scope) {

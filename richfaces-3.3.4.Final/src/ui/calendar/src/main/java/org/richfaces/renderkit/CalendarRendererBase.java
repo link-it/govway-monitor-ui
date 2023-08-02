@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -739,5 +739,25 @@ public class CalendarRendererBase extends TemplateEncoderRendererBase {
 			}
 		}
 		return labels;
+	}
+	
+	public boolean addCellsEventHandlers(FacesContext context, UICalendar calendar) {
+		// !(options[disabled] == false || options[readonly] == false)
+		Object readOnlyObj = calendar.getAttributes().get("readonly");
+		boolean readOnly = false;
+		if(readOnlyObj != null) {
+			String r = readOnlyObj.toString();
+			readOnly = Boolean.parseBoolean(r);
+		}
+		
+		return !(calendar.isDisabled() || readOnly);
+	}
+	
+	public boolean isDisabled(FacesContext context, UICalendar calendar) {
+		return calendar.isDisabled();
+	}
+	
+	public boolean isEnabled(FacesContext context, UICalendar calendar) {
+		return !this.isDisabled(context, calendar);
 	}
 }

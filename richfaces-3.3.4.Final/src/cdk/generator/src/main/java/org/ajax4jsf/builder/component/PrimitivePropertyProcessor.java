@@ -21,8 +21,8 @@
 
 package org.ajax4jsf.builder.component;
 
-import javax.el.ELException;
-import javax.el.ValueExpression;
+import jakarta.el.ELException;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 
 import org.ajax4jsf.builder.component.methods.VelocityMethodBody;

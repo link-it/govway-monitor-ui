@@ -20,7 +20,7 @@
  */
 package org.richfaces.component;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;

@@ -126,7 +126,7 @@
 		</property>
 		<property>
 			<name>currentDateChangeListener</name>
-			<classname>javax.el.MethodExpression;</classname>
+			<classname>jakarta.el.MethodExpression</classname>
 			<description>
 				MethodExpression representing an action listener method
 				that will be notified after date selection

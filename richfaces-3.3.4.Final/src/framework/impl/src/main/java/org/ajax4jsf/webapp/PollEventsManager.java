@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.faces.FacesException;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.ajax4jsf.cache.Cache;
 import org.ajax4jsf.cache.CacheConfigurationLoader;

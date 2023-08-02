@@ -46,8 +46,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.application.AjaxViewHandler;
@@ -67,7 +67,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class AjaxContextImpl extends AjaxContext {
 	
-	public static final String SERVLET_ERROR_EXCEPTION_ATTRIBUTE = "javax.servlet.error.exception";
+	public static final String SERVLET_ERROR_EXCEPTION_ATTRIBUTE = "jakarta.servlet.error.exception";
 
 	private static final Log log = LogFactory.getLog(AjaxContext.class);
 

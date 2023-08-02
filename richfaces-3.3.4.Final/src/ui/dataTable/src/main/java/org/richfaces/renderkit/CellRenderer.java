@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -30,6 +35,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.ajax4jsf.renderkit.RendererBase;
+import org.ajax4jsf.renderkit.RendererUtils;
 
 /**
  * @author shur
@@ -64,18 +70,28 @@ public class CellRenderer extends RendererBase {
 		
 		super.doEncodeBegin(writer, context, component);
 		java.lang.String clientId = component.getClientId(context);
-		boolean isHeader = (styleClass(context, component)).contains("header");
-        if(isHeader)
-        {
-        	writer.startElement("th", component);
-        	
-        }else{
-        	
-        	writer.startElement("td", component);
+		String style = (String) component.getAttributes().get("style");
+		String styleClass = styleClass(context,component);
+		boolean isHeader = styleClass.contains("header");
+		String tag;
+        if(isHeader) {
+        	tag = "th";
+        } else {
+        	tag = "td";
         }
         
+        if (style != null) {
+    		String cssClassName = RendererUtils.getCssId(context, component);
+    		getUtils().writeStyle(writer, context, component, cssClassName, style);
+    		styleClass = getUtils().concatStyleClasses(styleClass, cssClassName);
+    	}
         
-		getUtils().writeAttribute(writer, "class", styleClass(context,component) );
+        String scriptContentForEventHandler = getUtils().getScriptContentForEventHandler(writer, context, component, tag);
+        getUtils().writeScript(writer, context, component, scriptContentForEventHandler);
+        
+        writer.startElement(tag, component);
+        
+		getUtils().writeAttribute(writer, "class", styleClass );
 		getUtils().writeAttribute(writer, "id", clientId );
 		getUtils().encodeAttributesFromArray(context,component,new String[] {
 			    "abbr" ,
@@ -90,19 +106,19 @@ public class CellRenderer extends RendererBase {
 				    "height" ,
 				    "lang" ,
 				    "nowrap" ,
-				    "onclick" ,
-				    "ondblclick" ,
-				    "onkeydown" ,
-				    "onkeypress" ,
-				    "onkeyup" ,
-				    "onmousedown" ,
-				    "onmousemove" ,
-				    "onmouseout" ,
-				    "onmouseover" ,
-				    "onmouseup" ,
+//				    "onclick" ,
+//				    "ondblclick" ,
+//				    "onkeydown" ,
+//				    "onkeypress" ,
+//				    "onkeyup" ,
+//				    "onmousedown" ,
+//				    "onmousemove" ,
+//				    "onmouseout" ,
+//				    "onmouseover" ,
+//				    "onmouseup" ,
 				    "rowspan" ,
 				    "scope" ,
-				    "style" ,
+				    // "style" ,
 				    "title" ,
 				    "valign" ,
 				    "width" ,
@@ -112,7 +128,6 @@ public class CellRenderer extends RendererBase {
 	
 	
 	protected void doEncodeEnd(ResponseWriter writer, FacesContext context,	UIComponent component) throws IOException {
-		// TODO Auto-generated method stub
 		super.doEncodeEnd(writer, context, component);
 		boolean isHeader = (styleClass(context, component)).contains("header");
         if(isHeader)

@@ -20,12 +20,12 @@
  */
 package org.richfaces.taglib;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 import org.richfaces.validator.HibernateValidator;
 import org.richfaces.validator.FacesBeanValidator;
@@ -44,7 +44,7 @@ public class BeanValidatorTag extends javax.faces.webapp.ValidatorELTag {
 	private ValueExpression _summary;
 
     /**
-     * <p>The {@link javax.el.ValueExpression} that evaluates to an object that
+     * <p>The {@link jakarta.el.ValueExpression} that evaluates to an object that
      * implements {@link HibernateValidator}.</p>
      */
     private ValueExpression binding = null;
@@ -64,7 +64,7 @@ public class BeanValidatorTag extends javax.faces.webapp.ValidatorELTag {
 
 	/**
      * <p>Set the expression that will be used to create a
-     * {@link javax.el.ValueExpression} that references a backing bean property
+     * {@link jakarta.el.ValueExpression} that references a backing bean property
      * of the {@link HibernateValidator} instance to be created.</p>
      *
      * @param binding The new expression

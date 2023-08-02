@@ -78,7 +78,7 @@
 		</property>
 	    <property elonly="true" el="true" attachedstate="true" >
 	        <name>ajaxListener</name>
-	        <classname>javax.el.MethodExpression</classname>
+	        <classname>jakarta.el.MethodExpression</classname>
 	    	<description> MethodExpression representing an action listener method that will be notified when this component is activated by the ajax Request and handle it. The expression must evaluate to a public method that takes an AjaxEvent parameter, with a return type of void. Default value is &quot;null&quot;</description>
 	        <defaultvalue>null</defaultvalue>
 	        <methodargs>org.ajax4jsf.event.AjaxEvent</methodargs>

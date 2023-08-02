@@ -10,8 +10,8 @@ import $import ;
 #end
 
 import javax.faces.context.FacesContext;
-import javax.el.ValueExpression;
-import javax.el.ELException;
+import jakarta.el.ValueExpression;
+import jakarta.el.ELException;
 
 /**
  * Component-Type ${component.name}
@@ -96,7 +96,7 @@ import javax.el.ELException;
         if (null != this._${prop.name})
         {
             return this._${prop.name};
-        #if( !$prop.isInstanceof("javax.el.MethodExpression") && !$prop.isInstanceof("javax.el.ValueExpression")&& !$prop.isInstanceof("javax.faces.el.ValueBinding")&& !$prop.isInstanceof("javax.faces.el.MethodBinding"))
+        #if( !$prop.isInstanceof("jakarta.el.MethodExpression") && !$prop.isInstanceof("jakarta.el.ValueExpression")&& !$prop.isInstanceof("javax.faces.el.ValueBinding")&& !$prop.isInstanceof("javax.faces.el.MethodBinding"))
 	    }
         ValueExpression ve = getValueExpression("${prop.name}");
         if (null != ve){

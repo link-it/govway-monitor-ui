@@ -294,10 +294,10 @@
 			<name>value</name>
 			<classname>java.lang.Object</classname>
 		</property>
-		<property exist="false" existintag="false" hidden="true" >
+		<!-- <property exist="false" existintag="false" hidden="true" >
 			<name>validator</name>
 			<classname>javax.faces.validator.Validator</classname>
-		</property>
+		</property> -->
 		<property>
 			<name>trimOverlayedElements</name>
 			<classname>boolean</classname>

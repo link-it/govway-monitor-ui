@@ -26,10 +26,10 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -112,7 +112,7 @@ public class ObjectWrapperFactory {
 		
 		int i = 0;
 		for (Field field : sortOrder) {
-			javax.el.Expression elExpression = field.getExpression();
+			jakarta.el.Expression elExpression = field.getExpression();
 			Expression expression;
 			
 			if (elExpression instanceof ValueExpression) {

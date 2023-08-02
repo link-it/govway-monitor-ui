@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
  * output of JSF to valid XML or JavaScript, for parsing different versions
  * of XmlHttpRequest's on client side.
   */
-public class NekkoFilter extends BaseFilter implements javax.servlet.Filter {
+public class NekkoFilter extends BaseFilter implements jakarta.servlet.Filter {
 	static final Log log = LogFactory.getLog(NekkoFilter.class);
 	
 	/**

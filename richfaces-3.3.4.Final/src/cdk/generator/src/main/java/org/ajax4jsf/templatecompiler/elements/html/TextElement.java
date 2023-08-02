@@ -49,7 +49,13 @@ public class TextElement extends TemplateElementBase {
 	public String getBeginElement() {
 		String retValue = null;
 		if ((null != this.htmlText) && (this.htmlText.length() > 0)) {
-			Object[] params = { ELParser.compileEL(this.htmlText, this.getComponentBean()) };
+
+			String varFix = ELParser.compileEL(this.htmlText, this.getComponentBean());
+			if(this.htmlText.contains("getOnClick(context,component)")){
+				varFix = varFix.replace("getOnClick()","getOnClick(context,component)");		
+			}
+
+			Object[] params = { varFix };
 			retValue = new Formatter().format(
 					"writer.writeText(convertToString(%s),null);\n", params)
 					.toString();

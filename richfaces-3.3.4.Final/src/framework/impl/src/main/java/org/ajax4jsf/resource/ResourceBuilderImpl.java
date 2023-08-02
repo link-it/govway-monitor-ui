@@ -46,7 +46,7 @@ import java.util.zip.Inflater;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.resource.util.URLToStreamHelper;

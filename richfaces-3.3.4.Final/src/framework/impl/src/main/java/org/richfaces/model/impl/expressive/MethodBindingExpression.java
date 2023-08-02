@@ -20,8 +20,8 @@
  */
 package org.richfaces.model.impl.expressive;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
 import javax.faces.context.FacesContext;
 
 /**

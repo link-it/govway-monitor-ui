@@ -20,9 +20,9 @@
  */
 package org.ajax4jsf.tests;
 
-import javax.el.Expression;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
+import jakarta.el.Expression;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;

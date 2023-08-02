@@ -5,7 +5,7 @@ package org.richfaces.skin;
 
 import java.util.Properties;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.context.FacesContext;
 
 /**

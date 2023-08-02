@@ -8,13 +8,13 @@ package ${tag.packageName};
 import $import ;
 #end
 
-import javax.el.ELException;
+import jakarta.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import org.richfaces.webapp.taglib.MethodBindingMethodExpressionAdaptor;
 import org.richfaces.webapp.taglib.ValueBindingValueExpressionAdaptor;
 import ${component.classname};
@@ -71,7 +71,7 @@ public class $tag.simpleClassName extends $tag.superclass {
 				ValueBinding vb = new ValueBindingValueExpressionAdaptor(this._${prop.name});
 				((${component.simpleClassName})component).${prop.setterName}(vb);
 			}		
-		 #elseif($prop.isInstanceof("javax.el.MethodExpression") )
+		 #elseif($prop.isInstanceof("jakarta.el.MethodExpression") )
 			if(null != this._${prop.name}){
 				((${component.simpleClassName})component).${prop.setterName}(this._${prop.name});
 			}		

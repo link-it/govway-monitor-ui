@@ -11,10 +11,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.el.ELContext;
-import javax.el.ELException;
-import javax.el.ELResolver;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ELException;
+import jakarta.el.ELResolver;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.context.ExternalContext;
@@ -365,7 +365,7 @@ public abstract class ObjectValidator {
 		 * @param context
 		 * @param base
 		 * @return
-		 * @see javax.el.ELResolver#getCommonPropertyType(javax.el.ELContext,
+		 * @see jakarta.el.ELResolver#getCommonPropertyType(jakarta.el.ELContext,
 		 *      java.lang.Object)
 		 */
 		public Class<?> getCommonPropertyType(ELContext context, Object base) {
@@ -376,7 +376,7 @@ public abstract class ObjectValidator {
 		 * @param context
 		 * @param base
 		 * @return
-		 * @see javax.el.ELResolver#getFeatureDescriptors(javax.el.ELContext,
+		 * @see jakarta.el.ELResolver#getFeatureDescriptors(jakarta.el.ELContext,
 		 *      java.lang.Object)
 		 */
 		public Iterator<FeatureDescriptor> getFeatureDescriptors(
@@ -389,7 +389,7 @@ public abstract class ObjectValidator {
 		 * @param base
 		 * @param property
 		 * @return
-		 * @see javax.el.ELResolver#getType(javax.el.ELContext,
+		 * @see jakarta.el.ELResolver#getType(jakarta.el.ELContext,
 		 *      java.lang.Object, java.lang.Object)
 		 */
 		public Class<?> getType(ELContext context, Object base, Object property) {
@@ -401,7 +401,7 @@ public abstract class ObjectValidator {
 		 * @param base
 		 * @param property
 		 * @return
-		 * @see javax.el.ELResolver#getValue(javax.el.ELContext,
+		 * @see jakarta.el.ELResolver#getValue(jakarta.el.ELContext,
 		 *      java.lang.Object, java.lang.Object)
 		 */
 		public Object getValue(ELContext context, Object base, Object property) {
@@ -421,7 +421,7 @@ public abstract class ObjectValidator {
 		 * @param base
 		 * @param property
 		 * @return
-		 * @see javax.el.ELResolver#isReadOnly(javax.el.ELContext,
+		 * @see jakarta.el.ELResolver#isReadOnly(jakarta.el.ELContext,
 		 *      java.lang.Object, java.lang.Object)
 		 */
 		public boolean isReadOnly(ELContext context, Object base,
@@ -434,7 +434,7 @@ public abstract class ObjectValidator {
 		 * @param base
 		 * @param property
 		 * @param value
-		 * @see javax.el.ELResolver#setValue(javax.el.ELContext,
+		 * @see jakarta.el.ELResolver#setValue(jakarta.el.ELContext,
 		 *      java.lang.Object, java.lang.Object, java.lang.Object)
 		 */
 		public void setValue(ELContext context, Object base, Object property,

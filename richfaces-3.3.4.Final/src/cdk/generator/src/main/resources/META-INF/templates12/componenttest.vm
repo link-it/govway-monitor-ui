@@ -121,7 +121,7 @@ public class $component.test.simpleClassName extends $component.test.superclassn
 		${component.simpleClassName} component = new ${component.simpleClassName}();
 		
 #foreach( $prop in $component.properties )
-	#if(!$prop.exist && !$prop.elonly && !$prop.classname.startsWith("javax.faces.") && !$prop.classname.startsWith("javax.el."))
+	#if(!$prop.exist && !$prop.elonly && !$prop.classname.startsWith("javax.faces.") && !$prop.classname.startsWith("jakarta.el."))
 		#if( $prop.isInstanceof("java.lang.Enum") )
 			$prop.classname[] ${prop.name}Values = ${prop.classname}.values();
 			for (int i = 0; i < ${prop.name}Values.length; i++) {

@@ -18,9 +18,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
+
 package org.richfaces.renderkit.html;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -160,7 +167,7 @@ public class ToolTipRenderer extends AjaxComponentRendererBase {
         Map<String, Object> eventOptions = AjaxRendererUtils.buildEventOptions(
                 context, component, true);
         
-        String clientId = component.getClientId(context);
+//        String clientId = component.getClientId(context);
         String oncompleteTooltip = "; request.options.control.displayDiv();";
         
         // before element will be substituted in DOM tree, we need to hide
@@ -208,7 +215,7 @@ public class ToolTipRenderer extends AjaxComponentRendererBase {
         StringBuffer ret = new StringBuffer();
         ret.append("<script ");
         ret.append("type=\"text/javascript\" ");
-        ret.append("nonce=\"").append(getUtils().getCspNonceValue(context)).append("\"");
+        ret.append("nonce=\"").append(RendererUtils.getCspNonceValue(context)).append("\"");
         ret.append("id =\"script").append(component.getClientId(context)).append("\">\n");
         ret.append(constructJSVariable(context, component)).append("\n");
         ret.append("</script>");
@@ -392,17 +399,17 @@ public class ToolTipRenderer extends AjaxComponentRendererBase {
         return true;
     }
     
-    private ToolTipRenderer getRenderer(UIToolTip toolTip) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+    private ToolTipRenderer getRenderer(UIToolTip toolTip) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
         synchronized (this) {
             if ("block".equals(toolTip.getLayout())) {
                     if (blockRenderer==null){
-                        blockRenderer = (ToolTipRenderer)Class.forName("org.richfaces.renderkit.html.HtmlToolTipRendererBlock").newInstance();
+                        blockRenderer = (ToolTipRenderer)Class.forName("org.richfaces.renderkit.html.HtmlToolTipRendererBlock").getDeclaredConstructor().newInstance();
                     }
                     return blockRenderer;
                 
             } else {
                 if (nonblockRenderer==null){
-                    nonblockRenderer = (ToolTipRenderer)Class.forName("org.richfaces.renderkit.html.HtmlToolTipRenderer").newInstance();
+                    nonblockRenderer = (ToolTipRenderer)Class.forName("org.richfaces.renderkit.html.HtmlToolTipRenderer").getDeclaredConstructor().newInstance();
                 }
                 return nonblockRenderer;
 

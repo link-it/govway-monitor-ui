@@ -48,7 +48,8 @@ if (!String.prototype.parseJSON) {
     String.prototype.parseJSON = function (hook) {
         try {
             if (!/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(this.replace(/("(\\.|[^"\\])*")|('(\\.|[^'\\])*')/g, ''))) {
-                var j = eval('(' + this + ')');
+//                var j = eval('(' + this + ')');
+                var j = CSPSafeJSONEval(this);
                 if (typeof hook === 'function') {
                     function walk(v) {
                         if (v && typeof v === 'object') {
@@ -69,6 +70,29 @@ if (!String.prototype.parseJSON) {
         throw new SyntaxError("parseJSON");
     };
 }
+
+CSPSafeJSONEval = function(data) {
+		var result;
+
+	    // Define callback
+	    window.evalCallback = function(r){
+	        result = r;
+	    };
+	
+	    var newScript = document.createElement("script");
+	    newScript.innerHTML = "evalCallback(" + data + ");";
+	    /*
+	     * // Add CSP nonce if relevant
+	     * newScript.setAttribute("nonce", nonce);
+	    */
+	    document.body.appendChild(newScript);
+	
+	    // Now clean up DOM and global scope
+	    document.body.removeChild(newScript);
+	    delete window.evalCallback;
+	
+	    return result;
+	};
 
 EventHandlersWalk = function(v) {
     if (v && typeof v == 'object') {

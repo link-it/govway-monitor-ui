@@ -23,10 +23,10 @@ package org.ajax4jsf.component;
 
 import java.io.IOException;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.ajax4jsf.webapp.PollEventsManager;
 import org.ajax4jsf.webapp.PushEventsCounter;

@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit;
 
@@ -145,9 +150,17 @@ public abstract class AbstractRowsRenderer extends HeaderResourcesRendererBase
 		}
 
         ResponseWriter writer = context.getResponseWriter();
+        
+        String captionClass = (String) table.getAttributes().get("captionClass");
+        String captionStyle = (String) table.getAttributes().get("captionStyle");
+        if (captionStyle != null) {
+    		String cssClassName = RendererUtils.getCssId(context, caption);
+    		getUtils().writeStyle(writer, context, caption, cssClassName, captionStyle);
+    		captionClass = getUtils().concatStyleClasses(captionClass, cssClassName);
+    	}
+        
 		writer.startElement("caption", table);
-
-	    String captionClass = (String) table.getAttributes().get("captionClass");
+	    
 		if (captionClass != null) {
 			captionClass = "rich-table-caption " + captionClass;
 		} else {
@@ -155,28 +168,46 @@ public abstract class AbstractRowsRenderer extends HeaderResourcesRendererBase
 		}
 		writer.writeAttribute("class", captionClass, "captionClass");
 		
-        String captionStyle = (String) table.getAttributes().get("captionStyle");
-		if (captionStyle != null) {
-			writer.writeAttribute("style", captionStyle, "captionStyle");
-		}
-		
 		renderChild(context, caption);
 		
 		writer.endElement("caption");
 	}
 
+//	/**
+//	 * @param context
+//	 * @param table
+//	 * @throws IOException
+//	 */
+//	protected void encodeRowEvents(FacesContext context, UIDataAdaptor table)
+//			throws IOException {
+//		RendererUtils utils2 = getUtils();
+//		for (int i = 0; i < TABLE_EVENT_ATTRS.length; i++) {
+//		    String[] attrs = TABLE_EVENT_ATTRS[i];
+//			utils2.encodeAttribute(context, table, attrs[1], attrs[0]);		    
+//		}
+//	}
+	
 	/**
 	 * @param context
 	 * @param table
 	 * @throws IOException
 	 */
-	protected void encodeRowEvents(FacesContext context, UIDataAdaptor table)
-			throws IOException {
-		RendererUtils utils2 = getUtils();
+	protected String getScriptRowEvents(FacesContext context, UIDataAdaptor table, String clientId, String tag ) throws IOException {
+		StringBuffer sb = new StringBuffer();
+		
 		for (int i = 0; i < TABLE_EVENT_ATTRS.length; i++) {
 		    String[] attrs = TABLE_EVENT_ATTRS[i];
-			utils2.encodeAttribute(context, table, attrs[1], attrs[0]);		    
+		    
+		    Object event = table.getAttributes().get(attrs[1]);
+		    
+		    if(null != event){
+			    String jQueryEvent = attrs[0].substring(attrs[0].indexOf("on")+ "on".length());
+			    
+			    sb.append("jQuery(\""+tag+"[id$='"+clientId+"']\")."+jQueryEvent+"(function() {").append(event).append("});");
+		    }
 		}
+		
+		return sb.toString();
 	}
 
 	/**
@@ -218,6 +249,14 @@ public abstract class AbstractRowsRenderer extends HeaderResourcesRendererBase
 	}
 	protected void encodeStyle(ResponseWriter writer, Object parentPredefined,
 			Object predefined, Object parent, Object custom) throws IOException {
+		String style = getEncodedStyle(writer, parentPredefined, predefined, parent, custom);
+
+		if (style.length() > 0) {
+			writer.writeAttribute("style", style, "style");
+		}
+	}
+	
+	protected String getEncodedStyle(ResponseWriter writer, Object parentPredefined, Object predefined, Object parent, Object custom) throws IOException {
 		StringBuffer style = new StringBuffer();
 		// Construct predefined styles
 		if (null != parentPredefined) {
@@ -232,9 +271,8 @@ public abstract class AbstractRowsRenderer extends HeaderResourcesRendererBase
 		if (null != custom) {
 			style.append(custom);
 		}
-		if (style.length() > 0) {
-			writer.writeAttribute("style", style, "style");
-		}
+		
+		return style.toString();
 	}
 
 

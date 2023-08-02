@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.component.ContextCallback;
@@ -70,6 +70,11 @@ import org.apache.commons.logging.LogFactory;
  * @author asmirnov@exadel.com (latest modification by $Author: alexsmirnov $)
  * @version $Revision: 1.1.2.4 $ $Date: 2007/02/28 17:01:01 $
  * 
+ */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
  */
 public class AjaxViewRoot extends UIViewRoot implements AjaxContainer {
 
@@ -717,7 +722,7 @@ public class AjaxViewRoot extends UIViewRoot implements AjaxContainer {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	protected void restoreAdditionalState(FacesContext context, Object state) {
 		if (null != state) {
 			boolean isAjax = AjaxContext.getCurrentInstance(context).isAjaxRequest();

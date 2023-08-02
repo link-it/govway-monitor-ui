@@ -16,7 +16,7 @@ import java.io.IOException;
 import javax.faces.*;
 import javax.faces.el.*;
 
-import javax.el.*;
+import jakarta.el.*;
 
 import com.sun.facelets.*;
 import com.sun.facelets.el.*;

@@ -27,6 +27,7 @@ package org.ajax4jsf.context;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,8 +37,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
@@ -109,7 +110,7 @@ public class ViewResources {
 		public void encode(FacesContext context, Object data)
 				throws IOException {
 
-			encode(context, data, Collections.EMPTY_MAP);
+			encode(context, data, Collections.emptyMap());
 		}
 		
 		@Override
@@ -473,7 +474,16 @@ public class ViewResources {
 					processScripts = false;
 					// For an "ALL" strategy, it is not necessary to load scripts in the ajax request
 					if (!ajaxRequest) {
-						try {
+						try {   
+							// Caricamento della libreria jQuery da jar interno alla GovWayMonitor.
+							Object jQueryVersione = context.getExternalContext().getRequestMap().get(RendererUtils.HTML.REQUEST_ATTRIBUTE_JQUERY_VERSION);
+							String jQueryResourcePath = MessageFormat.format(InternetResourceBuilder.COMMON_JQUERY_SCRIPT, jQueryVersione);
+							
+							resourceBuilder.createResource(this,jQueryResourcePath).encode(context, null);
+							resourceBuilder
+							.createResource(
+									this,
+									InternetResourceBuilder.COMMON_JQUERY_CONFLICT_SCRIPT).encode(context, null);
 							resourceBuilder
 							.createResource(
 									this,

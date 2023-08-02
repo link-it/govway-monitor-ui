@@ -56,7 +56,7 @@
 
 		<name>eventProducer</name>
 
-		<classname>javax.el.MethodExpression</classname>
+		<classname>jakarta.el.MethodExpression</classname>
 		<description>
             MethodBinding pointing at method accepting  an PushEventListener with return type void.
             User bean must register this listener and send EventObject to this listener on ready.

@@ -21,9 +21,9 @@
 
 package org.richfaces.el;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

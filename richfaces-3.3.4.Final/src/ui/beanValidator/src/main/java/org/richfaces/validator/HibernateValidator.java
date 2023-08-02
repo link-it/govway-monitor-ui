@@ -35,7 +35,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.el.ELResolver;
+import jakarta.el.ELResolver;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 

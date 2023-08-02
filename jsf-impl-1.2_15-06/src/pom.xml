@@ -1,0 +1,218 @@
+<!-- 
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ 
+ Copyright 1997-2016 Sun Microsystems, Inc. All rights reserved.
+ 
+ The contents of this file are subject to the terms of either the GNU
+ General Public License Version 2 only ("GPL") or the Common Development
+ and Distribution License("CDDL") (collectively, the "License").  You
+ may not use this file except in compliance with the License. You can obtain
+ a copy of the License at https://glassfish.dev.java.net/public/CDDL+GPL.html
+ or glassfish/bootstrap/legal/LICENSE.txt.  See the License for the specific
+ language governing permissions and limitations under the License.
+ 
+ When distributing the software, include this License Header Notice in each
+ file and include the License file at glassfish/bootstrap/legal/LICENSE.txt.
+ Sun designates this particular file as subject to the "Classpath" exception
+ as provided by Sun in the GPL Version 2 section of the License file that
+ accompanied this code.  If applicable, add the following below the License
+ Header, with the fields enclosed by brackets [] replaced by your own
+ identifying information: "Portions Copyrighted [year]
+ [name of copyright owner]"
+ 
+ Contributor(s):
+ 
+ If you wish your version of this file to be governed by only the CDDL or
+ only the GPL Version 2, indicate your decision by adding "[Contributor]
+ elects to include this software in this distribution under the [CDDL or GPL
+ Version 2] license."  If you don't indicate a single choice of license, a
+ recipient has the option to distribute your version of this file under
+ either the CDDL, the GPL Version 2 or to extend the choice of license to
+ its licensees as provided above.  However, if you add GPL Version 2 code
+ and therefore, elected the GPL Version 2 license, then the option applies
+ only if the new code is made subject to such option by the copyright
+ holder.
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+        <parent>
+                <groupId>org.govway-monitor-ui</groupId>
+                <artifactId>org.govway-monitor-ui</artifactId>
+                <version>${govway-monitor-ui.version}</version>
+                <relativePath>../../pom.xml</relativePath>
+        </parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>javax.faces</groupId>
+	<artifactId>jsf-impl</artifactId>
+	<packaging>jar</packaging>
+	<version>${govway-monitor-ui.version}</version>
+	<description>This is the master POM file for Sun's Implementation of the JSF 1.2 Specification.</description>
+	<name> Oracle's implementation of the JSF 1.2 specification API. </name>
+	<url>http://java.sun.com/javaee/javaserverfaces/</url>
+	<issueManagement>
+		<system>issueZilla</system>
+		<url>https://javaserverfaces-spec-public.dev.java.net/servlets/ProjectIssues</url>
+	</issueManagement>
+	<mailingLists>
+		<mailingList>
+			<name>Sun's JavaServer Faces Implementation Dev List</name>
+			<post>dev@javaserverfaces.dev.java.net</post>
+			<archive>https://javaserverfaces.dev.java.net/servlets/SummarizeList?listName=dev</archive>
+		</mailingList>
+	</mailingLists>
+	<developers>
+		<developer>
+			<id>edburns</id>
+			<name>Ed Burns</name>
+			<email>ed.burns@sun.com</email>
+			<organization>Sun Microsystems, Inc.</organization>
+			<roles>
+				<role>project-owner</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
+		<developer>
+			<id>rlubke</id>
+			<name>Ryan Lubke</name>
+			<email>Ryan.Lubke@sun.com</email>
+			<organization>Sun Microsystems Inc</organization>
+			<roles>
+				<role>project-owner</role>
+			</roles>
+			<timezone>-9</timezone>
+		</developer>
+		<developer>
+			<id>rogerk</id>
+			<name>Roger.Kitain</name>
+			<email>Roger.Kitain@sun.com</email>
+			<organization>Sun Microsystems Inc</organization>
+			<roles>
+				<role>project-owner</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Craig McClanahan</name>
+		</contributor>
+		<contributor>
+			<name>Deepak Gothe</name>
+		</contributor>
+		<contributor>
+			<name>Gregory Murray</name>
+		</contributor>
+		<contributor>
+			<name>Justyna Horwat</name>
+		</contributor>
+		<contributor>
+			<name>Jayashri Visvanathan</name>
+		</contributor>
+		<contributor>
+			<name>Jennifer Ball</name>
+		</contributor>
+		<contributor>
+			<name>Jacob Hookom</name>
+		</contributor>
+		<contributor>
+			<name>Raj Premkumar</name>
+		</contributor>
+		<contributor>
+			<name>Stan Silvert</name>
+		</contributor>
+		<contributor>
+			<name>Mike Youngstrom</name>
+		</contributor>
+	</contributors>
+	<licenses>
+		<license>
+			<name>COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0</name>
+			<url>http://www.opensource.org/licenses/cddl1.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<url>http://java.net/projects/mojarra/sources</url>
+		<connection>scm:svn:https://svn.java.net/svn/mojarra~svn/trunk</connection>
+	</scm>
+	<organization>
+		<name>Sun Microsystems, Inc</name>
+		<url>http://www.sun.com/</url>
+	</organization>
+	<properties>
+		<javaVersion>1.8</javaVersion>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<finalName>${artifactId}-${version}</finalName>
+	</properties>
+	<dependencies>
+		<dependency>
+		    	<groupId>jakarta.servlet</groupId>
+		    	<artifactId>jakarta.servlet-api</artifactId>
+		   	<version>${jakarta.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+			<version>${jakarta.servlet-jsp-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.el</groupId>
+			<artifactId>jakarta.el-api</artifactId>
+			<version>${jakarta.el-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+			<version>${jakarta.jstl.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>${version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${jakarta.xml.bind.api.version}</version>
+            		<scope>provided</scope>
+        	</dependency>
+        
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>${jakarta.annotation-api.version}</version>
+			<scope>provided</scope>
+			<optional>true</optional>
+		</dependency>	
+		
+		
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<target>${javaVersion}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>${finalName}</finalName>
+	</build>
+</project>

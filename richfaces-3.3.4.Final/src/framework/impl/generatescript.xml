@@ -37,6 +37,7 @@
 
 	<property name="script.prototype" value="prototype.js"></property>
 	<property name="script.jquery" value="jquery.js"></property>
+	<property name="script.jquery" value="jquery.js"></property>
 
 	<property name="script.imagecache" value="imagecache.js"></property>
 	<property name="script.dnd" value="dnd.js"></property>
@@ -47,10 +48,17 @@
 	          dir="${basedir}/src/main/javascript/prototype"
 	          files="empty.js,base.js,string.js,enumerable.js,array.js,hash.js,range.js"
 	>
--->	
+	
 	<filelist id="jquery"
 	          dir="${basedir}/src/main/javascript/jquery"
 	          files="jquery-1.3.2.js,../memory.js,patches.js">
+  	<filelist id="jquery"
+	          dir="${basedir}/src/main/javascript/jquery"
+	          files="jquery-3.6.3.js,../memory.js,patches.js">
+-->	
+	<filelist id="jquery"
+	          dir="${basedir}/src/main/javascript/jquery"
+	          files="../memory.js,patches.js">
 	</filelist>
 
 	<filelist id="scriptaculous"
@@ -129,6 +137,8 @@
 		        <filelist refid="jquery"></filelist>
 		</concat>
 
+		<copy todir="${jquery.scripts.dir}" file="${basedir}/src/main/javascript/jquery/noConflict.js">
+		</copy>
 
                 <copy todir="${prototype.scripts.dir}" file="${basedir}/src/main/javascript/ajaxjsf/smartposition.js">
 		</copy>

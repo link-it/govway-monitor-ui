@@ -21,12 +21,12 @@
  
 package net.sf.alchim.mojo.yuicompressor;
 
+import org.codehaus.plexus.util.IOUtil;
+import org.mozilla.javascript.ErrorReporter;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
-import org.codehaus.plexus.util.IOUtil;
-import org.mozilla.javascript.ErrorReporter;
 
 //TODO: use MojoErrorReporter
 class JSLintChecker {
@@ -37,6 +37,7 @@ class JSLintChecker {
         InputStream in = null;
         try {
             File jslint = File.createTempFile("jslint", ".js");
+            jslint.deleteOnExit();
             in = getClass().getResourceAsStream("/jslint.js");
             out = new FileOutputStream(jslint);
             IOUtil.copy(in, out);

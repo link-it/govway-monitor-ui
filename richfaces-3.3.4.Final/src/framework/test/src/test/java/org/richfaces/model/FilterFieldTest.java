@@ -20,7 +20,7 @@
  */
 package org.richfaces.model;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 
 import org.ajax4jsf.tests.MockValueExpression;
 
@@ -61,7 +61,7 @@ public class FilterFieldTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link org.richfaces.model.FilterField#FilterField(javax.el.ValueExpression)}.
+	 * Test method for {@link org.richfaces.model.FilterField#FilterField(jakarta.el.ValueExpression)}.
 	 */
 	public final void testFilterField() {
 		Field filterField = new FilterField(expression);
@@ -94,7 +94,7 @@ public class FilterFieldTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link org.richfaces.model.Field#setExpression(javax.el.ValueExpression)}.
+	 * Test method for {@link org.richfaces.model.Field#setExpression(jakarta.el.ValueExpression)}.
 	 */
 	public final void testSetExpression() {
 		field.setExpression(null);

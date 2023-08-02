@@ -10,7 +10,7 @@
 			<required>true</required>
 	   #end
 	   #if(${prop.el})
-	   		#if( !$prop.isInstanceof("javax.faces.el.MethodBinding") && !$prop.isInstanceof("javax.el.MethodExpression") ) 
+	   		#if( !$prop.isInstanceof("javax.faces.el.MethodBinding") && !$prop.isInstanceof("jakarta.el.MethodExpression") ) 
 			   	<deferred-value>
 					<type>${prop.classname}</type>
 				</deferred-value>

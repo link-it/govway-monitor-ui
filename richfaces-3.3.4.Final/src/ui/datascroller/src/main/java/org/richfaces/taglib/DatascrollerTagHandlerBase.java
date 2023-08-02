@@ -21,7 +21,7 @@
 
 package org.richfaces.taglib;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 
 import org.richfaces.component.UIDatascroller;
 

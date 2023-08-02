@@ -30,13 +30,13 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.el.ELContext;
-import javax.el.ELContextListener;
-import javax.el.ELException;
-import javax.el.ELResolver;
-import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
+import jakarta.el.ELContext;
+import jakarta.el.ELContextListener;
+import jakarta.el.ELException;
+import jakarta.el.ELResolver;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
@@ -126,7 +126,7 @@ public class StateApplication extends Application {
 
 	/**
 	 * @param listener
-	 * @see javax.faces.application.Application#addELContextListener(javax.el.ELContextListener)
+	 * @see javax.faces.application.Application#addELContextListener(jakarta.el.ELContextListener)
 	 */
 	public void addELContextListener(ELContextListener listener) {
 		parent.addELContextListener(listener);
@@ -134,7 +134,7 @@ public class StateApplication extends Application {
 
 	/**
 	 * @param resolver
-	 * @see javax.faces.application.Application#addELResolver(javax.el.ELResolver)
+	 * @see javax.faces.application.Application#addELResolver(jakarta.el.ELResolver)
 	 */
 	public void addELResolver(ELResolver resolver) {
 		parent.addELResolver(resolver);
@@ -180,7 +180,7 @@ public class StateApplication extends Application {
 	 * @param componentType
 	 * @return
 	 * @throws FacesException
-	 * @see javax.faces.application.Application#createComponent(javax.el.ValueExpression, javax.faces.context.FacesContext, java.lang.String)
+	 * @see javax.faces.application.Application#createComponent(jakarta.el.ValueExpression, javax.faces.context.FacesContext, java.lang.String)
 	 */
 	public UIComponent createComponent(ValueExpression componentExpression,
 			FacesContext context, String componentType) throws FacesException {
@@ -404,7 +404,7 @@ public class StateApplication extends Application {
 
 	/**
 	 * @param listener
-	 * @see javax.faces.application.Application#removeELContextListener(javax.el.ELContextListener)
+	 * @see javax.faces.application.Application#removeELContextListener(jakarta.el.ELContextListener)
 	 */
 	public void removeELContextListener(ELContextListener listener) {
 		parent.removeELContextListener(listener);

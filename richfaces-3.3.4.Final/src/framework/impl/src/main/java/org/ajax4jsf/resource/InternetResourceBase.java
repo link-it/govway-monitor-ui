@@ -386,7 +386,7 @@ public abstract class InternetResourceBase implements InternetResource {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.ajax4jsf.chameleon.resource.InternetResource#sendHeaders(javax.servlet.http.HttpServletResponse)
+	 * @see org.ajax4jsf.chameleon.resource.InternetResource#sendHeaders(jakarta.servlet.http.HttpServletResponse)
 	 */
 	public void sendHeaders(ResourceContext context) {
         boolean cached = context.isCacheEnabled() && isCacheable(context);

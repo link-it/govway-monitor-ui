@@ -7,7 +7,7 @@
 	// Fields
 	#foreach( $prop in $source.properties )
 	 #if( !$prop.existintag && !$prop.hidden)
-	  #if($prop.classname == "javax.el.MethodExpression" || $prop.classname == "javax.faces.el.MethodBinding")
+	  #if($prop.classname == "jakarta.el.MethodExpression" || $prop.classname == "jakarta.faces.el.MethodBinding" || $prop.classname == "javax.el.MethodExpression" || $prop.classname == "javax.faces.el.MethodBinding")
 		#set($type = "MethodExpression")
 	  #else
 		#if ($prop.el)

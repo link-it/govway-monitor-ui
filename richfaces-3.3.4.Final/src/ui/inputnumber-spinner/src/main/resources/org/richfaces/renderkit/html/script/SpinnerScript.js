@@ -42,9 +42,13 @@ Richfaces.Spinner.prototype = {
 		this.cycled		= this.cycled;
 		this.enableManualInput		= this.enableManualInput;
 		var edit = this._getDirectChildrenByTag(this.content,'INPUT')[0];
-		this.upClick	= new Function(this.onup + ";return true;").bindAsEventListener(edit);
-		this.downClick	= new Function(this.ondown + ";return true;").bindAsEventListener(edit);
-		this.error		= new Function("event","clientErrorMessage",this.onerr + ";return true;").bind(edit);
+//		this.upClick	= new Function(this.onup + ";return true;").bindAsEventListener(edit);
+//		this.downClick	= new Function(this.ondown + ";return true;").bindAsEventListener(edit);
+//		this.error		= new Function("event","clientErrorMessage",this.onerr + ";return true;").bind(edit);
+		
+		this.upClick.bindAsEventListener(edit);
+		this.downClick.bindAsEventListener(edit);
+		this.error.bind(edit);
 
 		this.required = this.required;
 		this._attachBehaviors();
@@ -159,6 +163,18 @@ Richfaces.Spinner.prototype = {
 
 	_removePx: function(e){
 		return e.substring(0,e.indexOf('px'));
+	},
+	
+	upClick: function(){
+		return true;
+	},
+	
+	downClick: function(){
+		return true;
+	},
+	
+	error: function(event,clientErrorMessage){
+		return true;
 	}
 };
 

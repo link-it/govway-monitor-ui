@@ -545,6 +545,10 @@ Effect.Fade = function(element) {
   return new Effect.Opacity(element,options);
 };
 
+Effect.FadeCheckClassWrapped = function(element) {
+	Effect.FadeCheckClass(element, 'display-none', 'display-block', arguments[1]);
+};
+
 Effect.FadeCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
   element = $(element);
   var oldOpacity = element.getInlineOpacity();
@@ -560,10 +564,37 @@ Effect.FadeCheckClass = function(element, classNameDisplayNone, classNameDisplay
       effect.element.setStyle({opacity: oldOpacity});
 //      .hide()
     }
-  }, arguments[1] || { });
+  }, arguments[3] || { });
   return new Effect.Opacity(element,options);
 };
 
+Effect.FadeCheckClasses = function(element, classesNameDisplayNone, classesNameDisplay) {
+  element = $(element);
+  var oldOpacity = element.getInlineOpacity();
+  var options = Object.extend({
+    from: element.getOpacity() || 1.0,
+    to:   0.0,
+    afterFinishInternal: function(effect) {
+      if (effect.options.to!=0) return;
+      
+       var jqElement = jQuery(effect.element);
+       
+       for(var i = 0; i < classesNameDisplay.length; i++){
+			var classNameDisplay = classesNameDisplay[i];
+			jqElement.removeClass(classNameDisplay);
+		}
+		
+		for(var i = 0; i < classesNameDisplayNone.length; i++){
+			var classNameDisplayNone = classesNameDisplayNone[i];
+			jqElement.addClass(classNameDisplayNone);
+		}
+      
+      effect.element.setStyle({opacity: oldOpacity});
+//      .hide()
+    }
+  }, arguments[3] || { });
+  return new Effect.Opacity(element,options);
+};
 
 Effect.Appear = function(element) {
   element = $(element);
@@ -578,6 +609,10 @@ Effect.Appear = function(element) {
     effect.element.setOpacity(effect.options.from).show();
   }}, arguments[1] || { });
   return new Effect.Opacity(element,options);
+};
+
+Effect.AppearCheckClassWrapped = function(element) {
+	Effect.AppearCheckClass(element, 'display-none', 'display-block', arguments[1]);
 };
 
 Effect.AppearCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
@@ -595,7 +630,35 @@ Effect.AppearCheckClass = function(element, classNameDisplayNone, classNameDispl
     var jqElement = jQuery(effect.element); // uso jQuey per comodita'
     jqElement.removeClass(classNameDisplayNone).addClass( classNameDisplay );
 //    .show();
-  }}, arguments[1] || { });
+  }}, arguments[3] || { });
+  return new Effect.Opacity(element,options);
+};
+
+Effect.AppearCheckClasses = function(element, classesNameDisplayNone, classesNameDisplay) {
+  element = $(element);
+  var jqElement = jQuery(element);
+  var options = Object.extend({
+  from: (jqElement.hasClass(classesNameDisplayNone[0]) ? 0.0 : element.getOpacity() || 0.0),
+  to:   1.0,
+  // force Safari to render floated elements properly
+  afterFinishInternal: function(effect) {
+    effect.element.forceRerendering();
+  },
+  beforeSetup: function(effect) {
+    effect.element.setOpacity(effect.options.from);
+    var jqElement = jQuery(effect.element); // uso jQuey per comodita'
+    
+    for(var i = 0; i < classesNameDisplayNone.length; i++){
+		var classNameDisplayNone = classesNameDisplayNone[i];
+		jqElement.removeClass(classNameDisplay);
+	}
+    
+     for(var i = 0; i < classesNameDisplay.length; i++){
+		var classNameDisplay = classesNameDisplay[i];
+		jqElement.addClass(classNameDisplay);
+	}
+//    .show();
+  }}, arguments[3] || { });
   return new Effect.Opacity(element,options);
 };
 
@@ -637,6 +700,27 @@ Effect.BlindUp = function(element) {
   );
 };
 
+Effect.BlindUpCheckClassWrapped = function(element) {
+	Effect.BlindUpCheckClass(element, 'display-none', 'display-block', arguments[1]);
+};
+
+Effect.BlindUpCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
+  element = $(element);
+  element.makeClipping();
+  return new Effect.Scale(element, 0,
+    Object.extend({ scaleContent: false,
+      scaleX: false,
+      restoreAfterFinish: true,
+      afterFinishInternal: function(effect) {
+        effect.element.undoClipping();
+        var jqElement = jQuery(effect.element); // uso jQuey per comodita'
+    	jqElement.removeClass(classNameDisplay).addClass( classNameDisplayNone );
+    	//      .hide()
+      }
+    }, arguments[3] || { })
+  );
+};
+
 Effect.BlindDown = function(element) {
   element = $(element);
   var elementDimensions = element.getDimensions();
@@ -654,6 +738,32 @@ Effect.BlindDown = function(element) {
     }
   }, arguments[1] || { }));
 };
+
+Effect.BlindDownCheckClassWrapped = function(element) {
+	Effect.BlindDownCheckClass(element, 'display-none', 'display-block', arguments[1]);
+};
+
+Effect.BlindDownCheckClass = function(element, classNameDisplayNone, classNameDisplay) {
+  element = $(element);
+  var elementDimensions = element.getDimensions();
+  return new Effect.Scale(element, 100, Object.extend({
+    scaleContent: false,
+    scaleX: false,
+    scaleFrom: 0,
+    scaleMode: {originalHeight: elementDimensions.height, originalWidth: elementDimensions.width},
+    restoreAfterFinish: true,
+    afterSetup: function(effect) {
+      effect.element.makeClipping().setStyle({height: '0px'});
+      var jqElement = jQuery(effect.element); // uso jQuey per comodita'
+      jqElement.removeClass(classNameDisplayNone).addClass( classNameDisplay );
+      //.show();
+    },
+    afterFinishInternal: function(effect) {
+      effect.element.undoClipping();
+    }
+  }, arguments[3] || { }));
+};
+
 
 Effect.SwitchOff = function(element) {
   element = $(element);

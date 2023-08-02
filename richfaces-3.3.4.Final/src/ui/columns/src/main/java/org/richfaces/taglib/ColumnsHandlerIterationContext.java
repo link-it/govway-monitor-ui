@@ -27,9 +27,9 @@ import org.richfaces.el.ELBuilder;
 import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.FaceletContext;
 
-import javax.servlet.jsp.JspTagException;
-import javax.el.ValueExpression;
-import javax.el.ELException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.el.ValueExpression;
+import jakarta.el.ELException;
 import java.util.List;
 import java.util.Collection;
 import java.util.Iterator;

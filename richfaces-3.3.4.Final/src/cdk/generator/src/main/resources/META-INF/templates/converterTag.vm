@@ -13,7 +13,7 @@ import javax.faces.webapp.UIComponentTag;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import org.apache.commons.beanutils.ConvertUtils;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 import ${converter.classname};
 
 public class $tag.simpleClassName extends $tag.superclass 

@@ -104,7 +104,8 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 				// IE Can throw exception for any responses
 						}
 		      			// Prepare XML, if exist.
-		      			if(_this._request.responseXML ){
+//		      			if(_this._request.responseXML ){
+		      			if(_this._request.responseText && _this._request.responseText.startsWith('<?xml version')){
 			      			_this._parsingStatus = Sarissa.getParseErrorText(_this._request.responseXML);
 			      			if(_this._parsingStatus == Sarissa.PARSED_OK && Sarissa.setXpathNamespaces ){
 			      				Sarissa.setXpathNamespaces(_this._request.responseXML,"xmlns='http://www.w3.org/1999/xhtml'");
@@ -301,7 +302,8 @@ A4J.AJAX.XMLHttpRequest.prototype = {
         	  		if(dataElement){
         	  			try {
         	  				data = Sarissa.getText(dataElement,true);
-        	  				data = window.eval('('+data+')');
+        	  				data = this.customJSONEval('('+data+')');
+//        	  				data = window.eval('('+data+')');
         	  			} catch(e){
         	  				LOG.error("Error on parsing JSON data "+e.message,data);
         	  			}
@@ -318,13 +320,51 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 			if (window.execScript) {
 				window.execScript( newscript );
 			} else {
-				window.eval(newscript);
+				//window.eval(newscript);
+				this.customEval(newscript);
 			}
 			LOG.debug("Script evaluation succeeded");
 		} catch(e){
 			LOG.error("ERROR Evaluate script:  Error name: " + e.name + e.message?". Error message: "+e.message:"");
 		}
 	},
+	
+	customJSONEval: function(data) {
+		var result;
+
+	    // Define callback
+	    window.evalCallback = function(r){
+	        result = r;
+	    };
+	
+	    var newScript = document.createElement("script");
+	    newScript.innerHTML = "evalCallback(" + data + ");";
+	    /*
+	     * // Add CSP nonce if relevant
+	     * newScript.setAttribute("nonce", nonce);
+	    */
+	    document.body.appendChild(newScript);
+	
+	    // Now clean up DOM and global scope
+	    document.body.removeChild(newScript);
+	    delete window.evalCallback;
+	
+	    return result;
+	},
+	
+	customEval: function(data) {
+        if (data && /\S/.test(data)) {
+            var head = document.getElementsByTagName("head")[0] || document.documentElement
+              , script = document.createElement("script");
+            script.type = "text/javascript";
+            if (jQuery.support.scriptEval)
+                script.appendChild(document.createTextNode(data));
+            else
+                script.text = data;
+            head.insertBefore(script, head.firstChild);
+            head.removeChild(script);
+        }
+    },
 	
 	evaluateQueueScript: function() {
 	    var queueScript = this.getElementById('org.ajax4jsf.queue_script');
@@ -434,8 +474,8 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 	   		        }
    		        }
 				var v = this.IEVersion();
-				var _serialized = this.serializeXmlNode(newnode, v);
 				if(v != 11) {
+					var _serialized = this.serializeXmlNode(newnode, v);
 					oldnode.outerHTML = _serialized;
 				} else {
 					var _node = newnode.cloneNode(true);
@@ -1272,6 +1312,30 @@ A4J.AJAX.replaceViewState = function(inputs,newinputs){
         	  		}
 	
 };
+A4J.AJAX.customJSONEval = function() {
+	
+	//console.log(arguments);
+	
+    var renderNode = document.createElement("script"),
+        len = arguments.length,
+        source = arguments[len-1],
+        args = [];
+
+    if ( 1 < len ) {
+        for ( var i=0; i<(len-1); i++ ) {
+            args.push(arguments[i]);
+        }
+    }
+
+    renderNode.text = "function __ifYouAbsolutelyMustUseIt() { return function("+args.join(", ")+") {" + source + "}}";
+    renderNode.nonce = document.getElementById('expiredMsgScript').nonce;
+   // renderNode.setAttribute('nonce', nonce);
+
+    document.head.appendChild(renderNode).parentNode.removeChild(renderNode);
+    return __ifYouAbsolutelyMustUseIt();
+};
+
+
 /**
  * 
  */
@@ -1311,7 +1375,7 @@ A4J.AJAX.finishRequest = function(request){
 					}
 
 					var newscript = Sarissa.getText(oncomp,true);
-					var oncomplete = new Function("request","event","data",newscript);
+					var oncomplete = A4J.AJAX.customJSONEval("request","event","data",newscript);
 					oncomplete.call(target,request,event,data);					
 
 					if (options.queueoncomplete) {

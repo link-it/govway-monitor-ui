@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.PropertyNotFoundException;
+import jakarta.el.PropertyNotFoundException;
 
 import org.ajax4jsf.templatecompiler.builder.CompilationContext;
 import org.ajax4jsf.templatecompiler.builder.StringUtils;
@@ -106,7 +106,25 @@ public class ELCompiler implements IELCompiler {
 		Node node = ELParser.parse(expression);
 		StringBuffer sbMain = new StringBuffer();
 		processNode(node, sbMain, componentBean);
+		//System.out.println("RITORNO: '"+sbMain.toString()+"'");
 		return sbMain.toString();
+	}
+
+	private static java.util.List<String> FACET_VALUES = new java.util.ArrayList();
+	private static int FACET_INDEX = 0;
+	private static synchronized String getNextFacet(){
+		if(FACET_INDEX==FACET_VALUES.size()){
+			FACET_INDEX = 0;
+		}
+		String v = FACET_VALUES.get(FACET_INDEX);
+		FACET_INDEX++;
+		return v;
+	}
+	static{
+		FACET_VALUES.add("header");
+		FACET_VALUES.add("subheader");
+		FACET_VALUES.add("sidebar");
+		FACET_VALUES.add("footer");
 	}
 
 	/**
@@ -155,6 +173,273 @@ public class ELCompiler implements IELCompiler {
 				if (!processing) {
 					processNode(childNode, sbMain, componentBean);
 				}
+				//System.out.println("SCRITTO: '"+sbMain.toString()+"'");
+
+				if(sbMain.toString().equals("getValue()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("component)");
+					//System.out.println("FINALE getValue: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().equals("expanded()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE expanded: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getValueAsString()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getValueAsString: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getInputValue()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getInputValue: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getInputEventHandlersScript()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getInputEventHandlersScript: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getTableEventHandlersScript()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getTableEventHandlersScript: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getShowScript()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getShowScript: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getSelectedItemInputValue()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getSelectedItemInputValue: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getSymbolsMap()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getSymbolsMap: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getSelectedDate()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getSelectedDate: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getSubmitFunction()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getSubmitFunction: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getDayCellClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getDayCellClass: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getDayStyleClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getDayStyleClass: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getIsDayEnabled()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getIsDayEnabled: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getLabels()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getLabels: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("addCellsEventHandlers()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE addCellsEventHandlers: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getRowsAjaxUpdate()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getRowsAjaxUpdate: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getItems()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getItems: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("prolog()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE prolog: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("hasTitle()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE hasTitle: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().equals("hasFacet()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("component,\""+getNextFacet()+"\")");
+					//System.out.println("FINALE hasFacet: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().equals("getReadOnlyValue()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("true)");
+					//System.out.println("FINALE getReadOnlyValue: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().equals("getSelectedClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("isNodeSelected)");
+					//System.out.println("FINALE getSelectedClass: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().equals("getIconClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component,\"\")");
+					//System.out.println("FINALE getIconClass: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getIconClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component,\"\")");
+					//System.out.println("FINALE getIconClass 2: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().equals("getCurrentDateAsString()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component,currentDate)");
+					//System.out.println("FINALE getCurrentDateAsString: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().equals("getCurrentDate()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component,currentDate)");
+					//System.out.println("FINALE getCurrentDate: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().equals("getPreparedDefaultTime()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("component)");
+					//System.out.println("FINALE getPreparedDefaultTime: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().endsWith("convertToString(width()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE width: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(height()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE height: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getOnClick()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getOnClick: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getTabDisplay()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getTabDisplay: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(encodeStyles()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE encodeStyles: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(encodeHeaderSpacing()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE encodeHeaderSpacing: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(encodeTabLabelWidth()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE encodeTabLabelWidth: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getLabelEventsHandler()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getLabelEventsHandler: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getOnClickEventHandler()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getOnClickEventHandler: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getSubmitFunction()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getSubmitFunction: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getHideStyle()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getHideStyle: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getFullStyle()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getFullStyle: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getFullStyleClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getFullStyleClass: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getDivClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getDivClass: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getTableClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getTableClass: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getLabelClass()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getLabelClass: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getJavaScriptVarName()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getJavaScriptVarName: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(createClientScrollableGrid()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE createClientScrollableGrid: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getScriptContributions()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getScriptContributions: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(getCaptionDisplay()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE getCaptionDisplay: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(encodeDragDropChildScripts()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE encodeDragDropChildScripts: '"+sbMain.toString()+"'");
+				}
+				else if(sbMain.toString().endsWith("convertToString(createClientDataTable()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("context,component)");
+					//System.out.println("FINALE createClientDataTable: '"+sbMain.toString()+"'");
+				}
+
+				else if(sbMain.toString().endsWith("convertToString(toScript()")){
+					sbMain.deleteCharAt(sbMain.length()-1);
+					sbMain.append("onmouseoutClasses)");
+					//System.out.println("FINALE toScript: '"+sbMain.toString()+"'");
+				}
+
 				if (bNeedConversion) {
 					sbMain.append(")");
 				}

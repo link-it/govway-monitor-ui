@@ -20,13 +20,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.jsp.JspWriter;
 
 import org.ajax4jsf.io.FastBufferOutputStream;
+
+import jakarta.servlet.WriteListener;
 
 
 
@@ -112,6 +114,16 @@ public class ServletResponseWrapperInclude extends HttpServletResponseWrapper {
 				 */
 				public void write(int b) throws IOException {
 					_bytes.write(b);					
+				}
+
+				@Override
+				public boolean isReady() {
+					return true;
+				}
+
+				@Override
+				public void setWriteListener(WriteListener writeListener) {
+					// not implemented
 				}
 				
 			};

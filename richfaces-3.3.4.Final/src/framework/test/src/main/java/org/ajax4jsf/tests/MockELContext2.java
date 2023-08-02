@@ -20,10 +20,10 @@
  */
 package org.ajax4jsf.tests;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.el.FunctionMapper;
-import javax.el.VariableMapper;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
+import jakarta.el.FunctionMapper;
+import jakarta.el.VariableMapper;
 import javax.faces.context.FacesContext;
 
 import com.sun.facelets.FaceletContext;
@@ -43,7 +43,7 @@ public class MockELContext2 extends ELContext {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELContext#getELResolver()
+	 * @see jakarta.el.ELContext#getELResolver()
 	 */
 	@Override
 	public ELResolver getELResolver() {
@@ -52,7 +52,7 @@ public class MockELContext2 extends ELContext {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELContext#getFunctionMapper()
+	 * @see jakarta.el.ELContext#getFunctionMapper()
 	 */
 	@Override
 	public FunctionMapper getFunctionMapper() {
@@ -61,7 +61,7 @@ public class MockELContext2 extends ELContext {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.ELContext#getVariableMapper()
+	 * @see jakarta.el.ELContext#getVariableMapper()
 	 */
 	@Override
 	public VariableMapper getVariableMapper() {

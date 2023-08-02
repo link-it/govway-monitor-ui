@@ -44,29 +44,39 @@
 		]]>
     </jsp:scriptlet>
 
+	<jsp:scriptlet>
+	<![CDATA[ 
+			variables.setVariable("cspValue", getUtils().getCspNonceValue(context));
+			variables.setVariable("cssId", getUtils().getCssId(clientId));
+	]]>
+	</jsp:scriptlet>
+	<style type="text/css" nonce="#{cspValue}">
+		.#{cssId}-extdt-style { #{component.attributes['style']};width:#{component.attributes['width']};height:#{component.attributes['height']}; }
+		.#{cssId}-extdt-outerdiv-style { width:100%; height:100%;overflow: hidden; }
+		.#{cssId}-extdt-innerdiv-style { height:100%;width:100%; }
+		.#{cssId}-extdt-td-padding-zero-style { padding: 0px; }
+		.#{cssId}-extdt-content-style { height:50px;width:100%; }
+	</style>
 	<div
 		id="#{clientId}"
-		class="extdt-maindiv rich-extdt-maindiv"
-		style="#{component.attributes['style']};width:#{component.attributes['width']};height:#{component.attributes['height']}"
+		class="extdt-maindiv rich-extdt-maindiv #{cssId}-extdt-style"
 		onkeypress="#{component.attributes['onkeypress']}"
 		onkeyup="#{component.attributes['onkeyup']}"
 		onkeydown="#{component.attributes['onkeydown']}"
 		>
 
-	<div id="#{clientId}:od" class="extdt-outerdiv"
-		style="width:100%; height:100%;overflow: hidden;"
-		>
-		<div id="#{clientId}:dataTable_indicator" class="drgind_fly drgind_default drag_indicator" style="display: none;" >
+	<div id="#{clientId}:od" class="extdt-outerdiv #{cssId}-extdt-outerdiv-style">
+		<div id="#{clientId}:dataTable_indicator" class="drgind_fly drgind_default drag_indicator extdt-display-none" >
 	        <f:call name="encodeNamespace" />
 	    </div>
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="#{cspValue}">
             //<![CDATA[
             #{this:encodeDragDropChildScripts(context, component)};
             //]]>
         </script>
 	    <span id="#{clientId}:dataTable_indicator_span" />
-		<div id="#{clientId}:innerd" class="extdt-innerdiv" style="height:100%;width:100%;">
-		<div id="#{clientId}:cs" class="extdt-hsplit" style="display: none;"/>
+		<div id="#{clientId}:innerd" class="extdt-innerdiv #{cssId}-extdt-innerdiv-style">
+		<div id="#{clientId}:cs" class="extdt-hsplit extdt-display-none"/>
 		<table id="#{clientId}:tu"
 	    		class="extdt-table-layout #{component.attributes['styleClass']}"
 	    		cellpadding="0"
@@ -80,8 +90,8 @@
 				<f:call name="encodeHeader"/>
 			<tbody>
 				<tr>
-					<td colspan="#{columnsCount}" style="padding: 0px;">
-						<div id="#{clientId}:sd" class="extdt-content" style="height:50px;width:100%;">
+					<td colspan="#{columnsCount}" class="#{cssId}-extdt-td-padding-zero-style">
+						<div id="#{clientId}:sd" class="extdt-content #{cssId}-extdt-content-style">
 							<jsp:scriptlet>
 				     		<![CDATA[
 								if (component.getRowCount() <= 0) {
@@ -123,12 +133,21 @@
 			</tbody>
 			<f:call name="encodeFooter"/>
 		</table>
+		<jsp:scriptlet>
+		<![CDATA[ 
+				String tableRowsScript = getUtils().getTableRowsScripts(writer, context, component);
+				variables.setVariable("tableRowsScript", tableRowsScript);
+		]]>
+		</jsp:scriptlet>
+		<script type="text/javascript" nonce="#{cspValue}">
+			#{tableRowsScript}
+		</script>
 		<f:call name="contributorsEncodeHere" />
 		</div>
 		<f:clientid var="clientId"/>
         <div id="#{clientId}:splashscreen" class="extdt-ss-vsbl">
         </div>
-		<script type="text/javascript">
+		<script type="text/javascript" nonce="#{cspValue}">
 		//<![CDATA[
 			delete #{this:getJavaScriptVarName(context, component)};
 			#{this:getJavaScriptVarName(context, component)} = #{this:createClientDataTable(context, component)};

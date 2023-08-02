@@ -23,7 +23,7 @@ package org.richfaces.taglib;
 import java.io.IOException;
 import java.util.Set;
 
-import javax.el.ELException;
+import jakarta.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;

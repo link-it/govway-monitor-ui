@@ -132,7 +132,7 @@
 		</property>
 		<property elonly="true">
 			<name>createContentExpression</name>
-			<classname>javax.el.MethodExpression</classname>
+			<classname>jakarta.el.MethodExpression</classname>
 			<description>
 				<![CDATA[
         Attribute references to the method that will be used for content creating. The method accepts two parameters. The first parameter has an OutputStream type. It is a reference to the steam that should be used for output. The second parameter is a reference to a 'value' attribute of the component. 

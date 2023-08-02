@@ -23,7 +23,7 @@ package org.ajax4jsf.webapp.nekko;
 
 import java.util.EmptyStackException;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import org.ajax4jsf.io.parser.FastHtmlParser;
 import org.ajax4jsf.webapp.BaseXMLFilter;
@@ -97,7 +97,7 @@ public class NekkoXMLFilter extends BaseXMLFilter {
 
 
 	/* (non-Javadoc)
-	 * @see org.ajax4jsf.webapp.BaseFilter#getWrapper(javax.servlet.http.HttpServletResponse)
+	 * @see org.ajax4jsf.webapp.BaseFilter#getWrapper(jakarta.servlet.http.HttpServletResponse)
 	 */
 //	protected FilterServletResponseWrapper getWrapper(HttpServletResponse response) throws ServletException {
 //		// TODO Auto-generated method stub

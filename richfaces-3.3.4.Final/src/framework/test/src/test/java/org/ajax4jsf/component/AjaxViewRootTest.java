@@ -23,7 +23,7 @@ package org.ajax4jsf.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;

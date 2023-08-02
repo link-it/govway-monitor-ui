@@ -21,7 +21,7 @@
 
 package org.ajax4jsf.webapp.taglib;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.component.UIComponent;
 
 import org.ajax4jsf.renderkit.RendererUtils.HTML;

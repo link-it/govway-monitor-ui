@@ -1,10 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+        <parent>
+                <groupId>org.govway-monitor-ui</groupId>
+                <artifactId>org.govway-monitor-ui</artifactId>
+                <version>${govway-monitor-ui.version}</version>
+                <relativePath>../../pom.xml</relativePath>
+        </parent>
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces</groupId>
 	<artifactId>root</artifactId>
 	<packaging>pom</packaging>
 	<name>RichFaces project</name>
-	<version>3.3.4.Final</version>
+	<version>${govway-monitor-ui.version}</version>
   <description>RichFaces project root</description>
 	<url>http://labs.jboss.com/jbossrichfaces</url>
 	<properties>
@@ -25,30 +33,13 @@
 				<artifactId>postgresql</artifactId>
 				<version>8.2-504.jdbc3</version>
 			</extension>
-			<!-- scm deployment wagon 
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-scm</artifactId>
-				<version>1.0-alpha-5</version>
-			</extension>
-			<extension>
-				<groupId>org.apache.maven.scm</groupId>
-				<artifactId>maven-scm-manager-plexus</artifactId>
-				<version>1.0</version>
-			</extension>
-			<extension>
-				<groupId>org.apache.maven.scm</groupId>
-				<artifactId>maven-scm-provider-svnexe</artifactId>
-				<version>1.0</version>
-			</extension>
-			-->
 		</extensions>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.1</version>
+					<version>3.3.0</version>
 					<configuration>
 						<archive>
 							<index>true</index>
@@ -94,13 +85,8 @@
 		<module>cdk</module>
 		<module>framework</module>
 		<module>ui</module>
-		<module>extensions</module>
 		<module>docs</module>
 		<module>ui/assembly</module>
-		<module>samples</module>
-		<!--
-			<module>sandbox</module>
-		-->
 	</modules>
 	<repositories>
 		<repository>

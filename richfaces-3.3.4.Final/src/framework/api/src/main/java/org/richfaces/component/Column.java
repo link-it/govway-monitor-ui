@@ -21,7 +21,7 @@
 
 package org.richfaces.component;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 
 import org.richfaces.model.Ordering;
 

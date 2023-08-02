@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.ajax4jsf.resource;
 
@@ -30,7 +35,7 @@ import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import org.ajax4jsf.resource.util.URLToStreamHelper;
 import org.apache.commons.logging.Log;
@@ -59,6 +64,10 @@ public abstract class InternetResourceBuilder {
 	public static final String CONTROL_SKINNING_LEVEL = "org.richfaces.CONTROL_SKINNING_LEVEL";
 	public static final String BASIC = "basic";
 	public static final String EXTENDED = "extended";
+	
+	public static final String COMMON_JQUERY_SCRIPT = "/webjars/jquery/{0}/jquery.min.js";
+	public static final String COMMON_JQUERY_CONFLICT_SCRIPT = "/org/richfaces/renderkit/html/scripts/jquery/noConflict.js";
+	public static final String COMMON_JQUERY_UI_SCRIPT = "/webjars/jquery-ui/1.13.2/jquery-ui.min.js";
 
 	/**
          * Get application start time for check resources modification time.

@@ -1,6 +1,11 @@
 /**
  * 
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 package org.richfaces.renderkit.html;
 
 import java.awt.Dimension;
@@ -9,7 +14,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-import org.richfaces.renderkit.html.BaseGradient;
 import org.richfaces.renderkit.html.images.GradientType;
 import org.richfaces.renderkit.html.images.GradientType.BiColor;
 

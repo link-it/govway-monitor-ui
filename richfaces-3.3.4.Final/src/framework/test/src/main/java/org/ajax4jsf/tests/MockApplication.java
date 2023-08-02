@@ -20,7 +20,7 @@
  */
 package org.ajax4jsf.tests;
 
-import javax.el.ExpressionFactory;
+import jakarta.el.ExpressionFactory;
 
 import org.apache.shale.test.el.MockExpressionFactory;
 import org.apache.shale.test.mock.MockApplication12;

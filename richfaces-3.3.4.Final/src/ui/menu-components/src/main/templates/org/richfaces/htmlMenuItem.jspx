@@ -48,9 +48,15 @@
 				
 	]]></jsp:scriptlet>	
 			
-	<div id="#{clientId}" 		
-		class="#{menuItemClass}"
-		onclick="Event.stop(event);" >
+	<script type="text/javascript" nonce="#{cspValue}">
+		jQuery(document).ready(function() {
+			 jQuery("div[id$='#{clientId}']").click(function(event) {
+				 Event.stop(event);
+			});
+		 }); 
+	</script>
+			
+	<div id="#{clientId}" class="#{menuItemClass}">
 		
 	<jsp:scriptlet><![CDATA[
 		} else if(!isNestedInMenu(component)) {
@@ -74,7 +80,8 @@
 	    	variables.setVariable("itemClass",itemClass);
 	    	variables.setVariable("itemStyles",itemStyle);
 	    	
-	    	
+	    	String jQueryScript = getUtils().getScriptContentForEventHandler(writer, context, component, "div", "onmousemove,onmousedown,onmouseup");
+	    	variables.setVariable("jQueryScript",jQueryScript);
 	]]></jsp:scriptlet>
 	
 	<c:scriptObject var="onmouseoutClasses">
@@ -88,27 +95,43 @@
 		<c:scriptOption attributes="iconClass"/>
 	</c:scriptObject>
 	
-	<div id="#{clientId}" 
-		class="#{menuItemClass}"
-		onmouseout="RichFaces.Menu.Utils.itemMouseOut(event, this, #{this:toScript(onmouseoutClasses)});"
-		onmouseover="RichFaces.Menu.Utils.itemMouseOver(event, this, #{this:toScript(onmouseoverClasses)});"
-		onclick="#{onclick}">
-		<f:call name="utils.encodeAttributes">
-			<f:parameter value="onmousemove,onmousedown,onmouseup" />
-		</f:call>
+	<script type="text/javascript" nonce="#{cspValue}">
+		jQuery(document).ready(function() {
+			 jQuery("div[id$='#{clientId}']").click(function() {
+				 #{onclick}
+			});
+			 
+			 jQuery("div[id$='#{clientId}']").mouseout(function() {
+				 RichFaces.Menu.Utils.itemMouseOut(event, this, #{this:toScript(onmouseoutClasses)});
+			});
+			 
+			 jQuery("div[id$='#{clientId}']").mouseover(function() {
+				 RichFaces.Menu.Utils.itemMouseOver(event, this, #{this:toScript(onmouseoverClasses)});
+			});
+		 }); 
+	</script>
+	<div id="#{clientId}" class="#{menuItemClass}" >
+		<script type="text/javascript" nonce="#{cspValue}">
+			#{jQueryScript}
+		</script>
 		
 	<jsp:scriptlet><![CDATA[
 		} else {
+		String jQueryScript = getUtils().getScriptContentForEventHandler(writer, context, component, "div", "onmousemove,onmousedown,onmouseup");
+		variables.setVariable("jQueryScript",jQueryScript);
 	]]></jsp:scriptlet>
 		
-		<div id="#{clientId}" 
-		class="#{menuItemClass}"
-		
-
-		onclick="#{onclick}">
-		<f:call name="utils.encodeAttributes">
-			<f:parameter value="onmousemove,onmousedown,onmouseup" />
-		</f:call>
+		<script type="text/javascript" nonce="#{cspValue}">
+		jQuery(document).ready(function() {
+			 jQuery("div[id$='#{clientId}']").click(function() {
+				 #{onclick}
+			});
+		 }); 
+	</script>
+		<div id="#{clientId}" class="#{menuItemClass}" >
+		<script type="text/javascript" nonce="#{cspValue}">
+			#{jQueryScript}
+		</script>
 		
 	<jsp:scriptlet><![CDATA[
 		}

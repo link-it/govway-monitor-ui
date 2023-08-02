@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author shura
@@ -48,7 +48,7 @@ public class MockFilterConfig implements FilterConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.FilterConfig#getFilterName()
+	 * @see jakarta.servlet.FilterConfig#getFilterName()
 	 */
 	public String getFilterName() {
 		// TODO Auto-generated method stub
@@ -56,7 +56,7 @@ public class MockFilterConfig implements FilterConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.FilterConfig#getInitParameter(java.lang.String)
+	 * @see jakarta.servlet.FilterConfig#getInitParameter(java.lang.String)
 	 */
 	public String getInitParameter(String arg0) {
 		// TODO Auto-generated method stub
@@ -68,7 +68,7 @@ public class MockFilterConfig implements FilterConfig {
 	}
 	
 	/* (non-Javadoc)
-	 * @see javax.servlet.FilterConfig#getInitParameterNames()
+	 * @see jakarta.servlet.FilterConfig#getInitParameterNames()
 	 */
 	public Enumeration getInitParameterNames() {
 		final Iterator parametersIterator = initParameters.keySet().iterator();
@@ -88,7 +88,7 @@ public class MockFilterConfig implements FilterConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.FilterConfig#getServletContext()
+	 * @see jakarta.servlet.FilterConfig#getServletContext()
 	 */
 	public ServletContext getServletContext() {
 		// TODO Auto-generated method stub

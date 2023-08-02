@@ -115,8 +115,7 @@ RichFaces.Menu.Layers = {
 	isVisible: function(layer) {
 		// return $(layer).style .display != 'none';
 		// layer e' il div con Id che termina per "_menu"
-		var jqLayer = jQuery(this.layer);
-		return jqLayer.hasClass('rich-menu-list-border-display');
+		return $(layer).hasClassName('rich-menu-list-border-display');
 	},
 
 	/**
@@ -278,7 +277,7 @@ RichFaces.Menu.Layers = {
 		}
 		if (this.useTimeouts) {
 			clearTimeout(this.timeoutFlag);
-			this.timeoutFlag = setTimeout('RichFaces.Menu.Layers.shutdown()', ratio);
+			this.timeoutFlag = setTimeout(function () {RichFaces.Menu.Layers.shutdown();}, ratio);
 		}
 	},
 
@@ -400,7 +399,7 @@ RichFaces.Menu.DelayedContextMenu = function(layer, e) {
 		// layer e' il div con Id che termina per "_menu"
 		var jqLayer = jQuery(this.layer);
 		var hidden = (jqLayer.hasClass('rich-menu-list-border-display-none'));
-		var oldVisibility;
+//		var oldVisibility;
 //		var layer_display = this.layer.style .display;
 // 		if (layer_display=='none')
 		if (hidden)

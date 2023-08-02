@@ -3,7 +3,7 @@
   <parent>
 		<artifactId>cdk</artifactId>
 		<groupId>org.richfaces</groupId>
-		<version>3.3.4.Final</version>
+		<version>${govway-monitor-ui.version}</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,6 @@
   
   <artifactId>maven-resource-dependency-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>3.3.4.Final</version>
   <name>maven-resource-dependency-plugin</name>
   
     
@@ -29,18 +28,24 @@
       <groupId>commons-vfs</groupId>
       <artifactId>commons-vfs</artifactId>
       <version>1.0</version>
+        <exclusions>
+                <exclusion>
+                        <groupId>*</groupId>
+                        <artifactId>*</artifactId>
+                </exclusion>
+        </exclusions>
     </dependency>
 
     <dependency> 
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
-      <version>2.0</version>
+      <version>${commons-digester.version}</version>
     </dependency>
 
     <dependency>
        <groupId>org.richfaces.cdk</groupId>
 	<artifactId>maven-cdk-plugin</artifactId>
-	<version>3.3.4.Final</version>
+	<version>${govway-monitor-ui.version}</version>
    </dependency>
     
   </dependencies>

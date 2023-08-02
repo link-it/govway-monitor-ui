@@ -197,7 +197,7 @@ public class XMLBodyTest extends TestCase {
 	body.loadXML(in,true);
 	try {
 		assertEquals(
-				"<f:component xmlns:f=\"http://foo.baz\"><test f:foo=\"xxx\" xmlns=\"http://foo.bar\">blabla</test></f:component>",
+				"<f:component xmlns:f=\"http://foo.baz\">    <test f:foo=\"xxx\" xmlns=\"http://foo.bar\">blabla</test></f:component>",
 				body.getContent().replace("\r", "\n").replace("\n", ""));
 	} catch (ParsingException e) {
 		e.printStackTrace();

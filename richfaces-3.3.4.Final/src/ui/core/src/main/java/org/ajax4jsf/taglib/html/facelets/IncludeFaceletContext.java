@@ -27,11 +27,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.el.ELException;
-import javax.el.ELResolver;
-import javax.el.ExpressionFactory;
-import javax.el.FunctionMapper;
-import javax.el.VariableMapper;
+import jakarta.el.ELException;
+import jakarta.el.ELResolver;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.FunctionMapper;
+import jakarta.el.VariableMapper;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -95,7 +95,7 @@ public class IncludeFaceletContext extends FaceletContext {
 	/**
 	 * @param key
 	 * @return
-	 * @see javax.el.ELContext#getContext(java.lang.Class)
+	 * @see jakarta.el.ELContext#getContext(java.lang.Class)
 	 */
 	public Object getContext(Class key) {
 		return this.defaultContext.getContext(key);
@@ -103,7 +103,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @return
-	 * @see javax.el.ELContext#getELResolver()
+	 * @see jakarta.el.ELContext#getELResolver()
 	 */
 	public ELResolver getELResolver() {
 		return this.defaultContext.getELResolver();
@@ -127,7 +127,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @return
-	 * @see javax.el.ELContext#getFunctionMapper()
+	 * @see jakarta.el.ELContext#getFunctionMapper()
 	 */
 	public FunctionMapper getFunctionMapper() {
 		return this.defaultContext.getFunctionMapper();
@@ -135,7 +135,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @return
-	 * @see javax.el.ELContext#getLocale()
+	 * @see jakarta.el.ELContext#getLocale()
 	 */
 	public Locale getLocale() {
 		return this.defaultContext.getLocale();
@@ -143,7 +143,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @return
-	 * @see javax.el.ELContext#getVariableMapper()
+	 * @see jakarta.el.ELContext#getVariableMapper()
 	 */
 	public VariableMapper getVariableMapper() {
 		return this.defaultContext.getVariableMapper();
@@ -199,7 +199,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @return
-	 * @see javax.el.ELContext#isPropertyResolved()
+	 * @see jakarta.el.ELContext#isPropertyResolved()
 	 */
 	public boolean isPropertyResolved() {
 		return this.defaultContext.isPropertyResolved();
@@ -224,7 +224,7 @@ public class IncludeFaceletContext extends FaceletContext {
 	/**
 	 * @param key
 	 * @param contextObject
-	 * @see javax.el.ELContext#putContext(java.lang.Class, java.lang.Object)
+	 * @see jakarta.el.ELContext#putContext(java.lang.Class, java.lang.Object)
 	 */
 	public void putContext(Class key, Object contextObject) {
 		this.defaultContext.putContext(key, contextObject);
@@ -241,7 +241,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @param fnMapper
-	 * @see com.sun.facelets.FaceletContext#setFunctionMapper(javax.el.FunctionMapper)
+	 * @see com.sun.facelets.FaceletContext#setFunctionMapper(jakarta.el.FunctionMapper)
 	 */
 	public void setFunctionMapper(FunctionMapper fnMapper) {
 		this.defaultContext.setFunctionMapper(fnMapper);
@@ -249,7 +249,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @param locale
-	 * @see javax.el.ELContext#setLocale(java.util.Locale)
+	 * @see jakarta.el.ELContext#setLocale(java.util.Locale)
 	 */
 	public void setLocale(Locale locale) {
 		this.defaultContext.setLocale(locale);
@@ -257,7 +257,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @param resolved
-	 * @see javax.el.ELContext#setPropertyResolved(boolean)
+	 * @see jakarta.el.ELContext#setPropertyResolved(boolean)
 	 */
 	public void setPropertyResolved(boolean resolved) {
 		this.defaultContext.setPropertyResolved(resolved);
@@ -265,7 +265,7 @@ public class IncludeFaceletContext extends FaceletContext {
 
 	/**
 	 * @param varMapper
-	 * @see com.sun.facelets.FaceletContext#setVariableMapper(javax.el.VariableMapper)
+	 * @see com.sun.facelets.FaceletContext#setVariableMapper(jakarta.el.VariableMapper)
 	 */
 	public void setVariableMapper(VariableMapper varMapper) {
 		this.defaultContext.setVariableMapper(varMapper);

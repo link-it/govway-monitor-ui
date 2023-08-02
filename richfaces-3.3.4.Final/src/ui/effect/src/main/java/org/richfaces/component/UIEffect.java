@@ -18,21 +18,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.component;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.ajax4jsf.Messages;
-import org.ajax4jsf.component.EventValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+
+import org.ajax4jsf.Messages;
 import org.ajax4jsf.component.AjaxSupport;
+import org.ajax4jsf.component.EventValueExpression;
+import org.ajax4jsf.renderkit.RendererUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ajax4jsf.renderkit.RendererUtils;
 
 
 /**
@@ -43,7 +46,7 @@ public abstract class UIEffect extends UIComponentBase implements AjaxSupport {
 	
 	public static final String COMPONENT_TYPE = "org.richfaces.Effect";
 	
-	private static final String COMPONENT_FAMILY = "org.richfaces.Effect";
+	public static final String COMPONENT_FAMILY = "org.richfaces.Effect";
 
        	private static final Log log = LogFactory.getLog(UIEffect.class);
 

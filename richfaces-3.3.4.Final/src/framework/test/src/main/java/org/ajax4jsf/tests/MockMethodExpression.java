@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodInfo;
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.MethodInfo;
 
 /**
  * @author Administrator
@@ -56,7 +56,7 @@ public class MockMethodExpression extends MethodExpression {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.MethodExpression#getMethodInfo(javax.el.ELContext)
+	 * @see jakarta.el.MethodExpression#getMethodInfo(jakarta.el.ELContext)
 	 */
 	@Override
 	public MethodInfo getMethodInfo(ELContext context) {
@@ -64,7 +64,7 @@ public class MockMethodExpression extends MethodExpression {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.MethodExpression#invoke(javax.el.ELContext, java.lang.Object[])
+	 * @see jakarta.el.MethodExpression#invoke(jakarta.el.ELContext, java.lang.Object[])
 	 */
 	@Override
 	public Object invoke(ELContext context, Object[] params) {
@@ -77,7 +77,7 @@ public class MockMethodExpression extends MethodExpression {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.Expression#equals(java.lang.Object)
+	 * @see jakarta.el.Expression#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -89,7 +89,7 @@ public class MockMethodExpression extends MethodExpression {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.Expression#getExpressionString()
+	 * @see jakarta.el.Expression#getExpressionString()
 	 */
 	@Override
 	public String getExpressionString() {
@@ -97,7 +97,7 @@ public class MockMethodExpression extends MethodExpression {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.Expression#hashCode()
+	 * @see jakarta.el.Expression#hashCode()
 	 */
 	@Override
 	public int hashCode() {
@@ -105,7 +105,7 @@ public class MockMethodExpression extends MethodExpression {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.el.Expression#isLiteralText()
+	 * @see jakarta.el.Expression#isLiteralText()
 	 */
 	@Override
 	public boolean isLiteralText() {

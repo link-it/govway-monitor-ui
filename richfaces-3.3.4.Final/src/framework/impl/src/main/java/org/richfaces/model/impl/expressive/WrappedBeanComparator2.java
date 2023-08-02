@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.el.Expression;
+import jakarta.el.Expression;
 
 import org.richfaces.model.Ordering;
 import org.richfaces.model.SortField;

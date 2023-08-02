@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * 
+ * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ */
 
 package org.richfaces.renderkit.html;
 
@@ -42,7 +47,7 @@ public class MenuGroupRendererBase extends HeaderResourcesRendererBase {
 		delegate = new MenuItemRendererDelegate();
 	}
 
-	protected Class getComponentClass() {
+	protected Class<UIMenuGroup> getComponentClass() {
 		return UIMenuGroup.class;
 	}
 

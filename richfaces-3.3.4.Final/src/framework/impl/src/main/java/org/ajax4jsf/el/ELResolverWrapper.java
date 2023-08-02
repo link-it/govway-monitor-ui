@@ -24,8 +24,8 @@ package org.ajax4jsf.el;
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
 
 /**
  * @author Nick Belaevski
@@ -45,7 +45,7 @@ public class ELResolverWrapper extends ELResolver {
 	 * @param context
 	 * @param base
 	 * @return
-	 * @see javax.el.ELResolver#getCommonPropertyType(javax.el.ELContext, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getCommonPropertyType(jakarta.el.ELContext, java.lang.Object)
 	 */
 	public Class<?> getCommonPropertyType(ELContext context, Object base) {
 		return resolver.getCommonPropertyType(context, base);
@@ -55,7 +55,7 @@ public class ELResolverWrapper extends ELResolver {
 	 * @param context
 	 * @param base
 	 * @return
-	 * @see javax.el.ELResolver#getFeatureDescriptors(javax.el.ELContext, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getFeatureDescriptors(jakarta.el.ELContext, java.lang.Object)
 	 */
 	public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context,
 			Object base) {
@@ -67,7 +67,7 @@ public class ELResolverWrapper extends ELResolver {
 	 * @param base
 	 * @param property
 	 * @return
-	 * @see javax.el.ELResolver#getType(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getType(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	public Class<?> getType(ELContext context, Object base, Object property) {
 		return resolver.getType(context, base, property);
@@ -78,7 +78,7 @@ public class ELResolverWrapper extends ELResolver {
 	 * @param base
 	 * @param property
 	 * @return
-	 * @see javax.el.ELResolver#getValue(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#getValue(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	public Object getValue(ELContext context, Object base, Object property) {
 		return resolver.getValue(context, base, property);
@@ -89,7 +89,7 @@ public class ELResolverWrapper extends ELResolver {
 	 * @param base
 	 * @param property
 	 * @return
-	 * @see javax.el.ELResolver#isReadOnly(javax.el.ELContext, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#isReadOnly(jakarta.el.ELContext, java.lang.Object, java.lang.Object)
 	 */
 	public boolean isReadOnly(ELContext context, Object base, Object property) {
 		return resolver.isReadOnly(context, base, property);
@@ -100,7 +100,7 @@ public class ELResolverWrapper extends ELResolver {
 	 * @param base
 	 * @param property
 	 * @param value
-	 * @see javax.el.ELResolver#setValue(javax.el.ELContext, java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see jakarta.el.ELResolver#setValue(jakarta.el.ELContext, java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	public void setValue(ELContext context, Object base, Object property,
 			Object value) {

@@ -7,17 +7,17 @@ package ${tag.packageName};
 #foreach($import in $imports)
 import $import ;
 #end
-import javax.el.ELException;
+import jakarta.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 import javax.faces.convert.Converter;
 import javax.faces.webapp.UIComponentTag;
 import javax.faces.context.FacesContext;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 import ${converter.classname};
 
 public class $tag.simpleClassName extends $tag.superclass 

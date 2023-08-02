@@ -113,7 +113,7 @@
 
 		<property>
 			<name>scrollerListener</name>
-			<classname>javax.el.MethodExpression</classname>
+			<classname>jakarta.el.MethodExpression</classname>
 			<description>MethodBinding representing an action listener method that will be notified after scrolling
 			</description>
 		</property>

@@ -4,13 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.richfaces.cdk</groupId>
   <artifactId>richfaces-facelets</artifactId>
-  <version>3.3.4.Final</version>
   <name>maven-archetype-rf-facelets</name>
   <packaging>maven-archetype</packaging>
   <parent>
     <artifactId>cdk</artifactId>
     <groupId>org.richfaces</groupId>
-    <version>3.3.4.Final</version>
+    <version>${govway-monitor-ui.version}</version>
   </parent>
 
  <build>

@@ -3,7 +3,7 @@
  */
 package org.richfaces.component;
 
-import javax.el.ValueExpression;
+import jakarta.el.ValueExpression;
 
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
 import org.richfaces.component.UIGraphValidator.GraphValidatorState;

@@ -22,8 +22,8 @@ package org.richfaces.webapp.taglib;
 
 import java.io.Serializable;
 
-import javax.el.ELException;
-import javax.el.ValueExpression;
+import jakarta.el.ELException;
+import jakarta.el.ValueExpression;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -54,7 +54,7 @@ public class ValueBindingValueExpressionAdaptor extends ValueBinding implements 
 			PropertyNotFoundException {
 		try {
 			return expression.getType(context.getELContext());
-		} catch (javax.el.PropertyNotFoundException e) {
+		} catch (jakarta.el.PropertyNotFoundException e) {
 			throw new PropertyNotFoundException(e);
 		} catch (ELException e) {
 			throw new EvaluationException(e);
@@ -69,7 +69,7 @@ public class ValueBindingValueExpressionAdaptor extends ValueBinding implements 
 			PropertyNotFoundException {
 		try {
 			return expression.getValue(context.getELContext());
-		} catch(javax.el.PropertyNotFoundException e) {
+		} catch(jakarta.el.PropertyNotFoundException e) {
 			throw new PropertyNotFoundException(e);
 		} catch (ELException e) {
 			throw new EvaluationException(e);
@@ -84,7 +84,7 @@ public class ValueBindingValueExpressionAdaptor extends ValueBinding implements 
 			PropertyNotFoundException {
 		try {
 			return expression.isReadOnly(context.getELContext());
-		} catch(javax.el.PropertyNotFoundException e) {
+		} catch(jakarta.el.PropertyNotFoundException e) {
 			throw new PropertyNotFoundException(e);
 		} catch (ELException e) {
 			throw new EvaluationException(e);
@@ -100,7 +100,7 @@ public class ValueBindingValueExpressionAdaptor extends ValueBinding implements 
 		
 		try {
 			expression.setValue(context.getELContext(), value);
-		} catch(javax.el.PropertyNotFoundException e) {
+		} catch(jakarta.el.PropertyNotFoundException e) {
 			throw new PropertyNotFoundException(e);
 		} catch (ELException e) {
 			throw new EvaluationException(e);

@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
