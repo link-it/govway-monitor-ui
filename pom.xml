@@ -10,7 +10,7 @@
         <maven.compile.source>11</maven.compile.source>
         <maven.compile.target>11</maven.compile.target>
       
-        <govway-monitor-ui.version>20230726</govway-monitor-ui.version>
+        <govway-monitor-ui.version>20230822</govway-monitor-ui.version>
  
         <!-- Versioni librerie poi presenti in govway -->
 	<commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -26,6 +26,7 @@
 	<jakarta.jstl.version>3.0.0</jakarta.jstl.version>
 	<jakarta.xml.bind.api.version>3.0.1</jakarta.xml.bind.api.version>
 	<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
+        <spring.version>6.0.11</spring.version>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -41,7 +42,7 @@
 	<module>richfaces-3.3.4.Final/src/framework/</module>
 	<module>richfaces-3.3.4.Final/src/ui/</module>
 	<module>richfaces-3.3.4.Final/src/ui/assembly</module>
-        <module>package</module>
+	<module>package</module>
     </modules>
 
 </project>

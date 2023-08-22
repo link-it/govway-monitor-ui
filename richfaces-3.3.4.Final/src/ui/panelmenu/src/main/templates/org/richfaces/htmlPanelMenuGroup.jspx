@@ -46,10 +46,6 @@
 				<tr id="row_#{clientId}"
 						class="#{this:getSelectedClass(isNodeSelected)}" >
 					<td class="rich-pmenu-nowrap #{this:getIconClass( context, component,'left')}">
-						<f:call name="insertSpacerImages" />
-						<f:call name="insertImage">
-							<f:parameter value="left" />
-						</f:call>
 					</td>
 					<td id="icon#{clientId}" class="rich-pmenu-group-self-label #{this:getLabelClass( context, component )} #{cssId}-table-td-style" >
 						<input type="hidden" autocomplete="off" name="panelMenuState#{clientId}" 

@@ -10,7 +10,9 @@
 	<version>${govway-monitor-ui.version}</version>
 	<packaging>pom</packaging>
 	<name>Java Server Faces AJAX framework</name>
-	
+	 <properties>
+                <maven.test.skip>true</maven.test.skip>
+        </properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

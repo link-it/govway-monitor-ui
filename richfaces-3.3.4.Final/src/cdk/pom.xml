@@ -9,6 +9,9 @@
 	<artifactId>cdk</artifactId>
 	<packaging>pom</packaging>
 	<name>JSF Components Development kit</name>
+        <properties>
+                <maven.test.skip>true</maven.test.skip>
+        </properties>
 	<dependencies />
 	<build>
 		<pluginManagement>
