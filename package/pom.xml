@@ -11,124 +11,18 @@
         </parent>
 
     <groupId>org.govway-monitor-ui</groupId>
-    <artifactId>govway-monitor-ui</artifactId>
+    <artifactId>govway-monitor-ui-package</artifactId>
     <version>${govway-monitor-ui.version}</version>
    
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
+    <name>govway-monitor-ui-package</name>
+    <description>Riscrittura componenti interfaccia utente terza parte utilizzate da GovWayMonitor per risoluzione problematiche di sicurezza e migrazione verso Jakarta EE</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-            </plugin>
-        </plugins>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.6.0</version>
-                    <configuration>
-                        <descriptorRefs>
-                            <descriptorRef>jar-with-dependencies</descriptorRef>
-                        </descriptorRefs>
-			<appendAssemblyId>false</appendAssemblyId>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>make-assembly</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>single</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
-    <dependencies>
-
-        <dependency>
-	    <groupId>javax.faces</groupId>
-   	    <artifactId>jsf-api</artifactId>
-	    <version>${govway-monitor-ui.version}</version>
-	    <exclusions>
-		<exclusion>
-			<groupId>*</groupId>
-			<artifactId>*</artifactId>
-		</exclusion>
-	    </exclusions>
-        </dependency>
-
-        <dependency>
-	    <groupId>javax.faces</groupId>
-   	    <artifactId>jsf-impl</artifactId>
-            <version>${govway-monitor-ui.version}</version>
-	    <exclusions>
-		<exclusion>
-			<groupId>*</groupId>
-			<artifactId>*</artifactId>
-		</exclusion>
-	    </exclusions>
-        </dependency>
-
-        <dependency>
-	    <groupId>com.sun.facelets</groupId>
-            <artifactId>jsf-facelets</artifactId>
-            <version>${govway-monitor-ui.version}</version>
-	    <exclusions>
-		<exclusion>
-			<groupId>*</groupId>
-			<artifactId>*</artifactId>
-		</exclusion>
-	    </exclusions>
-        </dependency>
-
-        <dependency>
-	    <groupId>org.richfaces.framework</groupId>
-  	    <artifactId>richfaces-api</artifactId>
-            <version>${govway-monitor-ui.version}</version>
-	    <exclusions>
-		<exclusion>
-			<groupId>*</groupId>
-			<artifactId>*</artifactId>
-		</exclusion>
-	    </exclusions>
-        </dependency>
-
-        <dependency>
-	    <groupId>org.richfaces.framework</groupId>
-  	    <artifactId>richfaces-impl</artifactId>
-            <version>${govway-monitor-ui.version}</version>
-	    <exclusions>
-		<exclusion>
-			<groupId>*</groupId>
-			<artifactId>*</artifactId>
-		</exclusion>
-	    </exclusions>
-        </dependency>
-
-        <dependency>
-	    <groupId>org.richfaces.ui</groupId>
-	    <artifactId>richfaces-ui</artifactId>
-            <version>${govway-monitor-ui.version}</version>
-	    <exclusions>
-		<exclusion>
-			<groupId>*</groupId>
-			<artifactId>*</artifactId>
-		</exclusion>
-	    </exclusions>
-        </dependency>
-
-    </dependencies>
+    <modules>
+        <module>jsf</module>
+	<module>api</module>
+	<module>components</module>
+    </modules>
 
 </project>

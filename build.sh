@@ -32,22 +32,34 @@ rm -f out.txt
 if [ -z "${RESULT}" ]
 then
 	echo "Richiesta java version 17, trovata: ${JAVA_VERSION}"
+	exit 5
 fi
 
 find . -name target | xargs rm -rf
 export MAVEN_OPTS="-Xmx2048m -XX:MaxMetaspaceSize=2048m --add-opens=java.base/java.lang=ALL-UNNAMED"
 mvn install
 
-VERSION=$(ls package/target/govway-monitor-ui-*.jar  | cut -d '-' -f 4 | cut -d '.' -f 1)
+VERSION=$(ls package/components/target/govway-monitor-ui-components-*.jar  | cut -d '-' -f 5 | cut -d '.' -f 1)
 if [ -z "${VERSION}" ]
 then
-	echo "Versione libreria non trovata in package/target/govway-monitor-ui-*.jar"
+	echo "Versione libreria non trovata in package/components/target/govway-monitor-ui-components-*.jar"
+	exit 6
 fi
 
-if [ "UPLOAD" == "true" ]
+if [ "${UPLOAD}" == "true" ]
 then
 	echo "Upload to maven repository ..."
+
 	GROUP_ID="org.govway-monitor-ui"
-	bash package/script/deploy.sh package/target/govway-monitor-ui-${VERSION}.jar govway-monitor-ui ${GROUP_ID} ${VERSION} ${RELEASE}
+
+	echo "- jsf"
+	bash package/script/deploy.sh package/jsf/target/govway-monitor-ui-jsf-${VERSION}.jar govway-monitor-ui-jsf ${GROUP_ID} ${VERSION} ${RELEASE}
+
+	echo "- api"
+	bash package/script/deploy.sh package/api/target/govway-monitor-ui-api-${VERSION}.jar govway-monitor-ui-api ${GROUP_ID} ${VERSION} ${RELEASE}
+
+	echo "- components"
+	bash package/script/deploy.sh package/components/target/govway-monitor-ui-components-${VERSION}.jar govway-monitor-ui-components ${GROUP_ID} ${VERSION} ${RELEASE}
+
 	echo "Upload to maven repository finished"
 fi
