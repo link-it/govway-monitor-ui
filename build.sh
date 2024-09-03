@@ -26,12 +26,12 @@ fi
 
 java -fullversion > out.txt 2>&1
 JAVA_VERSION=$(cat out.txt)
-RESULT=$(cat out.txt | grep "17")
+RESULT=$(cat out.txt | grep "21")
 rm -f out.txt
 
 if [ -z "${RESULT}" ]
 then
-	echo "Richiesta java version 17, trovata: ${JAVA_VERSION}"
+	echo "Richiesta java version 21, trovata: ${JAVA_VERSION}"
 	exit 5
 fi
 

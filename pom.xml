@@ -15,9 +15,10 @@
         <!-- Versioni librerie poi presenti in govway -->
 	<commons-beanutils.version>1.9.4</commons-beanutils.version>
 	<commons-digester.version>1.5</commons-digester.version><!-- Lasciare 1.5 e non usare 2.1 usato in GovWay -->
-	<commons-fileupload.version>2.0.0-M1</commons-fileupload.version>
+	<commons-fileupload-core.version>2.0.0-M2</commons-fileupload-core.version>
+	<commons-fileupload-jakarta.version>2.0.0-M1</commons-fileupload-jakarta.version>
 	<commons-logging.version>1.2</commons-logging.version>
-	<commons-validator.version>1.7</commons-validator.version>
+	<commons-validator.version>1.9.0</commons-validator.version>
 	<commons-collections.version>3.2.2</commons-collections.version>
 	<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
 	<jakarta.servlet-jsp-api.version>3.1.1</jakarta.servlet-jsp-api.version>
@@ -26,7 +27,7 @@
 	<jakarta.jstl.version>3.0.0</jakarta.jstl.version>
 	<jakarta.xml.bind.api.version>3.0.1</jakarta.xml.bind.api.version>
 	<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
-        <spring.version>6.0.11</spring.version>
+        <spring.version>6.1.12</spring.version>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
