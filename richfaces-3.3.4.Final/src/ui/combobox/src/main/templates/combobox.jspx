@@ -112,7 +112,12 @@
     			buttonIconInactive = "url('" + getResource(buttonIconInactive).getUri(context, component) + "')";
     		}
        		variables.setVariable("buttonIconInactive", buttonIconInactive);
-       		variables.setVariable("enableManualInput", !component.isEnableManualInput());
+       		String inputReadOnly = "";
+       		if(!component.isEnableManualInput()){
+       			inputReadOnly = "readonly";
+       		}
+       		
+       		variables.setVariable("enableManualInput", inputReadOnly);
 		]]>
     </jsp:scriptlet>
 		<f:resource var="spacer" name="images/spacer.gif"/>
@@ -137,7 +142,7 @@
 					   name="#{clientId}comboboxField" 
 					   disabled="#{disabled}" 
 					   class="#{valueStyle} rich-combobox-input-inactive #{component.attributes['inputInactiveClass']} #{cssId}-combobox-field-width-style #{cssId}-combobox-field-style"  type="text" 
-					   readonly="#{this:getReadOnlyValue(enableManualInput)}"
+					   readonly="#{enableManualInput}"
 					   value="#{value}" 
 					   x:onblur="#{component.attributes['onblur']}"
 					   onfocus = "#{component.attributes['onfocus']}"
