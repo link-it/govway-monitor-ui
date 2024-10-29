@@ -27,7 +27,7 @@
 	<jakarta.jstl.version>3.0.0</jakarta.jstl.version>
 	<jakarta.xml.bind.api.version>3.0.1</jakarta.xml.bind.api.version>
 	<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
-        <spring.version>6.1.12</spring.version>
+        <spring.version>6.1.14</spring.version>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
