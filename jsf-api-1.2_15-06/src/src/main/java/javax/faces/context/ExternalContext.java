@@ -45,6 +45,12 @@
  * restricted by GSA ADP Schedule Contract with IBM Corp. 
  */
 
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
+ * 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
+ */
+
 package javax.faces.context;
 
 import java.io.IOException;

@@ -34,10 +34,11 @@
  * holder.
  */
 /*
- * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
  * 
- * Copyright (c) 2022-2023 Link.it srl (https://link.it). 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
  */
+
 
 package com.sun.faces.renderkit;
 
