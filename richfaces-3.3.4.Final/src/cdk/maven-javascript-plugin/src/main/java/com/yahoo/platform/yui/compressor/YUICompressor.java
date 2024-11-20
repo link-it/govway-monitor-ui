@@ -6,6 +6,11 @@
 // * The copyrights embodied in the content of this file are licensed
 // * by Yahoo! Inc. under the BSD (revised) open source license.
 // */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
+ * 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
+ */
 //package com.yahoo.platform.yui.compressor;
 //
 //import jargs.gnu.CmdLineParser;

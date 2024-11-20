@@ -97,11 +97,15 @@ public class LinkitCheck {
 
 					// check 
 					// gestione eccezioni.
-					if( !f.getAbsolutePath().contains("/todo1")
+					if( !f.getAbsolutePath().contains("/richfaces-3.3.4.Final/src/cdk/maven-archetype-jsfwebapp/src/main/resources/archetype-resources/src/main/webapp/pages/index.jsp")
 						&&
-				            !f.getAbsolutePath().contains("/todo2")
-				            
-				            
+				            !f.getAbsolutePath().contains("/richfaces-3.3.4.Final/src/cdk/maven-archetype-jsfwebapp/src/main/resources/archetype-resources/src/main/webapp/index.jsp")
+				                &&
+				            !f.getAbsolutePath().contains("/richfaces-3.3.4.Final/src/cdk/maven-archetype-seam-app/src/main/resources/archetype-resources/web/src/main/webapp/index.html")
+				                &&
+				            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/cdk/richfaces-facelets/target/classes/archetype-resources/src/main/webapp/index.jsp")
+				                &&
+				            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/cdk/richfaces-facelets/src/main/resources/archetype-resources/src/main/webapp/index.jsp")
 							){
 
 						for(int i=0; i<GPL_CHECK.length; i++){
