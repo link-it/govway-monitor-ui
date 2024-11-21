@@ -32,6 +32,11 @@
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
+ * 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.webapp;
 
 import java.io.IOException;

@@ -7,7 +7,11 @@
  *      $Source: /cvs-master/intralinks-jsf-comps/components/data-view-grid/src/component/com/exadel/jsf/model/impl/PropertyResolverComparator.java,v $
  *      $Revision: 1.2 $ 
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
+ * 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
+ */
 package org.richfaces.model.impl;
 
 import java.util.Comparator;

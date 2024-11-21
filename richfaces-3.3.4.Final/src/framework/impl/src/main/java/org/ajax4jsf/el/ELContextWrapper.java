@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
+ * 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
+ */
 package org.ajax4jsf.el;
 
 import java.util.Locale;

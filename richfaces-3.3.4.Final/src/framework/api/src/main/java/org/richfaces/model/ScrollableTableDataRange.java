@@ -7,7 +7,11 @@
  *      $Source: /cvs-master/intralinks-jsf-comps/components/data-view-grid/src/component/com/exadel/jsf/model/ScrollableTableDataRange.java,v $
  *      $Revision: 1.7 $ 
  */
-
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
+ * 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
+ */
 package org.richfaces.model;
 
 import java.io.IOException;

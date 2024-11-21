@@ -106,6 +106,29 @@ public class LinkitCheck {
 				            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/cdk/richfaces-facelets/target/classes/archetype-resources/src/main/webapp/index.jsp")
 				                &&
 				            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/cdk/richfaces-facelets/src/main/resources/archetype-resources/src/main/webapp/index.jsp")
+				                &&
+				            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/org/w3c/tidy") // Java HTML Tidy - JTidy
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/resource/image") // No copyright asserted on the source code of this class
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/xml/serializer") // xml.serializer
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/richfaces/json") // JSON.org
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/richfaces/renderkit/html/images") // html.images
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/resources/org/ajax4jsf/javascript/jsshell.html")
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/resources/org/ajax4jsf/xml/serializer/package.html")
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/application/package.html")
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/resource/package.html")
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/jsf-test/src")
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/test/src/main/resources/META-INF/resources/w3c/MarkUp/DTD/examples")
+   			                    
 							){
 
 						for(int i=0; i<GPL_CHECK.length; i++){

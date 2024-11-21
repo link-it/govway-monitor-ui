@@ -18,51 +18,102 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
+/*
+ * Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE
+ * 
+ * Copyright (c) 2022-2024 Link.it srl (https://link.it). 
+ */
+package org.richfaces.skin;
 
-package org.richfaces.skin;
-
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationFactory;
-
-import org.easymock.MockControl;
-import org.easymock.classextension.MockClassControl;
-
-/**
- * @author asmirnov@exadel.com (latest modification by $Author: ishabalov $)
- * @version $Revision: 1.1.2.2 $ $Date: 2007/02/20 20:58:11 $
- *
- */
-public class TestApplicationFactory extends ApplicationFactory {
-	
-	private MockControl applicationControl;
-	private Application mockApplication;
-	
-	public TestApplicationFactory(){
-		applicationControl = MockClassControl.createControl(Application.class);
-		mockApplication = (Application) applicationControl.getMock();
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.faces.application.ApplicationFactory#getApplication()
-	 */
-	public Application getApplication() {
-		// TODO Auto-generated method stub
-		return mockApplication;
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.faces.application.ApplicationFactory#setApplication(javax.faces.application.Application)
-	 */
-	public void setApplication(Application arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * @return Returns the applicationControl.
-	 */
-	public MockControl getApplicationControl() {
-		return applicationControl;
-	}
-
-}
+
+
+import javax.faces.application.Application;
+
+import javax.faces.application.ApplicationFactory;
+
+
+
+import org.easymock.MockControl;
+
+import org.easymock.classextension.MockClassControl;
+
+
+
+/**
+
+ * @author asmirnov@exadel.com (latest modification by $Author: ishabalov $)
+
+ * @version $Revision: 1.1.2.2 $ $Date: 2007/02/20 20:58:11 $
+
+ *
+
+ */
+
+public class TestApplicationFactory extends ApplicationFactory {
+
+	
+
+	private MockControl applicationControl;
+
+	private Application mockApplication;
+
+	
+
+	public TestApplicationFactory(){
+
+		applicationControl = MockClassControl.createControl(Application.class);
+
+		mockApplication = (Application) applicationControl.getMock();
+
+	}
+
+
+
+	/* (non-Javadoc)
+
+	 * @see javax.faces.application.ApplicationFactory#getApplication()
+
+	 */
+
+	public Application getApplication() {
+
+		// TODO Auto-generated method stub
+
+		return mockApplication;
+
+	}
+
+
+
+	/* (non-Javadoc)
+
+	 * @see javax.faces.application.ApplicationFactory#setApplication(javax.faces.application.Application)
+
+	 */
+
+	public void setApplication(Application arg0) {
+
+		// TODO Auto-generated method stub
+
+
+
+	}
+
+
+
+	/**
+
+	 * @return Returns the applicationControl.
+
+	 */
+
+	public MockControl getApplicationControl() {
+
+		return applicationControl;
+
+	}
+
+
+
+}
+
