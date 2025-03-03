@@ -49,7 +49,7 @@ then
 	fi
 fi
 
-PREFIX_URL="scpexe://poli-dev/opt/local/maven"
+PREFIX_URL="scpexe://govway-devops-01/opt/local/maven"
 SNAPSHOT_SUFFIX=""
 
 if [ "release" == "$TIPO" ]
