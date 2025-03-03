@@ -107,6 +107,10 @@ public class LinkitCheck {
 				                &&
 				            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/cdk/richfaces-facelets/src/main/resources/archetype-resources/src/main/webapp/index.jsp")
 				                &&
+                		            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/cdk/maven-cdk-plugin/target/generated-sources")
+						&&				                
+                		            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/cdk/maven-archetype-jsfwebapp/target/classes/")
+						&&	                		            
 				            !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/org/w3c/tidy") // Java HTML Tidy - JTidy
 				                &&
    			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/resource/image") // No copyright asserted on the source code of this class
@@ -124,6 +128,10 @@ public class LinkitCheck {
    			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/application/package.html")
 				                &&
    			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/src/main/java/org/ajax4jsf/resource/package.html")
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/target/generated-sources")
+				                &&
+   			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/impl/target/classes")
 				                &&
    			                    !f.getAbsolutePath().contains("richfaces-3.3.4.Final/src/framework/jsf-test/src")
 				                &&
