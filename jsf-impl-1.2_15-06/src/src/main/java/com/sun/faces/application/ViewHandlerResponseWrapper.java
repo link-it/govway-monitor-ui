@@ -93,6 +93,10 @@ public class ViewHandlerResponseWrapper extends HttpServletResponseWrapper {
         super.setStatus(sc);
         status = sc;
     }
+    
+    public void setStatus(int arg0, String arg1) {
+        this.setStatus(arg0);
+    }
 
 
     public int getStatus() {

@@ -665,6 +665,10 @@ public class FilterServletResponseWrapper extends HttpServletResponseWrapper {
 		this.status = sc;
 		super.setStatus(sc);
 	}
+	
+	public void setStatus(int arg0, String arg1) {
+		this.setStatus(arg0);
+	}
 
 	public void sendError(int sc) throws IOException {
 		this.error = true;
