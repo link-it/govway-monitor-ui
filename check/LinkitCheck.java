@@ -2,7 +2,7 @@
  * GovWay - A customizable API Gateway 
  * https://govway.org
  * 
- * Copyright (c) 2005-2024 Link.it srl (https://link.it). 
+ * Copyright (c) 2005-2025 Link.it srl (https://link.it). 
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3, as published by
@@ -30,7 +30,7 @@ import java.io.*;
 public class LinkitCheck {
 
 	public static final String[] GPL_CHECK = {"Modificato da Link.it (https://link.it) per applicazione patch di sicurezza e migrazione a jakarta EE",
-			"Copyright (c) 2022-2024 Link.it srl (https://link.it)."};
+			"Copyright (c) 2022-2025 Link.it srl (https://link.it)."};
 
 
 	public static java.util.List<String> fileNonValidi = new java.util.ArrayList<>();
