@@ -1,26 +1,27 @@
-RELEASE=$1
-if [ -z "${RELEASE}" ]
-then
-	echo "Tipo di build non fornito"
-	echo "Error; usage: ./build.sh snapshot|release [upload:true/false]"
-	exit 2
-fi
-if [ ! "snapshot" == "${RELEASE}" -a ! "release" == "${RELEASE}" ]
-then
-	echo "Tipo di build '${RELEASE}' sconosciuto"
-	echo "Error; usage: ./build.sh snapshot|release [upload:true/false]"
-	exit 3
-fi
+#RELEASE=$1
+#if [ -z "${RELEASE}" ]
+#then
+#	echo "Tipo di build non fornito"
+#	echo "Error; usage: ./build.sh snapshot|release [upload:true/false]"
+#	exit 2
+#fi
+#if [ ! "snapshot" == "${RELEASE}" -a ! "release" == "${RELEASE}" ]
+#then
+#	echo "Tipo di build '${RELEASE}' sconosciuto"
+#	echo "Error; usage: ./build.sh snapshot|release [upload:true/false]"
+#	exit 3
+#fi
 
-UPLOAD=$2
+UPLOAD=$1
 if [ -z "${UPLOAD}" ]
 then
-	UPLOAD=false
+	echo "Error; usage: ./build.sh [predisposizione progetto maven central:true/false]"
+	exit 4
 fi
 if [ ! "${UPLOAD}" == "true" -a ! "${UPLOAD}" == "false" ]
 then
 	echo "Indicazione upload non valida '${UPLOAD}'"
-	echo "Error; usage: ./build.sh snapshot|release [upload:true/false]"
+	echo "Error; usage: ./build.sh [upload:true/false]"
 	exit 4
 fi
 
@@ -48,18 +49,18 @@ fi
 
 if [ "${UPLOAD}" == "true" ]
 then
-	echo "Upload to maven repository ..."
+	echo "Prepare maven central repository project ..."
 
-	GROUP_ID="org.govway-monitor-ui"
+	bash package/script/build.sh ${VERSION}
 
-	echo "- jsf"
-	bash package/script/deploy.sh package/jsf/target/govway-monitor-ui-jsf-${VERSION}.jar govway-monitor-ui-jsf ${GROUP_ID} ${VERSION} ${RELEASE}
-
-	echo "- api"
-	bash package/script/deploy.sh package/api/target/govway-monitor-ui-api-${VERSION}.jar govway-monitor-ui-api ${GROUP_ID} ${VERSION} ${RELEASE}
-
-	echo "- components"
-	bash package/script/deploy.sh package/components/target/govway-monitor-ui-components-${VERSION}.jar govway-monitor-ui-components ${GROUP_ID} ${VERSION} ${RELEASE}
-
-	echo "Upload to maven repository finished"
+	echo "Prepare maven central repository project finished"
+	
+	echo ""
+	echo "!! Attenzione !!"
+	echo "!!!! Effettuare un rilascio solamente di una tag version !!!!!"
+	echo ""
+	echo "Per completare il deploy su maven central:"
+	echo "cd govway-monitor-ui-jsf; mvn clean deploy;"
+	echo "cd govway-monitor-ui-api; mvn clean deploy;"
+	echo "cd govway-monitor-ui-components; mvn clean deploy;"
 fi

@@ -1,0 +1,14 @@
+# Ignora i progetti di eclipse, si importa come maven project
+.gitignore
+.project
+.settings/
+package/.project
+package/.settings/
+package/api/.project
+package/api/.settings/
+package/components/.project
+package/components/.settings/
+package/jsf/.project
+package/jsf/.settings/
+# Except this file
+!.gitignore
