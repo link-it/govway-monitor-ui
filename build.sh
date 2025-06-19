@@ -63,4 +63,12 @@ then
 	echo "cd govway-monitor-ui-jsf; mvn clean deploy;"
 	echo "cd govway-monitor-ui-api; mvn clean deploy;"
 	echo "cd govway-monitor-ui-components; mvn clean deploy;"
+else
+	JAR_API_NAME=$(ls package/api/target/govway-monitor-ui-api-*.jar)
+	JAR_JSF_NAME=$(ls package/jsf/target/govway-monitor-ui-jsf-*.jar)
+        JAR_COM_NAME=$(ls package/components/target/govway-monitor-ui-components-*.jar)
+        echo "Archivi jar disponibile in:"
+	echo "- ${JAR_API_NAME}"
+	echo "- ${JAR_JSF_NAME}"
+	echo "- ${JAR_COM_NAME}"
 fi
