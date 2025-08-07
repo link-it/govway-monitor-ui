@@ -37,7 +37,7 @@ import javax.faces.event.PhaseId;
 import org.ajax4jsf.event.EventsQueue;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
 import org.ajax4jsf.tests.MockViewRoot;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.richfaces.event.SwitchablePanelSwitchEvent;
 
 import com.gargoylesoftware.htmlunit.html.HtmlElement;

@@ -40,7 +40,7 @@ import org.ajax4jsf.resource.ResourceBuilderImpl;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
 import org.ajax4jsf.tests.MockViewRoot;
 import org.apache.commons.collections.Buffer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.richfaces.renderkit.DraggableRendererContributor;
 import org.richfaces.renderkit.DropzoneRendererContributor;
 

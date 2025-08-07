@@ -45,7 +45,7 @@ import org.ajax4jsf.resource.ResourceBuilderImpl;
 import org.ajax4jsf.resource.image.ImageInfo;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
 import org.ajax4jsf.tests.HtmlTestUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.richfaces.renderkit.html.images.SliderArrowImage;
 import org.richfaces.renderkit.html.images.SliderArrowImageLeft;
 import org.richfaces.renderkit.html.images.SliderArrowImageRight;
