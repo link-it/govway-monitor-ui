@@ -37,7 +37,7 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlScript;

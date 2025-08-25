@@ -43,7 +43,7 @@ import javax.faces.model.ListDataModel;
 
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.richfaces.component.UIColumn;
 import org.richfaces.component.UIDataTable;
 import org.richfaces.model.Ordering;

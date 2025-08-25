@@ -36,7 +36,7 @@ import javax.faces.component.html.HtmlForm;
 
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;

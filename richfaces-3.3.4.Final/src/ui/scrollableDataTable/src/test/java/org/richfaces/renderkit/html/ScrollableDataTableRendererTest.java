@@ -38,7 +38,7 @@ import javax.faces.component.html.HtmlOutputText;
 import org.ajax4jsf.javascript.AjaxScript;
 import org.ajax4jsf.javascript.PrototypeScript;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.richfaces.component.UIScrollableDataTable;
 
 import com.gargoylesoftware.htmlunit.html.HtmlElement;

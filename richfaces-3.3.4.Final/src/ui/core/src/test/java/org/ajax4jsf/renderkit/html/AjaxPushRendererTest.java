@@ -35,7 +35,7 @@ import javax.faces.component.html.HtmlForm;
 
 import org.ajax4jsf.component.UIPush;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.gargoylesoftware.htmlunit.html.DomText;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
