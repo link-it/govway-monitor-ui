@@ -35,8 +35,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.ajax4jsf.config.WebXMLParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.richfaces.VersionBean;
-import org.richfaces.VersionBean.Version;
 
 /**
  * Parse at startup application web.xml and store servlet and filter mappings.
@@ -70,11 +68,8 @@ public class WebXml extends WebXMLParser implements Serializable {
 	public static final String SESSION_RESOURCE_URI_PREFIX_VERSIONED;
 
 	static {
-		VersionBean versionBean = new VersionBean();
-		Version version = versionBean.getVersion();
-
-		String suffix = "/" + version.getMajor() + "_" + version.getMinor() + "_"
-			+ version.getRevision();
+		// 2025-10-03 eliminata versione dai path delle risorse
+		String suffix = "/gw";
 		
 		//that's to prevent static compile-time linkage to constant values
 		RESOURCE_URI_PREFIX_VERSIONED = RESOURCE_URI_PREFIX + suffix;

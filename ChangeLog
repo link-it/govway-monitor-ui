@@ -13,3 +13,8 @@
 2025-06-10  Andrea Poli <apoli@link.it>
 
 	* Rilasciata versione 20250610
+
+2025-10-03  Giuliano Pintori <giuliano.pintori@link.it>
+
+	* Corretta generazione del path delle risorse per non contenere
+	indicazioni sulla versione corrente.
