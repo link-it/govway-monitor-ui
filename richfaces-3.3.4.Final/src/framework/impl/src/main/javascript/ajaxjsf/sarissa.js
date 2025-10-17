@@ -167,14 +167,17 @@ if(Sarissa._SARISSA_IS_IE){
         }
         return oDoc;
     };
-    // see non-IE version   
+    // see non-IE version
     Sarissa.getParseErrorText = function (oDoc) {
         var parseErrorText = Sarissa.PARSED_OK;
-        if(oDoc && oDoc.parseError && oDoc.parseError.errorCode && oDoc.parseError.errorCode != 0){
-            parseErrorText = "XML Parsing Error: " + oDoc.parseError.reason + 
-                "\nLocation: " + oDoc.parseError.url + 
-                "\nLine Number " + oDoc.parseError.line + ", Column " + 
-                oDoc.parseError.linepos + 
+        if(!oDoc){
+            return Sarissa.PARSED_EMPTY;
+        }
+        if(oDoc.parseError && oDoc.parseError.errorCode && oDoc.parseError.errorCode != 0){
+            parseErrorText = "XML Parsing Error: " + oDoc.parseError.reason +
+                "\nLocation: " + oDoc.parseError.url +
+                "\nLine Number " + oDoc.parseError.line + ", Column " +
+                oDoc.parseError.linepos +
                 ":\n" + oDoc.parseError.srcText +
                 "\n";
             for(var i = 0;  i < oDoc.parseError.linepos;i++){
@@ -571,6 +574,9 @@ if(!Sarissa.getParseErrorText){
      */
     Sarissa.getParseErrorText = function (oDoc){
         var parseErrorText = Sarissa.PARSED_OK;
+        if(!oDoc){
+            return Sarissa.PARSED_EMPTY;
+        }
         if(!oDoc.documentElement){
             parseErrorText = Sarissa.PARSED_EMPTY;
         } else if(oDoc.documentElement.tagName == "parsererror"){
