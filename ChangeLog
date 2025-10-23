@@ -1,3 +1,19 @@
+2025-10-23  Andrea Poli <apoli@link.it>
+
+	* Rilasciata versione 20251023
+
+2025-10-23  Giuliano Pintori <giuliano.pintori@link.it>
+
+	* Risolto un problema nella generazione dei messaggi XML di risposta per le chiamate asincrone: in presenza di redirect, l’intestazione Location veniva restituita senza l’escape dei caratteri speciali.
+
+2025-10-17  Andrea Poli <apoli@link.it>
+
+	* Rilasciata versione 20251017
+
+2025-10-17  Giuliano Pintori <giuliano.pintori@link.it>
+
+	* Corretto un errore nel parsing delle risposte asincrone in caso di redirect.
+
 2025-10-06  Andrea Poli <apoli@link.it>
 
 	* Rilasciata versione 20251006
