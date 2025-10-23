@@ -216,14 +216,14 @@ public abstract class BaseXMLFilter {
 				String message = Messages
 				.getMessage(Messages.AJAX_VIEW_EXPIRED);
 				response.setHeader(AJAX_EXPIRED, message);
-				output.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				output.write("<?xml version=\"1.0\"?>\n"
 						+ "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>"
 						+ "<meta name=\""
 						+ AjaxContainerRenderer.AJAX_FLAG_HEADER
 						+ "\" content=\"true\" />" + "<meta name=\""
 						+ AJAX_EXPIRED
 						+ "\" content=\"" + message + "\" />"
-						+ "</head></html>");
+						+ "</head><body></body></html>");
 				output.flush();
 				response.flushBuffer();
 				return;
@@ -262,14 +262,15 @@ public abstract class BaseXMLFilter {
 						redirectLocation);
 				// For buggy XmlHttpRequest realisations repeat headers in
 				// <meta>
-				output.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				String escapedRedirectLocation = escapeXml(redirectLocation);
+				output.write("<?xml version=\"1.0\"?>\n"
 						+ "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>"
 						+ "<meta name=\""
 						+ AjaxContainerRenderer.AJAX_FLAG_HEADER
 						+ "\" content=\"redirect\" />" + "<meta name=\""
 						+ AjaxContainerRenderer.AJAX_LOCATION_HEADER
-						+ "\" content=\"" + redirectLocation + "\" />"
-						+ "</head></html>");
+						+ "\" content=\"" + escapedRedirectLocation + "\" />"
+						+ "</head><body></body></html>");
 				output.flush();
 				response.flushBuffer();
 			} else {
@@ -608,6 +609,22 @@ public abstract class BaseXMLFilter {
 
 	private Object nz(Object param, Object def) {
 		return param != null ? param : def;
+	}
+
+	/**
+	 * Escape XML special characters to prevent parsing errors
+	 * @param text The text to escape
+	 * @return The escaped text
+	 */
+	private String escapeXml(String text) {
+		if (text == null) {
+			return null;
+		}
+		return text.replace("&", "&amp;")
+				   .replace("<", "&lt;")
+				   .replace(">", "&gt;")
+				   .replace("\"", "&quot;")
+				   .replace("'", "&apos;");
 	}
 
 }
