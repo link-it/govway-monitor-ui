@@ -85,12 +85,20 @@ if (!window.RichFaces.Memory) {
 		return (node.component && node.component["rich:destructor"]);
 	});
 	
-	if (window.attachEvent) {
-	    window.attachEvent("onunload", function() {
-	    	var memory = window.RichFaces.Memory;
-	    	memory.clean(document);
-	    	memory.clean(window);
-	    });
+	// Clean up memory when navigating away
+	// Use 'pagehide' for modern browsers, 'onunload' only for old IE
+	if (window.addEventListener) {
+		window.addEventListener("pagehide", function() {
+			var memory = window.RichFaces.Memory;
+			memory.clean(document);
+			memory.clean(window);
+		}, false);
+	} else if (window.attachEvent) {
+		window.attachEvent("onunload", function() {
+			var memory = window.RichFaces.Memory;
+			memory.clean(document);
+			memory.clean(window);
+		});
 	}
 }
 

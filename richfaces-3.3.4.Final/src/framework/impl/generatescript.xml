@@ -43,19 +43,9 @@
 	<property name="script.dnd" value="dnd.js"></property>
 	<property name="script.css-rules" value="css-rules.js"></property>
 	<filelist id="imagecache" dir="${basedir}/src/main/javascript/ajaxjsf" files="imagecache.js"></filelist>
-<!--
-	<filelist id="prototype"
-	          dir="${basedir}/src/main/javascript/prototype"
-	          files="empty.js,base.js,string.js,enumerable.js,array.js,hash.js,range.js"
-	>
-	
-	<filelist id="jquery"
-	          dir="${basedir}/src/main/javascript/jquery"
-	          files="jquery-1.3.2.js,../memory.js,patches.js">
-  	<filelist id="jquery"
-	          dir="${basedir}/src/main/javascript/jquery"
-	          files="jquery-3.6.3.js,../memory.js,patches.js">
--->	
+
+	<!-- jQuery core is provided by the main application, not included in this framework.
+	     This filelist only includes RichFaces-specific patches and memory management. -->
 	<filelist id="jquery"
 	          dir="${basedir}/src/main/javascript/jquery"
 	          files="../memory.js,patches.js">

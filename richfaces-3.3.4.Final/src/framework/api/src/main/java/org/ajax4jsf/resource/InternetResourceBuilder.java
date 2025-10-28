@@ -67,7 +67,6 @@ public abstract class InternetResourceBuilder {
 	
 	public static final String COMMON_JQUERY_SCRIPT = "/webjars/jquery/{0}/jquery.min.js";
 	public static final String COMMON_JQUERY_CONFLICT_SCRIPT = "/org/richfaces/renderkit/html/scripts/jquery/noConflict.js";
-	public static final String COMMON_JQUERY_UI_SCRIPT = "/webjars/jquery-ui/1.13.2/jquery-ui.min.js";
 
 	/**
          * Get application start time for check resources modification time.

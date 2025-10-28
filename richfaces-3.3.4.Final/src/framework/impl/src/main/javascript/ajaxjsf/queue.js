@@ -467,10 +467,13 @@ A4J.AJAX.EventQueue.getOrCreateQueue = function(){
 			queue.clear();
 		}
 	};
-	
+
+	// Use 'pagehide' instead of deprecated 'unload' event
+	// pagehide is fired when navigating away and is compatible with bfcache
 	if (window.addEventListener) {
-		window.addEventListener("unload", observer, false);
+		window.addEventListener("pagehide", observer, false);
 	} else {
+		// Fallback for old IE (attachEvent doesn't support pagehide)
 		window.attachEvent("onunload", observer);
 	}
 })();

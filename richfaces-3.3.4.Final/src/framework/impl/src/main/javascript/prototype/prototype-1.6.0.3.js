@@ -4044,9 +4044,8 @@ Object.extend(Event, (function() {
   // Safari has a dummy event handler on page unload so that it won't
   // use its bfcache. Safari <= 3.1 has an issue with restoring the "document"
   // object when page is returned to via the back button using its bfcache.
-  if (Prototype.Browser.WebKit) {
-    window.addEventListener('unload', Prototype.emptyFunction, false);
-  }
+  // REMOVED: This workaround is no longer needed for modern browsers and
+  // the 'unload' event is deprecated. Modern browsers handle bfcache correctly.
 
   return {
     //added by Nick for RichFaces	  

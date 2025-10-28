@@ -69,8 +69,9 @@ public class WebXml extends WebXMLParser implements Serializable {
 
 	static {
 		// 2025-10-03 eliminata versione dai path delle risorse
-		String suffix = "/gw";
-		
+		// Suffix includes trailing slash to ensure proper path separation
+		String suffix = "/gw/";
+
 		//that's to prevent static compile-time linkage to constant values
 		RESOURCE_URI_PREFIX_VERSIONED = RESOURCE_URI_PREFIX + suffix;
 		GLOBAL_RESOURCE_URI_PREFIX_VERSIONED = GLOBAL_RESOURCE_URI_PREFIX + suffix;
@@ -130,7 +131,13 @@ public class WebXml extends WebXMLParser implements Serializable {
 	 */
 	public String getFacesResourceURL(FacesContext context, String Url, boolean isGlobal) {
 		StringBuffer buf = new StringBuffer();
-		buf.append(isGlobal ? getGlobalResourcePrefix() : getSessionResourcePrefix()).append(Url);
+		String prefix = isGlobal ? getGlobalResourcePrefix() : getSessionResourcePrefix();
+		buf.append(prefix);
+		// Ensure there's a slash between prefix and URL
+		if (!Url.startsWith("/") && !prefix.endsWith("/")) {
+			buf.append("/");
+		}
+		buf.append(Url);
 		// Insert suffix mapping
 		if (isPrefixMapping()) {
 			buf.insert(0, getFacesFilterPrefix());
