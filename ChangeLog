@@ -1,3 +1,12 @@
+2025-11-05  Andrea Poli <apoli@link.it>
+
+        * Rilasciata versione 20251105
+
+2025-11-05  Giuliano Pintori <giuliano.pintori@link.it>
+
+	* Riportata gestione dei path alla versione originale della libreria.
+	  Resta solo la valorizzazione della versione con valore costante 'gw' al posto della versione numerica della libreria.
+
 2025-10-28  Andrea Poli <apoli@link.it>
 
         * Rilasciata versione 20251028
