@@ -10,26 +10,26 @@
         <maven.compile.source>11</maven.compile.source>
         <maven.compile.target>11</maven.compile.target>
       
-        <govway-monitor-ui.version>20251105</govway-monitor-ui.version>
+        <govway-monitor-ui.version>20260424</govway-monitor-ui.version>
  
         <!-- Versioni librerie poi presenti in govway -->
 	<commons-beanutils.version>1.11.0</commons-beanutils.version>
 	<commons-digester.version>1.5</commons-digester.version><!-- Lasciare 1.5 e non usare 2.1 usato in GovWay -->
-	<commons-fileupload-core.version>2.0.0-M4</commons-fileupload-core.version>
+	<commons-fileupload-core.version>2.0.0-M5</commons-fileupload-core.version>
 	<commons-fileupload-jakarta.version>2.0.0-M1</commons-fileupload-jakarta.version>
-	<commons-logging.version>1.3.5</commons-logging.version>
-	<commons-validator.version>1.9.0</commons-validator.version>
+	<commons-logging.version>1.3.6</commons-logging.version>
+	<commons-validator.version>1.10.1</commons-validator.version>
 	<commons-collections.version>3.2.2</commons-collections.version>
-	<commons-lang3.version>3.18.0</commons-lang3.version>
-	<commons-text.version>1.14.0</commons-text.version>
-	<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+	<commons-lang3.version>3.20.0</commons-lang3.version>
+	<commons-text.version>1.15.0</commons-text.version>
+	<jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
 	<jakarta.servlet-jsp-api.version>3.1.1</jakarta.servlet-jsp-api.version>
         <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
 	<jakarta.el-impl.version>5.0.0-M1</jakarta.el-impl.version>
-	<jakarta.jstl.version>3.0.0</jakarta.jstl.version>
-	<jakarta.xml.bind.api.version>3.0.1</jakarta.xml.bind.api.version>
-	<jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
-        <spring.version>6.2.17</spring.version>
+	<jakarta.jstl.version>3.0.2</jakarta.jstl.version>
+	<jakarta.xml.bind.api.version>4.0.5</jakarta.xml.bind.api.version>
+	<jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
+        <spring.version>7.0.7</spring.version>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
