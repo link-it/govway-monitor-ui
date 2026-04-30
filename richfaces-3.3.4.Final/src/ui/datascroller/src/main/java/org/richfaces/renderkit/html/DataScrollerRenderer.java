@@ -273,7 +273,12 @@ public class DataScrollerRenderer extends HeaderResourcesRendererBase {
     }
 
     public Object getOnClick(String string) {
-	return "Event.fire(this, 'rich:datascroller:onscroll', {'page': '" + string + "'});";
+	// Modificato da Link.it: l'originale usava Event.fire di Prototype che
+	// dispatcha un DOM event 'dataavailable' (non il nome custom) e quindi
+	// non sarebbe intercettato dal listener vanilla addEventListener
+	// registrato in datascroller.js dopo il porting Prototype -> jQuery.
+	// Si invoca quindi l'helper definito in datascroller.js.
+	return "Richfaces.Datascroller.fire(this, '" + string + "');";
     }
 
     public void renderPages(FacesContext context, UIComponent component, int pageIndex, int count)

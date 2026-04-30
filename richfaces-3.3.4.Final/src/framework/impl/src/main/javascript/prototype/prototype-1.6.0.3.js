@@ -1,4 +1,4 @@
-/*  Prototype JavaScript framework, version 1.6.0.3
+/*  Prototype JavaScript framework, ver. 1.6.0.3 - Link.it patched (CVE-2020-27511)
  *  (c) 2005-2008 Sam Stephenson
  *
  *  Prototype is freely distributable under the terms of an MIT-style license.
@@ -6,7 +6,25 @@
  *
  *--------------------------------------------------------------------------*/
 
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Riscritti String.prototype.stripTags e String.prototype.unescapeHTML
+ *     (sia la versione default che l'override WebKit/IE) usando un parser
+ *     HTML DOM-based via textContent: O(n), niente regex, niente ReDoS.
+ *     Chiude CVE-2020-27511.
+ *   - Aggiornate versioni (riga
+ *     descrittiva di header e literal `Prototype = { Version:` runtime)
+ *     in modo da tracciare la modifica. La versione runtime resta '1.6.0.3' per
+ *     traceability del fork.
+ *   Copyright Sam Stephenson e licenza MIT lasciati intatti.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ * Distribuito sotto la stessa licenza MIT di Prototype.
+ */
+
+// Link.it: il property `_gwPatched` traccia l'intervento effettuato.
 var Prototype = {
+  _gwPatched: 'CVE-2020-27511',
   Version: '1.6.0.3',
 
   Browser: {
@@ -383,7 +401,13 @@ Object.extend(String.prototype, {
   },
 
   stripTags: function() {
-    return this.replace(/<\/?[^>]+>/gi, '');
+    // Link.it: riscritta usando il parser HTML del browser via textContent.
+    // L'originale era `this.replace(/<\/?[^>]+>/gi, '')` che con tag annidati
+    // o malformati mostra comportamento ReDoS (CVE-2020-27511). textContent
+    // e' O(n) e non puo' avere catastrophic backtracking.
+    var div = document.createElement('div');
+    div.innerHTML = String(this);
+    return div.textContent || div.innerText || '';
   },
 
   stripScripts: function() {
@@ -425,11 +449,12 @@ Object.extend(String.prototype, {
   },
 
   unescapeHTML: function() {
-    var div = new Element('div');
-    div.innerHTML = this.stripTags();
-    return div.childNodes[0] ? (div.childNodes.length > 1 ?
-      $A(div.childNodes).inject('', function(memo, node) { return memo+node.nodeValue }) :
-      div.childNodes[0].nodeValue) : '';
+    // Link.it: riscritta usando textContent. L'originale chiamava stripTags()
+    // (vulnerabile a ReDoS) e poi ricostruiva il testo dai nodi figli;
+    // textContent fa lo stesso lavoro in modo sicuro e dichiarativo.
+    var div = document.createElement('div');
+    div.innerHTML = String(this);
+    return div.textContent || div.innerText || '';
   },
 
   toQueryParams: function(separator) {
@@ -553,8 +578,12 @@ if (Prototype.Browser.WebKit || Prototype.Browser.IE) Object.extend(String.proto
   escapeHTML: function() {
     return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   },
+  // Link.it: riscritta per WebKit/IE, stessa logica della versione default
+  // (textContent), niente ReDoS via stripTags. Chiude CVE-2020-27511.
   unescapeHTML: function() {
-    return this.stripTags().replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    var div = document.createElement('div');
+    div.innerHTML = String(this);
+    return div.textContent || div.innerText || '';
   }
 });
 

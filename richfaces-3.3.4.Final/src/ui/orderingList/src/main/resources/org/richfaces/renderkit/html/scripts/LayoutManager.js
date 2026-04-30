@@ -1,11 +1,24 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - $() -> document.getElementById,
+ *     Event.observe -> addEventListener,
+ *     bindAsEventListener -> Function.prototype.bind,
+ *     Prototype.Browser.IE -> userAgent regex (_lsIsIE),
+ *     Element.getStyle -> getComputedStyle.getPropertyValue.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 LayoutManager = function(headerId, contentId) {
-	this.headerTable = $(headerId);
-	this.contentTable = $(contentId);
+	this.headerTable = document.getElementById(headerId);
+	this.contentTable = document.getElementById(contentId);
 	this.headerDiv = (this.headerTable) ? this.headerTable.parentNode : null;
 	this.contentDiv = this.contentTable.parentNode;
-	
-	Event.observe(this.contentDiv, "scroll", this.scrollHandler.bindAsEventListener(this));
-	
+
+	this.contentDiv.addEventListener("scroll", this.scrollHandler.bind(this));
+
 }
 
 LayoutManager.SCROLL_WIDTH = 17;
@@ -14,20 +27,20 @@ LayoutManager.STYLE_CONTENTTD_BORDER = 1;
 LayoutManager.STYLE_CONTENTTD_PADDING = 4;
 
 LayoutManager.prototype.widthSynchronization = function() {
-	if (Prototype.Browser.IE && this.contentDiv && this.contentTable && this.getScrollWidth()) {
-		//IE displays unnecessary horizontal scroll 
+	if (_lsIsIE && this.contentDiv && this.contentTable && this.getScrollWidth()) {
+		//IE displays unnecessary horizontal scroll
 		//when vertical scroll's displayed
 		if (this.contentTable.offsetWidth && ((this.contentTable.offsetWidth <= this.contentDiv.clientWidth))) {
 			this.contentTable.style.width = this.contentDiv.clientWidth + "px";
 			if (this.headerTable) {
-				this.headerTable.style.width = this.contentDiv.offsetWidth + "px";				
+				this.headerTable.style.width = this.contentDiv.offsetWidth + "px";
 			}
 			this.contentDiv.style.overflowX = 'hidden';
 		}
 	} else {
 		this.contentTable.style.width = "100%";
 	}
-	
+
 	var rows = this.contentTable.tBodies[0].rows;
 	if (rows && rows[0]) {
 		//table can be empty
@@ -39,7 +52,7 @@ LayoutManager.prototype.widthSynchronization = function() {
 		for (var i = 0; i < contentCells.length; i++) {
 			var curCell = contentCells[i];
 			var headCell = headerCells[i];
-			
+
 			width = LayoutManager.calculateWidth(curCell, headCell).colWidth;
 			if (i == contentCells.length - 1) {
 				width = width + this.getScrollWidth();
@@ -50,12 +63,12 @@ LayoutManager.prototype.widthSynchronization = function() {
 	} else {
 		if (this.headerTable && this.headerTable.tHead) {
 			this.headerTable.style.width = "100%";
-		} 
+		}
 	}
 }
 
 LayoutManager.prototype.getScrollWidth = function() {
-	if (this.contentDiv.clientWidth != 0) { 
+	if (this.contentDiv.clientWidth != 0) {
 		return this.contentDiv.offsetWidth - this.contentDiv.clientWidth;
 	}
 	return 0;
@@ -64,7 +77,7 @@ LayoutManager.prototype.getScrollWidth = function() {
 LayoutManager.prototype.scrollHandler = function() {
 	if (this.headerDiv) {
 		this.headerDiv.scrollLeft = this.contentDiv.scrollLeft;
-	} 
+	}
 }
 
 LayoutManager.getHeaderWidth = function(visibleBox, realBox) {
@@ -90,22 +103,22 @@ LayoutManager.calculateWidth = function(srcElem, tgtElem) {
 	var srcElemBorderWidth = LayoutManager.getBorderWidth(srcElem, "lr");
 	var srcElemPaddingWidth = LayoutManager.getPaddingWidth(srcElem, "lr");
 	var srcElemMarginWidth = LayoutManager.getMarginWidth(srcElem, "lr");
-	
+
 	var tgtElemBorderWidth = LayoutManager.getBorderWidth(tgtElem, "lr");
 	var tgtElemPaddingWidth = LayoutManager.getPaddingWidth(tgtElem, "lr");
 	var tgtElemMarginWidth = LayoutManager.getMarginWidth(tgtElem, "lr");
 	var srcWidth = srcElem.offsetWidth - srcElemBorderWidth - srcElemPaddingWidth - srcElemMarginWidth;
-	var colWidth = srcWidth + (srcElemBorderWidth - tgtElemBorderWidth) 
-					 	    + (srcElemPaddingWidth - tgtElemPaddingWidth) 
+	var colWidth = srcWidth + (srcElemBorderWidth - tgtElemBorderWidth)
+					 	    + (srcElemPaddingWidth - tgtElemPaddingWidth)
 					 		+ (srcElemMarginWidth - tgtElemMarginWidth);
-	colWidth = (colWidth > 0) ? colWidth : 0; 
+	colWidth = (colWidth > 0) ? colWidth : 0;
 	return {srcWidth : srcWidth, colWidth : colWidth};
 }
 
 LayoutManager.getBorderWidth = function(el, side) {
 	return LayoutManager.getStyles(el, side, LayoutManager.borders);
 }
-      
+
 LayoutManager.getPaddingWidth = function(el, side) {
 	return LayoutManager.getStyles(el, side, LayoutManager.paddings);
 }
@@ -113,14 +126,13 @@ LayoutManager.getPaddingWidth = function(el, side) {
 LayoutManager.getMarginWidth = function(el, side) {
 	return LayoutManager.getStyles(el, side, LayoutManager.margins);
 }
-       
+
 LayoutManager.getStyles = function(el, sides, styles) {
+   var computed = el ? window.getComputedStyle(el) : null;
    var val = 0;
    for(var i = 0, len = sides.length; i < len; i++){
-	//if (el.getStyle) {
-		var w = parseInt(Element.getStyle(el, styles[sides.charAt(i)]), 10);
+		var w = parseInt(computed ? computed.getPropertyValue(styles[sides.charAt(i)]) : '', 10);
    	 	if(!isNaN(w)) val += w;
-	//}
    }
    return val;
 }

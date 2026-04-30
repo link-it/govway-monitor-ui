@@ -1,77 +1,68 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM:
+ *     Class.create()  -> costruttore + .prototype plain
+ *     $(id)           -> document.getElementById(id)
+ *     $H($A({}))      -> oggetto plain usato come mappa panelId -> instance
+ *     hash.merge/get  -> assegnazione/accesso diretto
+ *     Element.show/hide -> classList.add/remove (preesistente, ora unico path)
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
 
-SimpleTogglePanel = Class.create();
+function SimpleTogglePanel(panelId, status, options) {
+	this.initialize(panelId, status, options);
+}
 
 SimpleTogglePanel.prototype = {
 	initialize: function(panelId, status, options) {
-	
+
 		this.panelId = panelId;
 		this.panelId_head = panelId+"_header";
 		this.options = options;
 	   	this.status = status;
-	
+
 		if (!this.status) {
 			this.status="true";
 		}
-	
-//		this.timer = setTimeout(this.windowOnLoad.bind(this), 100);
 
 	},
-	
-/*	windowOnLoad: function(){
-	  if (RichFaces.navigatorType() == "MSIE"){
-		var body = $(this.panelId+"_body");
-		 if (body && body.style.display!="none") body.firstChild.style.width=body.clientWidth;
-*/
-		 
-/*    	    if ($(this.panelId_head).clientWidth<$(this.panelId).clientWidth){
-               $(this.panelId_head).style.width=$(this.panelId).clientWidth-2+"px";
-	    }
-	  }
-	},
-*/
-	
+
 	toggleToState: function(event) {
-		var body = $(this.panelId+"_body");
-		var switch_on = $(this.panelId+"_switch_on");
-		var switch_off = $(this.panelId+"_switch_off");
+		var body = document.getElementById(this.panelId+"_body");
+		var switch_on = document.getElementById(this.panelId+"_switch_on");
+		var switch_off = document.getElementById(this.panelId+"_switch_off");
 		if (this.status=="false"){
 			 if (this.invokeEvent("expand",event,"false",body)) {
 				body.classList.remove("rich-stglpanel-body-display-none");
-				body.classList.add("rich-stglpanel-body-display");	
-//		 	 	Element.show(body);
+				body.classList.add("rich-stglpanel-body-display");
 	         	this.status="true";
 	         	switch_off.classList.remove("rich-stglpnl-marker-display");
 	         	switch_on.classList.remove("rich-stglpnl-marker-display-none");
 	         	switch_off.classList.add("rich-stglpnl-marker-display-none");
 	         	switch_on.classList.add("rich-stglpnl-marker-display");
-//	         	switch_off.style.display="none";
-//	         	switch_on.style.display="";
-			 }	
-//			 this.timer = setTimeout(this.windowOnLoad.bind(this), 100);
-//		 	 body.firstChild.style.width=body.clientWidth;
+			 }
 	    } else if (this.invokeEvent("collapse",event,"true",body)) {
 	  		 body.classList.remove("rich-stglpanel-body-display");
-			 body.classList.add("rich-stglpanel-body-display-none");	
-//	    	 Element.hide(body);
+			 body.classList.add("rich-stglpanel-body-display-none");
              this.status="false";
              switch_on.classList.remove("rich-stglpnl-marker-display");
            	 switch_off.classList.remove("rich-stglpnl-marker-display-none");
          	 switch_on.classList.add("rich-stglpnl-marker-display-none");
          	 switch_off.classList.add("rich-stglpnl-marker-display");
-//             switch_on.style.display="none";
-//	         switch_off.style.display="";
         }
-        
+
 	    if (RichFaces.navigatorType() == RichFaces.MSIE){
-/*    	      if ($(this.panelId_head).clientWidth<$(this.panelId).clientWidth){
-                 $(this.panelId_head).style.width=$(this.panelId).clientWidth-2+"px";
-	      }*/
-	    }
-		$(this.panelId+"_input").value=this.status;
+		    }
+		var paneInput = document.getElementById(this.panelId+"_input");
+		if (paneInput) {
+			paneInput.value=this.status;
+		}
 	},
-	
+
 	 invokeEvent: function(eventName, event, value, element) {
-	
+
 		var eventFunction = this.options['on'+eventName];
 		var result;
 
@@ -83,7 +74,7 @@ SimpleTogglePanel.prototype = {
 			{
 				eventObj = event;
 			}
-			else if( document.createEventObject ) 
+			else if( document.createEventObject )
 			{
 				eventObj = document.createEventObject();
 			}
@@ -92,40 +83,38 @@ SimpleTogglePanel.prototype = {
 				eventObj = document.createEvent('Events');
 				eventObj.initEvent( eventName, true, false );
 			}
-			
+
 			eventObj.rich = {component:this};
 			eventObj.rich.value = value;
 
 			try {
 				result = eventFunction.call(element, eventObj);
-			} catch (e) { 
-				LOG.warn("Exception: "+e.Message + "\n[on"+eventName + "]"); 
+			} catch (e) {
+				LOG.warn("Exception: "+e.Message + "\n[on"+eventName + "]");
 			}
 
 		}
-		
+
 		if (result!=false) result = true;
-		
+
 		return result;
-	}	
+	}
 }
 
-SimpleTogglePanelManager = Class.create();
+var SimpleTogglePanelManager = {};
 
-SimpleTogglePanelManager.panels = $H($A({}));
+SimpleTogglePanelManager.panels = {};
 
 SimpleTogglePanelManager.add = function(value) {
-    var tmp = new Object();
-    tmp[value.panelId] = value;
-    this.panels=this.panels.merge(tmp);
+    this.panels[value.panelId] = value;
 }
 
 SimpleTogglePanelManager.toggleOnServer = function (event,clientId) {
-	var parentForm = A4J.findForm($(clientId + "_header"));
+	var parentForm = A4J.findForm(document.getElementById(clientId + "_header"));
 	if(!parentForm || !parentForm.appendChild /* findForm returns surrogate form object */) return;
 
-	var thePanel = this.panels.get(clientId);
-	var element = $(clientId);
+	var thePanel = this.panels[clientId];
+	var element = document.getElementById(clientId);
 
 	if (thePanel.status == "true") {
 		if (thePanel.invokeEvent("collapse",event,"true",element)) {
@@ -136,7 +125,7 @@ SimpleTogglePanelManager.toggleOnServer = function (event,clientId) {
 			thePanel.status="true";
 		}
 	}
-	
+
 	var params = {};
 	params[clientId] = thePanel.status;
 	_JSFFormSubmit(null, parentForm, null, params);
@@ -145,27 +134,23 @@ SimpleTogglePanelManager.toggleOnServer = function (event,clientId) {
 }
 
 SimpleTogglePanelManager.toggleOnClient = function (event,panelId) {
-	this.panels.get(panelId).toggleToState(event);
-	return false;	
+	this.panels[panelId].toggleToState(event);
+	return false;
 }
 
 SimpleTogglePanelManager.toggleOnAjax = function(event,panelId) {
-	var element = $(panelId);
-	var body = $(panelId+"_body");
-	var thePanel = this.panels.get(panelId);
+	var element = document.getElementById(panelId);
+	var body = document.getElementById(panelId+"_body");
+	var thePanel = this.panels[panelId];
 	if (thePanel.status == "true") {
 		var res = thePanel.invokeEvent("collapse",event,"true",element);
 		body.classList.remove("rich-stglpanel-body-display");
-		body.classList.add("rich-stglpanel-body-display-none");	
-//		Element.hide(panelId+"_body");
+		body.classList.add("rich-stglpanel-body-display-none");
 		return res
 	} else {
 		var res = thePanel.invokeEvent("expand",event,"false",element);
 		body.classList.remove("rich-stglpanel-body-display-none");
-		body.classList.add("rich-stglpanel-body-display"); 
-//		Element.show(panelId+"_body");
+		body.classList.add("rich-stglpanel-body-display");
 		return res
 	}
 }
-
-

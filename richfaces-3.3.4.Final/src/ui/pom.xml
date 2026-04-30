@@ -112,10 +112,10 @@
 		<module>drag-drop</module>
 		<module>effect</module>
 		<module>panel</module>
-		<module>panelbar</module>
+		<!-- panelbar: spostato in PULIZIA_DA_CONFERMARE/ui/panelbar (componente non usato dal monitor) -->
 		<module>jQuery</module>
 		<module>spacer</module>
-		<module>togglePanel</module>
+		<!-- togglePanel: spostato in PULIZIA_DA_CONFERMARE/ui/togglePanel (componente non usato dal monitor) -->
 		<module>tabPanel</module>
 		<module>simpleTogglePanel</module>
 		<module>inputnumber-slider</module> <!-- very slow -->
@@ -138,7 +138,7 @@
 		<module>contextMenu</module>
 		<module>columns</module>
 		<module>combobox</module>
-		<module>pickList</module>
+		<!-- pickList: spostato in PULIZIA_DA_CONFERMARE/ui/pickList (componente non usato dal monitor) -->
 		<module>functions</module>
 		<module>hotKey</module>
 		<module>beanValidator</module>

@@ -155,6 +155,12 @@
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/modalPanelBorders-min.js
 								</include>
+								<!-- Aggiunto da Link.it: ShuttleUtils era omesso dall'assembly ui.pack.js,
+								     causando "ReferenceError: RichShuttleUtils is not defined" su <rich:listShuttle>
+								     (ListBase.js usa RichShuttleUtils.execOnLoad). Va PRIMA di ListBase-min. -->
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ShuttleUtils-min.js
+								</include>
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/SelectItem-min.js
 								</include>
@@ -173,12 +179,8 @@
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ListShuttle-min.js
 								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/PickListSI-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/PickList-min.js
-								</include>
+								<!-- PickListSI/PickList: spostati in PULIZIA_DA_CONFERMARE/ui/pickList -->
+
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/comboboxUtils-min.js
 								</include>
@@ -195,14 +197,14 @@
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/datascroller-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/extended-data-table-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/combobox-min.js</include>
-								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/panelbar-min.js</include>
+								<!-- panelbar: spostato in PULIZIA_DA_CONFERMARE/ui/panelbar -->
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/hotKey-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/menu-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/panelMenu-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-dropzone-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tooltip-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/calendar-min.js</include>
-								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/togglePanel-min.js</include>
+								<!-- togglePanel: spostato in PULIZIA_DA_CONFERMARE/ui/togglePanel -->
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/controls-scrollable-data-table-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-draggable-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/jquery.hotkeys-min.js</include>

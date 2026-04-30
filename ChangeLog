@@ -1,5 +1,68 @@
 2026-04-24  Andrea Poli <apoli@link.it>
 
+        * Rilasciata versione 20260430
+
+2026-04-30  Andrea Poli <andrea.poli@link.it>
+
+	* Risolta CVE-2020-27511: ReDoS in String.prototype.stripTags e
+	  String.prototype.unescapeHTML della libreria Prototype 1.6.0.3
+	  inclusa nel bundle framework.pack.js e servita come scripts/prototype.js.
+	  Le due funzioni vulnerabili sono state riscritte usando textContent
+	  del DOM (parser HTML del browser, O(n), niente catastrophic backtracking).
+	  
+2026-04-30  Andrea Poli <andrea.poli@link.it>
+
+	* Eliminato l'uso di Prototype dai componenti RichFaces UI effettivamente usati dal monitor. 
+	  Tutti i componenti elencati di seguito sono stati portati a vanilla DOM / jQuery 4.0.0, 
+	  preservando comportamento funzionale e copyright originale:
+	  - tabPanel, simpleTogglePanel, tooltip, panelMenu, modalPanel
+	    (+ modalPanelBorders), datascroller, hotKey, componentControl
+	  - dropDownMenu / menuItem (menu.js), effect (processEffect.js)
+	  - inputNumberSpinner (SpinnerScript.js), inputNumberSlider
+	    (SliderScript.js)
+	  - comboBox (combobox + combolist + comboboxstyles + comboboxUtils)
+	  - suggestionbox
+	  - extendedDataTable (ExtendedDataTable + Header + Selection + tre
+	    ext-dt-* per drag-indicator/draggable/dropzone)
+	  - listShuttle (con i sei helper di orderingList: ShuttleUtils,
+	    SelectItem, LayoutManager, Control, ListBase, OrderingList)
+	  - calendar (+ JQuerySpinBtn.js)
+
+	* Bug pre-esistenti emersi durante il porting e corretti:
+	  - suggestionbox: il popup non si apriva mai per un errore di hoisting
+	    in scriptaculous Effect.AppearCheckClasses (variabile
+	    classNameDisplay riutilizzata nel loop con valore residuo).
+	  - datascroller: il renderer Java emetteva nelle frecce di pagina
+	    onclick="Event.fire(this, 'rich:datascroller:onscroll', {...})",
+	    ma Event.fire di Prototype dispacciava 'dataavailable' e non
+	    l'evento nominato, quindi le frecce non avanzavano la pagina.
+	    Sostituito con dispatch DOM diretto Richfaces.Datascroller.fire.
+	  - modalPanel.hide(): TypeError "appendChild on null" perche'
+	    this.id veniva ridefinito come Node nell'initialize ma poi
+	    risolto di nuovo con getElementById(this.id), fallendo.
+	  - listShuttle: ShuttleUtils-min.js mancava dall'assembly del bundle
+	    ui.pack.js, causando ReferenceError "RichShuttleUtils is not defined"
+	    al primo uso del componente.
+	  - calendar.js: rimossi due blocchi di dead code (Object.extend(Event,
+	    {findElementByAttr}) e Object.extend(Element, {replaceClassName}))
+	    che definivano metodi mai chiamati altrove nel file.
+	  - comboBox: dopo destroy il listener blur restava attaccato al field
+	    e crashava al successivo rerender AJAX (this.comboList.isList su
+	    undefined). Sistemato memorizzando i bound handler in this._h e
+	    rimuovendoli puntualmente in destroy.
+
+	* jquery.hotkeys.js: aggiornato per jQuery 4.x. Sostituiti
+	  jQuery.isFunction (rimosso in 4.x) con typeof === 'function' e
+	  jQuery.browser.opera/safari (rimosso fin dal 1.9) con userAgent
+	  sniff locale.
+
+	* framework JSFAJAX.js: a4j:poll crashava con "Cannot read properties
+	  of null (reading 'action')" quando il polling scattava dopo un
+	  rerender AJAX che aveva sostituito il form. Aggiunto null-check in
+	  A4J.AJAX.PrepareQuery (TODO commentato gia' nei sorgenti originali).
+
+2026-04-24  Andrea Poli <apoli@link.it>
+
         * Rilasciata versione 20260424
 
 2026-04-24  Andrea Poli <apoli@link.it>                   

@@ -935,6 +935,14 @@ A4J.AJAX.PrepareQuery = function(formId, domEvt, options) {
     		return false;
     	};
     };
+    // Modificato da Link.it: il commento "TODO - test for null of form object"
+    // qui sopra non era stato risolto. Capita ad esempio con <a4j:poll> che
+    // fire dopo che la pagina e' stata sostituita da AJAX (formId stale): in
+    // quel caso form e' null e A4J.Query crash su this._form.action. Bail out.
+    if (!form) {
+        LOG.warn("PrepareQuery: form '" + formId + "' non trovato, request annullata.");
+        return false;
+    }
     var tosend = new A4J.Query(options.containerId, form);
     tosend.appendFormControls(options.single, options.control);
     //appending options.control moved to appendFormControls

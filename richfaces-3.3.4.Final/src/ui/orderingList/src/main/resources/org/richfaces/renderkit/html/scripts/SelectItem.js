@@ -1,3 +1,12 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Class.create() -> costruttore plain.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 if (!window.Richfaces) { window.Richfaces = {}; }
 
 Richfaces.getExternalClass = function(classes, index) {
@@ -5,13 +14,14 @@ Richfaces.getExternalClass = function(classes, index) {
 		var len = classes.length;
 		while (index >= len) {
 			index -= len;
-		} 
+		}
 		return (classes[index]) ? classes[index] : "";
 	}
 	return "";
 }
-	
-Richfaces.SelectItem = Class.create();
+
+function _RichfacesSelectItem() { this.initialize.apply(this, arguments); }
+Richfaces.SelectItem = _RichfacesSelectItem;
 
 Richfaces.SelectItem.findElement = function(elt, id) {
 	var e = elt;
@@ -24,11 +34,11 @@ Richfaces.SelectItem.findElement = function(elt, id) {
 		e = e.firstChild;
 		while (e) {
 			var result = arguments.callee(e, id);
-			
+
 			if (result) {
 				return result;
 			}
-			
+
 			e = e.nextSibling;
 		}
 	}
@@ -39,24 +49,24 @@ Richfaces.SelectItem.findElement = function(elt, id) {
 Richfaces.SelectItem.prototype = {
 	initialize : function(label, id, node) {
 		this._label = label;
-		this._node = node; 
-		
+		this._node = node;
+
 		this._node.item = this;
 		this._id = id;
-		
+
 		//XXX 2 optimize
 		this.input = Richfaces.SelectItem.findElement(node, node.id + "StateInput");
-		
+
 		this.selected = /^s/.test(this.input.value);
 		this.active = /^s?a/.test(this.input.value);
 	},
-	
+
 	destroy: function() {
 		this._node.item = null;
 	},
-	
+
 	doActive : function(rowStoredClass, cellStoredClasses) {
-		var classes = this.CLASSES; 
+		var classes = this.CLASSES;
 		var row = this._node;
 		var rowClass = classes.ROW.ACTIVE;
 		var cellClass = classes.CELL.ACTIVE;
@@ -67,41 +77,41 @@ Richfaces.SelectItem.prototype = {
 		this.changeClass(row, rowClass, cellClass, rowStoredClass, cellStoredClasses);
 
 		this.active = true;
-		
+
 		this.saveState();
 	},
-	
+
 	doSelect : function(rowStoredClass, cellStoredClasses) {
 		var row = this._node;
-		var classes = this.CLASSES; 
+		var classes = this.CLASSES;
 
 		this.changeClass(row, classes.ROW.SELECTED, classes.CELL.SELECTED, rowStoredClass, cellStoredClasses);
 
 		this.selected = true;
-		
+
 		this.saveState();
 	},
-	
+
 	doNormal : function(rowStoredClass, cellStoredClasses) {
 		var row = this._node;
-		var classes = this.CLASSES; 
+		var classes = this.CLASSES;
 
 		this.changeClass(row, classes.ROW.NORMAL, classes.CELL.NORMAL, rowStoredClass, cellStoredClasses);
 
 		this.active = false;
 		this.selected = false;
-		
+
 		this.saveState();
 	},
-	
+
 	isSelected : function() {
 		return this.selected;
 	},
-	
+
 	isActive : function() {
 		return this.active;
 	},
-	
+
 	changeClass : function(row, rowClassName, cellClassName, rowStoredClass, cellStoredClasses) {
 			row.className = rowStoredClass + " " + rowClassName;
 			var cells = row.cells;
@@ -110,14 +120,14 @@ Richfaces.SelectItem.prototype = {
 			cell.className = Richfaces.getExternalClass(cellStoredClasses, cell.cellIndex) + " " + cellClassName;
 		}
 	},
-	
+
 	/*addClass : function(row, classNameRow, classNameCell) {
 		if (row.addClassName) {
 			row.addClassName(classNameRow);
 		} else {
 			Element.addClassName(row, classNameRow);
 		}
-		
+
 		var cells = row.cells;
 		for (var i = 0; i < cells.length; i++) {
 			var cell = cells[i];
@@ -128,7 +138,7 @@ Richfaces.SelectItem.prototype = {
 			}
 		}
 	},
-	
+
 	removeClass : function(row, classNameRow, classNameCell) {
 		if (row.removeClassName) {
 			row.removeClassName(classNameRow);
@@ -138,7 +148,7 @@ Richfaces.SelectItem.prototype = {
 		var cells = row.cells;
 		for (var i = 0; i < cells.length; i++) {
 			var cell = cells[i];
-			
+
 			if (cell.removeClassName) {
 				cell.removeClassName(classNameCell);
 			} else {
@@ -146,10 +156,10 @@ Richfaces.SelectItem.prototype = {
 			}
 		}
 	},*/
-	
+
 	saveState: function() {
 		var regex = /^s?a?/;
-		
+
 		if (this.selected && this.active) {
 			this.input.value = this.input.value.replace(regex, 'sa');
 		} else if (this.selected) {

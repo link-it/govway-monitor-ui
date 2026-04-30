@@ -43,8 +43,14 @@ var hack;
     
     this.buttonInputTypes = /^(submit|button|reset)$/i;
     
+    // Modificato da Link.it: jQuery.isFunction rimosso in jQuery 4.x ->
+    // typeof === 'function'. Idem jQuery.browser (gia' deprecato da jQuery 1.9,
+    // rimosso completamente in jQuery 4) -> userAgent sniff per Opera/Safari.
+    var _hkIsOpera = !!window.opera;
+    var _hkIsSafari = /safari/i.test(navigator.userAgent) && !/chrome|android/i.test(navigator.userAgent);
+
     this.add = function(combi, options, callback) {
-        if (jQuery.isFunction(options)){
+        if (typeof options === 'function'){
             callback = options;
             options = {};
         }
@@ -154,7 +160,7 @@ var hack;
                	mapPoint = validateMapPoint(element, type, special, character,cbMap);
             }
                 		
-           if (jQuery.browser.opera || jQuery.browser.safari || opt.checkParent){
+           if (_hkIsOpera || _hkIsSafari || opt.checkParent){
                 while ((element && element.parentNode && !(elementData = jQuery.data(element, that.HOTKEYS_DATA))) || (!mapPoint && element.parentNode)){
                 	element = element.parentNode;
                 	elementData = jQuery.data(element, that.HOTKEYS_DATA);

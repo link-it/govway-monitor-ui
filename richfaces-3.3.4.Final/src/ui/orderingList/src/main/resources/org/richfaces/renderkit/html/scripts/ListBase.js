@@ -1,10 +1,24 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Class.create() -> costruttore plain,
+ *     Object.extend -> Object.assign,
+ *     $() -> document.getElementById,
+ *     elem.observe / Event.stop / KEY_* -> addEventListener / preventDefault+
+ *         stopPropagation / costanti numeriche (_lsKey),
+ *     bindAsEventListener -> Function.prototype.bind.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 if(!window.Richfaces) window.Richfaces = {};
 Richfaces.disableSelectionText = function(e) {
 	e = window.event||e;
 	if (e.srcElement) {
 		if (e.srcElement.tagName) {
 			var tagName = e.srcElement.tagName.toUpperCase();
-			
+
 			if (tagName != "INPUT" && tagName != "TEXTAREA" /* any items more? */) {
 				return false;
 			}
@@ -13,7 +27,8 @@ Richfaces.disableSelectionText = function(e) {
 };
 
 
-Richfaces.ListBase = Class.create();
+function _RichfacesListBase() { this.initialize.apply(this, arguments); }
+Richfaces.ListBase = _RichfacesListBase;
 
 Richfaces.ListBase.compare = function(obj1, obj2) {
 	return ((obj1 == obj2) ? 0 : ((obj1 < obj2) ? -1 : 1));
@@ -34,33 +49,33 @@ Richfaces.ListBase.prototype = {
 	initialize : function(containerId, controlClass, classes) {
 		this["rich:destructor"] = "destroy";
 		this.selectedItems = new Array();
-		
+
 		var contentTableId = containerId + "internal_tab";
-		this.shuttleTable = $(contentTableId);
+		this.shuttleTable = document.getElementById(contentTableId);
 		this.shuttleTable.onselectstart = Richfaces.disableSelectionText;
-		this.focusKeeper = $(containerId + "focusKeeper");
+		this.focusKeeper = document.getElementById(containerId + "focusKeeper");
 		this.focusKeeper.focused = false;
 		//this.setFocus();
-		this.focusKeeper.observe("keydown", (function(e) {this.onkeydownHandler(window.event || e)}).bindAsEventListener(this));
-		this.focusKeeper.observe("blur", function (e) {this.focusListener(e);}.bindAsEventListener(this));
-		this.focusKeeper.observe("focus", function (e) {this.onfocusHandler(e);}.bindAsEventListener(this));
-		
+		this.focusKeeper.addEventListener("keydown", (function(e) {this.onkeydownHandler(window.event || e)}).bind(this));
+		this.focusKeeper.addEventListener("blur", function (e) {this.focusListener(e);}.bind(this));
+		this.focusKeeper.addEventListener("focus", function (e) {this.onfocusHandler(e);}.bind(this));
+
 		this.shuttleTbody = this.shuttleTable.tBodies[0];
-		
+
 		this.activeItem = null;
 		this.pseudoActiveItem = null; //it services for items selection by Shift+click
 		this.items = null;
-		
+
 		//FIX
-		Object.extend(this, classes);
-		
+		Object.assign(this, classes);
+
 		this.controlClass = controlClass;
 		this.retrieveShuttleItems(containerId, controlClass);
 		this.counter;
 		this.shuttle = null;
 		this.sortOrder = Richfaces.ListBase.ASC;
-		this.clckHandler = function(e) {this.onclickHandler(window.event || e)}.bindAsEventListener(this);
-		this.shuttleTable.observe("click", this.clckHandler);
+		this.clckHandler = function(e) {this.onclickHandler(window.event || e)}.bind(this);
+		this.shuttleTable.addEventListener("click", this.clckHandler);
 
 		this.layoutManager = new LayoutManager(containerId + "internal_header_tab", contentTableId);
 //---   http://jira.jboss.com/jira/browse/RF-3830 FF3 & Safari only!
@@ -71,59 +86,59 @@ Richfaces.ListBase.prototype = {
 			if (this.firstTrElement.addEventListener && (Richfaces.browser.isFF3 || Richfaces.browser.isSafari)) {
 				this.imagesOnLoad = this.imageLoadListener.bind(this);
 				this.firstTrElement.addEventListener('load',this.imagesOnLoad, true);
-		  	}	
+		  	}
 		}
-//---		 
-		var synch = function() {this.layoutManager.widthSynchronization()}.bindAsEventListener(this);
+//---
+		var synch = function() {this.layoutManager.widthSynchronization()}.bind(this);
 		RichShuttleUtils.execOnLoad(
 			synch, RichShuttleUtils.Condition.ElementPresent(this.shuttleTable.parentNode), 100
 		);
 	},
-	
+
 	imageLoadListener: function (evt){
 		this.layoutManager.widthSynchronization();
 		if (this.firstTrElement.removeEventListener && (Richfaces.browser.isFF3 || Richfaces.browser.isSafari)) {
 			this.firstTrElement.removeEventListener('load',this.imagesOnLoad, true);
 		}
 	},
-	
+
 	destroy: function() {
 		this.shuttleTable.onselectstart = null;
 		var items = this.shuttleItems;
 		for (var i = 0; i < items.length; i++) {
 			items[i].destroy();
 		}
-		
+
 	},
-	
+
 	setActiveItem : function(newActiveItem) {
 		this.pseudoActiveItem = newActiveItem;
 		this.activeItem = newActiveItem;
 	},
-	
+
 	retrieveShuttleItems : function(containerId, controlClass) {
 		var rows = this.shuttleTbody.rows;
 		this.shuttleItems = new Array();
 		var id;
-		
+
 		for (var i = 0; i < rows.length; i++) {
 			var row = rows[i];
 			id = row.id.split(containerId + ":")[1];
 			var item = new controlClass(null, (id || i), row);
 			if (item.isSelected()) {
 				this.selectedItems.push(row);
-			}									  
+			}
 			if (item.isActive()) {
 				this.setActiveItem(row);
 			}
 			this.shuttleItems[i] = item;
-		}	
+		}
 	},
-	
+
 	getExtremeItem : function(position) { //FIXME
 		var extremeItem = this.selectedItems[0];
 		var currentItem;
-		
+
 		for (var i = 1; i < this.selectedItems.length; i++) {
 			currentItem = this.selectedItems[i];
 			if (position == "first") {
@@ -136,26 +151,26 @@ Richfaces.ListBase.prototype = {
 				}
 			}
 		}
-		return extremeItem; 
+		return extremeItem;
 	},
-	
+
 	getEventTargetRow : function(event) {
 		var activeElem;
 		if (event.target) {
 			//activeElem = event.rangeParent.parentNode;
-			activeElem = event.target;		
+			activeElem = event.target;
 		} else {
 			activeElem = event.srcElement;
 		}
-		
+
 		if (activeElem == null) {
 			return;
 		}
-		
+
 		if (activeElem.tagName && Richfaces.ListBase.CONTROL_SET.indexOf(activeElem.tagName.toUpperCase()) != -1) {
 			return;
 		}
-			
+
 		while (activeElem.tagName.toLowerCase() != "tr") {
 			activeElem = activeElem.parentNode;
 			if (!activeElem.tagName) {
@@ -164,7 +179,7 @@ Richfaces.ListBase.prototype = {
 		}
 		return activeElem;
 	},
-	
+
 	onfocusHandler: function (event) {
 		if (!this.activeItem && this.shuttleItems.length != 0) {
 			this.setActiveItem(this.shuttleItems[0]._node);
@@ -174,31 +189,31 @@ Richfaces.ListBase.prototype = {
 			this.activeItem.item.doActive(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);
 		}
 	},
-	
+
 	onclickHandler : function(event) {
 		if (event.srcElement && (event.srcElement.tagName.toLowerCase() == "tbody")) {
 			return;
 		}
 		var activeElem = this.getEventTargetRow(event);
 		if (activeElem != null) {
-			
+
 			if (event.ctrlKey) {
 			 	this.addSelectedItem(activeElem);
 			 	this.setActiveItem(activeElem);
 			} else if (event.shiftKey) {
 				if (!this.pseudoActiveItem) {
 					this.selectionItem(activeElem);
-					this.setActiveItem(activeElem);	
+					this.setActiveItem(activeElem);
 				} else {
 					this.selectItemGroup(activeElem);
 					this.activeItem = activeElem; //given event works with pseudoActiveItem
 				}
 			} else {
 				this.selectionItem(activeElem);
-				this.setActiveItem(activeElem);	
+				this.setActiveItem(activeElem);
 			}
-			
-			
+
+
 			this.setFocus();
 		}
 	},
@@ -209,23 +224,23 @@ Richfaces.ListBase.prototype = {
 			case 38 : //up arrow
 					  action = 'up';
 					  this.moveActiveItem(action, event);
-					  Event.stop(event);
+					  _lsStopEvent(event);
 					  break;
 			case 40 : //down arrow
 					  action = 'down';
 					  this.moveActiveItem(action, event);
-					  Event.stop(event);
+					  _lsStopEvent(event);
 					  break;
 			case 65 : // Ctrl + A
-					  if (event.ctrlKey) { 
+					  if (event.ctrlKey) {
 						this.selectAll();
-					  } 
+					  }
 					  this.activeItem.item.doActive(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);
-					  Event.stop(event);
-					  break; 
+					  _lsStopEvent(event);
+					  break;
 		}
 	},
-	
+
 	moveActiveItem : function(action, event) {
 		var item = this.activeItem;
 		var rows = this.shuttleTbody.rows;
@@ -234,49 +249,49 @@ Richfaces.ListBase.prototype = {
 		} else if ((action == 'down') && (item.rowIndex < this.shuttleItems.length - 1)) {
 			this.changeActiveItems(rows[item.rowIndex + 1], item);
 		}
-		
+
 		this.autoScrolling(action, event);
-		
+
 	},
 
 	changeActiveItems : function(newItem, item) {
 		item.item.doNormal();
 		this.resetMarked();
-		
+
 		newItem.item.doSelect(this.getExtRowClass(newItem.rowIndex), this.columnClasses);
 		newItem.item.doActive(this.getExtRowClass(newItem.rowIndex), this.columnClasses);
 		this.setActiveItem(newItem);
 		this.selectedItems.push(newItem);
 	},
-	
+
 	selectAll : function() {
 		this.resetMarked();
 		var startIndex = 0;
 		var endIndex = this.shuttleItems.length - 1;
 		this.selectItemRange(startIndex, endIndex);
 	},
-	
+
 	/**
 	 * Click handler
 	 */
 	selectionItem : function(activeItem) {
 		var markedShuttleItem = activeItem;
-		
+
 		this.resetMarked();
 		if (activeItem.item.isSelected()) {
 			activeItem.item.doNormal(this.getExtRowClass(activeItem.rowIndex), this.columnClasses);
 		} else {
 			activeItem.item.doSelect(this.getExtRowClass(activeItem.rowIndex), this.columnClasses);
-			this.selectedItems[0] = markedShuttleItem; //TODO: delete 
+			this.selectedItems[0] = markedShuttleItem; //TODO: delete
 		}
 	},
-	
+
 	/**
 	 * CTRL+Click handler
 	 */
 	addSelectedItem : function(activeItem) {
 		var markedShuttleItem = activeItem;
-		
+
 		if (activeItem.item.isSelected()) {
 			this.selectedItems.remove(markedShuttleItem); //TODO :delete
 			activeItem.item.doNormal(this.getExtRowClass(activeItem.rowIndex), this.columnClasses);
@@ -284,17 +299,17 @@ Richfaces.ListBase.prototype = {
 			activeItem.item.doSelect(this.getExtRowClass(activeItem.rowIndex), this.columnClasses);
 			this.selectedItems.push(markedShuttleItem); //TODO :delete
 		}
-		
+
 		if ((this.activeItem != null) && (this.activeItem.rowIndex != activeItem.rowIndex)) {
 			//reset activity of an element
 			if (this.activeItem.item.isSelected()) {
-				this.activeItem.item.doSelect(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses); 			
+				this.activeItem.item.doSelect(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);
 			} else {
-				this.activeItem.item.doNormal(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);				
+				this.activeItem.item.doNormal(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);
 			}
 		}
 	},
-	
+
 	/**
 	 * Shift+Click handler
 	 */
@@ -303,7 +318,7 @@ Richfaces.ListBase.prototype = {
 		var activeItemIndex = this.pseudoActiveItem.rowIndex;
 		var startIndex;
 		var endIndex;
-		
+
 		if (currentItem.rowIndex > activeItemIndex) {
 			startIndex = activeItemIndex;
 			endIndex = currentItem.rowIndex;
@@ -311,32 +326,32 @@ Richfaces.ListBase.prototype = {
 			startIndex = currentItem.rowIndex;
 			endIndex = activeItemIndex;
 		}
-		
+
 		this.resetMarked();
-		
+
 		this.selectItemRange(startIndex, endIndex);
 	},
-	
+
 	selectItemRange : function(startIndex, endIndex) {
 		var rows = this.shuttleTbody.rows;
 		for (var i = startIndex; i <= endIndex; i++) {
 			rows[i].item.doSelect(this.getExtRowClass(rows[i].rowIndex), this.columnClasses);
 			this.selectedItems.push(rows[i]);
-		}	
+		}
 	},
-	
+
 	resetMarked : function() {
 		var rows = this.selectedItems;
 		var length = rows.length;
 		for (var i = 0; i < length; i++) {
-			var shuttleItem = rows[i]; 
+			var shuttleItem = rows[i];
 			shuttleItem.item.doNormal(this.getExtRowClass(shuttleItem.rowIndex), this.columnClasses);
-		}	
+		}
 		this.selectedItems.length = 0;
-		
+
 		//need to reset active item
 	},
-	
+
 	getSelectItemByNode : function(selectItemNode) {
 		for (var i = 0; i < this.shuttleItems.length; i++) {
 			var item = this.shuttleItems[i];
@@ -346,72 +361,72 @@ Richfaces.ListBase.prototype = {
 		}
 		return null;
 	},
-	
+
 	autoScrolling : function(action, event) {
 		this.selectedItems.sort(this.compareByRowIndex);
 		var increment;
 		var scrollTop = this.shuttleTable.parentNode.scrollTop;
-		
+
 		var shuttleTop = LayoutManager.getElemXY(this.shuttleTable.parentNode).top;
-		
+
 		if (action == 'up' || action == 'first') {
 			var targetItemTop = LayoutManager.getElemXY(this.selectedItems[0]).top;
 			increment = (targetItemTop - scrollTop) - shuttleTop;
 			if (increment < 0) {
-				this.shuttleTable.parentNode.scrollTop += increment;			
+				this.shuttleTable.parentNode.scrollTop += increment;
 			}
 		} else if (action == 'down' || action == 'last') {
 			var item = this.selectedItems[this.selectedItems.length - 1];
 			var targetItemBottom = LayoutManager.getElemXY(this.selectedItems[this.selectedItems.length - 1]).top + item.offsetHeight;
 			var increment = (targetItemBottom - scrollTop) - (shuttleTop + this.shuttleTable.parentNode.clientHeight);
 			if (increment > 0) {
-				this.shuttleTable.parentNode.scrollTop += increment;			
-			} 
+				this.shuttleTable.parentNode.scrollTop += increment;
+			}
 		}
-		if (event) Event.stop(event);
+		if (event) _lsStopEvent(event);
 	},
-	
+
 	setFocus : function() {
 		this.focusKeeper.focus();
 		this.focusKeeper.focused = true;
 	},
-	
+
 	focusListener : function(e) {
 		e = e || window.event;
 		this.focusKeeper.focused = false;
-		
+
 		if (this.activeItem) {
 			if (this.activeItem.item.isSelected()) {
-				this.activeItem.item.doSelect(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);			
+				this.activeItem.item.doSelect(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);
 			} else {
 				this.activeItem.item.doNormal(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);
 			}
 		}
 	},
-	
+
 	compareByLabel : function(obj1, obj2) {
 		obj1 = obj1._label;
 		obj2 = obj2._label;
 		return Richfaces.ListBase.compare(obj1, obj2);
 	},
-	
+
 	compareByRowIndex : function(obj1, obj2) {
 		obj1 = obj1.rowIndex;
 		obj2 = obj2.rowIndex;
 		return Richfaces.ListBase.compare(obj1, obj2);
 	},
-	
+
 	isListActive : function() {
 		if ((this.activeItem != null || this.selectedItems.length != 0) && this.focusKeeper.focused) {
 			return true;
 		}
 		return false;
 	},
-	
+
 	getExtRowClass : function(index) {
 		return Richfaces.getExternalClass(this.rowClasses, index);
 	},
-	
+
 	getSelection : function() {
 		var result = [];
 		for (var i = 0; i < this.selectedItems.length; i++) {
@@ -419,7 +434,7 @@ Richfaces.ListBase.prototype = {
 		}
 		return result;
 	},
-	
+
 	getItems : function() {
 		return this.shuttleTbody.rows;
 	}

@@ -1,38 +1,61 @@
-/** 
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM (vedi header in ExtendedDataTable.js
+ *     per la legenda completa). Per questa classe in particolare:
+ *       Class.create(parent,{...})    -> Object.create(parent.prototype) +
+ *                                        Object.assign,
+ *       $super(...)                   -> ClientUI.common.box.Box.prototype
+ *                                        .initialize.call(this, ...),
+ *       Object.isNumber(x)            -> typeof x === 'number',
+ *       elem.childElements()          -> Array.from(elem.children),
+ *       arr.size()                    -> arr.length.
+ *
+ *     I metodi setStyle/getHeight/getY/getWidth chiamati su Box wrapper
+ *     (this.headerRow, etc.) restano: Box e' nel modulo scrollableDataTable
+ *     non ancora portato.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
 
-*/
-ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
+function _ExtDtHeader() { this.initialize.apply(this, arguments); }
+_ExtDtHeader.prototype = Object.create(ClientUI.common.box.Box.prototype);
+_ExtDtHeader.prototype.constructor = _ExtDtHeader;
+ExtendedDataTable.DataTable.header = _ExtDtHeader;
+
+Object.assign(_ExtDtHeader.prototype, {
 	// constructor
-	initialize: function($super, elementId, extDt) {
+	initialize: function(elementId, extDt) {
 		this.extDt = extDt;
 		this.extDtId = this.extDt.id;
 		this.enableContextMenu = this.extDt.options.enableContextMenu;
-		$super(elementId,extDt,true);
-		
+		ClientUI.common.box.Box.prototype.initialize.call(this, elementId, extDt, true);
+
 		//register events
-		this.eventSepClick = this.OnSepClick.bindAsEventListener(this);
-		this.eventSepMouseDown = this.OnSepMouseDown.bindAsEventListener(this);
-		this.eventSepMouseMove = this.OnSepMouseMove.bindAsEventListener(this);
-		this.eventSepMouseUp = this.OnSepMouseUp.bindAsEventListener(this);
-		this.eventHeaderCellMouseOver = this.OnHeaderCellMouseOver.bindAsEventListener(this);
-		this.eventHeaderCellMouseOut = this.OnHeaderCellMouseOut.bindAsEventListener(this);
+		this.eventSepClick = this.OnSepClick.bind(this);
+		this.eventSepMouseDown = this.OnSepMouseDown.bind(this);
+		this.eventSepMouseMove = this.OnSepMouseMove.bind(this);
+		this.eventSepMouseUp = this.OnSepMouseUp.bind(this);
+		this.eventHeaderCellMouseOver = this.OnHeaderCellMouseOver.bind(this);
+		this.eventHeaderCellMouseOut = this.OnHeaderCellMouseOut.bind(this);
 		if (this.enableContextMenu) {
 			var showMenuFct = this.extDt.options.showMenuFunction;
 			if (showMenuFct) {
 				this.showMenuFct = showMenuFct;
-				this.menuImageMouseDown = this.OnMenuImageMouseDown.bindAsEventListener(this);
+				this.menuImageMouseDown = this.OnMenuImageMouseDown.bind(this);
 			};
 		}
 		if (this.extDt.sortFct) {
-			this.eventHeaderCellClicked = this.OnHeaderCellMouseClicked.bindAsEventListener(this);
+			this.eventHeaderCellClicked = this.OnHeaderCellMouseClicked.bind(this);
 		}
 		this.createControl(elementId);
 	},
-	
+
 	OnHeaderCellMouseOver: function(event) {
 		if (this.enableContextMenu) {
 			var el = this.extDt._findParentElement(event, "th");
-			var menuDiv = $(el.id+"header:menuDiv");
+			var menuDiv = document.getElementById(el.id+"header:menuDiv");
 			menuDiv.className = "extdt-menu-div-on";
 		}
 	},
@@ -40,26 +63,26 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
     OnHeaderCellMouseOut: function(event) {
     	if (this.enableContextMenu) {
 			var el = this.extDt._findParentElement(event, "th");
-			var menuDiv = $(el.id+"header:menuDiv");
+			var menuDiv = document.getElementById(el.id+"header:menuDiv");
 			menuDiv.className = "extdt-menu-div-out";
 		}
     },
-    
+
     OnHeaderCellMouseClicked: function(event) {
 		//get column id
 		var el = this.extDt._findParentElement(event, "th");
 		var columnId = (el) ? el.id : null;
-			
+
 		if (columnId && (columnId != "")){
-			this.extDt.sortBy(columnId, null, event);		
+			this.extDt.sortBy(columnId, null, event);
 		}
-		Event.stop(event);
+		_edtStopEvent(event);
 	},
-	
+
 	getCaption: function() {
        return this.caption;
     },
-	
+
 	getCaptionHeight: function() {
 	   var caption = this.getCaption();
 	   if (caption) {
@@ -68,7 +91,7 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 	       return 0;
 	   }
 	},
-	
+
 	addListeners: function(){
 		var columnCells = this.getColumnCells();
         var l = columnCells.length;
@@ -79,16 +102,16 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
             //add listeners
             Utils.DOM.Event.observe(headerChild,'mouseover',this.eventHeaderCellMouseOver);
             Utils.DOM.Event.observe(headerChild,'mouseout',this.eventHeaderCellMouseOut);
-            
+
             var isSortable = headerChild.getAttribute('sortable');
             if ((isSortable) && (isSortable.indexOf('true') == 0)) {
-            	var sortDiv = $(headerChild.id + ":sortDiv");
+            	var sortDiv = document.getElementById(headerChild.id + ":sortDiv");
             	if (sortDiv){
                 	Utils.DOM.Event.observe(sortDiv, 'click',  this.eventHeaderCellClicked);
                 }
             }
-            var headerChildChildren = headerChild.childElements();
-            if (headerChildChildren == null || headerChildChildren.size() == 0){
+            var headerChildChildren = Array.from(headerChild.children);
+            if (headerChildChildren == null || headerChildChildren.length == 0){
 				continue;
 			}
 			if (this.enableContextMenu) {
@@ -97,28 +120,28 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 				Utils.DOM.Event.observe(menuImage,'click',this.menuImageMouseDown);
 			};
             var sepSpan = headerChildChildren[2];
-			Utils.DOM.Event.removeListeners(sepSpan);			
+			Utils.DOM.Event.removeListeners(sepSpan);
 			Utils.DOM.Event.observe(sepSpan, 'click',  this.eventSepClick);
 			Utils.DOM.Event.observe(sepSpan, 'mousedown', this.eventSepMouseDown);
 			Utils.DOM.Event.observe(sepSpan, 'mousemove', this.eventSepMouseMove);
 			Utils.DOM.Event.observe(sepSpan, 'mouseup', this.eventSepMouseUp);
         }
 	},
-    
+
     removeListeners: function() {
         var columnCells = this.getColumnCells();
         var l = columnCells.length;
         for (var i = 0; i< l-1; i++) {
             var headerChild = columnCells[i];
             Utils.DOM.Event.removeListeners(headerChild);
-            
-            var sortDiv = $(headerChild.id + ":sortDiv");
+
+            var sortDiv = document.getElementById(headerChild.id + ":sortDiv");
             if (sortDiv){
                	Utils.DOM.Event.stopObserving(sortDiv, 'click');
             }
-            
-            var headerChildChildren = headerChild.childElements();
-            if (headerChildChildren == null || headerChildChildren.size() == 0){
+
+            var headerChildChildren = Array.from(headerChild.children);
+            if (headerChildChildren == null || headerChildChildren.length == 0){
 				continue;
 			}
 			if (this.enableContextMenu) {
@@ -129,7 +152,7 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
             Utils.DOM.Event.removeListeners(sepSpan);
         };
     },
-	
+
 	getVisibleWidth: function() {
 		var sum = 0;
 		var l = this.getColumnsNumber();
@@ -137,8 +160,8 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 			sum += this.getColumnWidth(i);
 		}
 		return sum;
-	},		
-	
+	},
+
 	createControl: function(elementId) {
 		if(!elementId) {
 			errMsg = "Invalid id specified for ExtendedDataTableGridHeader.";
@@ -151,7 +174,7 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 			throw(errMsg);
 		}
 	},
-	
+
 	parseTemplate: function(template) {
 		if(!template) {
 			return false;
@@ -159,10 +182,10 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 		this.headerRow = new ClientUI.common.box.Box(this.extDtId +":headerRow",this.getElement(),true);
 		this.filterRow = new ClientUI.common.box.Box(this.extDtId +":filterRow",this.getElement(),true);
 		this.caption = new ClientUI.common.box.Box(this.extDtId +":caption",this.getElement(),true);
-		var colgroup = $(this.extDtId +":colgroup:header");
+		var colgroup = document.getElementById(this.extDtId +":colgroup:header");
         this.cols = colgroup.getElementsByTagName("col");
         this.columnsNumber = this.cols.length;
-		this.columnCells = this.headerRow.getElement().childElements();
+		this.columnCells = Array.from(this.headerRow.getElement().children);
 		return true;
 	},
 	getColumns: function() {
@@ -181,7 +204,7 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 	getColumnsNumber: function() {
 		return this.columnsNumber;
 	},
-	
+
 	setColumnWidth: function(columnIndex, newWidth) {
 	   if (columnIndex >= this.getColumnsNumber()) {
 	       return false;
@@ -192,11 +215,11 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 	       this.getColumns()[columnIndex].width = newWidth;
 	   }
 	},
-	
+
 	isValidColumnNumber: function(columnNumber) {
         return ((columnNumber < this.getColumnsNumber()) && (columnNumber >=0))
 	},
-	
+
 	getColumnWidth: function(columnNumber) {
 		if (this.isValidColumnNumber(columnNumber)) {
 			var col = this.getColumnCells()[columnNumber];
@@ -210,12 +233,12 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 			return null;
 		}
 	},
-	
+
 	isColumnWidthPercentage: function(columnNumber) {
         if (this.isValidColumnNumber(columnNumber)) {
             var col = this.getColumns()[columnNumber];
             var width = col.width;
-            if ((!Object.isNumber(width)) && (width.indexOf('%') != -1)) {
+            if ((typeof width !== 'number') && (width.indexOf('%') != -1)) {
                 return true;
             }else{
                 return false;
@@ -223,12 +246,12 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
         }else{
             return null;
         }
-	}, 
-	
+	},
+
 	getHeightWithoutFacets: function() {
 		return this.headerRow.getHeight() + this.filterRow.getHeight();
 	},
-	
+
 	getTotalHeight: function() {
         var ret = this.headerRow.getHeight() + this.filterRow.getHeight();
         if (this.caption) {
@@ -236,63 +259,63 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
         }
         return ret;
 	},
-	
+
 	OnMenuImageMouseDown: function(event) {
 		var el = this.extDt._findParentElement(event, "th");
 		var columnId = (el) ? el.id : null;
-		
+
 		if (columnId && (columnId != "")){
 			var menuId = "#" + columnId + "menu";
 			menuId = menuId.replace(/:/g,"\\:");
 			this.showMenuFct(event, columnId, menuId);
 		}
-		Event.stop(event);
+		_edtStopEvent(event);
 	},
-		
+
 	adjustSeparators: function() {
 		var columnCells = this.getColumnCells();
 		var l = columnCells.length;
 		for (var i=0; i<l-1; i++) {
 			var headerChild = columnCells[i];
 			var headerNextChild = columnCells[i+1];
-			var headerChildChildren = headerChild.childElements();
-			if (headerChildChildren == null || headerChildChildren.size() == 0){
+			var headerChildChildren = Array.from(headerChild.children);
+			if (headerChildChildren == null || headerChildChildren.length == 0){
 				continue;
 			}
 			var sepSpan = headerChildChildren[2];
 			var headerRowHeight = this.headerRow.getHeight();
 			var headerRowY = this.headerRow.getY();
 			sepSpan.columnIndex = i;
-			var sd = sepSpan.getWidth()/2 + 1;
+			var sd = (sepSpan.offsetWidth)/2 + 1;
 			var dropSpanLeft = headerChildChildren[3];
 			var dropSpanRight = headerChildChildren[5];
 			var menuImage = headerChildChildren[7];
 			var spanLeft = headerNextChild.offsetLeft - sd;
-			sepSpan.setStyle({height: headerRowHeight+'px', top: headerRowY+'px', left: spanLeft+'px'});
-			menuImage.setStyle({top: headerRowY + 'px', left: (headerNextChild.offsetLeft-menuImage.offsetWidth - 1)+'px'});
+			_edtSetStyle(sepSpan, {height: headerRowHeight+'px', top: headerRowY+'px', left: spanLeft+'px'});
+			_edtSetStyle(menuImage, {top: headerRowY + 'px', left: (headerNextChild.offsetLeft-menuImage.offsetWidth - 1)+'px'});
 			//menuImage.setStyle('left:'+(spanLeft-menuImage.offsetWidth)+'px');
-			var w = parseInt(headerChild.getWidth()/2);
-			dropSpanLeft.setStyle({top: headerRowY+'px', left: (headerChild.offsetLeft) +'px', height: headerRowHeight+'px', width: w+'px'});
-			dropSpanRight.setStyle({top: headerRowY+'px', left: (headerChild.offsetLeft + w) +'px', height: headerRowHeight+'px', width: w+'px'});
+			var w = parseInt(headerChild.offsetWidth/2);
+			_edtSetStyle(dropSpanLeft, {top: headerRowY+'px', left: (headerChild.offsetLeft) +'px', height: headerRowHeight+'px', width: w+'px'});
+			_edtSetStyle(dropSpanRight, {top: headerRowY+'px', left: (headerChild.offsetLeft + w) +'px', height: headerRowHeight+'px', width: w+'px'});
 		}
 		this.lastColWidth = this.extDt.getColumnWidth(this.getColumnsNumber()-1);
 		if (ClientUILib.isIE){
 			this.lastColWidth -= 15;
 		}
 	},
-	
+
 	OnSepClick: function(event) {
-		Event.stop(event);
+		_edtStopEvent(event);
 		this.dragColumnInfo.mouseDown = false;
 	},
-	
+
 	OnSepMouseDown: function(event) {
-		Event.stop(event);
+		_edtStopEvent(event);
 		this.dragColumnInfo = {
-			srcElement: Event.element(event),
+			srcElement: event.target || event.srcElement,
 			dragStarted: false,
 			mouseDown: true,
-			startX: Event.pointerX(event),
+			startX: _edtPointerX(event),
 			originalX: 0
 		};
 		var srcElement = this.dragColumnInfo.srcElement;
@@ -302,10 +325,10 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
             this.maxDelta -= 1;
         };
 		this.minDelta = this.minColumnWidth - this.getColumnWidth(srcElement.columnIndex);
-		Event.observe(document, 'mousemove', this.eventSepMouseMove, true);
-		Event.observe(document, 'mouseup', this.eventSepMouseUp, true);
+		document.addEventListener('mousemove', this.eventSepMouseMove, true);
+		document.addEventListener('mouseup', this.eventSepMouseUp, true);
 	},
-	
+
 	_showSplitter: function(index) {
 		if(!this.columnSplitter) {
 			this._createSplitter();
@@ -329,18 +352,18 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 		this.columnSplitter = new ClientUI.common.box.Box(this.extDtId +":cs", this.extDt.grid);
 		this.columnSplitter.makeAbsolute();
 		this.columnSplitter.setWidth(this.minColumnWidth);
-	},	
-	
+	},
+
 	OnSepMouseUp: function(event) {
-		Event.stop(event);
-		Event.stopObserving(document, 'mousemove', this.eventSepMouseMove);
-		Event.stopObserving(document, 'mouseup', this.eventSepMouseUp);
+		_edtStopEvent(event);
+		document.removeEventListener('mousemove', this.eventSepMouseMove, true);
+		document.removeEventListener('mouseup', this.eventSepMouseUp, true);
 		if(this.dragColumnInfo && this.dragColumnInfo.dragStarted) {
 
 			this.dragColumnInfo.dragStarted = false;
 			this.dragColumnInfo.mouseDown = false;
 
-			var delta = Event.pointerX(event) - 
+			var delta = _edtPointerX(event) -
 				this.dragColumnInfo.startX;
 			if (delta < this.minDelta) {
 				delta = this.minDelta;
@@ -350,7 +373,7 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 			}
 			var columnIndex = this.dragColumnInfo.srcElement.columnIndex;
 			var newWidth = this.getColumnWidth(columnIndex) + delta;
-			
+
 			this.extDt.setColumnWidth(columnIndex, newWidth);
 			this.setColumnWidth(columnIndex,newWidth);
 			this.extDt.updateLayout();
@@ -364,16 +387,16 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 			}
 		}
 		this._hideSplitter();
-		
+
 	},
-	
+
 	OnSepMouseMove: function(event) {
 		if(this.dragColumnInfo && this.dragColumnInfo.mouseDown) {
 			if(!this.dragColumnInfo.dragStarted) {
 				this.dragColumnInfo.dragStarted = true;
 				this._showSplitter(this.dragColumnInfo.srcElement.columnIndex);
 			}
-			var delta = Event.pointerX(event) - 
+			var delta = _edtPointerX(event) -
 				this.dragColumnInfo.startX
 			if (delta < this.minDelta) {
 				delta = this.minDelta;
@@ -383,9 +406,9 @@ ExtendedDataTable.DataTable.header = Class.create(ClientUI.common.box.Box, {
 			}
 			var x = this.dragColumnInfo.originalX + delta;
 			var finalX = x - this.minColumnWidth - 6 //6 stands for sep span width;
-			this.columnSplitter.moveToX(finalX); 				
-			Event.stop(event);
+			this.columnSplitter.moveToX(finalX);
+			_edtStopEvent(event);
 		}
 	}
-			
+
 });

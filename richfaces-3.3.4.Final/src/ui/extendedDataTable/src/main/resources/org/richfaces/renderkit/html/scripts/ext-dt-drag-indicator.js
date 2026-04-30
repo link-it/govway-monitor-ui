@@ -1,3 +1,19 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM:
+ *       Object.extend -> Object.assign,
+ *       Element.clearChildren -> while (firstChild) removeChild,
+ *       Element.show / hide -> style.display,
+ *       Element.setStyle -> Object.assign(el.style, ...),
+ *       Element.addClassName / removeClassName -> classList.add / remove,
+ *       new Insertion.Top -> insertAdjacentHTML('afterbegin', html),
+ *       parts.invoke('getContent', p) -> parts.map(x => x.getContent(p)).
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 ExtDragIndicator = {
 
     init: function(event) {
@@ -6,18 +22,18 @@ ExtDragIndicator = {
     },
 
     setContent: function(name, single, params) {
-        Element.clearChildren(this);
+        while (this.firstChild) this.removeChild(this.firstChild);
 
         var p = DnD.getDnDDefaultParams(this);
-        
+
         if (!p) {
             p = {};
         }
 
         if (params) {
-            Object.extend(p, params);
+            Object.assign(p, params);
         }
-        
+
         if (!p['marker']) {
             if (p[name]) {
                 p['marker'] = p[name];
@@ -33,9 +49,9 @@ ExtDragIndicator = {
         } else {
             parts = this.indicatorTemplates['multi'];
         }
-        
-        new Insertion.Top(this, parts.invoke('getContent', p).join(''));
-        
+
+        this.insertAdjacentHTML('afterbegin', parts.map(function(x) { return x.getContent(p); }).join(''));
+
         if (ExtDragIndicator.isIE6) {
             this.initIFrame();
         }
@@ -51,12 +67,12 @@ ExtDragIndicator = {
             document.body.appendChild(this);
             this.floatedToBody = true;
         }
-        Element.show(this);
+        this.style.display = '';
         this.style.position = 'absolute';
     },
 
     hide: function() {
-        Element.hide(this);
+        this.style.display = 'none';
         this.style.position = '';
         this.offsets = undefined;
         this.leave();
@@ -73,48 +89,49 @@ ExtDragIndicator = {
 
     position: function(x, y) {
         if (!this.offsets) {
-            Element.show(this);
+            this.style.display = '';
             this.style.position = 'absolute';
-        }       
-        Element.setStyle(this, {"left": x + "px", "top": y + "px"});
+        }
+        this.style.left = x + "px";
+        this.style.top  = y + "px";
     },
 
     accept: function() {
-        Element.removeClassName(this, 'drgind_default');
-        Element.removeClassName(this, 'drgind_reject');
-        Element.addClassName(this, 'drgind_accept');
+        this.classList.remove('drgind_default');
+        this.classList.remove('drgind_reject');
+        this.classList.add('drgind_accept');
 
         var acceptClass = this.getAcceptClass();
         if (acceptClass) {
-            Element.addClassName(this, acceptClass);
+            this.classList.add(acceptClass);
         }
     },
 
     reject: function() {
-        Element.removeClassName(this, 'drgind_default');
-        Element.removeClassName(this, 'drgind_accept');
-        Element.addClassName(this, 'drgind_reject');
+        this.classList.remove('drgind_default');
+        this.classList.remove('drgind_accept');
+        this.classList.add('drgind_reject');
 
         var rejectClass = this.getRejectClass();
         if (rejectClass) {
-            Element.addClassName(this, rejectClass);
+            this.classList.add(rejectClass);
         }
     },
 
     leave: function() {
-        Element.removeClassName(this, 'drgind_accept');
-        //Element.removeClassName(this, 'drgind_reject');
-        //Element.addClassName(this, 'drgind_default');
-        Element.removeClassName(this, 'drgind_default');
-        Element.addClassName(this, 'drgind_reject');
+        this.classList.remove('drgind_accept');
+        //this.classList.remove('drgind_reject');
+        //this.classList.add('drgind_default');
+        this.classList.remove('drgind_default');
+        this.classList.add('drgind_reject');
 
         var acceptClass = this.getAcceptClass();
         var rejectClass = this.getRejectClass();
         if (acceptClass) {
-            Element.removeClassName(this, acceptClass);
+            this.classList.remove(acceptClass);
         }
         if (rejectClass) {
-            Element.removeClassName(this, rejectClass);
+            this.classList.remove(rejectClass);
         }
     },
 
@@ -125,10 +142,10 @@ ExtDragIndicator = {
     getRejectClass: function() {
         return this.ils_rejectClass;
     },
-    
+
     initIFrame: function() {
         var iframe = document.createElement("iframe");
-        Element.addClassName(iframe, 'rich-dragindicator-iframe');
+        iframe.classList.add('rich-dragindicator-iframe');
         this.insertBefore(iframe, this.firstChild);
         var table = iframe.nextSibling;
         iframe.style.width = table.offsetWidth + "px";
@@ -137,9 +154,9 @@ ExtDragIndicator = {
 };
 
 function createExtDragIndicator(elt, acceptClass, rejectClass) {
-    Object.extend(elt, ExtDragIndicator);
+    Object.assign(elt, ExtDragIndicator);
     elt.init();
-    
+
     elt.ils_acceptClass = acceptClass;
     elt.ils_rejectClass = rejectClass;
 }

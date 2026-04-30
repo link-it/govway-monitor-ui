@@ -1,3 +1,28 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM + jQuery (gia' in pagina):
+ *     Class.create()                    -> costruttore + .prototype plain
+ *     $(id)                             -> document.getElementById(id)
+ *     Object.extend(t, s)               -> Object.assign(t, s)
+ *     Element.show(el)/hide(el)         -> el.style.display = '' / 'none'
+ *     Element.setStyle(el, hash)        -> ModalPanel._applyStyles(el, hash)
+ *     Element.getStyle(el, prop)        -> getComputedStyle(el).getPropertyValue(prop)
+ *     Event.observe/stopObserving       -> addEventListener/removeEventListener
+ *     Event.stop(e)                     -> e.preventDefault(); e.stopPropagation();
+ *     Event.element(e)                  -> e.target || e.srcElement
+ *     bindAsEventListener(this)         -> .bind(this)
+ *     new Insertion.Top(el, html)       -> el.insertAdjacentHTML('afterbegin', html)
+ *     $H(obj).keys()                    -> Object.keys(obj)
+ *     array.without(item)               -> array.filter(x => x !== item)
+ *     array.last()                      -> array[array.length - 1]
+ *     Prototype.Browser.IE check        -> rimosso (IE non supportato)
+ *   I rami che usano eDiv.style.setExpression/removeExpression sono lasciati
+ *   intatti: sono dietro feature-detect, gia' inerti su browser non-IE.
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 if (!window.DW) {
 	window.DW = {};
 }
@@ -22,13 +47,16 @@ function discardElement(element) {
 }
 
 Selection = {};
-Selection.eventHandler=function(event){Event.stop(event);};
-Selection.eventHandler = Selection.eventHandler.bindAsEventListener(Selection);
+Selection.eventHandler=function(event){
+	if (event.preventDefault) event.preventDefault();
+	if (event.stopPropagation) event.stopPropagation();
+};
+Selection.eventHandler = Selection.eventHandler.bind(Selection);
 Selection.disableSelection = function (element)
 {
-	if (typeof element.onselectstart!="undefined") //IE
+	if (typeof element.onselectstart!="undefined") //IE legacy
 	{
-		Event.observe(element, 'selectstart', this.eventHandler);
+		element.addEventListener('selectstart', this.eventHandler);
 	}
 	else if (typeof element.style.MozUserSelect!="undefined") //Firefox
 	{
@@ -36,15 +64,15 @@ Selection.disableSelection = function (element)
 	}
 	else //All other (ie: Opera)
 	{
-		Event.observe(element, 'mousedown', this.eventHandler);
+		element.addEventListener('mousedown', this.eventHandler);
 	}
 }
 
 Selection.enableSelection = function (element)
 {
-	if (typeof element.onselectstart!="undefined") //IE
+	if (typeof element.onselectstart!="undefined") //IE legacy
 	{
-		Event.stopObserving(element, 'selectstart', this.eventHandler);
+		element.removeEventListener('selectstart', this.eventHandler);
 	}
 	else if (typeof element.style.MozUserSelect!="undefined") //Firefox
 	{
@@ -52,11 +80,32 @@ Selection.enableSelection = function (element)
 	}
 	else //All other (ie: Opera)
 	{
-		Event.stopObserving(element, 'mousedown', this.eventHandler);
+		element.removeEventListener('mousedown', this.eventHandler);
 	}
 }
 
-ModalPanel = Class.create();
+function ModalPanel(id, options) {
+	this.initialize(id, options);
+}
+
+// Helper: applica un oggetto di stili (chiavi camelCase o hyphenated) a un element.
+// Replica la semantica di Prototype.Element.setStyle.
+ModalPanel._applyStyles = function (elem, styles) {
+	if (!elem || !styles) return;
+	for (var key in styles) {
+		if (Object.prototype.hasOwnProperty.call(styles, key)) {
+			var prop = key.indexOf('-') === -1
+				? key
+				: key.replace(/-([a-z])/g, function (m, c) { return c.toUpperCase(); });
+			elem.style[prop] = styles[key];
+		}
+	}
+};
+
+// Helper: rimuove la prima occorrenza di item da arr (no-op se non trovato).
+ModalPanel._without = function (arr, item) {
+	return arr.filter(function (x) { return x !== item; });
+};
 
 {
 	var ieVersion = RichFaces.getIEVersion();
@@ -87,10 +136,10 @@ ModalPanel.getMinimumSize = function(size) {
 ModalPanel.prototype = {
 	initialize: function(id, options) {
 		this["rich:destructor"] = "destroy";
-	
-		this.markerId = $(id);
 
-		this.id = $(id + "Container");
+		this.markerId = document.getElementById(id);
+
+		this.id = document.getElementById(id + "Container");
 
 		this.options = options;
 
@@ -124,27 +173,27 @@ ModalPanel.prototype = {
 			this.borders.push(new ModalPanel.Border(id + "ResizerNWL", this, "NW-resize", ModalPanel.Sizer.NWL));
 		}
 
-		if (this.options.moveable && $(id + "Header")) {
+		if (this.options.moveable && document.getElementById(id + "Header")) {
 			this.header = new ModalPanel.Border(id + "Header", this, "move", ModalPanel.Header);
 		}
 
 		this.markerId.component = this;
-		
-		var eDiv = $(this.div);
+
+		var eDiv = document.getElementById(this.div);
 		if (eDiv.style.setExpression)
 			if (ModalPanel.disableSelects /* IE 6 */ || Richfaces.getComputedStyle(eDiv, "position") != "fixed" /* IE again, not in strict mode*/)
 
 		{
 			eDiv.style.position = "absolute";
-			
-			var eCursorDiv = $(this.cursorDiv);
+
+			var eCursorDiv = document.getElementById(this.cursorDiv);
 			eCursorDiv.style.position = "absolute";
 
 			//that is to apply filter
 			eDiv.style.zoom = "1";
 			eCursorDiv.style.zoom = "1";
 
-			var eCdiv = $(this.cdiv);
+			var eCdiv = document.getElementById(this.cdiv);
 			eCdiv.style.position = "absolute";
 			eCdiv.parentNode.style.position = "absolute";
 
@@ -153,30 +202,19 @@ ModalPanel.prototype = {
 
 		ModalPanel.panels.push(this);
 
-		this.eventFirstOnfocus = this.firstOnfocus.bindAsEventListener(this);
-		this.eventLastOnfocus = this.lastOnfocus.bindAsEventListener(this);
+		this.eventFirstOnfocus = this.firstOnfocus.bind(this);
+		this.eventLastOnfocus = this.lastOnfocus.bind(this);
 
 		this.firstHref = id + "FirstHref";
 		this.lastHref = id + "LastHref";
-		
+
 		this.selectBehavior = options.selectBehavior;
 	},
 
 	_saveInputValues: function(element) {
-		/* Fix for RF-3856 - Checkboxes in modal panel does not hold their states after modal was closed and opened again */
-		if (Prototype.Browser.IE /* reproducible for checkbox/radio in IE6, radio in IE 7/8 beta 2 */) {
-			var inputs = element.getElementsByTagName('input');
-			if (inputs) {
-				for (var i = 0; i < inputs.length; i++) {
-					var input = inputs[i];
-					if (input.type == 'checkbox' || input.type == 'radio') {
-						input.defaultChecked = input.checked;
-					}
-				}
-			}
-		}
+		// Fix originale per RF-3856 (checkbox/radio in IE6/7/8 beta 2): rimosso, IE non supportato.
 	},
-	
+
 	width: function() {
 		return this.getSizedElement().clientWidth;
 	},
@@ -184,10 +222,10 @@ ModalPanel.prototype = {
 	height: function() {
 		return this.getSizedElement().clientHeight;
 	},
-	
+
 	getSizedElement: function() {
 		if (!this._sizedElement) {
-			this._sizedElement = $(this.cdiv);
+			this._sizedElement = document.getElementById(this.cdiv);
 		}
 
 		return this._sizedElement;
@@ -195,34 +233,34 @@ ModalPanel.prototype = {
 
 	getContentElement: function() {
 		if (!this._contentElement) {
-			this._contentElement = this.options.autosized ? $(this.contentTable) : $(this.contentDiv);
+			this._contentElement = this.options.autosized ? document.getElementById(this.contentTable) : document.getElementById(this.contentDiv);
 		}
 
 		return this._contentElement;
 	},
-	
+
 	destroy: function() {
-		
-		if (this.observerSize) { 
-			window.clearInterval(this.observerSize); 
+
+		if (this.observerSize) {
+			window.clearInterval(this.observerSize);
 			this.observerSize = null;
 		}
-		 
+
 		this._contentElement = null;
 		this._sizedElement = null;
 
-		ModalPanel.panels = ModalPanel.panels.without(this);
-		
+		ModalPanel.panels = ModalPanel._without(ModalPanel.panels, this);
+
         this.enableSelects();
 
-        ModalPanel.activePanels = ModalPanel.activePanels.without(this);
-        
+        ModalPanel.activePanels = ModalPanel._without(ModalPanel.activePanels, this);
+
         this.parent = null;
         this.firstOutside = null;
         this.lastOutside = null;
         if (this.header) {
         	this.header.destroy();
-			this.header=null;        	
+			this.header=null;
         }
 
 		for (var k = 0; k < this.borders.length; k++ ) {
@@ -240,20 +278,21 @@ ModalPanel.prototype = {
 				}
 			}
 		}.bind(this), 0);
-		
+
         this.markerId.component = null;
         this.markerId = null;
 	},
 
 	initIframe : function() {
         if (this.contentWindow) {
-			Element.setStyle(this.contentWindow.document.body, { "margin" : "0px 0px 0px 0px" });
+			ModalPanel._applyStyles(this.contentWindow.document.body, { "margin" : "0px 0px 0px 0px" });
 		} else {
 			//TODO opera etc.
 
 		}
 
-		if("transparent" == Element.getStyle(document.body, "background-color")) {
+		var bgColor = window.getComputedStyle(document.body).getPropertyValue('background-color');
+		if ("transparent" == bgColor) {
 			this.style.filter = "alpha(opacity=0)";
 			this.style.opacity = "0";
 		}
@@ -266,7 +305,7 @@ ModalPanel.prototype = {
 		//iframeBodyStyle.opacity = "0.5";
 		//iframeBodyStyle.zIndex = "99";
 	},
-	
+
 	enableSelect: function(elt) {
 		if (elt._mdwProcessed) {
 			elt._mdwProcessed = undefined;
@@ -282,11 +321,11 @@ ModalPanel.prototype = {
 			}
 		}
 	},
-	
+
 	disableSelect: function(elt) {
 		if (!elt._mdwProcessed) {
 			elt._mdwProcessed = true;
- 
+
 			if ("hide" == this.selectBehavior) {
 				if (elt.style.visibility != "hidden") {
 					elt._mdwHidden = elt.style.visibility;
@@ -309,7 +348,7 @@ ModalPanel.prototype = {
 			}
 		}
 	},
-	
+
 	disableInnerSelects: function() {
 		if (ModalPanel.disableSelects) {
 			var selects = this.id.getElementsByTagName("SELECT");
@@ -318,7 +357,7 @@ ModalPanel.prototype = {
 			}
 		}
 	},
-	
+
 	enableSelects: function() {
 		if (!ModalPanel.disableSelects) {
 			return ;
@@ -326,7 +365,7 @@ ModalPanel.prototype = {
 
 		var lastPanel = ModalPanel.activePanels[ModalPanel.activePanels.length - 1];
 		var newLastPanel = ModalPanel.activePanels[ModalPanel.activePanels.length - 2];
-		
+
 		if (newLastPanel) {
 			if (lastPanel == this) {
 				//we've just closed top panel, re-enable next panel if any
@@ -345,41 +384,41 @@ ModalPanel.prototype = {
 			return ;
 		}
 
-		var lastPanel = ModalPanel.activePanels.last();
-		
+		var lastPanel = ModalPanel.activePanels[ModalPanel.activePanels.length - 1];
+
 		if (lastPanel) {
 			//we need to disable only the last opened panel
 			lastPanel.disableInnerSelects();
 			this.enableInnerSelects();
 		} else {
-			//disable all outer 
+			//disable all outer
 			var selects = document.body.getElementsByTagName("SELECT");
 
 			var innerSelects = this.id.getElementsByTagName("SELECT");
 			var firstInnerSelect = innerSelects[0];
 			var lastInnerSelect = innerSelects[innerSelects.length - 1];
-			
+
 			var selectsAreInner = false;
-			
+
 			for (var i = 0; i < selects.length; i++) {
 				var select = selects[i];
 				if (select == firstInnerSelect) {
 					selectsAreInner = true;
 				}
-				
+
 				if (!selectsAreInner) {
 					this.disableSelect(select);
 				}
-				
+
 				if (select == lastInnerSelect) {
 					selectsAreInner = false;
 				}
 			}
 		}
 	},
-	
+
 	setLeft: function(pos) {
-		var eCdiv = $(this.cdiv);
+		var eCdiv = document.getElementById(this.cdiv);
 		if (eCdiv.mpUseExpr) {
 			eCdiv.mpLeft = pos;
 		} else {
@@ -388,7 +427,7 @@ ModalPanel.prototype = {
 	},
 
 	setTop: function(pos) {
-		var eCdiv = $(this.cdiv);
+		var eCdiv = document.getElementById(this.cdiv);
 		if (eCdiv.mpUseExpr) {
 			eCdiv.mpTop = pos;
 		} else {
@@ -397,29 +436,29 @@ ModalPanel.prototype = {
 	},
 
 	firstOnfocus: function(event) {
-		var e = $(this.firstHref)
-		if (e && (ModalPanel.activePanels.last() == this)) {
+		var e = document.getElementById(this.firstHref);
+		if (e && (ModalPanel.activePanels[ModalPanel.activePanels.length - 1] == this)) {
 			e.focus();
 		}
 	},
 
 	lastOnfocus: function(event) {
-		var e = $(this.lastHref);
-		if (e && (ModalPanel.activePanels.last() == this)) {
+		var e = document.getElementById(this.lastHref);
+		if (e && (ModalPanel.activePanels[ModalPanel.activePanels.length - 1] == this)) {
 			e.focus();
 		}
 	},
-	
+
 	formElements: "|a|input|select|button|textarea|",
-	
+
 	processAllFocusElements: function(root, callback) {
 		var idx = -1;
 		var tagName;
-		
+
 		if (root.focus && root.nodeType == 1 && (tagName = root.tagName) &&
 			// Many not visible elements have focus method, we is had to avoid processing them.
 			(idx = this.formElements.indexOf(tagName.toLowerCase())) != -1 &&
-			this.formElements.charAt(idx - 1) === '|' && 
+			this.formElements.charAt(idx - 1) === '|' &&
 			this.formElements.charAt(idx + tagName.length) === '|' &&
 			!root.disabled && root.type!="hidden") {
 				callback.call(this, root);
@@ -464,48 +503,48 @@ ModalPanel.prototype = {
 
 	preventFocus:	function() {
 		this.processAllFocusElements(document, this.processTabindexes);
-		
+
 		if (this.firstOutside) {
-			Event.observe(this.firstOutside, "focus", this.eventFirstOnfocus); 
+			this.firstOutside.addEventListener("focus", this.eventFirstOnfocus);
 		}
 		if (this.lastOutside && this.lastOutside != this.firstOutside) {
-			Event.observe(this.lastOutside, "focus", this.eventLastOnfocus); 
+			this.lastOutside.addEventListener("focus", this.eventLastOnfocus);
 		}
 	},
 
 	restoreFocus: function() {
 		this.processAllFocusElements(document, this.restoreTabindexes);
-		
+
 		if (this.firstOutside) {
-			Event.stopObserving(this.firstOutside, "focus", this.eventFirstOnfocus);
+			this.firstOutside.removeEventListener("focus", this.eventFirstOnfocus);
 			this.firstOutside = null;
 		}
 		if (this.lastOutside) {
-			Event.stopObserving(this.lastOutside, "focus", this.eventLastOnfocus);
+			this.lastOutside.removeEventListener("focus", this.eventLastOnfocus);
 			this.lastOutside = null;
 		}
 	},
 
 	show: function(event, opts) {
 		if(!this.shown && this.invokeEvent("beforeshow",event,null,element)) {
-			
+
 			var element = this.id;
 			var jqElement = jQuery(element);
 
 			this.preventFocus();
-			
+
 	        if (!this.domReattached) {
 				this.parent = element.parentNode;
-				
+
 				var domElementAttachment;
 				if (opts) {
 					domElementAttachment = opts.domElementAttachment;
-				} 
-				
+				}
+
 				if (!domElementAttachment) {
 					domElementAttachment = this.options.domElementAttachment;
 				}
-				
+
 				var newParent;
 				if ('parent' == domElementAttachment) {
 					newParent = this.parent;
@@ -515,141 +554,122 @@ ModalPanel.prototype = {
 					//default - body
 					newParent = document.body;
 				}
-				
+
 				if (newParent != this.parent) {
 					this._saveInputValues(element);
 					newParent.insertBefore(element, null);
 					this.domReattached = true;
 				} else {
-					Element.show(this.parent);
+					this.parent.style.display = '';
 				}
 			}
-	
-			var eCdiv = $(this.cdiv);
+
+			var eCdiv = document.getElementById(this.cdiv);
 			var jqEDiv = jQuery(eCdiv);
 			var forms = eCdiv.getElementsByTagName("form");
-	
+
 			if (this.options.keepVisualState && forms) {
-				this.formOnsubmit = this.setStateInput.bindAsEventListener(this); 
+				this.formOnsubmit = this.setStateInput.bind(this);
 				for (var i = 0; i < forms.length; i++) {
-					Event.observe(forms[i], "submit", this.formOnsubmit); 
+					forms[i].addEventListener("submit", this.formOnsubmit);
 				}
 			}
-	
+
 			var eIframe;
 			if ((ModalPanel.disableSelects || this.options.overlapEmbedObjects) && !this.iframe) {
-	                        this.iframe = this.id.id + "IFrame";
-				new Insertion.Top(eCdiv,
-                         	"<iframe src=\"javascript:''\" frameborder=\"0\" scrolling=\"no\" id=\"" + this.iframe + "\" " +								
+                        this.iframe = this.id.id + "IFrame";
+				eCdiv.insertAdjacentHTML('afterbegin',
+                         	"<iframe src=\"javascript:''\" frameborder=\"0\" scrolling=\"no\" id=\"" + this.iframe + "\" " +
 				"class=\"rich-mpnl-iframe\" style=\"width: 1px; height: 1px;\">" +
 				"</iframe>");
-				
-				eIframe = $(this.iframe); 
-	
-				//alert("IFrame:" + eIframe + "created!");
-	
+
+				eIframe = document.getElementById(this.iframe);
+
 				//eIframe.onload = this.initIframe.bind(eIframe);
-				Event.observe(eIframe, 'load', this.initIframe.bindAsEventListener(eIframe));
+				eIframe.addEventListener('load', this.initIframe.bind(eIframe));
 			}
-	
+
 			var options = {};
 			this.userOptions = {};
-	
+
 			if (!eCdiv.mpSet) {
-				Object.extend(options, this.options);
+				Object.assign(options, this.options);
 			}
-	
+
 			if (opts) {
-				Object.extend(options, opts);
-				Object.extend(this.userOptions, opts);
+				Object.assign(options, opts);
+				Object.assign(this.userOptions, opts);
 			}
-			
-			this.currentMinHeight = ModalPanel.getMinimumSize((options.minHeight || options.minHeight == 0) ? options.minHeight : this.minHeight); 
+
+			this.currentMinHeight = ModalPanel.getMinimumSize((options.minHeight || options.minHeight == 0) ? options.minHeight : this.minHeight);
 			this.currentMinWidth = ModalPanel.getMinimumSize((options.minWidth || options.minWidth == 0) ? options.minWidth : this.minWidth);
-			
+
 			var eContentElt = this.getContentElement();
-	
+
 			if (!this.options.autosized) {
-				if (options.width && options.width == -1) 
+				if (options.width && options.width == -1)
 					options.width = 300;
-				if (options.height && options.height == -1) 
+				if (options.height && options.height == -1)
 					options.height = 200;
 			}
-				
+
 			if (options.width && options.width != -1) {
 				if (this.currentMinWidth > options.width) {
 					options.width = this.currentMinWidth;
 				}
-		
+
 				eContentElt.style.width = options.width + (/px/.test(options.width) ? '' : 'px');
 			}
-	
+
 			if (options.height && options.height != -1) {
 				if (this.currentMinHeight > options.height) {
 					options.height = this.currentMinHeight;
 				}
-	
+
 				eContentElt.style.height = options.height + (/px/.test(options.height) ? '' : 'px');
 			}
-	
+
 			eCdiv.mpSet = true;
-	
-			//Element.setStyle(this.dialogWindow.document.body, { "margin" : "0px 0px 0px 0px" });
-			//if("transparent" == Element.getStyle(document.body, "background-color")) {
-			//	eIframe.allowTransparency = true;
-			//}
-	
+
 			this.disableOuterSelects();
-			ModalPanel.activePanels = ModalPanel.activePanels.without(this);
+			ModalPanel.activePanels = ModalPanel._without(ModalPanel.activePanels, this);
 			ModalPanel.activePanels.push(this);
-	
+
 			//this.shape.init(eCdiv, this.options);
-	
-			var eDiv = $(this.div);
+
+			var eDiv = document.getElementById(this.div);
 			if (eDiv.style.position == "absolute")
 			{
 				var we = "getSizeElement().clientWidth + \"px\"";
 				var he = "getSizeElement().clientHeight + \"px\"";
 				eDiv.style.setExpression("width", we);
 				eDiv.style.setExpression("height", he);
-	
-				var eCursorDiv = $(this.cursorDiv);
+
+				var eCursorDiv = document.getElementById(this.cursorDiv);
 				eCursorDiv.style.setExpression("width", we);
 				eCursorDiv.style.setExpression("height", he);
-	
+
 				var le = "-Position.cumulativeOffset(this.parentNode)[0] + getSizeElement().scrollLeft + \"px\"";
 				var te = "-Position.cumulativeOffset(this.parentNode)[1] + getSizeElement().scrollTop + \"px\"";
-	
+
 				eDiv.style.setExpression("left", le);
 				eDiv.style.setExpression("top", te);
-	
+
 				eCursorDiv.style.setExpression("left", le);
 				eCursorDiv.style.setExpression("top", te);
-	
+
 				var leftExpr = "(this.mpLeft || 0) + -Position.cumulativeOffset(this.parentNode)[0] + getSizeElement().scrollLeft + \"px\"";
 				var topExpr = "(this.mpTop || 0) + -Position.cumulativeOffset(this.parentNode)[1] + getSizeElement().scrollTop + \"px\"";
-	
+
 				eCdiv.style.setExpression("left", leftExpr);
 				eCdiv.style.setExpression("top", topExpr);
-	
-	
-				/* That's how we output debug info - DOM inspector rulez */
-				/*
-				document.body.setExpression("_clientLeft", "getSizeElement().clientLeft");
-				document.body.setExpression("_clientTop", "getSizeElement().clientTop");
-				document.body.setExpression("_scrollLeft", "getSizeElement().scrollLeft");
-				document.body.setExpression("_scrollTop", "getSizeElement().scrollTop");
-				*/
-				/* */
 			}
-	
+
 			jqElement.removeClass( "rich-modalpanel-display-none" ).addClass( "rich-modalpanel-display" );
     		jqElement.removeClass( "rich-modalpanel-visibility" ).addClass( "rich-modalpanel-visibility-hidden" );
-    		
-//			element.style .visibility = "hidden";
-//			Element.show(element);
+
 			this.correctShadowSize();
-	
+
 			if (options.left) {
 				var _left;
 				if (options.left != "auto") {
@@ -663,10 +683,10 @@ ModalPanel.prototype = {
 						_left = 0;
 					}
 				}
-	
+
 				this.setLeft(Math.round(_left));
 			}
-	
+
 			if (options.top) {
 				var _top;
 				if (options.top != "auto") {
@@ -680,43 +700,39 @@ ModalPanel.prototype = {
 						_top = 0;
 					}
 				}
-	
+
 				this.setTop(Math.round(_top));
 			}
-			
+
 			if (this.options.autosized) {
 				this.observerSize =
-			        window.setInterval(this.correctShadowSize.bindAsEventListener(this), 500);
+			        window.setInterval(this.correctShadowSize.bind(this), 500);
 			}
-	
+
 			this.doResizeOrMove(ModalPanel.Sizer.Diff.EMPTY);
-	
+
 			for (var k = 0; k < this.borders.length; k++ ) {
 				this.borders[k].doPosition();
 			}
-	
+
 			if (this.header) {
 				this.header.doPosition();
 			}
-	
+
     		jqElement.removeClass( "rich-modalpanel-visibility-hidden" ).addClass( "rich-modalpanel-visibility" );
     		jqEDiv.removeClass( "rich-modalpanel-display" ).addClass( "rich-modalpanel-display-none" );
-    		
-//	        Element.hide(eCdiv);
-//	        element.style .visibility = "";
-	
+
 			this.lastOnfocus();
-	    	
+
 	    	jqEDiv.removeClass( "rich-modalpanel-display-none" ).addClass( "rich-modalpanel-display" );
-//	    	Element.show(eCdiv);
-	
+
 	    	var event = {};
 	    	event.parameters = opts || {};
 	    	this.shown = true;
 	    	this.invokeEvent("show",event,null,element);
-		}	
-	},	
-	
+		}
+	},
+
 	startDrag: function(border) {
 		for (var k = 0; k < this.borders.length; k++ ) {
 			this.borders[k].hide();
@@ -735,43 +751,45 @@ ModalPanel.prototype = {
 	hide: function(event, opts) {
 		if (this.shown && this.invokeEvent("beforehide",event,null,element)) {
 
-			this.currentMinHeight = undefined; 
+			this.currentMinHeight = undefined;
 			this.currentMinWidth = undefined;
 
 			this.restoreFocus();
 
 	        this.enableSelects();
-	
-			ModalPanel.activePanels = ModalPanel.activePanels.without(this);			
-			
-			var eDiv = $(this.div);
-			var eCdiv = $(this.cdiv);
+
+			ModalPanel.activePanels = ModalPanel._without(ModalPanel.activePanels, this);
+
+			var eDiv = document.getElementById(this.div);
+			var eCdiv = document.getElementById(this.cdiv);
 			var jqEDiv = jQuery(eCdiv);
-	
+
 			if (eDiv.style.position == "absolute") {
 				eDiv.style.removeExpression("width");
 				eDiv.style.removeExpression("height");
-	
+
 				eDiv.style.removeExpression("left");
 				eDiv.style.removeExpression("top");
-	
-				var eCursorDiv = $(this.cursorDiv);
+
+				var eCursorDiv = document.getElementById(this.cursorDiv);
 				eCursorDiv.style.removeExpression("width");
 				eCursorDiv.style.removeExpression("height");
-	
+
 				eCursorDiv.style.removeExpression("left");
 				eCursorDiv.style.removeExpression("top");
-	
+
 				eCdiv.style.removeExpression("left");
 				eCdiv.style.removeExpression("top");
 			}
-	
-			var element = $(this.id);
+
+			// this.id è già un Node (impostato in initialize: this.id = getElementById(id+"Container")).
+			// L'originale Prototype $(this.id) ritornava il Node stesso; document.getElementById(Node)
+			// invece torna null e fa fallire .appendChild(null) sotto. Quindi uso this.id direttamente.
+			var element = this.id;
 			var jqElement = jQuery(element); // uso jQuey per comodita''
-			
+
 			jqElement.removeClass( "rich-modalpanel-display" ).addClass( "rich-modalpanel-display-none" );
-//			Element.hide(element);
-	
+
 			if (this.parent) {
 				if (this.domReattached) {
 					this._saveInputValues(element);
@@ -780,32 +798,32 @@ ModalPanel.prototype = {
 
 					this.domReattached = false;
 				} else {
-					Element.hide(this.parent);
+					this.parent.style.display = 'none';
 				}
 			}
-			
+
 			var event = {};
 			event.parameters = opts || {};
 			if (this.options && this.options.onhide) {
 				this.options.onhide(event);
 			}
-			
+
 			var forms = eCdiv.getElementsByTagName("form");
 			if (this.options.keepVisualState && forms) {
 				for (var i = 0; i < forms.length; i++) {
-					Event.stopObserving(forms[i], "submit", this.formOnsubmit);
+					forms[i].removeEventListener("submit", this.formOnsubmit);
 				}
 			}
-	
+
 			this.shown = false;
-			
+
 			if (this.observerSize) {
 				window.clearInterval(this.observerSize);
 				this.observerSize = null;
 			}
-			
+
 			if (ModalPanel.activePanels.length > 0) {
-				ModalPanel.activePanels.last().preventFocus();
+				ModalPanel.activePanels[ModalPanel.activePanels.length - 1].preventFocus();
 			}
 		}
 	},
@@ -813,7 +831,7 @@ ModalPanel.prototype = {
 	_getStyle: function(elt, name) {
 		return parseInt(elt.style[name].replace("px", ""), 10);
 	},
-	
+
 	doResizeOrMove: function(diff) {
 		var vetoes = {};
 		var cssHash = {};
@@ -821,9 +839,9 @@ ModalPanel.prototype = {
 
 		var vetoeChange = false;
 		var newSize;
-		
+
 		var eContentElt = this.getContentElement();
-		
+
 		newSize = this._getStyle(eContentElt, "width");//Richfaces.getComputedStyleSize(eContentDiv, "width");
 
 		var oldSize = newSize;
@@ -846,15 +864,15 @@ ModalPanel.prototype = {
 		if (vetoes.vx && diff.deltaX) {
 			diff.deltaX = -vetoes.vx;
 		}
-		
-		var eCdiv = $(this.cdiv); 
+
+		var eCdiv = document.getElementById(this.cdiv);
 
 		if (diff.deltaX && (vetoes.vx || !vetoes.x)) {
 			if (vetoes.vx) {
 				diff.deltaX = vetoes.vx;
 			}
 			var newPos;
-			
+
 			newPos = this._getStyle(eCdiv, "left");//Richfaces.getComputedStyleSize(eCdiv, "left");
 			newPos += diff.deltaX;
 			cssHash.left = newPos + 'px';
@@ -902,14 +920,14 @@ ModalPanel.prototype = {
 			}
 		}
 
-		Element.setStyle(eContentElt, cssHashWH);
+		ModalPanel._applyStyles(eContentElt, cssHashWH);
 
-		Element.setStyle(eCdiv, cssHash);
-		
+		ModalPanel._applyStyles(eCdiv, cssHash);
+
 		this.correctShadowSize();
-		
-		Object.extend(this.userOptions, cssHash);
-		Object.extend(this.userOptions, cssHashWH);
+
+		Object.assign(this.userOptions, cssHash);
+		Object.assign(this.userOptions, cssHashWH);
 
 		var w = this.width();
 		var h = this.height();
@@ -932,31 +950,31 @@ ModalPanel.prototype = {
 		if (this.header) {
 			this.header.doPosition();
 		}
-		
+
 		return vetoes;
 	},
 
 	_findForm: function(elt) {
 		var target = elt;
 		while (target) {
-			if (!target.tagName /* document node doesn't have tagName */ 
+			if (!target.tagName /* document node doesn't have tagName */
 					|| target.tagName.toLowerCase() != "form") {
-				
+
 				target = target.parentNode;
 			} else {
 				break;
 			}
 		}
-		
+
 		return target;
 	},
-	
+
 	setStateInput: function(e) {
-		var target = Event.element(e);
+		var target = e.target || e.srcElement;
 		if (e && target) {
 			// Concret input but not entire form is a target element for onsubmit in FF
 			target = this._findForm(target);
-			
+
 			var input = document.createElement("input");
 			input.type = "hidden";
 			input.id = this.markerId.id + "OpenedState";
@@ -964,7 +982,7 @@ ModalPanel.prototype = {
 			input.value = this.shown ? "true" : "false";
 			target.appendChild(input);
 
-			var keys = $H(this.userOptions).keys();
+			var keys = Object.keys(this.userOptions);
 			if (keys) {
 				for (var i = 0; i < keys.length; i++) {
 					input = document.createElement("input");
@@ -976,18 +994,18 @@ ModalPanel.prototype = {
 
 				}
 			}
-			
+
 			return true;
 		}
 	},
-	
+
 	correctShadowSize: function() {
-		var eShadowDiv = $(this.shadowDiv);
+		var eShadowDiv = document.getElementById(this.shadowDiv);
 		if (!eShadowDiv) {
 			return;
 		}
-		var eIframe = $(this.iframe);
-		
+		var eIframe = document.getElementById(this.iframe);
+
 		var dx = 0;
 		var dy = 0;
 		if (!Richfaces.browser.isIE)
@@ -999,15 +1017,15 @@ ModalPanel.prototype = {
 		var h = this.height();
 		eShadowDiv.style.width = (w-dx)+"px";
 		eShadowDiv.style.height = (h-dy)+"px";
-		
+
 		if (eIframe) {
 			eIframe.style.width = w+"px";
 			eIframe.style.height = h+"px";
 		}
 	},
-	
+
 	invokeEvent: function(eventName, event, value, element) {
-	
+
 		var eventFunction = this.options['on'+eventName];
 		var result;
 
@@ -1023,7 +1041,7 @@ ModalPanel.prototype = {
 				eventObj = document.createEvent('Events');
 				eventObj.initEvent( eventName, true, false );
 			}
-			
+
 			eventObj.rich = {component:this};
 			eventObj.rich.value = value;
 
@@ -1032,12 +1050,12 @@ ModalPanel.prototype = {
 			}
 			catch (e) { LOG.warn("Exception: "+e.Message + "\n[on"+eventName + "]"); }
 		}
-		
+
 		if (result!=false) {
 			 result = true;
-		}	 
+		}
 		return result;
-	}	
+	}
 }
 
 Richfaces.findModalPanel = function (id) {
@@ -1064,8 +1082,8 @@ Richfaces.findModalPanel = function (id) {
 }
 
 Richfaces.showModalPanel = function (id, opts, event) {
-	
-	var invoke = 
+
+	var invoke =
 		(Richfaces.browser.isIE || Richfaces.browser.isSafari) ?
 		function(f) {
 				if (document.readyState != "complete") {
@@ -1078,12 +1096,12 @@ Richfaces.showModalPanel = function (id, opts, event) {
 			} else {
 				f();
 			}
-		} : 
+		} :
 		function(f) {
 			f();
-		}; 
-	
-	var panel = $(id);
+		};
+
+	var panel = document.getElementById(id);
 	if (!panel) {
 		panel = Richfaces.findModalPanel(id);
 	}
@@ -1093,7 +1111,7 @@ Richfaces.showModalPanel = function (id, opts, event) {
 };
 
 Richfaces.hideModalPanel = function (id, opts, event) {
-	var panel = $(id);
+	var panel = document.getElementById(id);
 	if (!panel) {
 		panel = Richfaces.findModalPanel(id);
 	}
@@ -1101,7 +1119,7 @@ Richfaces.hideModalPanel = function (id, opts, event) {
 };
 
 Richfaces.hideTopModalPanel = function(event, opts) {
-	var mp = ModalPanel.activePanels.last();
+	var mp = ModalPanel.activePanels[ModalPanel.activePanels.length - 1];
 	if (mp) {
 		mp.hide(event, opts);
 	}

@@ -46,6 +46,11 @@
 	});
  
  */
+// Modificato da Link.it: jQuery.browser e' stato rimosso in jQuery 4.x
+// (deprecato gia' in 1.9). Sostituito _sbIsIE con userAgent
+// sniff locale.
+var _sbIsIE = /MSIE|Trident/i.test(navigator.userAgent);
+
 var sbjQuery = oldJQuery;
 sbjQuery.fn.SpinButton = function(cfg){
 	return this.each(function(){
@@ -156,7 +161,7 @@ sbjQuery.fn.SpinButton = function(cfg){
 //		})
 //		
 //		.dblclick(function(e) {
-//			if (sbjQuery.browser.msie)
+//			if (_sbIsIE)
 //				this.adjustValue(this.spinCfg._direction * this.spinCfg.step);
 //		})
 		
@@ -214,7 +219,7 @@ sbjQuery.fn.SpinButton = function(cfg){
 			})
 			
 			.dblclick(function(e) {
-				if (sbjQuery.browser.msie)
+				if (_sbIsIE)
 					self.adjustValue(self.spinCfg.step);
 			})
 			.mouseout(function(e){
@@ -255,7 +260,7 @@ sbjQuery.fn.SpinButton = function(cfg){
 			})
 			
 			.dblclick(function(e) {
-				if (sbjQuery.browser.msie)
+				if (_sbIsIE)
 					self.adjustValue(-self.spinCfg.step);
 			})
 			.mouseout(function(e){
@@ -286,7 +291,7 @@ sbjQuery.fn.SpinButton = function(cfg){
 		var c = el[prop], b = document.body;
 		
 		while ((el = el.offsetParent) && (el != b)) {
-			if (!sbjQuery.browser.msie || (el.currentStyle.position != 'relative'))
+			if (!_sbIsIE || (el.currentStyle.position != 'relative'))
 				c += el[prop];
 		}
 		

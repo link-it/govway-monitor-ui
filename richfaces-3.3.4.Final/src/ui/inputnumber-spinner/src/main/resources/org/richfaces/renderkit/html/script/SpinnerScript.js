@@ -1,8 +1,31 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM:
+ *     Class.create()                    -> costruttore + .prototype plain
+ *     Object.extend(t, s)               -> Object.assign(t, s)
+ *     $()                               -> document.getElementById o passthrough
+ *                                          se gia' Node (helper _spnR)
+ *     Element.setStyle(el, {...})       -> Object.assign(el.style, {...})
+ *     Event.element(e)                  -> e.target || e.srcElement
+ *     Event.KEY_UP / Event.KEY_DOWN     -> 38 / 40 (costanti Prototype)
+ *     bindAsEventListener(this)         -> .bind(this)
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 if (!window.Richfaces) window.Richfaces = {};
 
+// Helper: replica $() di Prototype che accetta sia id stringa sia Node.
+function _spnR(e) {
+	if (!e) return null;
+	if (typeof e === 'string') return document.getElementById(e);
+	return e; // already a Node
+}
 
-Richfaces.Spinner = Class.create();
-Richfaces.Spinner.prototype = {
+function _RichfacesSpinner(id, options) { this.initialize(id, options); }
+Richfaces.Spinner = _RichfacesSpinner;
+_RichfacesSpinner.prototype = {
 
 		//default values of options
 		cycled: true,
@@ -18,12 +41,12 @@ Richfaces.Spinner.prototype = {
 		onerr: null,
 
 		initialize: function(id, options) {
-		this.content	= $(id +"Edit");
+		this.content	= document.getElementById(id +"Edit");
 		var buttonsId   = id +"Buttons";
-		this.controls	= $(buttonsId);
-		this.fie		= $(id +"For");
+		this.controls	= document.getElementById(buttonsId);
+		this.fie		= document.getElementById(id +"For");
 		this.items		= new Array();
-		this.table		= $(buttonsId.substr(buttonsId.indexOf("buttons")+7));
+		this.table		= document.getElementById(buttonsId.substr(buttonsId.indexOf("buttons")+7));
 		if (RichFaces.navigatorType() == RichFaces.FF ||
 				RichFaces.navigatorType() == RichFaces.NETSCAPE) {
 			if (!this.fie){
@@ -31,29 +54,28 @@ Richfaces.Spinner.prototype = {
 				jqTable.addClass( "rich-spinner-tab-display-moz" );
 			}
 		}
-		Object.extend(this, options);
+		Object.assign(this, options);
 		if (!this.disabled){
 			this.buttonUp = null;
 			this.buttonDown = null;
 		}
 		this.min = Number(this.min);
 		this.max = Number(this.max);
-		
+
 		this.cycled		= this.cycled;
 		this.enableManualInput		= this.enableManualInput;
 		var edit = this._getDirectChildrenByTag(this.content,'INPUT')[0];
-//		this.upClick	= new Function(this.onup + ";return true;").bindAsEventListener(edit);
-//		this.downClick	= new Function(this.ondown + ";return true;").bindAsEventListener(edit);
-//		this.error		= new Function("event","clientErrorMessage",this.onerr + ";return true;").bind(edit);
-		
-		this.upClick.bindAsEventListener(edit);
-		this.downClick.bindAsEventListener(edit);
+
+		// Le tre righe seguenti erano nell'originale come .bindAsEventListener(edit)
+		// senza assegnamento del risultato: erano gia' no-op. Conservate equivalenti.
+		this.upClick.bind(edit);
+		this.downClick.bind(edit);
 		this.error.bind(edit);
 
 		this.required = this.required;
 		this._attachBehaviors();
 		this._load();
-		
+
 	},
 
 	switchItems: function( e ) {
@@ -129,13 +151,13 @@ Richfaces.Spinner.prototype = {
 		this.controls.edit.readOnly = this.enableManualInput ? "" : "readOnly";
 		if (this.disabled) {
 			this.controls.edit.readOnly = "readOnly";
-			Element.setStyle(this.controls.edit, {color: "gray"});
+			this.controls.edit.style.color = "gray";
 		} else {
-			Element.setStyle(this.controls.edit, {color: ""});
+			this.controls.edit.style.color = "";
 		}
 	},
 
-	_attachBehaviors: function(){		
+	_attachBehaviors: function(){
 		var tbody		= this._getDirectChildrenByTag(this.controls,'TBODY')[0];
 		var controls	= this._getDirectChildrenByTag(tbody,'TR');
 		var buttonUp	= this._getDirectChildrenByTag(controls[0],'TD')[0];
@@ -146,7 +168,7 @@ Richfaces.Spinner.prototype = {
 		var upImg		= null;
 		var downImg		= null;
 		this.controls 	= new Richfaces.Spinner.Controls( this, {button:buttonUp,img:upImg}, {button:buttonDown,img:downImg}, edit );
-	}, 
+	},
 
 	_getDirectChildrenByTag: function( e, tagName ) {
 
@@ -164,37 +186,38 @@ Richfaces.Spinner.prototype = {
 	_removePx: function(e){
 		return e.substring(0,e.indexOf('px'));
 	},
-	
+
 	upClick: function(){
 		return true;
 	},
-	
+
 	downClick: function(){
 		return true;
 	},
-	
+
 	error: function(event,clientErrorMessage){
 		return true;
 	}
 };
 
-Richfaces.Spinner.Controls	= Class.create();
-Richfaces.Spinner.Controls.prototype = {
+function _RichfacesSpinnerControls(spinner, up, down, edit) { this.initialize(spinner, up, down, edit); }
+Richfaces.Spinner.Controls = _RichfacesSpinnerControls;
+_RichfacesSpinnerControls.prototype = {
 
 	initialize: function( spinner, up, down, edit ) {
 		this.spinner= spinner;
-		this.up	= $ (up.button);
-		this.upimg	= $ (up.img);
-		this.down	= $ (down.button);
-		this.downimg= $ (down.img);
-		
+		this.up		= _spnR(up.button);
+		this.upimg	= _spnR(up.img);
+		this.down	= _spnR(down.button);
+		this.downimg= _spnR(down.img);
+
 		this.mousedown = false;
 		this.onUpButton = false;
 		this.onDownButton = false;
-		
+
 		this.fie = this.spinner.fie;
-				
-		this.edit	= $ (edit);
+
+		this.edit	= _spnR(edit);
 		this.originalColor = edit.style.color;
 		this.prevEditValue = (this.edit.value || !this.spinner.required) ? this.edit.value : this.spinner.min;
 		this.edit.value = this.prevEditValue;
@@ -206,7 +229,7 @@ Richfaces.Spinner.Controls.prototype = {
 		} else {
 			if (!this.fie){
 				this.edit.style.color = "gray";
-			}	
+			}
 		}
 	},
 
@@ -217,12 +240,12 @@ Richfaces.Spinner.Controls.prototype = {
 		var isError = this.spinner.switchItems('up');
 		this.spinner.upClick();
 		if(!isError){
-			window.document.onmouseup = this.mouseUp.bindAsEventListener(this);
+			window.document.onmouseup = this.mouseUp.bind(this);
 			this.mousedown=true;
 			this.timer = setTimeout(this.continueUpClick.bind(this), 750);
-		}	
+		}
 	},
-	
+
 	downClick: function(e){
 	   	if (e.preventDefault) {
 	   		e.preventDefault();
@@ -230,15 +253,15 @@ Richfaces.Spinner.Controls.prototype = {
 		var isError = this.spinner.switchItems('down');
 		this.spinner.downClick();
 		if(!isError){
-			window.document.onmouseup = this.mouseUp.bindAsEventListener(this);
+			window.document.onmouseup = this.mouseUp.bind(this);
 			this.mousedown = true;
 			this.timer = setTimeout(this.continueDownClick.bind(this), 750);
-		}	
+		}
 	},
 
 	continueUpClick: function(){
 		if (!this.mousedown) return;
-		window.document.onmousemove = this.mouseMoveUp.bindAsEventListener(this);
+		window.document.onmousemove = this.mouseMoveUp.bind(this);
 		this.spinner.switchItems('up');
 		if ( this.timer ){
 			clearTimeout(this.timer);
@@ -248,7 +271,7 @@ Richfaces.Spinner.Controls.prototype = {
 
 	continueDownClick: function(){
 		if (!this.mousedown) return;
-		window.document.onmousemove = this.mouseMoveDown.bindAsEventListener(this);
+		window.document.onmousemove = this.mouseMoveDown.bind(this);
 		this.spinner.switchItems('down');
 		if ( this.timer ){
 			clearTimeout(this.timer);
@@ -256,7 +279,7 @@ Richfaces.Spinner.Controls.prototype = {
 		this.timer = setTimeout(this.continueDownClick.bind(this), 100);
 	},
 
-	mouseUp: function(e){	    
+	mouseUp: function(e){
 		clearTimeout(this.timer);
 		if (this.spinner.ch == "true"){
 			if (!this.onUpButton)
@@ -268,13 +291,14 @@ Richfaces.Spinner.Controls.prototype = {
 			this.mousedown=false;
 			this.fireEditEvent("change");
 		}
-	},	
+	},
 
 	mouseMoveDown: function(e){
 	   	if (e.preventDefault) {
          e.preventDefault();
-	    }		    
-	    if ((this.downimg!=Event.element(e)) ){       
+	    }
+	    var srcEl = e.target || e.srcElement;
+	    if ((this.downimg!=srcEl) ){
 		window.document.onmousemove = this.previousMM;
 		clearTimeout(this.timer);
 		this.mousedown=false;
@@ -285,14 +309,15 @@ Richfaces.Spinner.Controls.prototype = {
 			this.downUp();
 		}
 		this.fireEditEvent("change");
-		};
-	},	
+		}
+	},
 
 	mouseMoveUp: function(e){
 	   	if (e.preventDefault) {
          e.preventDefault();
 	    }
-	    if (this.upimg!=Event.element(e)){
+	    var srcEl = e.target || e.srcElement;
+	    if (this.upimg!=srcEl){
 		window.document.onmousemove = this.previousMM;
 		clearTimeout(this.timer);
 		this.mousedown=false;
@@ -303,8 +328,8 @@ Richfaces.Spinner.Controls.prototype = {
 			this.downUp();
 		}
 		this.fireEditEvent("change");
-		};
-	},	
+		}
+	},
 
 	inputChange: function(e) {
 		if ((this.edit.value == "" && this.spinner.required) || isNaN(Number(this.edit.value))){
@@ -317,26 +342,26 @@ Richfaces.Spinner.Controls.prototype = {
 			}
 		}
 		if ("" != this.edit.value)
-			this.prevEditValue = this.edit.value;		
+			this.prevEditValue = this.edit.value;
 		if (this.eventEditOnChange)
 			this.eventEditOnChange();
 
 	},
 
 	editChange: function(e) {
-		if ((this.edit.value < this.spinner.max) && (this.edit.value > this.spinner.min) && !isNaN(Number(this.edit.value)) && this.edit.value != ""){	
-			this.prevEditValue = this.edit.value;		
+		if ((this.edit.value < this.spinner.max) && (this.edit.value > this.spinner.min) && !isNaN(Number(this.edit.value)) && this.edit.value != ""){
+			this.prevEditValue = this.edit.value;
 		}
-		
+
         switch (e.keyCode) {
-	        case Event.KEY_UP:
+	        case 38: // KEY_UP
 	        	this.spinner.switchItems('up');
 	            return;
-	        case Event.KEY_DOWN:
+	        case 40: // KEY_DOWN
 	        	this.spinner.switchItems('down');
 	            return;
         }
-        
+
 		if (e.keyCode == 13){
 			if (this.spinner.required || "" != this.edit.value)
 				this.edit.value = this.getValidValue(this.edit.value);
@@ -345,7 +370,7 @@ Richfaces.Spinner.Controls.prototype = {
 			}
 		}
 	},
-	
+
 	getValidValue : function(value){
 		if (isNaN(value) || value == "")
 			return this.prevEditValue;
@@ -359,20 +384,20 @@ Richfaces.Spinner.Controls.prototype = {
 	drag: function() {
 	 return false;
 	},
-	
+
 	_attachBehaviors: function(){
-		this.up.onmousedown	= this.upClick.bindAsEventListener(this);
-		this.down.onmousedown = this.downClick.bindAsEventListener(this);
-		this.up.onmouseup = this.mouseUp.bindAsEventListener(this);
-		this.down.onmouseup = this.mouseUp.bindAsEventListener(this);
-		this.edit.onkeydown	= this.editChange.bindAsEventListener(this);
-		this.eventInputChange= this.inputChange.bindAsEventListener(this);
+		this.up.onmousedown	= this.upClick.bind(this);
+		this.down.onmousedown = this.downClick.bind(this);
+		this.up.onmouseup = this.mouseUp.bind(this);
+		this.down.onmouseup = this.mouseUp.bind(this);
+		this.edit.onkeydown	= this.editChange.bind(this);
+		this.eventInputChange= this.inputChange.bind(this);
 		if (this.edit.onchange){
 			this.eventEditOnChange = this.edit.onchange;
 		}
-		this.edit.onchange = this.eventInputChange.bindAsEventListener(this.edit);
+		this.edit.onchange = this.eventInputChange.bind(this.edit);
 	},
-	
+
 	fireEditEvent: function(e){
 		if( document.createEvent ) {
 			var evObj = document.createEvent('HTMLEvents');

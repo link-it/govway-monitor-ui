@@ -98,9 +98,11 @@ Richfaces.getMarginWidth = function(el, side) {
 }
        
 Richfaces.getStyles = function(el, sides, styles) {
+   // Modificato da Link.it: Element.getStyle -> getComputedStyle (Prototype-free).
+   var computed = el ? window.getComputedStyle(el) : null;
    var val = 0;
    for(var i = 0, len = sides.length; i < len; i++){
-		var w = parseInt(Element.getStyle(el, styles[sides.charAt(i)]), 10);
+		var w = parseInt(computed ? computed.getPropertyValue(styles[sides.charAt(i)]) : '', 10);
    	 	if(!isNaN(w)) val += w;
    }
    return val;

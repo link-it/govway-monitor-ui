@@ -648,11 +648,15 @@ Effect.AppearCheckClasses = function(element, classesNameDisplayNone, classesNam
     effect.element.setOpacity(effect.options.from);
     var jqElement = jQuery(effect.element); // uso jQuey per comodita'
     
+    // Modificato da Link.it: il removeClass usava la variabile sbagliata
+    // (classNameDisplay invece di classNameDisplayNone, undefined per hoisting),
+    // quindi le classi *-display-none non venivano mai rimosse e il popup
+    // del rich:suggestionbox restava nascosto pur avendo dati.
     for(var i = 0; i < classesNameDisplayNone.length; i++){
 		var classNameDisplayNone = classesNameDisplayNone[i];
-		jqElement.removeClass(classNameDisplay);
+		jqElement.removeClass(classNameDisplayNone);
 	}
-    
+
      for(var i = 0; i < classesNameDisplay.length; i++){
 		var classNameDisplay = classesNameDisplay[i];
 		jqElement.addClass(classNameDisplay);

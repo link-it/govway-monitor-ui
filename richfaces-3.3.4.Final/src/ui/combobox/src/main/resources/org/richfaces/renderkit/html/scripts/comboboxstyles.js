@@ -1,7 +1,17 @@
-if (!window.Richfaces) window.Richfaces = {};
-Richfaces.ComboBoxStyles = Class.create();
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Class.create() -> costruttore plain.
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
 
-Richfaces.ComboBoxStyles.prototype = {
+if (!window.Richfaces) window.Richfaces = {};
+
+function _RichfacesComboBoxStyles() { this.initialize.apply(this, arguments); }
+Richfaces.ComboBoxStyles = _RichfacesComboBoxStyles;
+
+_RichfacesComboBoxStyles.prototype = {
 	
 	initialize : function () {
 		this.commonStyles =	{

@@ -1,6 +1,19 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Class.create() -> costruttore plain.
+ *
+ *   La logica show/hide via classi rich-ordering-list-display-* resta
+ *   gestita con jQuery come gia' nell'originale.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 if(!window.Richfaces) window.Richfaces = {};
 
-Richfaces.Control = Class.create();
+function _RichfacesControl() { this.initialize.apply(this, arguments); }
+Richfaces.Control = _RichfacesControl;
 
 Richfaces.Control.eventStub = function() {
 	return false;
@@ -17,10 +30,10 @@ Richfaces.Control.onblur = function(element) {
 Richfaces.Control.prototype.initialize = function(eNode, dNode, isShown, isEnabled, action) {
 	this.disabledNode = dNode;
 	this.disabledNode.onselectstart = Richfaces.Control.eventStub;
-	
+
 	this.enabledNode = eNode
 	this.enabledNode.onselectstart = Richfaces.Control.eventStub;
-	
+
 	this.isShown = isShown;
 	this.isEnabled = isEnabled;
 	this.action = action;
@@ -60,21 +73,21 @@ Richfaces.Control.prototype.doEnable = function() {
 
 Richfaces.Control.prototype.doDisable = function() {
 	this.isEnabled = false;
-	
-	var nodes = this.enabledNode.select("a[id='" + this.enabledNode.id + "link']");
-	
+
+	var nodes = this.enabledNode.querySelectorAll("a[id='" + this.enabledNode.id + "link']");
+
 	var newFocusNode = undefined;
-	
+
 	if (nodes && nodes[0]) {
 		var link = nodes[0];
 		if (link.hasFocus) {
-			var disNodes = this.disabledNode.select("a[id='" + this.disabledNode.id + "link']");
+			var disNodes = this.disabledNode.querySelectorAll("a[id='" + this.disabledNode.id + "link']");
 			if (disNodes && disNodes[0]) {
 				newFocusNode = disNodes[0];
 			}
 		}
 	}
-	
+
 	this.doHideNode(this.enabledNode);
 	this.doShowNode(this.disabledNode);
 	if (newFocusNode && newFocusNode.focus) {

@@ -1,65 +1,134 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM:
+ *       Class.create({...})           -> costruttore + Object.assign,
+ *       Class.create(parent, {...})   -> Object.create(parent.prototype) + Object.assign,
+ *       $super(...)                   -> parent.prototype.method.call(this, ...),
+ *       $()                           -> document.getElementById,
+ *       bindAsEventListener           -> Function.prototype.bind,
+ *       Event.observe / stopObserving -> addEventListener / removeEventListener,
+ *       Event.stop                    -> preventDefault + stopPropagation,
+ *       Event.findElement             -> closest(tag),
+ *       Event.element                 -> e.target,
+ *       Event.pointerX                -> e.pageX (con fallback),
+ *       Event.KEY_*                   -> costanti numeriche,
+ *       Element.addClassName / removeClassName -> classList,
+ *       Element.setStyle              -> Object.assign(el.style, ...),
+ *       Object.extend(new Object(), o)-> Object.assign({}, o),
+ *       Object.isNumber               -> typeof === 'number',
+ *       array.size() / .each / .clone / childElements / invoke
+ *           -> .length / .forEach / .slice / Array.from(.children) / .map.
+ *
+ *   Le chiamate a Utils.DOM.Event.* e ai metodi di ClientUI.common.box.Box
+ *   restano inalterate: quei moduli (scrollableDataTable) non sono ancora
+ *   portati e vivono su Prototype runtime.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ *
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 if (!window.ExtendedDataTable) window.ExtendedDataTable = {};
 
-ExtendedDataTable.DataTable = Class.create({
+// --- helper Prototype-free condivisi tra ExtendedDataTable* (i 3 file sono
+// concatenati in extended-data-table.js dal build ant). ---
+function _edtStopEvent(e) {
+	if (!e) return;
+	if (e.preventDefault) e.preventDefault();
+	if (e.stopPropagation) e.stopPropagation();
+	e.cancelBubble = true;
+	e.returnValue = false;
+}
+function _edtPointerX(e) {
+	if (typeof e.pageX === 'number') return e.pageX;
+	var doc = document.documentElement, body = document.body;
+	return (e.clientX || 0) + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc && doc.clientLeft || 0);
+}
+function _edtClosest(start, tagName) {
+	tagName = (tagName || '').toLowerCase();
+	var el = start;
+	while (el && el !== document) {
+		if (el.tagName && el.tagName.toLowerCase() === tagName) return el;
+		el = el.parentNode;
+	}
+	return null;
+}
+function _edtAddClass(el, cls) { if (el && cls && el.classList) el.classList.add(cls); }
+function _edtRemoveClass(el, cls) { if (el && cls && el.classList) el.classList.remove(cls); }
+function _edtSetStyle(el, styles) {
+	if (!el) return;
+	if (typeof styles === 'string') {
+		el.style.cssText += ';' + styles;
+	} else if (styles) {
+		for (var k in styles) {
+			if (Object.prototype.hasOwnProperty.call(styles, k)) el.style[k] = styles[k];
+		}
+	}
+}
+var _edtKey = { TAB: 9, RETURN: 13, ESC: 27, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 };
+
+function _ExtDtDataTable() { this.initialize.apply(this, arguments); }
+ExtendedDataTable.DataTable = _ExtDtDataTable;
+Object.assign(_ExtDtDataTable.prototype, {
 	initialize : function(id, options) {
 		this.id = id;
-		$(this.id).component = this; 
+		document.getElementById(this.id).component = this;
 		this["rich:destructor"] = "destroy";
 		this.groups = [];
 		this.ratios = [];
-		
+
 		// register event handlers
 		this.options = options;
 		this.selectionManager = new ExtendedDataTable.SelectionManager(options, this);
-		
+
 		if (this.options.sortFunction) {
 			this.sortFct = this.options.sortFunction;
 		}
-		
+
 		if (this.options.groupFunction) {
 			this.groupFct = this.options.groupFunction;
 		}
-		
+
 		this.onGroupToggleFct = this.options.onGroupToggleFunction;
 		if (this.options.onColumnResize != null){
 			this.onColumnResize = this.options.onColumnResize;
 			this.columnWidths = "";
 		}
-		this.eventContainerResize = this.OnWindowResize.bindAsEventListener(this);
-		this.eventGroupRowClicked = this.OnGroupRowMouseClicked.bindAsEventListener(this);
-		Event.observe(window, "resize", this.eventContainerResize);
+		this.eventContainerResize = this.OnWindowResize.bind(this);
+		this.eventGroupRowClicked = this.OnGroupRowMouseClicked.bind(this);
+		window.addEventListener("resize", this.eventContainerResize);
 		this.minColumnWidth = this.options.minColumnWidth;
-		
+
 		var grid = this;
 
 		this.updateTimerId = Utils.execOnLoad( function(){ grid.update(true); },
 			Utils.Condition.ElementPresent(id+':od'), 100);
 	},
-	
+
 	destroy: function() {
-        
+
         //remove listeners
         this.selectionManager.destroy();
-        
+
         if (this.header) {
             this.header.removeListeners();
         }
         if (this.groupRows) {
 	        var l = this.groupRows.length;
-	        for(var i = 0; i < l; i++) {        
+	        for(var i = 0; i < l; i++) {
 	            Utils.DOM.Event.removeListeners(this.groupRows[i]);
 	        }
-        } 
-        
+        }
+
         if (this.updateTimerId) {
         	clearInterval(this.updateTimerId)
         }
-        
+
         //null all references to DOM elements
         delete this.header;
         delete this.footer;
-        
-        $(this.id).component = null;
+
+        document.getElementById(this.id).component = null;
         this.table = null;
         this.splashScreen = null;
 		this.mainDiv = null;
@@ -72,34 +141,34 @@ ExtendedDataTable.DataTable = Class.create({
 		this.groupRows = null;
 		this.groups = null;
 		this.selectionManager = null;
-		Event.stopObserving(window, 'resize', this.eventContainerResize);
+		window.removeEventListener('resize', this.eventContainerResize);
 	},
-	
+
     /**
      * Changes the scroll position of the table to show row of specified index
      */
     showRow: function(rowIndex) {
-        var row = $(this.id+":n:"+rowIndex);
+        var row = document.getElementById(this.id+":n:"+rowIndex);
         if(!row){
-        	row = $(this.id+":n:"+0);
+        	row = document.getElementById(this.id+":n:"+0);
         }
         var offsetTop = this.tableB.offsetTop + row.offsetTop;
         var scrollTop = this.scrollingDiv.getElement().scrollTop;
-        
+
         var dS = offsetTop - scrollTop;
-        
+
         if (dS < 0) {
             this.scrollingDiv.getElement().scrollTop = scrollTop + dS;
         }else{
             var scrollDivHeight = this.scrollingDiv.getHeight();
-            var rowHeight = row.getHeight();
+            var rowHeight = row.offsetHeight;
             dS = dS + rowHeight - scrollDivHeight;
             if (dS > 0) {
                 this.scrollingDiv.getElement().scrollTop = scrollTop + dS;
             }
         }
 	},
-	
+
     setColumnWidth: function(columnIndex, newWidth) {
         if (columnIndex >= this.getColumnsNumber) {
             return false;
@@ -108,7 +177,7 @@ ExtendedDataTable.DataTable = Class.create({
             this.getColumns()[columnIndex].width = newWidth;
         }
     },
-    	
+
 	_findParentElement: function(event, element) {
 		var el = null;
 		if(ClientUILib.isSafari) {
@@ -125,18 +194,18 @@ ExtendedDataTable.DataTable = Class.create({
 				}
 			}
 		} else {
-			el = Event.findElement(event, element);
+			el = _edtClosest(event.target || event.srcElement, element);
 		}
 		return el;
 	},
-	
+
 	preSendAjaxRequest: function(){
 		//remove listeners
-		Event.stopObserving(window, 'resize', this.eventContainerResize);
+		window.removeEventListener('resize', this.eventContainerResize);
 		//show splash screen
 		this.showSplashScreen();
 	},
-		
+
 	showSplashScreen: function(){
         /**
             Opera 95 is not drawing additional
@@ -149,7 +218,7 @@ ExtendedDataTable.DataTable = Class.create({
         var splshscr = this.splashScreen;
         splshscr.className = 'extdt-ss-vsbl';
 	},
-	
+
 	hideSplashScreen: function(){
         /**
             Opera 95 is not drawing additional
@@ -159,9 +228,9 @@ ExtendedDataTable.DataTable = Class.create({
         }
         */
 		//this.table.setStyle({visibility:''});
-		this.splashScreen.className = 'extdt-ss-hdn';		
+		this.splashScreen.className = 'extdt-ss-hdn';
 	},
-	
+
 	sortBy: function(columnId, ascending, event){
 		if (this.sortFct){
 			this.preSendAjaxRequest();
@@ -177,7 +246,7 @@ ExtendedDataTable.DataTable = Class.create({
 			this.sortFct(event, columnId, ascending);
 		}
 	},
-	
+
 	groupBy: function(columnId, event){
 		if (this.groupFct){
 			this.preSendAjaxRequest();
@@ -193,7 +262,7 @@ ExtendedDataTable.DataTable = Class.create({
 			this.groupFct(event, columnId);
 		}
 	},
-	
+
 	OnWindowResize: function(event) {
         if (this.table) {
             this.calculateWidthsFromRatios();
@@ -205,13 +274,13 @@ ExtendedDataTable.DataTable = Class.create({
 		return this.columnsNumber;
 	},
 	getColWidth: function(columnNumber) {
-		
+
 	},
 	getColumns: function() {
 		return this.cols;
 	},
 	OnGroupRowMouseClicked: function(event) {
-		
+
 		var groupRow = this._findParentElement(event, "tr");
 		var bExpanded = !(groupRow.getAttribute('expanded') == 'true');
 		var sExpanded = bExpanded ? 'true' : 'false';
@@ -223,16 +292,16 @@ ExtendedDataTable.DataTable = Class.create({
 		var imageDiv = groupRow.firstChild.firstChild.firstChild;
 		this.toggleImageSource(imageDiv);
 		this.setGroupExpanded(groupIndex, bExpanded);
-		Event.stop(event);
+		_edtStopEvent(event);
 	},
-	
+
 	toggleImageSource: function(imageDiv) {
 		var src = imageDiv.getAttribute('src');
 		var alternateSrc = imageDiv.getAttribute('alternatesrc');
 		imageDiv.setAttribute('src', alternateSrc);
-		imageDiv.setAttribute('alternatesrc', src);		
+		imageDiv.setAttribute('alternatesrc', src);
 	},
-	
+
     getColumnWidth: function(columnNumber) {
         if ((columnNumber < this.getColumnsNumber()) && (columnNumber >=0)) {
             var col = this.getColumns()[columnNumber];
@@ -249,14 +318,14 @@ ExtendedDataTable.DataTable = Class.create({
             return null;
         }
     },
-	
+
 	setGroupExpanded: function(iGroupIndex, bValue) {
 		var group = this.groups[iGroupIndex];
-		
+
 		var sVisibility;
 		var sBorder;
 		var sEmptyCells;
-		
+
 		if (bValue) {
 			sVisibility = '';
 			sBorderStyle = '';
@@ -264,7 +333,7 @@ ExtendedDataTable.DataTable = Class.create({
 			sVisibility = 'none';
 			sBorderStyle = 'none';
 		}
-		var size = group.size();
+		var size = group.length;
 		for (var i=0; i<size; i++) {
 			group[i].style.display = sVisibility;
 			if (ClientUILib.isIE){
@@ -278,52 +347,52 @@ ExtendedDataTable.DataTable = Class.create({
 			}
 		}
 	},
-	
+
 	createControls: function() {
 		var id = this.id;
 		this.table = new ClientUI.common.box.Box(this.id +":tu",null,true);
 		var table = this.table;
-		this.splashScreen = $(this.id+":splashscreen");
+		this.splashScreen = document.getElementById(this.id+":splashscreen");
 		this.mainDiv = new ClientUI.common.box.Box(this.id,null,true);
 		this.outerDiv = new ClientUI.common.box.Box(this.id +":od",null,true);
-		this.tableB = $(this.id +":n");
-		this.fakeIeRow = $(this.id +":fakeIeRow");
-		this.fakeIeBodyRow = $(this.id +":body:fakeIeRow");
+		this.tableB = document.getElementById(this.id +":n");
+		this.fakeIeRow = document.getElementById(this.id +":fakeIeRow");
+		this.fakeIeBodyRow = document.getElementById(this.id +":body:fakeIeRow");
 		this.header = new ExtendedDataTable.DataTable.header(this.id +":header",this);
 		this.header.minColumnWidth = this.minColumnWidth;
 		this.header.addListeners();
-		var colgroup = $(this.id +":colgroup:body");
+		var colgroup = document.getElementById(this.id +":colgroup:body");
 		this.cols = colgroup.getElementsByTagName("col");
 		this.columnsNumber = this.cols.length;
 		this.scrollingDiv = new ClientUI.common.box.Box(this.id +":sd",null,true);
 		this.groupRows = [];
 		var tfoot = table.getElement().getElementsByTagName('tfoot');
-        this.footer = $(this.id +":footer");
+        this.footer = document.getElementById(this.id +":footer");
 		if (ClientUILib.isOpera) {
 			//no overflow-x nor overflow-y in Opera
 			this.scrollingDiv.setStyle({width: this.mainDiv.getWidth()});
 			this.table.setStyle({width: this.mainDiv.getWidth()});
 		};
-		
+
 		var i = 0;
-		var groupRow = $(id+':group-row:'+i);
+		var groupRow = document.getElementById(id+':group-row:'+i);
 		while (groupRow != null) {
 			this.groupRows[i] = groupRow;
 			Utils.DOM.Event.removeListeners(groupRow);
 			Utils.DOM.Event.observe(groupRow,'click',this.eventGroupRowClicked);
 			i++;
-			groupRow = $(id+':group-row:'+i);
+			groupRow = document.getElementById(id+':group-row:'+i);
 		}
 		this.saveRatios();
 	},
-	
+
 	getScrollbarWidth: function() {
 		var sd = this.scrollingDiv.getElement();
 		LOG.debug("Scrolling Div offsetWidth: " + sd.offsetWidth);
 		LOG.debug("Scrolling Div clientWidth: " + sd.clientWidth);
 		return sd.offsetWidth - sd.clientWidth;
 	},
-	validateColumnsWidth: function(columns,excessWidth) { 
+	validateColumnsWidth: function(columns,excessWidth) {
 	    LOG.debug('firing validateColumnsWidth');
 		var i=0;
 		var endIndex = columns.length-1;
@@ -336,7 +405,7 @@ ExtendedDataTable.DataTable = Class.create({
             var spareWidth = colWidth - this.minColumnWidth;
             var dW;
             if (spareWidth >= excessWidth) {
-                dW = excessWidth; 
+                dW = excessWidth;
             }else{
                 dW = spareWidth;
             }
@@ -359,15 +428,15 @@ ExtendedDataTable.DataTable = Class.create({
 		*/
 		}
 	},
-	
+
 	getFooterHeight: function() {
         if (this.footer) {
-            return this.footer.getHeight();
+            return this.footer.offsetHeight;
         }else{
             return 0;
         }
 	},
-	
+
 	updateLayout: function() {
 	    ClientUILib.log(ClientUILogger.INFO, "updateLayout");
 		var table = this.table.getElement();
@@ -378,11 +447,11 @@ ExtendedDataTable.DataTable = Class.create({
 		var mainDivHeight = this.mainDiv.getHeight();
 		var mainDivWidth = this.mainDiv.getWidth();
 		var headerChildren = header.getColumnCells();
-		
+
 		var footers = table.getElementsByTagName('tfoot');
 		var footerHeight = this.getFooterHeight();
 
-		var columnsNumber = this.getColumnsNumber();		
+		var columnsNumber = this.getColumnsNumber();
 		var visibleHeaderWidth = this.header.getVisibleWidth();
         //var scrollbarWidth = scrollingDiv.getElement().offsetWidth - scrollingDiv.getElement().clientWidth;
         var scrollbarWidth = this.getScrollbarWidth();
@@ -413,9 +482,9 @@ ExtendedDataTable.DataTable = Class.create({
 		this.saveRatios();
 		this.hideSplashScreen();
 	},
-	
+
 	/**
-    *  Calculates ratios of column width to total table width. 
+    *  Calculates ratios of column width to total table width.
     */
     saveRatios: function() {
         LOG.debug('saveRatios');
@@ -443,7 +512,7 @@ ExtendedDataTable.DataTable = Class.create({
             LOG.debug('Column[' + i + '] ratio: ' + this.ratios[i]);
         }
     },
-	
+
 	calculateWidthsFromRatios: function() {
 	    LOG.debug('firing calculateWidthsFromRatios');
 	    var c = this.getColumns(); //table columns
@@ -473,12 +542,12 @@ ExtendedDataTable.DataTable = Class.create({
 	        c[c.length - 2].width -= (totalWidth - maxWidth);
 	    }
 	},
-	
+
     update: function(refreshEvents) {
         this.createControls();
         if ( !ClientUILib.isIE ) {
             if (this.fakeIeRow) {
-				this.table.getElement().deleteRow(this.fakeIeRow.rowIndex);	
+				this.table.getElement().deleteRow(this.fakeIeRow.rowIndex);
 				this.fakeIeRow = null;
 			}
 			if (this.fakeIeBodyRow) {
@@ -490,14 +559,14 @@ ExtendedDataTable.DataTable = Class.create({
 		this.updateLayout();
 		this.selectionManager.restoreState();
 	},
-	
+
 	_percentsToPixels: function(percents, maxAllowedWidth) {
 	   var val = (percents.substr(0, percents.length-1)*1)/100;
        return maxAllowedWidth*val;
 	},
-	
+
 	_redrawTable: function(table) {
-    	table.hide(); //this is for opera < 9.5
+    	table.style.display = 'none'; //this is for opera < 9.5
     	if (ClientUILib.isSafari){
 			var tr = table.insertRow(0);
 	        var td = tr.insertCell(0);
@@ -505,7 +574,7 @@ ExtendedDataTable.DataTable = Class.create({
 	        td.innerHTML = "safari-must-have-something-inserted-to-redraw-table";
 	        table.deleteRow(tr.rowIndex);
 		}
-        table.show(); 
+        table.style.display = '';
 	}
 
 });
