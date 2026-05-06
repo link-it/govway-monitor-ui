@@ -140,15 +140,7 @@
 							</output>
 							<!-- files to include, path relative to output's directory or absolute path-->
 							<includes>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/drag-indicator-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simple-draggable-min.js
-								</include>
-								<include>
-									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simple-dropzone-min.js
-								</include>
+								<!-- drag-indicator/simple-draggable/simple-dropzone: rimossi (drag-drop di colonne non incluso in questo bundle) -->
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/modalPanel-min.js
 								</include>
@@ -179,7 +171,7 @@
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ListShuttle-min.js
 								</include>
-								<!-- PickListSI/PickList: spostati in PULIZIA_DA_CONFERMARE/ui/pickList -->
+								<!-- PickListSI/PickList: rimossi -->
 
 								<include>
 									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/comboboxUtils-min.js
@@ -197,22 +189,22 @@
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/datascroller-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/extended-data-table-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/combobox-min.js</include>
-								<!-- panelbar: spostato in PULIZIA_DA_CONFERMARE/ui/panelbar -->
+								<!-- panelbar: rimosso -->
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/hotKey-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/menu-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/panelMenu-min.js</include>
-								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-dropzone-min.js</include>
+								<!-- ext-dt-simple-dropzone: rimosso -->
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tooltip-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/calendar-min.js</include>
-								<!-- togglePanel: spostato in PULIZIA_DA_CONFERMARE/ui/togglePanel -->
-								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/controls-scrollable-data-table-min.js</include>
-								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-simple-draggable-min.js</include>
+								<!-- togglePanel: rimosso -->
+								<!-- controls-scrollable-data-table: rimosso (rich:scrollableDataTable non incluso in questo bundle) -->
+								<!-- ext-dt-simple-draggable: rimosso -->
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/jquery.hotkeys-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simpleTogglePanel-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/JQuerySpinBtn-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/comboboxstyles-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tabPanel-min.js</include>
-								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ext-dt-drag-indicator-min.js</include>
+								<!-- ext-dt-drag-indicator: rimosso -->
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/context-menu-min.js</include>
 								<include>${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/suggestionbox-min.js</include>
 							</includes>

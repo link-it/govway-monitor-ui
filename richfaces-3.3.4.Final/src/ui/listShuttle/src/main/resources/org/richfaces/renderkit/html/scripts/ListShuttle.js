@@ -180,7 +180,6 @@ Richfaces.ListShuttle.prototype = {
 	onclickHandler : function(event, component) {
 		component._onclickHandler(event);
 		this.controlListManager();
-		//Event.stop(event);     //bug: RF-2097
 	},
 
 	onkeydownHandler : function(event, component) {

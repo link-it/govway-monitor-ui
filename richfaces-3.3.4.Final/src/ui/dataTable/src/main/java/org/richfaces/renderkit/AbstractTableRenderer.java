@@ -44,7 +44,7 @@ import org.ajax4jsf.component.UIDataAdaptor;
 import org.ajax4jsf.context.AjaxContext;
 import org.ajax4jsf.javascript.AjaxScript;
 import org.ajax4jsf.javascript.JSFunction;
-import org.ajax4jsf.javascript.PrototypeScript;
+// PrototypeScript: rimosso (Prototype non piu' caricato).
 import org.ajax4jsf.renderkit.AjaxRendererUtils;
 import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
@@ -74,7 +74,7 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 	private static final String REQUIRES_SCRIPTS_PARAMETER = AbstractTableRenderer.class.getName() + ":REQUIRES_SCRIPTS";
 	
 	private final InternetResource[] REQUIRED_SCRIPTS = new InternetResource[] {
-		getResource(PrototypeScript.class.getName()),
+		// PrototypeScript: rimosso (Prototype non piu' caricato).
 		getResource(AjaxScript.class.getName())
 	};
 	
@@ -641,10 +641,9 @@ public abstract class AbstractTableRenderer extends AbstractRowsRenderer {
 			filterValueInput.setImmediate(true);
 			column.getFacets().put(FILTER_INPUT_FACET_NAME, filterValueInput);
 			
-			//Event.stop requires prototype.js
 			setRequiresScripts(context);
-			
-			filterValueInput.getAttributes().put(HTML.onclick_ATTRIBUTE, "Event.stop(event);");
+
+			filterValueInput.getAttributes().put(HTML.onclick_ATTRIBUTE, "event.stopPropagation();");
 			filterValueInput.getAttributes().put(HTML.STYLE_CLASS_ATTR, "rich-filter-input");
 		}
 		String filterEvent = (String) column.getAttributes().get("filterEvent");

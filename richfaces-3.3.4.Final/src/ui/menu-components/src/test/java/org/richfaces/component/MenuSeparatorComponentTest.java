@@ -45,7 +45,6 @@ public class MenuSeparatorComponentTest
 	
 	static {		
         javaScripts.add("org.ajax4jsf.javascript.AjaxScript()");
-        javaScripts.add("org.ajax4jsf.javascript.PrototypeScript()");
         javaScripts.add("org.ajax4jsf.util.command.CommandScript()");
 	}
 */	

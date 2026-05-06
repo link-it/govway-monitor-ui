@@ -1,4 +1,28 @@
-2026-04-24  Andrea Poli <apoli@link.it>
+2026-05-06  Andrea Poli <andrea.poli@link.it>
+
+	* Eliminazione completa di Prototype.js dal runtime. Il file
+	  prototype.js non viene piu' caricato e non e' piu' presente nei
+	  JAR shipped. Tutti i moduli e i template che ancora dipendevano
+	  da Prototype (selettori $(), Element/Event/Insertion/Position,
+	  Class.create, Object.extend, scriptaculous effects) sono stati
+	  portati a vanilla DOM / jQuery, preservando comportamento e
+	  licenza originali.
+
+	* Bug pre-esistenti emersi durante il porting e corretti:
+	  - extendedDataTable: il drag-resize delle colonne dipendeva da
+	    un override del consumer scritto in stile Prototype. Aggiunta
+	    in libreria l'opzione disableMaxDelta sull'header, cosi' il
+	    consumer non deve piu' ridefinire l'handler.
+	  - extendedDataTable: SyntaxError all'apertura del menu colonna,
+	    causato da un escape HTML troppo aggressivo che rompeva il
+	    contenuto degli <script> emessi dai template.
+	  - extendedDataTable: i filter input delle colonne emettevano un
+	    onclick basato su API Prototype, non funzionante a runtime.
+
+	* Pulizia di dead code residuo (classi e file non piu' caricati,
+	  blocchi commentati con riferimenti a API Prototype).
+
+2026-04-30  Andrea Poli <apoli@link.it>
 
         * Rilasciata versione 20260430
 

@@ -56,7 +56,6 @@ public class DropDownMenuComponentTest extends AbstractAjax4JsfTestCase {
     
 
     static {
-    	javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");        
         javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
         javaScripts.add("org.ajax4jsf.util.command.CommandScript");
         javaScripts.add("scripts/menu.js");

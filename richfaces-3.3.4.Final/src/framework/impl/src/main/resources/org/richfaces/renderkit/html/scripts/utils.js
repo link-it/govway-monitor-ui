@@ -1,5 +1,32 @@
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM:
+ *       $() -> document.getElementById,
+ *       Event.observe / stopObserving -> addEventListener / removeEventListener,
+ *       Position.cumulativeOffset -> _utilCumulativeOffset (walk offsetParent),
+ *       String.prototype.strip -> trim,
+ *       elem.getStyle(prop) -> getComputedStyle.getPropertyValue.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 if (!window.Richfaces) {
 	window.Richfaces = {};
+}
+
+// helper Prototype-free locale al modulo
+function _utilCumulativeOffset(el) {
+	var l = 0, t = 0;
+	while (el) {
+		l += el.offsetLeft || 0;
+		t += el.offsetTop || 0;
+		el = el.offsetParent;
+	}
+	var arr = [l, t];
+	arr.left = l;
+	arr.top = t;
+	return arr;
 }
 
 Richfaces.mergeStyles =  function(userStyles,commonStyles) {
@@ -19,7 +46,7 @@ Richfaces.mergeStyles =  function(userStyles,commonStyles) {
 };
 
 Richfaces.getComputedStyle = function(eltId, propertyName) {
-	var elt = $(eltId);
+	var elt = (typeof eltId === 'string') ? document.getElementById(eltId) : eltId;
 	
 	if (elt.nodeType != Node.ELEMENT_NODE) {
 		return "";
@@ -45,7 +72,7 @@ Richfaces.getComputedStyleSize = function(eltId, propertyName) {
 	var value = Richfaces.getComputedStyle(eltId, propertyName);
 
 	if (value) {
-		value = value.strip();	
+		value = value.trim();
 		value = value.replace(/px$/, "");
 		
 		return parseFloat(value);
@@ -253,7 +280,7 @@ Richfaces.Position.setElementPosition = function(element, baseElement, jointPoin
 	
 	var windowRect = Richfaces.Position.getWindowViewport();
 	
-	var baseOffset = Position.cumulativeOffset(baseElement);
+	var baseOffset = _utilCumulativeOffset(baseElement);
 	
 	// jointPoint
 	var ox=baseOffset[0];
@@ -331,8 +358,9 @@ Richfaces.Position.setElementPosition = function(element, baseElement, jointPoin
 
 Richfaces.Position.getOffsetDimensions = function(element) {
 	// from prototype 1.5.0 // Pavel Yascenko
-    element = $(element);
-    var display = $(element).getStyle('display');
+    element = (typeof element === 'string') ? document.getElementById(element) : element;
+    var cs = element ? window.getComputedStyle(element) : null;
+    var display = cs ? cs.getPropertyValue('display') : null;
     if (display != 'none' && display != null) // Safari bug
       return {width: element.offsetWidth, height: element.offsetHeight};
 
@@ -492,7 +520,7 @@ Richfaces.mergeObjects = function() {
 Richfaces.invokeEvent = function(eventFunc, element, eventName, memo) {
 	var result;
 	if (eventFunc) {
-		element = $(element);
+		element = (typeof element === 'string') ? document.getElementById(element) : element;
      		if (element == document && document.createEvent && !element.dispatchEvent)
        		element = document.documentElement;
 
@@ -527,7 +555,7 @@ Richfaces.setupScrollEventHandlers = function(element, handler) {
 		if (element.offsetWidth!=element.scrollWidth || element.offsetHeight!=element.scrollHeight)
 		{
 			elements.push(element);
-			Event.observe(element, "scroll", handler, false);
+			element.addEventListener("scroll", handler, false);
 		}
 		element = element.parentNode;
 	}
@@ -540,7 +568,7 @@ Richfaces.removeScrollEventHandlers = function(elements, handler) {
 	{
 		for (var i=0;i<elements.length;i++)
 		{
-			Event.stopObserving(elements[i], "scroll", handler, false);
+			elements[i].removeEventListener("scroll", handler, false);
 		}
 		elements = null;
 	}

@@ -479,7 +479,7 @@ A4J.AJAX.XMLHttpRequest.prototype = {
 					oldnode.outerHTML = _serialized;
 				} else {
 					var _node = newnode.cloneNode(true);
-					var _children = _node.childElements();
+					var _children = Array.from(_node.children);
 					for(var i = 0; i<_children.length; i++){
 						oldnode.appendChild(_children[i]);
 					}

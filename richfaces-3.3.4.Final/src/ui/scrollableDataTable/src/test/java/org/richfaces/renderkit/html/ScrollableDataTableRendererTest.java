@@ -36,7 +36,6 @@ import javax.faces.component.UIOutput;
 import javax.faces.component.html.HtmlOutputText;
 
 import org.ajax4jsf.javascript.AjaxScript;
-import org.ajax4jsf.javascript.PrototypeScript;
 import org.ajax4jsf.tests.AbstractAjax4JsfTestCase;
 import org.apache.commons.lang3.StringUtils;
 import org.richfaces.component.UIScrollableDataTable;
@@ -59,7 +58,6 @@ public class ScrollableDataTableRendererTest extends AbstractAjax4JsfTestCase{
 	
 	static {
 		javaScripts.add(AjaxScript.class.getName());
-		javaScripts.add(PrototypeScript.class.getName());
 		
 		javaScripts.add("org/richfaces/renderkit/html/scripts/common-scrollable-data-table.js");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/controls-scrollable-data-table.js");

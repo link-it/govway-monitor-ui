@@ -16,7 +16,6 @@
 	
 	<h:styles>css/combobox.xcss</h:styles>
 	<h:scripts>
-			new org.ajax4jsf.javascript.PrototypeScript(),
 			/org/richfaces/renderkit/html/scripts/jquery/jquery.js,
 			scripts/comboboxUtils.js,
 			scripts/combolist.js,

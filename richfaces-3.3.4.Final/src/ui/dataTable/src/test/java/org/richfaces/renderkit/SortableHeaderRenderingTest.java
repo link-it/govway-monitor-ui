@@ -59,7 +59,6 @@ public class SortableHeaderRenderingTest extends AbstractAjax4JsfTestCase {
 	
 	private static Set<String> javaScripts = new HashSet<String>();
 	static {
-		javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
 		javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/data-table.js");
 		javaScripts.add("scripts/inplaceinput.js");

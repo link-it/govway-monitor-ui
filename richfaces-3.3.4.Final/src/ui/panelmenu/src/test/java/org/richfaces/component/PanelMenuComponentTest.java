@@ -64,7 +64,6 @@ public class PanelMenuComponentTest extends AbstractAjax4JsfTestCase {
 	
 	static {
         javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
-        javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
         javaScripts.add("org/richfaces/renderkit/html/scripts/utils.js");
         javaScripts.add("org/richfaces/renderkit/html/scripts/panelMenu.js");
         javaScripts.add("org/ajax4jsf/javascript/scripts/form.js");

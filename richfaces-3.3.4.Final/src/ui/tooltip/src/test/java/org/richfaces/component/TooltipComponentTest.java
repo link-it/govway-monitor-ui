@@ -61,7 +61,6 @@ public class TooltipComponentTest extends AbstractAjax4JsfTestCase {
 		javaScripts.add("org/richfaces/renderkit/html/scripts/utils.js");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/jquery/jquery.js");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/tooltip.js");
-		javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
 	}
 
 	public TooltipComponentTest(String testName) {

@@ -457,7 +457,17 @@ RichFaces.Menu.DelayedContextMenu = function(layer, e) {
     if (!e) {
         e = window.event;
     }
-    this.event = Object.assign({}, e);
+    // Modificato da Link.it: Object.assign({}, e) NON copia pageX/pageY/target
+    // di un DOM Event nativo (sono ereditate, non own properties), quindi il
+    // menu finiva posizionato a (NaN,NaN) -> in alto a sx. Copio manualmente
+    // i campi che servono al positioning e al click-routing.
+    this.event = {};
+    var _evProps = ['pageX','pageY','clientX','clientY','screenX','screenY',
+        'target','srcElement','currentTarget','type',
+        'altKey','ctrlKey','shiftKey','metaKey','button','which','keyCode'];
+    for (var _i = 0; _i < _evProps.length; _i++) {
+        try { this.event[_evProps[_i]] = e[_evProps[_i]]; } catch(_) {}
+    }
     this.element = menu_eventElement(e);
     this.layer = menu_resolveEl(layer);
     this.show = function() {
@@ -1090,7 +1100,7 @@ _MenuLayer.prototype = {
 		 		binding.refresh();
 			}.bind(this);
 
-				addBinding(topLevel, this.eventJsToPrototype(options.onEvt || "mouseover"), function(e) {
+				addBinding(topLevel, this.stripOnPrefix(options.onEvt || "mouseover"), function(e) {
 					menuOn.call(this, e);
 					mouseover.call(this, e);
 				}.bind(this));
@@ -1118,7 +1128,7 @@ _MenuLayer.prototype = {
    		var refLayer = document.getElementById(refLayerName);
    		this.refItem = RichFaces.Menu.Layers.layers[parentv].items[refLayerName];
    		this.refItem.childMenu = this;
- 		var binding = new RichFaces.Menu.Layer.Binding(refLayerName, this.eventJsToPrototype(options.evtName || "mouseover"),	this.showMe.bind(this));
+ 		var binding = new RichFaces.Menu.Layer.Binding(refLayerName, this.stripOnPrefix(options.evtName || "mouseover"),	this.showMe.bind(this));
  		this.bindings.push(binding);
  		binding.refresh();
 
@@ -1178,7 +1188,7 @@ _MenuLayer.prototype = {
 		return result;
 	},
 
-	eventJsToPrototype: function(evtName){
+	stripOnPrefix: function(evtName){
 		var indexof = evtName.indexOf('on');
 		if(indexof  >= 0){
 			evtName = evtName.substr(indexof + 2);

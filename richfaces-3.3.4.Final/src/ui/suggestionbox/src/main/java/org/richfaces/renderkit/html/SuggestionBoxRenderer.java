@@ -90,10 +90,10 @@ public class SuggestionBoxRenderer extends AjaxComponentRendererBase {
 	 * Additional scripts.
 	 */
 	private final InternetResource[] additionalScripts = {
-			new org.ajax4jsf.javascript.PrototypeScript(),
+			// PrototypeScript: rimosso (Prototype non piu' caricato).
 			getResource("/org/richfaces/renderkit/html/scripts/jquery/jquery.js"),
 			getResource("/org/richfaces/renderkit/html/scripts/available.js"),
-			new org.ajax4jsf.javascript.SmartPositionScript(),
+			// SmartPositionScript: rimosso (Richfaces.SmartPosition mai chiamata).
 			getResource("/org/richfaces/renderkit/html/scripts/browser_info.js"),
 			getResource("/org/richfaces/renderkit/html/scripts/utils.js"),
 			getResource("/org/richfaces/renderkit/html/scripts/scriptaculous/effects.js"),

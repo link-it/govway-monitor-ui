@@ -191,7 +191,7 @@ sbjQuery.fn.SpinButton = function(cfg){
 		
 		var self = this;
 		
-		var btnUp = $(this.id + 'BtnUp');
+		var btnUp = document.getElementById(this.id + 'BtnUp');
 		sbjQuery(btnUp)
 			.mousedown(function(e){
 				// Respond to click on one of the buttons:
@@ -232,7 +232,7 @@ sbjQuery.fn.SpinButton = function(cfg){
 				}
 			});
 		
-		var btnDown = $(this.id + 'BtnDown');
+		var btnDown = document.getElementById(this.id + 'BtnDown');
 		sbjQuery(btnDown)
 			.mousedown(function(e){
 				// Respond to click on one of the buttons:

@@ -68,7 +68,8 @@ public class ComponentControlRendererBase  extends HeaderResourcesRendererBase {
 	/**
 	 * Additional scripts.
 	 */
-	private final InternetResource[] additionalScripts = { new org.ajax4jsf.javascript.PrototypeScript(),
+	private final InternetResource[] additionalScripts = {
+			// PrototypeScript: rimosso (Prototype non piu' caricato).
 			new org.ajax4jsf.javascript.AjaxScript(), getResource("/org/richfaces/renderkit/html/scripts/available.js") };
 
 	/**

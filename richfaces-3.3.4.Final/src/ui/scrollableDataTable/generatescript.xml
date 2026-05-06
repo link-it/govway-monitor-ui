@@ -65,23 +65,9 @@
 					<file name="ClientUI/common/box/Substrate.js"/>
 				</filelist>
 			</concat>
-			<concat append="false" binary="false"  destfile="${target-dir}/${script-path}/controls-${gen-script-name}">
-				<filelist dir="${resources-dir}">
-					<file name="ClientUI/controls/grid/DataModel.js"/>
-					<file name="ClientUI/controls/grid/ArrayDataModel.js"/>
-					<file name="ClientUI/controls/grid/FakeArrayDataModel.js"/>
-					<file name="ClientUI/layouts/LayoutManager.js"/>
-					<file name="ClientUI/layouts/VLayoutManager.js"/>
-					<file name="ClientUI/layouts/GridLayoutManager.js"/>
-					<file name="ClientUI/controls/grid/GridHeader.js"/>
-					<file name="ClientUI/controls/grid/DataCash.js"/>
-					<file name="ClientUI/controls/grid/GridBody.js"/>
-					<file name="ClientUI/controls/grid/GridFooter.js"/>
-					<file name="ClientUI/controls/grid/Grid.js"/>
-					<file name="ClientUI/controls/grid/Selection.js"/>
-					<file name="ClientUI/controls/grid/ScrollableGrid.js"/>
-				</filelist>
-			</concat>
+			<!-- controls-scrollable-data-table: rimosso (rich:scrollableDataTable
+			     non incluso in questo bundle; i file ClientUI/controls/grid/* e
+			     ClientUI/layouts/* non vengono piu' impacchettati). -->
 		</target>
 </project>
 

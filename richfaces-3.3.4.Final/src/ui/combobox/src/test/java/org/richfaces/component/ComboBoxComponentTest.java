@@ -61,7 +61,6 @@ public class ComboBoxComponentTest  extends AbstractAjax4JsfTestCase {
     private static Set <String> javaScripts = new HashSet <String>();
 
     static {
-	javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
 	javaScripts.add("org/richfaces/renderkit/html/scripts/jquery/jquery.js");
 	javaScripts.add("scripts/comboboxUtils.js");
 	javaScripts.add("scripts/combobox.js");

@@ -68,7 +68,7 @@ import org.richfaces.model.impl.expressive.ObjectWrapperFactory;
 import org.richfaces.model.impl.expressive.WrappedBeanComparator2;
 import org.richfaces.renderkit.html.HTMLEncodingContributor;
 import org.richfaces.renderkit.html.RichTableMenuRenderer;
-import org.richfaces.renderkit.html.TableDragDropRenderer;
+// TableDragDropRenderer: rimosso (drag-drop di colonne non incluso in questo bundle).
 import org.richfaces.renderkit.html.TableMenuRenderer;
 import org.richfaces.renderkit.html.iconimages.DataTableIconSortNone;
 import org.richfaces.renderkit.html.images.TriangleIconDown;
@@ -1284,43 +1284,9 @@ public abstract class AbstractExtendedTableRenderer extends
                 new ExtTableSortEvent(component).queue();
             }// group columns
 
-            // CHANGE COLUMN ORDER - DRAG AND DROP
-            String dragSourceId = (String) map
-                    .get(org.richfaces.renderkit.DraggableRendererContributor.DRAG_SOURCE_ID);
-            String dropTargetId = (String) map
-                    .get(org.richfaces.renderkit.DropzoneRendererContributor.DROP_TARGET_ID);
-            if ((dragSourceId != null) && (dropTargetId != null)) {
-                Pattern sourcePattern = Pattern.compile(clientId + ":(\\w*):"
-                        + TableDragDropRenderer.DRAG_SOURCE_SCRIPT_ID);
-                Pattern targetPattern = Pattern.compile(clientId + ":(\\w*):"
-                        + TableDragDropRenderer.DROP_TARGET_SCRIPT_ID + "("
-                        + TableDragDropRenderer.DROP_TARGET_BEFORE + "|"
-                        + TableDragDropRenderer.DROP_TARGET_AFTER + ")");
-                Matcher sourceMatcher = sourcePattern.matcher(dragSourceId);
-                Matcher targetMatcher = targetPattern.matcher(dropTargetId);
-                if (sourceMatcher.find() && targetMatcher.find()) {
-                    String sourceColumnId = sourceMatcher.group(1);
-                    String targetColumnId = targetMatcher.group(1);
-                    String kind = targetMatcher.group(2);
-
-                    DragDropEvent dragDropEvent = new DragDropEvent(component);
-                    dragDropEvent.setDragValue(sourceColumnId);
-                    dragDropEvent.setDropValue(targetColumnId);
-                    dragDropEvent.setDropBefore(kind
-                            .equals(TableDragDropRenderer.DROP_TARGET_BEFORE));
-
-                    dragDropEvent.queue();
-
-                    // AjaxContext.getCurrentInstance().addComponentToAjaxRender(component);
-                    // AjaxContext ajaxContext =
-                    // AjaxContext.getCurrentInstance();
-                    // ajaxContext.addComponentToAjaxRender(component);
-                    // ajaxContext.addRenderedArea(clientId + ":tb");// body
-                    // ajaxContext.addRenderedArea(clientId + ":tu");
-                    // ajaxContext.addRenderedArea(clientId + ":tm");// menu
-                    // AjaxContext.getCurrentInstance().addRenderedArea(clientId);
-                }
-            }// change column order
+            // CHANGE COLUMN ORDER - DRAG AND DROP: rimosso (drag-drop di colonne
+            // non incluso in questo bundle; modulo drag-drop e i contributor relativi
+            // sono stati eliminati dal classpath).
 
             // CHANGE COLUMN VISIBILITY
             String columnToChange = (String) map.get(clientId + ":"
@@ -1412,7 +1378,7 @@ public abstract class AbstractExtendedTableRenderer extends
             filterValueInput.getAttributes().put(HTML.STYLE_CLASS_ATTR, "rich-filter-input");
             column.getFacets().put(FILTER_INPUT_FACET_NAME, filterValueInput);
             filterValueInput.getAttributes().put(HTML.onclick_ATTRIBUTE,
-                    "Event.stop(event);");
+                    "event.stopPropagation();");
         }
         String filterEvent = (String) column.getAttributes().get("filterEvent");
         if (null == filterEvent || "".equals(filterEvent)) {
@@ -1725,8 +1691,7 @@ public abstract class AbstractExtendedTableRenderer extends
 
     public String encodeDragDropChildScripts(FacesContext context,
             UIDataTable component) throws IOException {
-        TableDragDropRenderer.getInstance(context).encodeChildScripts(context,
-                component);
+        // No-op: drag-drop di colonne rimosso (non incluso in questo bundle).
         return "";
     }
 
@@ -1738,19 +1703,12 @@ public abstract class AbstractExtendedTableRenderer extends
     public void renderDragSupport(FacesContext context, UIColumn column,
             String dragSourceId, String indicatorId, String dragLabel)
             throws IOException {
-        TableDragDropRenderer.getInstance(context).renderDragSupport(column,
-                dragSourceId, indicatorId, dragLabel);
+        // No-op: drag-drop di colonne rimosso (non incluso in questo bundle).
     }// renderDragSupport
 
     public void renderDropSupport(FacesContext context, UIColumn column,
             String dropTargetId, boolean before) throws IOException {
-        TableDragDropRenderer renderer = TableDragDropRenderer
-                .getInstance(context);
-        renderer.setOnAjaxCompleteFunctionDef(getOnAjaxCompleteFunction(
-                context, (UIDataTable) column.getParent()));
-        renderer.setPreSendAjaxRequestFunction(getPreSendAjaxRequestFunction(
-                context, (UIDataTable) column.getParent()));
-        renderer.renderDropSupport(column, dropTargetId, before);
+        // No-op: drag-drop di colonne rimosso (non incluso in questo bundle).
     }// renderDropSupport
 
     public static String getJavaScriptVarName(FacesContext context,

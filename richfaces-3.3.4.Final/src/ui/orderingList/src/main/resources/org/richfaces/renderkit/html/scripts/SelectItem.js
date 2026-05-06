@@ -121,42 +121,6 @@ Richfaces.SelectItem.prototype = {
 		}
 	},
 
-	/*addClass : function(row, classNameRow, classNameCell) {
-		if (row.addClassName) {
-			row.addClassName(classNameRow);
-		} else {
-			Element.addClassName(row, classNameRow);
-		}
-
-		var cells = row.cells;
-		for (var i = 0; i < cells.length; i++) {
-			var cell = cells[i];
-			if (cell.addClassName) {
-				cell.addClassName(classNameCell);
-			} else {
-				Element.addClassName(cell, classNameCell);
-			}
-		}
-	},
-
-	removeClass : function(row, classNameRow, classNameCell) {
-		if (row.removeClassName) {
-			row.removeClassName(classNameRow);
-		} else {
-			Element.removeClassName(row, classNameRow);
-		}
-		var cells = row.cells;
-		for (var i = 0; i < cells.length; i++) {
-			var cell = cells[i];
-
-			if (cell.removeClassName) {
-				cell.removeClassName(classNameCell);
-			} else {
-				Element.removeClassName(cell, classNameCell);
-			}
-		}
-	},*/
-
 	saveState: function() {
 		var regex = /^s?a?/;
 

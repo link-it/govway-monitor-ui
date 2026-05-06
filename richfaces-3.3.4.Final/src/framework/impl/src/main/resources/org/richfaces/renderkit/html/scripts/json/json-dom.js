@@ -36,14 +36,16 @@ JSNode.prototype = {
 		}
 		return children.join('');
 	},
-	// Escape XML symbols - < > & ' ...
+	// Escape XML symbols (stessa semantica di String.escapeHTML di Prototype:
+	// solo & < >). NON escapa ' e " perche' xmlEscape e' usata anche per il
+	// content di <script>, dove apici/virgolette devono rimanere letterali
+	// (il browser non decodifica entita' all'interno di <script>).
 	xmlEscape : function(value) {
 		var text = value ? value.toString() : "";
-		/*for(var i in this._symbols ) {
-			text = text.replace(i,this._symbols[i]);
-		
-		*/
-		return text.escapeHTML();
+		return text
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
 	}
 };
 

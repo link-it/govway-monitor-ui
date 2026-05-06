@@ -1,7 +1,17 @@
-//Requires prototype.js & AJAX script
-if (!document.observe) {
-	throw "prototype.js is required!";
-}
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Porting da Prototype a vanilla DOM:
+ *       Object.extend -> Object.assign,
+ *       Event.observe / stopObserving -> addEventListener / removeEventListener,
+ *       Event.element -> e.target,
+ *       $() -> document.getElementById,
+ *       document.observe("dom:loaded", ...) -> addEventListener("DOMContentLoaded", ...).
+ *   Rimosso il check iniziale `if (!document.observe) throw "prototype.js is required"`:
+ *   ora il modulo usa solo DOM standard.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
 
 if (!A4J || !A4J.AJAX || !A4J.AJAX.AddListener) {
 	throw "AJAX script is required!";
@@ -11,13 +21,13 @@ if (!window.Richfaces) {
 	window.Richfaces = {};
 }
 
-Object.extend(Richfaces, function() {
+Object.assign(Richfaces, function() {
 	var _queueLength = 0;
 	var _available = {};
 	var _pollingActivated = false;
-	
+
 	var _lastEltId = null;
-	
+
 	var executeCallback = function(elt, callbacks) {
 		if (callbacks instanceof Array) {
 			for (var i = 0; i < callbacks.length; i++) {
@@ -27,20 +37,20 @@ Object.extend(Richfaces, function() {
 			callbacks(elt);
 		}
 	};
-	
+
 	var stopPolling = function() {
 		if (_pollingActivated) {
-			Event.stopObserving(document, "mouseover", onEvent, true);
-			Event.stopObserving(document, "focus", onEvent, true);
-			Event.stopObserving(document, "focusin", onEvent, true);
-		
+			document.removeEventListener("mouseover", onEvent, true);
+			document.removeEventListener("focus", onEvent, true);
+			document.removeEventListener("focusin", onEvent, true);
+
 			_pollingActivated = false;
 			_lastEltId = null;
 		}
 	}
-	
+
 	var onEvent = function(event) {
-		var elt = Event.element(event);
+		var elt = event.target || event.srcElement;
 		while (elt) {
 			var id = elt.id;
 			if (id) {
@@ -50,7 +60,7 @@ Object.extend(Richfaces, function() {
 					//we can stop now because elements queue hasn't changed since we've checked this element
 					break;
 				}
-				
+
 				var callbacks = _available[id];
 				if (callbacks) {
 					try {
@@ -72,13 +82,13 @@ Object.extend(Richfaces, function() {
 			elt = elt.parentNode;
 		}
 	};
-	
+
 	var activatePolling = function() {
 		if (!_pollingActivated) {
-			Event.observe(document, "mousemove", onEvent, true);
-			Event.observe(document, "focus", onEvent, true);
-			Event.observe(document, "focusin", onEvent, true);
-		
+			document.addEventListener("mousemove", onEvent, true);
+			document.addEventListener("focus", onEvent, true);
+			document.addEventListener("focusin", onEvent, true);
+
 			_pollingActivated = true;
 		}
 	};
@@ -92,12 +102,12 @@ Object.extend(Richfaces, function() {
 			LOG.error("Error occured during cleanup: " + e);
 		}
 	};
-	
-	
+
+
 	var onReady = function() {
 		try {
 			for (var id in _available) {
-				var elt = $(id);
+				var elt = document.getElementById(id);
 				if (elt) {
 					executeCallback(elt, _available[id]);
 				} else {
@@ -107,20 +117,20 @@ Object.extend(Richfaces, function() {
 		} finally {
 			cleanup();
 		}
-	};		
+	};
 
 	var onAvailable = function(eltId, callback) {
-		var elt = $(eltId);
+		var elt = document.getElementById(eltId);
 		if (elt) {
 			callback(elt);
 		} else {
 			var a = _available[eltId];
 			if (!a) {
 				_available[eltId] = callback;
-				
+
 				//reset cached element because we've just changed the queue
 				_lastEltId = null;
-				
+
 				_queueLength++;
 				activatePolling();
 			} else {
@@ -135,9 +145,14 @@ Object.extend(Richfaces, function() {
 			}
 		}
 	};
-	
+
 	A4J.AJAX.AddListener(onReady);
-	document.observe("dom:loaded", onReady);
+	if (document.readyState === 'loading') {
+		document.addEventListener("DOMContentLoaded", onReady);
+	} else {
+		// DOM gia' pronto
+		onReady();
+	}
 
 	return {
 		onAvailable: onAvailable

@@ -263,11 +263,7 @@ _RichfacesComboBoxList.prototype = {
 					height = itemHeight * this.defaultRowsAmount;
 				}
 			}
-			// Modificato da Link.it: Prototype.Browser.IE non piu' disponibile
-			// dopo il porting; impostato a false (browser moderno non-IE).
-			if (false /* was: Prototype.Browser.IE */) {
-				height = parseInt(height) + this.LAYOUT_BORDER_V + this.LAYOUT_PADDING_V;
-			}
+			// Modificato da Link.it: ramo IE-only rimosso (browser moderno non-IE).
 			height = parseInt(height) + "px";
 			this.list.style.height = height;
 			if (this.shadowElem) {

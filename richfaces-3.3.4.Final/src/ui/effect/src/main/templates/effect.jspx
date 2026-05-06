@@ -9,7 +9,7 @@
 	baseclass="org.richfaces.renderkit.EffectRendererBase"
 	component="org.richfaces.component.UIEffect">
 
-	<h:scripts>new org.ajax4jsf.javascript.PrototypeScript(),scripts/scriptaculous/effects.js,/org/richfaces/renderkit/html/script/processEffect.js</h:scripts>
+	<h:scripts>scripts/scriptaculous/effects.js,/org/richfaces/renderkit/html/script/processEffect.js</h:scripts>
 
 	<f:call name="writeScript"/>        
 

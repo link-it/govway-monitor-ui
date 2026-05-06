@@ -79,7 +79,7 @@ public class ContextMenuRendererBase extends TemplateEncoderRendererBase {
 		getResource("/org/richfaces/renderkit/html/scripts/json/json-dom.js"),
 		getResource("/org/richfaces/renderkit/html/scripts/utils.js"),
 		getResource("/org/richfaces/renderkit/html/scripts/context-menu.js"),
-		new org.ajax4jsf.javascript.PrototypeScript(),
+		// PrototypeScript: rimosso (Prototype non piu' caricato).
 		new org.ajax4jsf.javascript.AjaxScript(),
 		getResource("/org/richfaces/renderkit/html/scripts/available.js"),
 		getResource("/org/richfaces/renderkit/html/scripts/jquery/jquery.js"),

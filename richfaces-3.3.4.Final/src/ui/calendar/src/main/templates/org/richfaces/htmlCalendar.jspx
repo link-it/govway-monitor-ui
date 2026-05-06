@@ -9,7 +9,7 @@
 	baseclass="org.richfaces.renderkit.CalendarRendererBase"
 	component="org.richfaces.component.UICalendar">
 	<f:clientid var="clientId" />
-	<h:scripts>new org.ajax4jsf.javascript.PrototypeScript(),new org.ajax4jsf.javascript.AjaxScript(),/org/richfaces/renderkit/html/scripts/events.js,/org/richfaces/renderkit/html/scripts/utils.js,/org/richfaces/renderkit/html/scripts/json/json-dom.js,/org/richfaces/renderkit/html/scripts/scriptaculous/effects.js,/org/richfaces/renderkit/html/scripts/jquery/jquery.js,/org/richfaces/renderkit/html/scripts/jquery/jquery.js,/org/richfaces/renderkit/html/scripts/JQuerySpinBtn.js,/org/richfaces/renderkit/html/scripts/calendar.js</h:scripts>
+	<h:scripts>new org.ajax4jsf.javascript.AjaxScript(),/org/richfaces/renderkit/html/scripts/events.js,/org/richfaces/renderkit/html/scripts/utils.js,/org/richfaces/renderkit/html/scripts/json/json-dom.js,/org/richfaces/renderkit/html/scripts/scriptaculous/effects.js,/org/richfaces/renderkit/html/scripts/jquery/jquery.js,/org/richfaces/renderkit/html/scripts/jquery/jquery.js,/org/richfaces/renderkit/html/scripts/JQuerySpinBtn.js,/org/richfaces/renderkit/html/scripts/calendar.js</h:scripts>
 
 	<h:styles>/org/richfaces/renderkit/html/css/calendar.xcss</h:styles>
 	
@@ -217,12 +217,12 @@
 	</script>
 	<script type="text/javascript" nonce="#{cspValue}">
 		jQuery(document).ready(function() {
-			jQuery("table[id$='#{clientId}']").click(function() { $('#{clientId}').component.skipEventOnCollapse=true; });
-			
+			jQuery("table[id$='#{clientId}']").click(function() { document.getElementById('#{clientId}').component.skipEventOnCollapse=true; });
+
 			<c:if test="#{this:addCellsEventHandlers(context, component)}">
-					jQuery("td[id*='#{clientId}DayCell']").click(function() { $('#{clientId}').component.eventCellOnClick(event, this); });
-					jQuery("td[id*='#{clientId}DayCell']").mouseover(function() { $('#{clientId}').component.eventCellOnMouseOver(event, this); });
-					jQuery("td[id*='#{clientId}DayCell']").mouseout(function() { $('#{clientId}').component.eventCellOnMouseOut(event, this); });
+					jQuery("td[id*='#{clientId}DayCell']").click(function() { document.getElementById('#{clientId}').component.eventCellOnClick(event, this); });
+					jQuery("td[id*='#{clientId}DayCell']").mouseover(function() { document.getElementById('#{clientId}').component.eventCellOnMouseOver(event, this); });
+					jQuery("td[id*='#{clientId}DayCell']").mouseout(function() { document.getElementById('#{clientId}').component.eventCellOnMouseOut(event, this); });
 			</c:if>
 		});
 	</script>

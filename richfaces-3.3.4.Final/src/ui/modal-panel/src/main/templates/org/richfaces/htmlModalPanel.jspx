@@ -16,7 +16,6 @@
 		/org/richfaces/renderkit/html/css/modalPanel.xcss
 	</h:styles>
 	<h:scripts>
-		new org.ajax4jsf.javascript.PrototypeScript(),
 		/org/richfaces/renderkit/html/scripts/utils.js,
 		/org/richfaces/renderkit/html/scripts/browser_info.js,
 		/org/richfaces/renderkit/html/scripts/modalPanel.js,

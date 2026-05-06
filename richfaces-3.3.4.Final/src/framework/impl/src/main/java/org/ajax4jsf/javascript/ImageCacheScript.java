@@ -42,7 +42,6 @@ public class ImageCacheScript extends ClientScript {
 	 */
 	public ImageCacheScript() {
 		super();
-		usePrototype=true;
 //		setRenderer(new ScriptRenderer());
 //		setLastModified(new Date(InternetResourceBuilder.getInstance().getStartTime()));
 	}

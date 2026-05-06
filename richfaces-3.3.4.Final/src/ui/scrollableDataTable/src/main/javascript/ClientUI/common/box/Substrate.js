@@ -3,25 +3,41 @@
  * Copyright (c) 2007 Exadel Inc.
  * @author Denis Morozov <dmorozov@exadel.com>
  */
+/*
+ * Modificato da Link.it (https://link.it):
+ *   - Class.create(parent, {...}) -> Object.create(parent.prototype) +
+ *     Object.assign,
+ *     $super(...) -> ClientUI.common.box.Box.prototype.initialize.call(this, ...),
+ *     $() -> document.getElementById/element direct.
+ *
+ * Copyright (c) 2022-2026 Link.it srl (https://link.it).
+ * Distribuito sotto la stessa licenza LGPL v2.1 di RichFaces 3.3.4.Final.
+ */
+
 ClientUILib.declarePackage("ClientUI.common.box.Substrate");
 
 ClientUILib.requireClass("ClientUI.common.box.Box");
 
 /**
- * Base class that wrap work with inline blocks like span
+ * Base class that wraps work with inline blocks like span
  */
-ClientUI.common.box.Substrate = Class.create(ClientUI.common.box.Box, {
+function _CuiSubstrate() { this.initialize.apply(this, arguments); }
+_CuiSubstrate.prototype = Object.create(ClientUI.common.box.Box.prototype);
+_CuiSubstrate.prototype.constructor = _CuiSubstrate;
+ClientUI.common.box.Substrate = _CuiSubstrate;
 
-	initialize: function($super, element, parentElement, dontUpdateStyles) {
-		if(!element) {			
-			var fakeElement = $(document.createElement("div"));
+Object.assign(ClientUI.common.box.Substrate.prototype, {
+
+	initialize: function(element, parentElement, dontUpdateStyles) {
+		if(!element) {
+			var fakeElement = document.createElement("div");
 			fakeElement.innerHTML = '<iframe id="'+'ClientUI_Substrate' + (ClientUI_common_box_Substrate_idGenerator++) +'" src="javascript:\'\'" scrolling="no" frameborder="0" style="filter:Alpha(opacity=0);position:absolute;top:0px;left:0px;display:block"></iframe>';
-			element = $(fakeElement.getElementsByTagName("iframe")[0]);
+			element = fakeElement.getElementsByTagName("iframe")[0];
 			fakeElement.removeChild(element);
-      	}		
-		
-		$super(element, parentElement, dontUpdateStyles);
-		
+      	}
+
+		ClientUI.common.box.Box.prototype.initialize.call(this, element, parentElement, dontUpdateStyles);
+
 		// additional styles
 		if(!dontUpdateStyles) {
 		}

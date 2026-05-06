@@ -12,7 +12,6 @@
     <f:clientid var="clientId"/>
     <h:styles>css/simpleTogglePanel.xcss</h:styles>
 <h:scripts>
-new org.ajax4jsf.javascript.PrototypeScript(),
 new org.ajax4jsf.javascript.AjaxScript(),
 new org.ajax4jsf.javascript.ImageCacheScript(),
 /org/ajax4jsf/javascript/scripts/form.js,

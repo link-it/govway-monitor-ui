@@ -20,8 +20,8 @@
  *           -> .length / .forEach / .slice / Array.from(.children) / .map.
  *
  *   Le chiamate a Utils.DOM.Event.* e ai metodi di ClientUI.common.box.Box
- *   restano inalterate: quei moduli (scrollableDataTable) non sono ancora
- *   portati e vivono su Prototype runtime.
+ *   restano inalterate: anche quei moduli (scrollableDataTable) sono stati
+ *   portati a vanilla DOM/jQuery.
  *
  * Copyright (c) 2022-2026 Link.it srl (https://link.it).
  *

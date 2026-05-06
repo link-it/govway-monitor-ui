@@ -13,7 +13,6 @@
 	<h:styles>css/menucomponents.xcss</h:styles>  
 	
    	<h:scripts>
-			new org.ajax4jsf.javascript.PrototypeScript(),
 			new org.ajax4jsf.javascript.AjaxScript()
 	</h:scripts>
 

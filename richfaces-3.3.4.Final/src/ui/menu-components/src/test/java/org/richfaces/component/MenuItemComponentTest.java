@@ -69,7 +69,6 @@ public class MenuItemComponentTest extends AbstractAjax4JsfTestCase {
 	private static final boolean IS_PAGE_AVAILABILITY_CHECK = true;
 
     static {
-        javaScripts.add("PrototypeScript");
         javaScripts.add("AjaxScript");
         javaScripts.add("org/richfaces/renderkit/html/scripts/utils.js");
         javaScripts.add("org/ajax4jsf/javascript/scripts/form.js");

@@ -53,7 +53,6 @@ public class SimpleTogglePanelComponentTest extends AbstractAjax4JsfTestCase {
 
     static {
         javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
-        javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
         javaScripts.add("org.ajax4jsf.javascript.ImageCacheScript");
         javaScripts.add("org/ajax4jsf/javascript/scripts/form.js");
         javaScripts.add("org/richfaces/renderkit/html/scripts/browser_info.js");

@@ -103,7 +103,7 @@ public class ToolTipRenderer extends AjaxComponentRendererBase {
     }
     
     private final InternetResource[] scripts = {
-            new org.ajax4jsf.javascript.PrototypeScript(),
+            // PrototypeScript: rimosso (Prototype non piu' caricato).
             new org.ajax4jsf.javascript.AjaxScript(),
             getResource("/org/richfaces/renderkit/html/scripts/jquery/jquery.js"),
             getResource("/org/richfaces/renderkit/html/scripts/utils.js"),

@@ -55,7 +55,6 @@ public class EffectComponentTest extends AbstractAjax4JsfTestCase {
 
 
     static {
-	    javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
 	    javaScripts.add("scripts/scriptaculous/effects.js");
 	    javaScripts.add("script/processEffect.js");
 	    javaScripts.add("scripts/scriptaculous/scriptaculous.js");

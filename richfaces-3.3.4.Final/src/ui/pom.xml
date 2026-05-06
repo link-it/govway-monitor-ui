@@ -109,13 +109,13 @@
 	</profiles>
 	<modules>
 		<module>core</module>
-		<module>drag-drop</module>
+		<!-- drag-drop: rimosso (componente non incluso in questo bundle) -->
 		<module>effect</module>
 		<module>panel</module>
-		<!-- panelbar: spostato in PULIZIA_DA_CONFERMARE/ui/panelbar (componente non usato dal monitor) -->
+		<!-- panelbar: rimosso (componente non incluso in questo bundle) -->
 		<module>jQuery</module>
 		<module>spacer</module>
-		<!-- togglePanel: spostato in PULIZIA_DA_CONFERMARE/ui/togglePanel (componente non usato dal monitor) -->
+		<!-- togglePanel: rimosso (componente non incluso in questo bundle) -->
 		<module>tabPanel</module>
 		<module>simpleTogglePanel</module>
 		<module>inputnumber-slider</module> <!-- very slow -->
@@ -131,16 +131,21 @@
 		<module>calendar</module>
 		<module>message</module>
 		<module>scrollableDataTable</module>
-		<module>insert</module>
+		<!-- insert: rimosso (componente non incluso in questo bundle) -->
 		<module>componentControl</module>
 		<module>orderingList</module>
 		<module>listShuttle</module>
 		<module>contextMenu</module>
 		<module>columns</module>
 		<module>combobox</module>
-		<!-- pickList: spostato in PULIZIA_DA_CONFERMARE/ui/pickList (componente non usato dal monitor) -->
+		<!-- pickList: rimosso (componente non incluso in questo bundle) -->
 		<module>functions</module>
 		<module>hotKey</module>
+		<!-- beanValidator e state: anche se i tag (rich:beanValidator /
+		     rich:state) non sono utilizzati nelle pagine, i moduli registrano
+		     via faces-config delle SPI che JSF carica al boot
+		     (org.richfaces.ui.application.StateApplicationFactory tipicamente
+		     dichiarata come <application-factory>): i moduli devono restare. -->
 		<module>beanValidator</module>
 		<module>state</module>
 		<module>extendedDataTable</module>

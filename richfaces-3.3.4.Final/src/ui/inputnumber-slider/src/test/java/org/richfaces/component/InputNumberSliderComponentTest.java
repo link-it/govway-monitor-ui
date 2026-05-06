@@ -90,7 +90,6 @@ public class InputNumberSliderComponentTest extends AbstractAjax4JsfTestCase {
      */
 
     static {
-        javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
         javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
         javaScripts.add("script/SliderScript.js");
         javaScripts.add("org/richfaces/renderkit/html/scripts/browser_info.js");

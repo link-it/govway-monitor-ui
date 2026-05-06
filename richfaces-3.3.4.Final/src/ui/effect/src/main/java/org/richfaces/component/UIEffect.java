@@ -58,7 +58,7 @@ public abstract class UIEffect extends UIComponentBase implements AjaxSupport {
     {
         StringBuffer buildOnEvent = new StringBuffer("Richfaces.processEffect(");
         StringBuffer options = new StringBuffer();
-        StringBuffer extendStr = new StringBuffer("Object.extend({targetId:");
+        StringBuffer extendStr = new StringBuffer("Object.assign({targetId:");
 
         String targetId=getTargetId();
         UIComponent targetComponent=null;
@@ -70,7 +70,7 @@ public abstract class UIEffect extends UIComponentBase implements AjaxSupport {
 	    		targetId = "'"+targetComponent.getClientId(FacesContext.getCurrentInstance())+"'";
 		} else {
 			// it might be html tag id or DOM object 
-			targetId = !"".equals(targetId) ? "typeof "+targetId+"=='object'?"+targetId+":$('"+targetId+"')" : "";
+			targetId = !"".equals(targetId) ? "typeof "+targetId+"=='object'?"+targetId+":document.getElementById('"+targetId+"')" : "";
 		}
 	    
     	extendStr.append("".equals(targetId) ? "this" : targetId);

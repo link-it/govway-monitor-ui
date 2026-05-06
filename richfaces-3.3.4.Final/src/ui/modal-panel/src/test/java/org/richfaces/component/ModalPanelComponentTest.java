@@ -53,7 +53,6 @@ public class ModalPanelComponentTest extends AbstractAjax4JsfTestCase {
 
     static {
     	javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
-    	javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
         javaScripts.add("scripts/utils.js");
         javaScripts.add("scripts/modalPanel.js");
         javaScripts.add("scripts/modalPanelBorders.js");

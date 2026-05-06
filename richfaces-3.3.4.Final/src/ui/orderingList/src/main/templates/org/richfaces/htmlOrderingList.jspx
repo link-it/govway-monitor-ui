@@ -16,7 +16,6 @@
 	<h:styles>css/orderingList.xcss</h:styles>  
 	
    	<h:scripts>
-			new org.ajax4jsf.javascript.PrototypeScript(),
 			/org/richfaces/renderkit/html/scripts/utils.js,
 			scripts/ShuttleUtils.js,
 			scripts/SelectItem.js,

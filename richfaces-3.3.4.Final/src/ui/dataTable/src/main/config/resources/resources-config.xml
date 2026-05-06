@@ -8,8 +8,6 @@
 		<name>org.ajax4jsf.javascript.AjaxScript</name>
 	</resource>
 
-	<resource class="org.ajax4jsf.javascript.PrototypeScript">
-		<name>org.ajax4jsf.javascript.PrototypeScript</name>
-	</resource>
+	<!-- PrototypeScript: rimosso (Prototype non piu' caricato) -->
 
 </resource-config>

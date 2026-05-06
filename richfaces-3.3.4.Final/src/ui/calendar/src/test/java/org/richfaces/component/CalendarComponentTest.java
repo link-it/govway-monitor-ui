@@ -70,7 +70,6 @@ public class CalendarComponentTest extends AbstractAjax4JsfTestCase {
 	private static Set<String> javaScripts = new HashSet<String>();
 
 	static {
-		javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
 		javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/events.js");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/utils.js");

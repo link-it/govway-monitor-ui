@@ -193,7 +193,6 @@ Suggestion.Base.prototype = {
 
         this.element.setAttribute('autocomplete', 'off');
 
-        // Element.hide(this.update);
 		var jqUpdate = jQuery(this.update);
 		jqUpdate.removeClass( "rich-sb-display" ).addClass( "rich-sb-display-none" );
 
@@ -229,8 +228,6 @@ Suggestion.Base.prototype = {
 
 		this.onScrollListener = this.onScroll.bind(this);
 
-//		if (options.popupClass)
-//			Element.addClassName(this.update.select(".rich-sb-ext-decor-3")[0], options.popupClass);
 		if (options.popupClass) {
 			var selected = _sbSelectAll(this.update, ".rich-sb-ext-decor-3");
 			_sbAddClass(selected[0], options.popupClass);
@@ -315,7 +312,6 @@ Suggestion.Base.prototype = {
 			}
 	       	_sbObserve(this.overflow, "scroll", this.onScrollListener);
 		}
-		// if (Element.getStyle(this.update, 'display') == 'none')
 		var jqUpdate = jQuery(this.update);
 
 		if(jqUpdate.hasClass('rich-sb-display-none'))
@@ -336,7 +332,6 @@ Suggestion.Base.prototype = {
 			_sbStopObserving(this.overflow, "scroll", this.onScrollListener)
 		}
         this.stopIndicator();
-        // if (Element.getStyle(this.update, 'display') != 'none')
         var jqUpdate = jQuery(this.update);
 
 		if(jqUpdate.hasClass('rich-sb-display'))
@@ -354,7 +349,6 @@ Suggestion.Base.prototype = {
     hideNLabel: function(event) {
 	var nothingLabel = document.getElementById(this.update.id + "NothingLabel");
     	if (nothingLabel) {
-//	    	Element.hide(nothingLabel);
 	    	var jqNL = jQuery(nothingLabel);
 			jqNL.removeClass( "rich-sb-display" ).addClass( "rich-sb-display-none" );
 	    	_sbStopObserving(nothingLabel, "click", this.onNothingLabelClick);
@@ -365,7 +359,6 @@ Suggestion.Base.prototype = {
 
     startIndicator: function() {
         if (this.options.indicator) {
-			// Element.show(this.options.indicator);
 			var jqEl = jQuery(this.options.indicator);
 			jqEl.removeClass( "rich-sb-display-none" ).addClass( "rich-sb-display" );
         }
@@ -373,7 +366,6 @@ Suggestion.Base.prototype = {
 
     stopIndicator: function() {
         if (this.options.indicator) {
-			// Element.hide(this.options.indicator);
 			var jqEl = jQuery(this.options.indicator);
 			jqEl.removeClass( "rich-sb-display" ).addClass( "rich-sb-display-none" );
 		}
@@ -550,7 +542,7 @@ Suggestion.Base.prototype = {
     },
 
     onHover: function(event) {
-        var element = this._findTr(event);//Event.findElement(event, 'TR');
+        var element = this._findTr(event);
     	if (!this.skipHover) {
 	        if (this.index != element.autocompleteIndex) {
 	            this.index = element.autocompleteIndex;
@@ -571,7 +563,7 @@ Suggestion.Base.prototype = {
     	{
 			this.wasScroll = false;
 			this.wasBlur = false;
-        	var element = this._findTr(event);//Event.findElement(event, 'TR');
+        	var element = this._findTr(event);
         	this.index = element.autocompleteIndex;
         	this.selectEntry(event);
         	this.hide();
@@ -579,7 +571,7 @@ Suggestion.Base.prototype = {
     },
 
     onMouseOut: function(event) {
-        var element = this._findTr(event);//Event.findElement(event, 'TR');
+        var element = this._findTr(event);
        	_sbStopObserving(element, "mousemove", this.onHover);
     },
 
@@ -847,12 +839,6 @@ Suggestion.Base.prototype = {
     },
 
     getEntry: function(index) {
-        /*if (this.options.entryClass) {
-            return this.update.select("."+this.options.entryClass)[index];
-        } else {
-            return $(this.update.firstChild.firstChild.childNodes[index]);
-        }*/
-        // optimization
         var element = document.getElementById(this.contentTable).firstChild;
         while (!element.tagName || element.tagName.toLowerCase()!="tbody") {
         	element = element.nextSibling;
@@ -942,7 +928,6 @@ Suggestion.Base.prototype = {
 		var nothingLabel = document.getElementById(this.update.id + "NothingLabel");
 		if (nothingLabel && this.hasFocus && !this.wasBlur) {
 			if (this.entryCount < 1) {
-				// Element.show(nothingLabel);
 				var jqEl = jQuery(nothingLabel);
 				jqEl.removeClass( "rich-sb-display-none" ).addClass( "rich-sb-display" );
 				_sbObserve(nothingLabel, "click", this.onNothingLabelClick);
@@ -1297,19 +1282,6 @@ RichFaces.Position = {
 
         this.source = _sbResolve(source);
         this.target = _sbResolve(target);
-
-        /*
-        http://jira.exadel.com/browse/RFA-236
-
-        var pos = RichFaces.SmartPosition.getPosition(this.source, this.target, options);
-
-        if (RichFaces.navigatorType() == "MSIE") {
-            var offsets = this.calcOffsets(this.source);
-            Element.setStyle(this.target, Object.extend({"left": offsets["x"] + "px", "top": offsets["y"] + "px"}, targetStyle));
-        } else {
-            Element.setStyle(this.target, Object.extend({"left": pos[0] + "px", "top": pos[1] + "px"}, targetStyle));
-        }
-        */
 
         this.clonePosition(this.target, this.source, this.source.offsetHeight);
 

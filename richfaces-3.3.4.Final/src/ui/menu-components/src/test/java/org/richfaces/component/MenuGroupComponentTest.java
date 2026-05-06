@@ -65,7 +65,6 @@ public class MenuGroupComponentTest extends AbstractAjax4JsfTestCase {
 	private static final boolean IS_PAGE_AVAILABILITY_CHECK = true;
 
     static {
-        javaScripts.add("PrototypeScript");
         javaScripts.add("AjaxScript");
     }
 

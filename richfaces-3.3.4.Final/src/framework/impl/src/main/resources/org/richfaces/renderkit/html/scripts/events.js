@@ -109,8 +109,9 @@ Richfaces.createEvent = function (type, component, baseEvent, props) {
 		}
 	}
 
+	// Modificato da Link.it: Object.extend -> Object.assign.
 	if (props) {
-		Object.extend(eventObj, props);
+		Object.assign(eventObj, props);
 	}
  
 	eventObj[Richfaces.SYNTHETIC_EVENT] = true;

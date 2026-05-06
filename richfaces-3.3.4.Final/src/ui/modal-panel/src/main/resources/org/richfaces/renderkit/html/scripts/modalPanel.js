@@ -638,32 +638,9 @@ ModalPanel.prototype = {
 			//this.shape.init(eCdiv, this.options);
 
 			var eDiv = document.getElementById(this.div);
-			if (eDiv.style.position == "absolute")
-			{
-				var we = "getSizeElement().clientWidth + \"px\"";
-				var he = "getSizeElement().clientHeight + \"px\"";
-				eDiv.style.setExpression("width", we);
-				eDiv.style.setExpression("height", he);
-
-				var eCursorDiv = document.getElementById(this.cursorDiv);
-				eCursorDiv.style.setExpression("width", we);
-				eCursorDiv.style.setExpression("height", he);
-
-				var le = "-Position.cumulativeOffset(this.parentNode)[0] + getSizeElement().scrollLeft + \"px\"";
-				var te = "-Position.cumulativeOffset(this.parentNode)[1] + getSizeElement().scrollTop + \"px\"";
-
-				eDiv.style.setExpression("left", le);
-				eDiv.style.setExpression("top", te);
-
-				eCursorDiv.style.setExpression("left", le);
-				eCursorDiv.style.setExpression("top", te);
-
-				var leftExpr = "(this.mpLeft || 0) + -Position.cumulativeOffset(this.parentNode)[0] + getSizeElement().scrollLeft + \"px\"";
-				var topExpr = "(this.mpTop || 0) + -Position.cumulativeOffset(this.parentNode)[1] + getSizeElement().scrollTop + \"px\"";
-
-				eCdiv.style.setExpression("left", leftExpr);
-				eCdiv.style.setExpression("top", topExpr);
-			}
+			// Rimosso da Link.it: blocco basato su HTMLElement.style.setExpression(),
+			// API IE-only deprecata in IE8 e rimossa in IE11. Su browser moderni
+			// era dead code (setExpression non esiste).
 
 			jqElement.removeClass( "rich-modalpanel-display-none" ).addClass( "rich-modalpanel-display" );
     		jqElement.removeClass( "rich-modalpanel-visibility" ).addClass( "rich-modalpanel-visibility-hidden" );

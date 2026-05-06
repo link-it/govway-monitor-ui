@@ -110,21 +110,30 @@ Object.assign(_ExtDtHeader.prototype, {
                 	Utils.DOM.Event.observe(sortDiv, 'click',  this.eventHeaderCellClicked);
                 }
             }
+            // Modificato da Link.it: gli accessi indice fisso b[2]/b[3]/b[5]/b[7]
+            // contavano sui 3 <script> emessi da renderDragSupport/renderDropSupport
+            // come figli diretti del TD colonna. Quei <script> sono stati rimossi
+            // nel cleanup drag-drop, quindi gli indici sono shiftati. Uso ora
+            // selettori per classe (robusti a futuri shift).
             var headerChildChildren = Array.from(headerChild.children);
             if (headerChildChildren == null || headerChildChildren.length == 0){
 				continue;
 			}
 			if (this.enableContextMenu) {
-				var menuImage = headerChildChildren[7];
-				Utils.DOM.Event.removeListeners(menuImage);
-				Utils.DOM.Event.observe(menuImage,'click',this.menuImageMouseDown);
+				var menuImage = headerChild.querySelector('.extdt-menu-div-out, .extdt-menu-div-on');
+				if (menuImage) {
+					Utils.DOM.Event.removeListeners(menuImage);
+					Utils.DOM.Event.observe(menuImage,'click',this.menuImageMouseDown);
+				}
 			};
-            var sepSpan = headerChildChildren[2];
-			Utils.DOM.Event.removeListeners(sepSpan);
-			Utils.DOM.Event.observe(sepSpan, 'click',  this.eventSepClick);
-			Utils.DOM.Event.observe(sepSpan, 'mousedown', this.eventSepMouseDown);
-			Utils.DOM.Event.observe(sepSpan, 'mousemove', this.eventSepMouseMove);
-			Utils.DOM.Event.observe(sepSpan, 'mouseup', this.eventSepMouseUp);
+            var sepSpan = headerChild.querySelector('.extdt-hsep');
+			if (sepSpan) {
+				Utils.DOM.Event.removeListeners(sepSpan);
+				Utils.DOM.Event.observe(sepSpan, 'click',  this.eventSepClick);
+				Utils.DOM.Event.observe(sepSpan, 'mousedown', this.eventSepMouseDown);
+				Utils.DOM.Event.observe(sepSpan, 'mousemove', this.eventSepMouseMove);
+				Utils.DOM.Event.observe(sepSpan, 'mouseup', this.eventSepMouseUp);
+			}
         }
 	},
 
@@ -140,16 +149,13 @@ Object.assign(_ExtDtHeader.prototype, {
                	Utils.DOM.Event.stopObserving(sortDiv, 'click');
             }
 
-            var headerChildChildren = Array.from(headerChild.children);
-            if (headerChildChildren == null || headerChildChildren.length == 0){
-				continue;
+            // Modificato da Link.it: vedi commento in addListeners — query by class.
+            if (this.enableContextMenu) {
+				var menuImage = headerChild.querySelector('.extdt-menu-div-out, .extdt-menu-div-on');
+				if (menuImage) Utils.DOM.Event.removeListeners(menuImage);
 			}
-			if (this.enableContextMenu) {
-				var menuImage = headerChildChildren[7];
-				Utils.DOM.Event.removeListeners(menuImage);
-			}
-            var sepSpan = headerChildChildren[2];
-            Utils.DOM.Event.removeListeners(sepSpan);
+            var sepSpan = headerChild.querySelector('.extdt-hsep');
+            if (sepSpan) Utils.DOM.Event.removeListeners(sepSpan);
         };
     },
 
@@ -278,25 +284,25 @@ Object.assign(_ExtDtHeader.prototype, {
 		for (var i=0; i<l-1; i++) {
 			var headerChild = columnCells[i];
 			var headerNextChild = columnCells[i+1];
-			var headerChildChildren = Array.from(headerChild.children);
-			if (headerChildChildren == null || headerChildChildren.length == 0){
-				continue;
-			}
-			var sepSpan = headerChildChildren[2];
+			// Modificato da Link.it: vedi commento in addListeners — query by class.
+			var sepSpan = headerChild.querySelector('.extdt-hsep');
+			if (!sepSpan) continue;
+			var dropSpans = headerChild.querySelectorAll('.extdt-hdrop');
+			var dropSpanLeft = dropSpans[0];
+			var dropSpanRight = dropSpans[1];
+			var menuImage = headerChild.querySelector('.extdt-menu-div-out, .extdt-menu-div-on');
 			var headerRowHeight = this.headerRow.getHeight();
 			var headerRowY = this.headerRow.getY();
 			sepSpan.columnIndex = i;
 			var sd = (sepSpan.offsetWidth)/2 + 1;
-			var dropSpanLeft = headerChildChildren[3];
-			var dropSpanRight = headerChildChildren[5];
-			var menuImage = headerChildChildren[7];
 			var spanLeft = headerNextChild.offsetLeft - sd;
 			_edtSetStyle(sepSpan, {height: headerRowHeight+'px', top: headerRowY+'px', left: spanLeft+'px'});
-			_edtSetStyle(menuImage, {top: headerRowY + 'px', left: (headerNextChild.offsetLeft-menuImage.offsetWidth - 1)+'px'});
-			//menuImage.setStyle('left:'+(spanLeft-menuImage.offsetWidth)+'px');
+			if (menuImage) {
+				_edtSetStyle(menuImage, {top: headerRowY + 'px', left: (headerNextChild.offsetLeft-menuImage.offsetWidth - 1)+'px'});
+			}
 			var w = parseInt(headerChild.offsetWidth/2);
-			_edtSetStyle(dropSpanLeft, {top: headerRowY+'px', left: (headerChild.offsetLeft) +'px', height: headerRowHeight+'px', width: w+'px'});
-			_edtSetStyle(dropSpanRight, {top: headerRowY+'px', left: (headerChild.offsetLeft + w) +'px', height: headerRowHeight+'px', width: w+'px'});
+			if (dropSpanLeft) _edtSetStyle(dropSpanLeft, {top: headerRowY+'px', left: (headerChild.offsetLeft) +'px', height: headerRowHeight+'px', width: w+'px'});
+			if (dropSpanRight) _edtSetStyle(dropSpanRight, {top: headerRowY+'px', left: (headerChild.offsetLeft + w) +'px', height: headerRowHeight+'px', width: w+'px'});
 		}
 		this.lastColWidth = this.extDt.getColumnWidth(this.getColumnsNumber()-1);
 		if (ClientUILib.isIE){
@@ -368,7 +374,7 @@ Object.assign(_ExtDtHeader.prototype, {
 			if (delta < this.minDelta) {
 				delta = this.minDelta;
 			}
-			if (delta > this.maxDelta) {
+			if (!this.disableMaxDelta && delta > this.maxDelta) {
 				delta = this.maxDelta;
 			}
 			var columnIndex = this.dragColumnInfo.srcElement.columnIndex;
@@ -401,7 +407,7 @@ Object.assign(_ExtDtHeader.prototype, {
 			if (delta < this.minDelta) {
 				delta = this.minDelta;
 			}
-			if (delta > this.maxDelta) {
+			if (!this.disableMaxDelta && delta > this.maxDelta) {
 				delta = this.maxDelta;
 			}
 			var x = this.dragColumnInfo.originalX + delta;

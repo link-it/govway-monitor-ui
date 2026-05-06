@@ -32,7 +32,6 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 
 import org.ajax4jsf.Messages;
-import org.ajax4jsf.javascript.PrototypeScript;
 import org.ajax4jsf.resource.InternetResource;
 import org.ajax4jsf.resource.InternetResourceBuilder;
 import org.ajax4jsf.resource.ResourceContext;
@@ -50,8 +49,7 @@ import org.apache.commons.logging.LogFactory;
 public abstract class ClientScript extends JarResource {
 
 	private static final Log log = LogFactory.getLog(ClientScript.class);
-	
-	protected boolean usePrototype = false;
+
 	/**
 	 * Set JavaScript renderer and modification time to application-startup time.
 	 */
@@ -111,7 +109,6 @@ public abstract class ClientScript extends JarResource {
 	 */
 	public void encode(FacesContext context, Object data, Map<String, Object> attributes) throws IOException {
 		if (isNotAjaxRequest(context)) {
-			encodePrototype(context);
 			super.encode(context, data, attributes);
 		} else if (log.isDebugEnabled()) {
 			log.debug(Messages.getMessage(Messages.SKIP_ENCODING_HTML_INFO, getKey()));
@@ -124,7 +121,6 @@ public abstract class ClientScript extends JarResource {
 	 */
 	public void encodeBegin(FacesContext context, Object component, Map<String, Object> attrs) throws IOException {
 		if (isNotAjaxRequest(context)) {
-			encodePrototype(context);
 			super.encodeBegin(context, component, attrs);
 		} else if (log.isDebugEnabled()) {
 			log.debug(Messages.getMessage(Messages.SKIP_ENCODE_BEGIN_HTML_INFO, getKey()));
@@ -148,39 +144,14 @@ public abstract class ClientScript extends JarResource {
 	 */
 	public void encode(FacesContext context, Object data) throws IOException {
 		if (isNotAjaxRequest(context)) {
-			encodePrototype(context);
 			super.encode(context, data);
 		}else if (log.isDebugEnabled()) {
 			log.debug(Messages.getMessage(Messages.SKIP_ENCODING_HTML_INFO, getKey()));
 		}
 	}
 
-	/**
-	 * @return Returns the usePrototype.
-	 */
-	protected boolean isUsePrototype() {
-		return usePrototype;
-	}
-
-
 	private boolean isNotAjaxRequest(FacesContext context){
 		return true;//! AjaxRendererUtils.isAjaxRequest(context);
 	}
-	
-	private void encodePrototype(FacesContext context) throws  IOException{
-		if (isUsePrototype()) {
-			InternetResourceBuilder.getInstance().createResource(null,PrototypeScript.class.getName()).encode(context,null);
-		}
 
-	}
-
-
-	/**
-	 * @param usePrototype the usePrototype to set
-	 */
-	public void setUsePrototype(boolean usePrototype) {
-		this.usePrototype = usePrototype;
-	}
-	
-	
 }

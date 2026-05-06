@@ -55,7 +55,7 @@ import org.richfaces.component.util.HtmlUtil;
 public abstract class AbstractMenuRenderer extends HeaderResourcesRendererBase {
     
     private final InternetResource[] scripts = {
-            new org.ajax4jsf.javascript.PrototypeScript(),
+            // PrototypeScript: rimosso (Prototype non piu' caricato).
             new org.ajax4jsf.javascript.AjaxScript(),
             getResource("scripts/menu.js") };
     

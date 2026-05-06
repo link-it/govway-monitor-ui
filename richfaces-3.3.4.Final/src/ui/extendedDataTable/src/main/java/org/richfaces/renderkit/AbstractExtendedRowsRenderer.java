@@ -41,8 +41,8 @@ import org.ajax4jsf.renderkit.RendererUtils.HTML;
 import org.ajax4jsf.resource.InternetResource;
 import org.richfaces.component.Row;
 import org.richfaces.component.UIExtendedDataTable;
-import org.richfaces.renderkit.html.ExtDraggableRendererContributor;
-import org.richfaces.renderkit.html.ExtDropzoneRendererContributor;
+// ExtDraggable/ExtDropzoneRendererContributor: rimossi (drag-drop di colonne
+// non incluso in questo bundle).
 import org.richfaces.renderkit.html.TableSelectionRendererContributor;
 
 /**
@@ -57,8 +57,7 @@ public abstract class AbstractExtendedRowsRenderer extends
     protected class CompositeRendererEnabler extends CompositeRenderer {
         public CompositeRendererEnabler() {
             addContributor(new TableSelectionRendererContributor());
-            addContributor(ExtDraggableRendererContributor.getInstance());
-            addContributor(ExtDropzoneRendererContributor.getInstance());
+            // drag-drop di colonne: contributors rimossi.
         }
 
         protected Class<? extends UIComponent> getComponentClass() {

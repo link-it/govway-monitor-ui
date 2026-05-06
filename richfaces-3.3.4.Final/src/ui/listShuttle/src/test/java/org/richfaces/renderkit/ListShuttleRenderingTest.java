@@ -65,7 +65,6 @@ public class ListShuttleRenderingTest extends AbstractAjax4JsfTestCase {
 	private static final Set<String> imagePNGClasses = new HashSet<String>();
 	
 	static {
-		javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
 		javaScripts.add("scripts/utils.js");
 		javaScripts.add("scripts/ShuttleUtils.js");
 		javaScripts.add("scripts/SelectItem.js");

@@ -187,7 +187,7 @@ public abstract class TemplateEncoderRendererBase extends HeaderResourcesRendere
 		writer.startElement("script", component);
 		writer.write("var evaluator = ");
 		writeScriptBody(context, component, true);
-		writer.write(";\n new Insertion.Top($('" + component.getClientId(context) + "'), evaluator.invoke('getContent', window).join(''));");
+		writer.write(";\n document.getElementById('" + component.getClientId(context) + "').insertAdjacentHTML('afterbegin', evaluator.invoke('getContent', window).join(''));");
 		writer.endElement("script");
 	}
 	

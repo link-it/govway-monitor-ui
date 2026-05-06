@@ -61,7 +61,6 @@ public class ContextMenuComponentTest extends AbstractAjax4JsfTestCase {
 	private UIMenuGroup menuGroup = null;
 	
 	static {
-		javaScripts.add("org.ajax4jsf.javascript.PrototypeScript");
 		javaScripts.add("org.ajax4jsf.javascript.AjaxScript");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/utils.js");
 		javaScripts.add("org/richfaces/renderkit/html/scripts/json/json-dom.js");

@@ -61,11 +61,7 @@
     </plugins>
   </build>
   <dependencies>
-	<dependency>
-      <groupId>org.richfaces.ui</groupId>
-      <artifactId>drag-drop</artifactId>
-      <version>${govway-monitor-ui.version}</version>
-    </dependency>
+	<!-- drag-drop: rimosso (componente non incluso in questo bundle) -->
 	<dependency>
       <groupId>org.richfaces.ui</groupId>
       <artifactId>dataTable</artifactId>
