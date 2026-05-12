@@ -235,9 +235,13 @@ public class CommandLinkRenderer extends LinkRenderer {
         String scriptContentForEventHandler = RenderKitUtils.getScriptContentForOnClickEventHandler(writer, context, command, "a", sb.toString());
         RenderKitUtils.writeScript(writer, context, command, scriptContentForEventHandler);
         
-        //make link act as if it's a button using javascript        
+        //make link act as if it's a button using javascript
         writer.startElement("a", command);
-        writeIdAttributeIfNecessary(context, writer, command);
+        // Lo <script> emesso poco sopra aggancia il click via
+        // jQuery("a[id$='clientId']"), quindi l'<a> deve avere SEMPRE
+        // l'attributo id. writeIdAttributeIfNecessary lo salta per gli id
+        // auto-generati (j_idN), lasciando il selector senza match.
+        writer.writeAttribute("id", command.getClientId(context), "id");
         writer.writeAttribute("href", "#", "href");
         RenderKitUtils.renderPassThruAttributes(writer,
                                                 command,

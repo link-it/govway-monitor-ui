@@ -1,3 +1,9 @@
+2026-05-12  Andrea Poli <andrea.poli@link.it>
+
+	* Risolto bug per cui il click sui comandi resi tramite
+	  h:commandLink (es. icona di stato in "Configurazione API")
+	  non scatenava alcuna azione.
+
 2026-05-06  Andrea Poli <apoli@link.it>
 
         * Rilasciata versione 20260506
