@@ -1,3 +1,10 @@
+2026-05-20  Andrea Poli <andrea.poli@link.it>
+
+	* Esclusi dai JAR pubblicati i descrittori Maven dei moduli
+	  upstream incorporati (META-INF/maven/<groupId>/**): metadati
+	  informativi non utilizzati a runtime, causa di falsi positivi
+	  nei tool di vulnerability scanning.
+
 2026-05-12  Andrea Poli <andrea.poli@link.it>
 
 	* Rilasciata versione 20260512

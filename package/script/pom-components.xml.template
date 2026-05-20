@@ -104,6 +104,19 @@
 								<manifestFile>${project.basedir}/classes/META-INF/MANIFEST.MF</manifestFile>
 							</archive>
 							<classesDirectory>${project.basedir}/classes</classesDirectory>
+							<!--
+							    Esclude i descrittori Maven dei moduli upstream incorporati
+							    (org.richfaces.ui/*). Sono metadati informativi (artifactId,
+							    version, dipendenze del 2009) non letti a runtime da JSF/Facelets
+							    ne' dal classloader; i descrittori usati a runtime sono
+							    META-INF/{faces-config.xml,richfaces.taglib.xml,*.tld,services/**}.
+							    La loro presenza induce falsi positivi nei tool di vulnerability
+							    scanning (es. OWASP Dependency-Check) che usano l'artifactId
+							    come evidence per il match CPE/CVE.
+							-->
+							<excludes>
+								<exclude>META-INF/maven/org.richfaces.ui/**</exclude>
+							</excludes>
 						</configuration>
 					</execution>
 

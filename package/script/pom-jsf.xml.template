@@ -111,6 +111,21 @@
 								<manifestFile>${project.basedir}/classes/META-INF/MANIFEST.MF</manifestFile>
 							</archive>
 							<classesDirectory>${project.basedir}/classes</classesDirectory>
+							<!--
+							    Esclude i descrittori Maven dei moduli upstream incorporati
+							    (javax.faces/{jsf-api,jsf-impl} e com.sun.facelets/jsf-facelets).
+							    Sono metadati informativi (artifactId, version, dipendenze
+							    originali) non letti a runtime da JSF ne' dal classloader;
+							    i descrittori usati a runtime sono META-INF/{faces-config.xml,
+							    services/**} e i descriptor *.taglib.xml di Facelets.
+							    La loro presenza induce falsi positivi nei tool di vulnerability
+							    scanning (es. OWASP Dependency-Check) che usano l'artifactId
+							    come evidence per il match CPE/CVE.
+							-->
+							<excludes>
+								<exclude>META-INF/maven/javax.faces/**</exclude>
+								<exclude>META-INF/maven/com.sun.facelets/**</exclude>
+							</excludes>
 						</configuration>
 					</execution>
 
