@@ -66,7 +66,15 @@ public class HtmlRichMessagesRenderer extends RichMessageBaseRenderer {
 		} else if("list".equals(layout)){
 			
 			isWroteTable = false;
-			writer.startElement(HTML.DL_ELEMENT, uiMessages);
+			/*
+			 * Con il layout 'list' ogni messaggio veniva reso come un <dt> dentro un
+			 * <dl>, senza mai un <dd>: una lista di definizioni priva di definizioni,
+			 * segnalata dalla regola 'definition-list'. Un elenco di messaggi e'
+			 * semanticamente una lista non ordinata. Il tema azzera i margini di
+			 * tutti gli elementi, ma non 'list-style': il CSS che accompagna questa
+			 * modifica lo azzera su '.rich-messages'.
+			 */
+			writer.startElement("ul", uiMessages);
 			getUtils().writeAttribute(writer,HTML.id_ATTRIBUTE ,uiMessages.getClientId(context));
 			renderComponentOuterStyles(uiMessages, context, writer, isDisplayNone);
 		
@@ -90,7 +98,7 @@ public class HtmlRichMessagesRenderer extends RichMessageBaseRenderer {
 			writer.endElement("tbody");
 			writer.endElement("table");
 		}else{
-			writer.endElement(HTML.DL_ELEMENT);
+			writer.endElement("ul");
 		}
 	}
 	
@@ -214,7 +222,7 @@ public class HtmlRichMessagesRenderer extends RichMessageBaseRenderer {
 			writer.startElement(HTML.TR_ELEMENT, uiMessages);
 			writer.startElement(HTML.td_ELEM, uiMessages);
 		} else {
-			writer.startElement(HTML.DT_ELEMENT, uiMessages);
+			writer.startElement("li", uiMessages);
 		}
 
 		if (facesMsg != null) {		
@@ -227,7 +235,7 @@ public class HtmlRichMessagesRenderer extends RichMessageBaseRenderer {
 			writer.endElement(HTML.td_ELEM);
 			writer.endElement(HTML.TR_ELEMENT);
 		} else {
-			writer.endElement(HTML.DT_ELEMENT);
+			writer.endElement("li");
 		}
 	}
 	

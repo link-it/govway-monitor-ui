@@ -417,6 +417,18 @@ public class TabPanelRendererBase extends org.ajax4jsf.renderkit.HeaderResources
         getUtils().writeScript(context, pane, "RichFaces.tabPanel['" + pane.getClientId(context) + "']=" + ScriptUtils.toScript(tabPanel) + ";");
     }
 
+    /**
+     * Encode the call that makes the tab headers operable from the keyboard (ARIA tabs
+     * pattern). Emitted after the children, so that the panel of the active tab is
+     * already in the document and can be declared as such.
+     *
+     * @param context
+     * @throws IOException
+     */
+    public void encodeKeyboardScript(FacesContext context, UITabPanel pane) throws IOException {
+        getUtils().writeScript(context, pane, "RichFaces.preparaTastieraTabPanel('" + pane.getClientId(context) + "');");
+    }
+
     protected TabInfoCollector getTabInfoCollector() {
         return collector;
     }

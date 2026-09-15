@@ -513,7 +513,55 @@ PanelMenuItem.prototype = {
 			this.tablehider.addEventListener("mouseover", this.addHoverStyles.bind(this), false);
 			this.tablehider.addEventListener("mouseout", this.removeHoverStyles.bind(this), false);
 
+			this._attachKeyboardBehaviors();
 		}
+	},
+
+	/*
+	 * Le voci del menu erano azionabili col solo mouse: il click era legato, ma
+	 * l'elemento non era raggiungibile con Tab e da tastiera Invio non produce 'click'
+	 * su un elemento privo di ruolo interattivo. Poiche' il menu laterale e' l'unica
+	 * via di navigazione dell'applicazione, senza mouse non era utilizzabile
+	 * (WCAG 2.1.1, livello A).
+	 *
+	 * Le voci diventano collegamenti percorribili con Tab, non 'menuitem' con tabindex
+	 * mobile: una barra di navigazione e' un elenco di collegamenti, e questo e' cio'
+	 * che si aspetta chi usa la tastiera o uno screen reader. Lo schema 'menu' avrebbe
+	 * inoltre richiesto una struttura ARIA completa (un 'role=menu' pretende figli
+	 * 'menuitem' o 'group'), che le intestazioni di gruppo non rispettano.
+	 *
+	 * Le intestazioni di gruppo restano fuori dall'ordine di tabulazione: con
+	 * 'expandMode=none' non producono alcun effetto, e un elemento che riceve il fuoco
+	 * senza reagire e' esso stesso un difetto. Un consumatore che usi gruppi
+	 * espandibili dovra' renderle raggiungibili e dichiararne lo stato con
+	 * 'aria-expanded'.
+	 */
+	_attachKeyboardBehaviors: function() {
+
+		var el = this.tablehider;
+		if (!el || !el.setAttribute) {
+			return;
+		}
+		var classi = String(el.className || '');
+		if (classi.indexOf('rich-pmenu-group') !== -1) {
+			return;   // intestazione di gruppo: vedi sopra
+		}
+		if (el.getAttribute('data-gw-menu-tastiera')) {
+			return;
+		}
+		el.setAttribute('data-gw-menu-tastiera', 'si');
+		el.setAttribute('role', 'link');
+		el.setAttribute('tabindex', '0');
+
+		el.addEventListener('keydown', function(event) {
+			var key = event.keyCode || event.which;
+			if (key !== 13 /* INVIO */ && key !== 32 /* SPAZIO */) {
+				return true;
+			}
+			event.preventDefault();
+			el.click();   // il click e' gia' legato qui sopra
+			return false;
+		}, false);
 	},
 
 	doCollapse: function(e) {

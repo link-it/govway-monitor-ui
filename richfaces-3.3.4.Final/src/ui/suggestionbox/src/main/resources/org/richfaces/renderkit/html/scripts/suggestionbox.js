@@ -119,6 +119,16 @@ Suggestion.Base.prototype = {
         this.selectedItems = [];
         this.selectedItemsCache = {};
 
+        /* Il campo si dichiara casella combinata da subito, a elenco chiuso: 'aria-expanded'
+           e' obbligatorio su questo ruolo, e il campo viene ridisegnato dal server ad ogni
+           selezione — dichiararlo solo all'apertura lo lascerebbe senza. */
+        if (this.element && this.element.setAttribute) {
+            this.element.setAttribute("role", "combobox");
+            this.element.setAttribute("aria-autocomplete", "list");
+            this.element.setAttribute("aria-haspopup", "listbox");
+            this.element.setAttribute("aria-expanded", "false");
+        }
+
 		options.selection = update + "_selection";
 
         var needIframe = false; //(RichFaces.navigatorType() == RichFaces.MSIE);
@@ -300,7 +310,59 @@ Suggestion.Base.prototype = {
     	this.upDown = 0;
     },
 
+    /*
+     * Il campo con completamento funzionava gia' da tastiera — frecce, Invio, Esc — ma non
+     * lo dichiarava: nessun ruolo sul campo, sull'elenco e sulle voci, nessuno stato. Chi usa
+     * uno screen reader non veniva informato che sotto il campo era comparso un elenco, ne'
+     * di quale voce fosse evidenziata scorrendo con le frecce (WCAG 4.1.2).
+     *
+     * Viene applicato il modello ARIA della casella combinata: 'combobox' sul campo,
+     * 'listbox' sull'elenco, 'option' su ogni voce, con 'aria-expanded' che segue apertura e
+     * chiusura e 'aria-activedescendant' che segue la voce evidenziata. Le voci ricevono un
+     * id, perche' senza id non si possono indicare.
+     *
+     * Va rifatto ad ogni ricerca: l'elenco viene ricostruito dal server e le righe di prima
+     * non esistono piu'. Per chi usa il mouse non cambia nulla.
+     */
+    impiantoAria: function() {
+
+        var tabella = document.getElementById(this.contentTable);
+        if (!tabella || !this.element) {
+            return;
+        }
+
+        tabella.setAttribute("role", "listbox");
+        this.element.setAttribute("role", "combobox");
+        this.element.setAttribute("aria-autocomplete", "list");
+        this.element.setAttribute("aria-haspopup", "listbox");
+        if (tabella.id) {
+            this.element.setAttribute("aria-controls", tabella.id);
+        }
+
+        /* righe e celle non devono figurare come tali: fra elenco e voci non ci puo'
+           essere una griglia */
+        var interposti = tabella.querySelectorAll("tbody, thead, tfoot, td, th");
+        for (var i = 0; i < interposti.length; i++) {
+            interposti[i].setAttribute("role", "presentation");
+        }
+
+        var righe = tabella.querySelectorAll("tr");
+        for (var i = 0; i < righe.length; i++) {
+            righe[i].setAttribute("role", "option");
+            if (!righe[i].id) {
+                righe[i].id = this.update.id + "_voce_" + i;
+            }
+            if (!righe[i].getAttribute("aria-selected")) {
+                righe[i].setAttribute("aria-selected", "false");
+            }
+        }
+    },
+
     show: function() {
+        this.impiantoAria();
+        if (this.element) {
+            this.element.setAttribute("aria-expanded", "true");
+        }
 		if (RichFaces.SAFARI == RichFaces.navigatorType()) {
 			this.wasScroll = false;
 			this.wasBlur = false;
@@ -323,6 +385,10 @@ Suggestion.Base.prototype = {
     },
 
     hide: function() {
+        if (this.element) {
+            this.element.setAttribute("aria-expanded", "false");
+            this.element.removeAttribute("aria-activedescendant");
+        }
     	Richfaces.removeScrollEventHandlers(this.scrollElements, this.eventOnScroll);
 		if (RichFaces.SAFARI == RichFaces.navigatorType()) {
 			if (this.wasScroll) {
@@ -645,6 +711,16 @@ Suggestion.Base.prototype = {
                 for (var i = 0; i < this.options.selectedClasses.length; i++)
 	                _sbAddClass(entry, this.options.selectedClasses[i]);
 
+                /* l'elenco e' stato ricostruito dal server: ruoli e id vanno rimessi prima
+                   di poter indicare la voce evidenziata */
+                this.impiantoAria();
+                if (entry.setAttribute) {
+                    entry.setAttribute("aria-selected", "true");
+                    if (entry.id && this.element) {
+                        this.element.setAttribute("aria-activedescendant", entry.id);
+                    }
+                }
+
                 var cells = _sbSelectAll(entry, ".rich-sb-cell-padding");
                 for (var i = 0; i < cells.length; i++) {
                 	_sbAddClass(cells[i], this.options.selectValueClass);
@@ -673,6 +749,9 @@ Suggestion.Base.prototype = {
                 // remove hightliit from inactive entry
                 if (this.prevIndex >= 0) {
                     var prevEntry = this.getEntry(this.prevIndex);
+                    if (prevEntry && prevEntry.setAttribute) {
+                        prevEntry.setAttribute("aria-selected", "false");
+                    }
                     if (prevEntry) {
                     	var prevCells = _sbSelectAll(prevEntry, ".rich-sb-cell-padding");
 		                for (var i = 0; i < prevCells.length; i++) {

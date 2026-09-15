@@ -159,6 +159,7 @@ Richfaces.ListShuttle.prototype = {
 			if (node && disNode) {
 				node.addEventListener('click', this.HANDLERS[id].bind(this));
 				this.controlList[i] = new Richfaces.Control(node, disNode, false, false, id);
+				Richfaces.Control.makeKeyboardOperable(node);
 			}
 		}
 	},

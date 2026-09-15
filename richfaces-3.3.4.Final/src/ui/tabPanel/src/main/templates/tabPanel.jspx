@@ -83,6 +83,9 @@
 			</tr>
 		</tbody>
 	</table>
+	<!-- Dopo il contenuto, non prima: l'impianto da tastiera dichiara anche il pannello
+	     della scheda attiva, che a questo punto e' nel documento. -->
+	<f:call name="encodeKeyboardScript" />
 </f:root>
 
 

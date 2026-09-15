@@ -81,6 +81,7 @@ Object.assign(Richfaces.OrderingList.prototype, {
 			if (node && disNode) {
 				node.addEventListener('click', Richfaces.OrderingList.HANDLERS[id].bind(this));
 				this.controlList[i] = new Richfaces.Control(node, disNode, false, false, id);
+				Richfaces.Control.makeKeyboardOperable(node);
 			}
 		}
 	},

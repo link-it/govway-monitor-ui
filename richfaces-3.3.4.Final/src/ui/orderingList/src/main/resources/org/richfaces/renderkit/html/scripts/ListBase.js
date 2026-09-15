@@ -60,6 +60,34 @@ Richfaces.ListBase.prototype = {
 		this.focusKeeper.addEventListener("blur", function (e) {this.focusListener(e);}.bind(this));
 		this.focusKeeper.addEventListener("focus", function (e) {this.onfocusHandler(e);}.bind(this));
 
+		/*
+		 * Il 'focusKeeper' e' un pulsante tenuto fuori schermo ('left: -32767px') che
+		 * riceve i tasti della lista: le frecce su e giu' scorrono e selezionano le voci
+		 * (vedi 'onkeydownHandler'), Ctrl+A seleziona tutto. Era quindi raggiungibile con
+		 * Tab, ma senza nome accessibile e senza alcuna indicazione visibile del fuoco:
+		 * chi usa la tastiera si fermava su un controllo invisibile e muto, e concludeva
+		 * che la lista non fosse utilizzabile.
+		 *
+		 * Prende il nome dall'intestazione della propria lista, e il fuoco viene reso
+		 * visibile marcando il contenitore delle voci (WCAG 2.4.7).
+		 */
+		try {
+			var intestazione = document.getElementById(containerId + "headerBox");
+			var etichetta = intestazione ? String(intestazione.textContent || '').replace(/\s+/g, ' ').trim() : '';
+			if (etichetta && !this.focusKeeper.getAttribute('aria-label')) {
+				this.focusKeeper.setAttribute('aria-label', etichetta);
+			}
+			var contenuto = document.getElementById(containerId + "contentBox");
+			if (contenuto) {
+				this.focusKeeper.addEventListener("focus", function() {
+					contenuto.classList.add("rich-shuttle-list-focus");
+				}, false);
+				this.focusKeeper.addEventListener("blur", function() {
+					contenuto.classList.remove("rich-shuttle-list-focus");
+				}, false);
+			}
+		} catch (e) { /* la mancanza del nome non deve impedire il funzionamento */ }
+
 		this.shuttleTbody = this.shuttleTable.tBodies[0];
 
 		this.activeItem = null;

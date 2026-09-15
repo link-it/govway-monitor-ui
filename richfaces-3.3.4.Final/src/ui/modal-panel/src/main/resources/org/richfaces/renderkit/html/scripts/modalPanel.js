@@ -501,6 +501,221 @@ ModalPanel.prototype = {
 		}
 	},
 
+	/*
+	 * Contratto di accessibilita' della finestra modale (WCAG 2.1.1 e 2.4.3).
+	 *
+	 * La contenzione del fuoco originale non funziona sui browser attuali:
+	 * 'processTabindexes' assegna 'input.tabIndex = undefined' per escludere dalla
+	 * tabulazione tutto cio' che sta fuori dalla finestra, idioma dell'epoca di IE che
+	 * oggi converte a 0 — quindi non esclude nulla — e il rimbalzo e' agganciato al solo
+	 * primo e ultimo elemento focalizzabile del documento, che tabulando dall'interno non
+	 * si incontrano. Inoltre 'show' lascia il fuoco sulla sentinella 'LastHref', un
+	 * pulsante vuoto: chi usa la tastiera si trovava fuori dai comandi visibili e con Tab
+	 * finiva nella pagina sottostante.
+	 *
+	 * Qui la finestra dichiara il proprio ruolo, prende il fuoco sul primo comando utile,
+	 * lo trattiene ciclando su Tab e Maiusc+Tab, si chiude con Esc e alla chiusura
+	 * restituisce il fuoco all'elemento da cui era stata aperta. La macchina originale non
+	 * viene toccata.
+	 */
+	a11yFocusableElements: function() {
+		var contenitore = document.getElementById(this.cdiv);
+		if (!contenitore) {
+			return [];
+		}
+		var candidati = contenitore.querySelectorAll('a[href], button, input:not([type=hidden]), select, textarea, [tabindex]');
+		var utili = [];
+		for (var i = 0; i < candidati.length; i++) {
+			var el = candidati[i];
+			if (el.disabled || el.tabIndex < 0) {
+				continue;
+			}
+			if (el.className && String(el.className).indexOf('rich-mpnl-button') !== -1) {
+				continue;   // sentinelle del componente: non sono comandi
+			}
+			if (el.offsetParent === null) {
+				continue;   // non reso
+			}
+			utili.push(el);
+		}
+		return utili;
+	},
+
+	/* Va invocato in cima a 'show', prima che il componente sposti il fuoco sulla propria
+	   sentinella: catturandolo dopo si memorizzerebbe la sentinella, che a finestra chiusa
+	   non e' piu' focalizzabile, e il fuoco andrebbe perso sul body. */
+	a11yRememberFocus: function() {
+		var contenitore = document.getElementById(this.cdiv);
+		var attivo = document.activeElement;
+		if (attivo && contenitore && contenitore.contains(attivo)) {
+			return;   // gia' dentro la finestra: non e' il punto di partenza
+		}
+		this.a11yPreviousFocus = attivo;
+	},
+
+	/* Il comando di chiusura sta nell'area 'controls' dell'intestazione ed e' un'immagine con
+	   un gestore di clic: non e' raggiungibile con Tab. Esc chiude gia' la finestra, ma un
+	   comando visibile che il fuoco non raggiunge resta inutilizzabile per chi non usa il
+	   mouse. Vengono resi operabili i soli comandi che hanno gia' un nome ('alt' o 'title'):
+	   un'immagine senza nome e' decorativa e diventerebbe un pulsante muto. */
+	a11yPreparaComandiIntestazione: function() {
+		var contenitore = document.getElementById(this.cdiv);
+		if (!contenitore) {
+			return;
+		}
+		var aree = contenitore.querySelectorAll('.rich-mpnl-controls');
+		for (var i = 0; i < aree.length; i++) {
+			var comandi = aree[i].querySelectorAll('img');
+			for (var j = 0; j < comandi.length; j++) {
+				var comando = comandi[j];
+				if (comando.getAttribute('data-gw-comando-tastiera') === 'si') {
+					continue;
+				}
+				var nome = comando.getAttribute('alt') || comando.getAttribute('title') || '';
+				if (!nome) {
+					continue;
+				}
+				comando.setAttribute('data-gw-comando-tastiera', 'si');
+				comando.setAttribute('role', 'button');
+				comando.setAttribute('aria-label', nome);
+				comando.setAttribute('tabindex', '0');
+				comando.addEventListener('keydown', function(event) {
+					var key = event.keyCode || event.which;
+					if (key === 13 /* Invio */ || key === 32 /* Barra */) {
+						event.preventDefault();
+						this.click();
+					}
+				}, false);
+			}
+		}
+	},
+
+	a11yOnShow: function() {
+		var contenitore = document.getElementById(this.cdiv);
+		if (!contenitore) {
+			return;
+		}
+
+		contenitore.setAttribute('role', 'dialog');
+		contenitore.setAttribute('aria-modal', 'true');
+		var intestazione = contenitore.querySelector('.rich-mpnl-header, [id$="Header"]');
+		if (intestazione) {
+			if (!intestazione.id) {
+				intestazione.id = this.cdiv + 'A11yHeader';
+			}
+			contenitore.setAttribute('aria-labelledby', intestazione.id);
+		}
+
+		if (!this.a11yKeydown) {
+			this.a11yKeydown = this.a11yHandleKeydown.bind(this);
+			contenitore.addEventListener('keydown', this.a11yKeydown, false);
+		}
+
+		this.a11yPreparaComandiIntestazione();
+
+		/* Il fuoco va differito e riprovato entro una finestra breve, per due motivi:
+		   quando 'show' termina la finestra non e' ancora resa e 'focus()' su un elemento
+		   non reso non ha effetto; e il contenuto di molte finestre viene ripopolato da una
+		   chiamata AJAX che sostituisce gli elementi, distruggendo quello appena messo a
+		   fuoco. I tentativi sono limitati nel tempo e agiscono solo se il fuoco e' fuori
+		   dalla finestra, per non contrastare gli spostamenti di chi la sta usando. */
+		var pannello = this;
+		var prendiIlFuoco = function() {
+			if (contenitore.contains(document.activeElement)) {
+				return true;
+			}
+			var comandi = pannello.a11yFocusableElements();
+			/* Il primo elemento in ordine di documento e' ora il comando di chiusura
+			   nell'intestazione: il fuoco iniziale va invece nel contenuto, dove sta
+			   l'operazione per cui la finestra e' stata aperta. La chiusura resta la prima
+			   fermata di Tab. */
+			var nelContenuto = [];
+			for (var k = 0; k < comandi.length; k++) {
+				if (!comandi[k].closest || !comandi[k].closest('.rich-mpnl-controls')) {
+					nelContenuto.push(comandi[k]);
+				}
+			}
+			var primo = nelContenuto.length ? nelContenuto[0] : comandi[0];
+			if (primo) {
+				primo.focus();
+			} else if (contenitore.offsetParent !== null) {
+				contenitore.setAttribute('tabindex', '-1');
+				contenitore.focus();
+			}
+			return contenitore.contains(document.activeElement);
+		};
+		var attese = [0, 150, 400, 800];
+		for (var t = 0; t < attese.length; t++) {
+			window.setTimeout(function() {
+				if (pannello.shown) {
+					prendiIlFuoco();
+				}
+			}, attese[t]);
+		}
+	},
+
+	a11yHandleKeydown: function(event) {
+		var key = event.keyCode || event.which;
+		if (key === 27 /* ESC */) {
+			if (this.options && this.options.keepVisualState === true) {
+				return true;
+			}
+			event.preventDefault();
+			this.hide(event);
+			return false;
+		}
+		if (key !== 9 /* TAB */) {
+			return true;
+		}
+		var comandi = this.a11yFocusableElements();
+		if (comandi.length < 1) {
+			return true;
+		}
+		var primo = comandi[0];
+		var ultimo = comandi[comandi.length - 1];
+		if (event.shiftKey && document.activeElement === primo) {
+			event.preventDefault();
+			ultimo.focus();
+			return false;
+		}
+		if (!event.shiftKey && document.activeElement === ultimo) {
+			event.preventDefault();
+			primo.focus();
+			return false;
+		}
+		return true;
+	},
+
+	a11yOnHide: function() {
+		var contenitore = document.getElementById(this.cdiv);
+		if (contenitore) {
+			contenitore.removeAttribute('aria-modal');
+			if (this.a11yKeydown) {
+				contenitore.removeEventListener('keydown', this.a11yKeydown, false);
+				this.a11yKeydown = null;
+			}
+		}
+		/* La restituzione del fuoco va differita: il resto di 'hide' smonta la finestra e
+		   sposta il fuoco, quindi un focus() dato qui verrebbe perso. E l'elemento di
+		   partenza puo' essere stato sostituito da un re-render AJAX: in quel caso si
+		   ricerca per id, che JSF mantiene stabile. */
+		var precedente = this.a11yPreviousFocus;
+		var idPrecedente = (precedente && precedente.id) ? precedente.id : null;
+		this.a11yPreviousFocus = null;
+
+		window.setTimeout(function() {
+			var bersaglio = null;
+			if (precedente && precedente.focus && document.body.contains(precedente)) {
+				bersaglio = precedente;
+			} else if (idPrecedente) {
+				bersaglio = document.getElementById(idPrecedente);
+			}
+			if (bersaglio && bersaglio.focus && bersaglio.offsetParent !== null) {
+				bersaglio.focus();
+			}
+		}, 0);
+	},
+
 	preventFocus:	function() {
 		this.processAllFocusElements(document, this.processTabindexes);
 
@@ -530,6 +745,10 @@ ModalPanel.prototype = {
 
 			var element = this.id;
 			var jqElement = jQuery(element);
+
+			try {
+				this.a11yRememberFocus();
+			} catch (e) { /* la restituzione del fuoco non deve impedire l'apertura */ }
 
 			this.preventFocus();
 
@@ -707,6 +926,9 @@ ModalPanel.prototype = {
 	    	event.parameters = opts || {};
 	    	this.shown = true;
 	    	this.invokeEvent("show",event,null,element);
+	    	try {
+	    		this.a11yOnShow();   // dopo 'lastOnfocus', cosi' il fuoco utile prevale
+	    	} catch (e) { /* la mancanza dei tasti non deve impedire l'uso col mouse */ }
 		}
 	},
 
@@ -732,6 +954,9 @@ ModalPanel.prototype = {
 			this.currentMinWidth = undefined;
 
 			this.restoreFocus();
+			try {
+				this.a11yOnHide();
+			} catch (e) { /* vedi sopra */ }
 
 	        this.enableSelects();
 

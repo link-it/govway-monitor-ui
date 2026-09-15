@@ -41,6 +41,7 @@ _RichfacesSpinner.prototype = {
 		onerr: null,
 
 		initialize: function(id, options) {
+		this.id			= id;
 		this.content	= document.getElementById(id +"Edit");
 		var buttonsId   = id +"Buttons";
 		this.controls	= document.getElementById(buttonsId);
@@ -158,13 +159,45 @@ _RichfacesSpinner.prototype = {
 	},
 
 	_attachBehaviors: function(){
-		var tbody		= this._getDirectChildrenByTag(this.controls,'TBODY')[0];
-		var controls	= this._getDirectChildrenByTag(tbody,'TR');
-		var buttonUp	= this._getDirectChildrenByTag(controls[0],'TD')[0];
-		var buttonDown	= this._getDirectChildrenByTag(controls[1],'TD')[0];
 		var edit		= this._getDirectChildrenByTag(this.content,'INPUT')[0];
-		this.buttonUp = this._getDirectChildrenByTag(buttonUp,'INPUT')[0];
-		this.buttonDown = this._getDirectChildrenByTag(buttonDown,'INPUT')[0];
+		var buttonUp	= null;
+		var buttonDown	= null;
+
+		/*
+		 * I due pulsanti venivano individuati per posizione: prima e seconda riga
+		 * della tabella '...Buttons'. Con il decremento a sinistra del campo e
+		 * l'incremento a destra quella tabella non esiste piu', quindi si cercano
+		 * per id, che il template garantisce. La ricerca per posizione resta come
+		 * ripiego, per non rompere eventuali altre disposizioni.
+		 */
+		var inputUp		= this.id ? document.getElementById(this.id +"BtnUp") : null;
+		var inputDown	= this.id ? document.getElementById(this.id +"BtnDown") : null;
+
+		if (inputUp && inputDown) {
+			this.buttonUp = inputUp;
+			this.buttonDown = inputDown;
+			buttonUp = inputUp.parentNode;
+			buttonDown = inputDown.parentNode;
+		} else {
+			/*
+			 * La discesa posizionale solleva un'eccezione se un anello manca: succede
+			 * quando lo script di inizializzazione viene rivalutato mentre il markup
+			 * dello spinner non e' nel DOM. Ogni passaggio e' quindi protetto.
+			 */
+			var tbody		= this.controls ? this._getDirectChildrenByTag(this.controls,'TBODY')[0] : null;
+			var controls	= tbody ? this._getDirectChildrenByTag(tbody,'TR') : [];
+			if (controls.length > 1){
+				buttonUp	= this._getDirectChildrenByTag(controls[0],'TD')[0];
+				buttonDown	= this._getDirectChildrenByTag(controls[1],'TD')[0];
+				this.buttonUp = buttonUp ? this._getDirectChildrenByTag(buttonUp,'INPUT')[0] : null;
+				this.buttonDown = buttonDown ? this._getDirectChildrenByTag(buttonDown,'INPUT')[0] : null;
+			}
+		}
+
+		if (!buttonUp || !buttonDown || !edit){
+			return; // markup incompleto: nulla da agganciare
+		}
+
 		var upImg		= null;
 		var downImg		= null;
 		this.controls 	= new Richfaces.Spinner.Controls( this, {button:buttonUp,img:upImg}, {button:buttonDown,img:downImg}, edit );
@@ -391,11 +424,45 @@ _RichfacesSpinnerControls.prototype = {
 		this.up.onmouseup = this.mouseUp.bind(this);
 		this.down.onmouseup = this.mouseUp.bind(this);
 		this.edit.onkeydown	= this.editChange.bind(this);
+		this._attachKeyboardBehaviors();
 		this.eventInputChange= this.inputChange.bind(this);
 		if (this.edit.onchange){
 			this.eventEditOnChange = this.edit.onchange;
 		}
 		this.edit.onchange = this.eventInputChange.bind(this.edit);
+	},
+
+	/*
+	 * I due pulsanti reagivano al solo 'mousedown': da tastiera Invio e Spazio
+	 * scatenano 'click', quindi non producevano alcun effetto. Il valore si puo' gia'
+	 * cambiare con le frecce su e giu' nel campo numerico (vedi 'editChange'), e i
+	 * pulsanti sono fuori dall'ordine di tabulazione come le frecce di un
+	 * 'input type=number' nativo; se pero' ricevono il fuoco devono funzionare.
+	 * Come il percorso col mouse, dopo l'incremento viene emesso 'change', che e'
+	 * cio' che l'applicazione usa per aggiornare il grafico.
+	 */
+	_attachKeyboardBehaviors: function(){
+		var controls = this;
+		var attivazione = function(direzione){
+			return function(e){
+				var tasto = e.keyCode || e.which;
+				if (tasto != 13 /* KEY_RETURN */ && tasto != 32 /* KEY_SPACE */){
+					return true;
+				}
+				controls.spinner.switchItems(direzione);
+				controls.fireEditEvent("change");
+				if (e.preventDefault){
+					e.preventDefault();
+				}
+				return false;
+			};
+		};
+		if (this.spinner.buttonUp){
+			this.spinner.buttonUp.onkeydown = attivazione('up');
+		}
+		if (this.spinner.buttonDown){
+			this.spinner.buttonDown.onkeydown = attivazione('down');
+		}
 	},
 
 	fireEditEvent: function(e){

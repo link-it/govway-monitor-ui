@@ -23,6 +23,110 @@ if (!window.Richfaces) {
 
 Richfaces.ToolTip = {};
 
+/*
+ * Esc chiude il suggerimento visibile senza spostare fuoco ne' puntatore, come chiede
+ * WCAG 1.4.13. L'ascolto sta sul documento perche' il suggerimento puo' essere comparso
+ * col mouse, mentre il fuoco e' altrove: un ascolto sul riferimento non lo sentirebbe.
+ * Si installa una volta sola, non una per suggerimento: in un elenco ce ne sono
+ * centinaia.
+ */
+/*
+ * Il suggerimento compare anche quando l'elemento che lo mostra riceve il fuoco. La
+ * corrispondenza fra elemento a fuoco e suggerimento si valuta QUI, al momento del fuoco,
+ * e non all'inizializzazione: se un altro script dichiara comando un'icona — succede per
+ * quelle della barra dei filtri — all'inizializzazione il comando puo' non esistere
+ * ancora, e l'ordine di esecuzione non e' garantito.
+ *
+ * Un solo ascolto per l'intero documento: i suggerimenti in un elenco sono centinaia.
+ */
+Richfaces.ToolTip.fuocoInstallato = false;
+
+Richfaces.ToolTip.suggerimentiDi = function(elemento) {
+
+	var trovati = [];
+	var suggerimenti = document.querySelectorAll(".rich-tool-tip");
+
+	for (var i = 0; i < suggerimenti.length; i++) {
+
+		var istanza = suggerimenti[i].component;
+		if (!istanza) {
+			continue;
+		}
+
+		/* il riferimento puo' non essere ancora risolto: il componente lo risolve in
+		   'attachOnLoadEvents', che scatta al primo movimento del mouse. Chi usa la sola
+		   tastiera non lo produce mai, quindi lo si risolve qui. */
+		if (!istanza.parent && istanza.parentId) {
+			istanza.parent = document.getElementById(istanza.parentId);
+		}
+		if (!istanza.parent) {
+			continue;
+		}
+
+		if (istanza.parent === elemento) {
+			trovati.push(istanza);
+			continue;
+		}
+		/* il riferimento sta dentro l'elemento a fuoco: si mostra solo se e' l'unico,
+		   altrimenti una riga di elenco ne aprirebbe dieci in una volta */
+		if (elemento.contains(istanza.parent) && elemento.querySelectorAll(".rich-tool-tip").length == 1) {
+			trovati.push(istanza);
+		}
+	}
+	return trovati;
+};
+
+Richfaces.ToolTip.impiantoFuoco = function() {
+
+	if (Richfaces.ToolTip.fuocoInstallato) {
+		return;
+	}
+	Richfaces.ToolTip.fuocoInstallato = true;
+
+	document.addEventListener("focusin", function(event) {
+		var istanze = Richfaces.ToolTip.suggerimentiDi(event.target);
+		for (var i = 0; i < istanze.length; i++) {
+			if (!event.target.getAttribute("aria-describedby")) {
+				event.target.setAttribute("aria-describedby", istanze[i].id);
+			}
+			istanze[i].doShow(event);
+		}
+	}, false);
+
+	document.addEventListener("focusout", function(event) {
+		var istanze = Richfaces.ToolTip.suggerimentiDi(event.target);
+		for (var i = 0; i < istanze.length; i++) {
+			istanze[i].doHide(event);
+		}
+	}, false);
+};
+
+Richfaces.ToolTip.escInstallato = false;
+
+Richfaces.ToolTip.impiantoEsc = function() {
+
+	if (Richfaces.ToolTip.escInstallato) {
+		return;
+	}
+	Richfaces.ToolTip.escInstallato = true;
+
+	document.addEventListener("keydown", function(event) {
+
+		var key = event.keyCode || event.which;
+		if (key != 27) {
+			return;
+		}
+
+		var suggerimenti = document.querySelectorAll(".rich-tool-tip");
+		for (var i = 0; i < suggerimenti.length; i++) {
+			var istanza = suggerimenti[i].component;
+			if (istanza && suggerimenti[i].style.display != "none" && suggerimenti[i].offsetParent) {
+				istanza.doHide(event);
+			}
+		}
+	}, false);
+};
+
 function ToolTip(id, parentId, options) {
 	this.initialize(id, parentId, options);
 }
@@ -93,6 +197,12 @@ ToolTip.prototype = {
 
 		if(!this.disabled) document.addEventListener("mousemove", this.attachOnLoadEventsListner, true);
 
+		/* La parte da tastiera non puo' aspettare 'attachOnLoadEvents': quello scatta al
+		   primo movimento del mouse sul documento, e chi usa la sola tastiera non lo
+		   produce mai. Si installa qui, e di nuovo — senza effetto, e' idempotente —
+		   quando si legano gli eventi del mouse. */
+		if(!this.disabled) this.impiantoAccessibilita();
+
 		//it means we have only one tooltip for element
 		//TODO review
 		//Richfaces.tooltips[parentId] = this;
@@ -161,6 +271,67 @@ ToolTip.prototype = {
 				this.parent.addEventListener("blur", this.doHideListner, false);
 			}
 		}
+
+		this.impiantoAccessibilita();
+	},
+
+	/*
+	 * Il suggerimento compariva al solo passaggio del mouse: chi usa la tastiera non
+	 * poteva vederlo, e chi lo vedeva non poteva chiuderlo (WCAG 1.4.13, Contenuto al
+	 * passaggio del mouse o al fuoco; WCAG 2.1.1).
+	 *
+	 * Vengono aggiunte tre cose, senza toccare le associazioni del mouse:
+	 *  - compare anche quando il riferimento riceve il fuoco e sparisce quando lo perde;
+	 *  - si chiude con Esc, senza spostare ne' fuoco ne' puntatore;
+	 *  - il riferimento lo dichiara come propria descrizione, cosi' uno screen reader lo
+	 *    legge; solo pero' se il riferimento e' raggiungibile, altrimenti si tratterebbe
+	 *    di una descrizione appesa a un elemento su cui nessuno si ferma.
+	 *
+	 * NON vengono create fermate di tabulazione: un riferimento che nessuno raggiunge
+	 * resta com'e'. Renderli tutti raggiungibili sembrava utile, ma in un elenco i
+	 * riferimenti sono centinaia — dieci per riga — e attraversare la pagina diventava
+	 * interminabile. Se un'icona merita di essere raggiunta, e' l'applicazione a
+	 * dichiararla comando: allora rientra nel primo caso qui sotto.
+	 */
+	impiantoAccessibilita: function() {
+
+		if (this.accessibilitaImpiantata || this.showEvent == "focus" || !this.parent) {
+			return;
+		}
+		this.accessibilitaImpiantata = true;
+
+		var bersaglio = null;   // l'elemento che ricevera' fuoco e descrizione
+
+		if (this.parentRaggiungibile()) {
+			bersaglio = this.parent;
+		} else {
+			var comando = this.parent.closest("a[href], button, [role='button'], [role='link'], [tabindex='0']");
+			/* si lega al comando che lo contiene solo se il suggerimento e' uno: se ne
+			   contiene dieci, come le righe di un elenco, comparirebbero tutti insieme al
+			   fuoco sulla riga e la descrizione sarebbe la somma di dieci testi */
+			if (comando && comando.querySelectorAll(".rich-tool-tip").length == 1) {
+				bersaglio = comando;
+			}
+		}
+
+		if (bersaglio && !bersaglio.getAttribute("aria-describedby")) {
+			bersaglio.setAttribute("aria-describedby", this.id);
+		}
+
+		/* Il fuoco NON viene gestito qui con un ascolto per suggerimento: quale elemento
+		   lo ricevera' dipende anche da cio' che altri script dichiarano comando, e
+		   l'ordine di esecuzione non e' garantito. La decisione e' presa al momento del
+		   fuoco, da un unico ascolto sul documento. */
+		Richfaces.ToolTip.impiantoFuoco();
+		Richfaces.ToolTip.impiantoEsc();
+	},
+
+	parentRaggiungibile: function() {
+		if (this.parent.matches("a[href], button, input, select, textarea")) {
+			return true;
+		}
+		var indice = this.parent.getAttribute("tabindex");
+		return indice != null && parseInt(indice, 10) >= 0;
 	},
 
 	detectAncestorNode: function(leaf, element) {

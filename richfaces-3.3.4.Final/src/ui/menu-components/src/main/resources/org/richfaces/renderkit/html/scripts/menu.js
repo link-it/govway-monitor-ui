@@ -800,6 +800,198 @@ RichFaces.Menu.selectOpen = false;
 RichFaces.Menu.MouseIn = false;
 
 
+/*
+ * Navigazione da tastiera dei menu (WCAG 2.1.1, livello A).
+ *
+ * I menu erano azionabili col solo mouse: l'etichetta di un menu a tendina e le sue voci
+ * sono <div> con 'tabindex="-1"' e listener di mousemove/mousedown/mouseover, quindi non
+ * raggiungibili con Tab ne' attivabili da tastiera. Poiche' l'intera navigazione della
+ * console passa da qui, senza mouse l'applicazione non era utilizzabile.
+ *
+ * Qui si aggiunge lo schema ARIA previsto per i menu: l'etichetta diventa un pulsante che
+ * dichiara il menu che controlla, le voci diventano 'menuitem' con tabindex mobile, e i
+ * tasti sono quelli attesi — frecce per scorrere, Inizio e Fine per gli estremi, Esc per
+ * chiudere tornando all'etichetta, Tab per chiudere e proseguire. L'attivazione di una voce
+ * non viene reimplementata: le voci legano gia' 'click', quindi Invio e Spazio si limitano
+ * a emetterlo.
+ */
+RichFaces.Menu.Keyboard = {
+
+	KEY: { TAB: 9, RETURN: 13, ESC: 27, SPACE: 32, END: 35, HOME: 36, UP: 38, DOWN: 40 },
+
+	/* Voci attivabili del layer, in ordine di documento. Le voci disabilitate restano
+	   nell'albero di accessibilita' ma non sono raggiungibili con le frecce. */
+	items: function(layer) {
+		if (!layer || !layer.querySelectorAll) {
+			return [];
+		}
+		var trovate = layer.querySelectorAll('.rich-menu-item');
+		var attive = [];
+		for (var i = 0; i < trovate.length; i++) {
+			if (trovate[i].className.indexOf('rich-menu-item-disabled') === -1) {
+				attive.push(trovate[i]);
+			}
+		}
+		return attive;
+	},
+
+	focusItem: function(layer, indice) {
+		var voci = this.items(layer);
+		if (!voci.length) {
+			return;
+		}
+		if (indice < 0) {
+			indice = voci.length - 1;
+		}
+		if (indice >= voci.length) {
+			indice = 0;
+		}
+		for (var i = 0; i < voci.length; i++) {
+			voci[i].setAttribute('tabindex', i === indice ? '0' : '-1');
+		}
+		voci[indice].focus();
+	},
+
+	indexOfFocused: function(layer) {
+		var voci = this.items(layer);
+		for (var i = 0; i < voci.length; i++) {
+			if (voci[i] === document.activeElement) {
+				return i;
+			}
+		}
+		return -1;
+	},
+
+	/* Apre il layer di un menu a tendina. 'DelayedDropDown' esce se l'evento non proviene
+	   da dentro '.rich-label-text-decor', e posiziona il layer dagli offset dell'etichetta,
+	   non dalle coordinate del puntatore: un evento sintetico con il solo bersaglio basta. */
+	openDropDown: function(trigger, layerId) {
+		var decor = trigger.querySelector('.rich-label-text-decor') || trigger;
+		var evento = { target: decor, preventDefault: function() {}, stopPropagation: function() {} };
+		RichFaces.Menu.Layers.showDropDownLayer(layerId, trigger, evento, 0);
+	},
+
+	close: function(trigger) {
+		RichFaces.Menu.Layers.shutdown();
+		if (trigger) {
+			trigger.focus();
+		}
+	},
+
+	/* L'etichetta diventa un pulsante che dichiara il menu controllato. */
+	prepareTrigger: function(trigger, layer) {
+		if (!trigger || !layer || trigger.getAttribute('data-gw-menu-tastiera')) {
+			return;
+		}
+		trigger.setAttribute('data-gw-menu-tastiera', 'si');
+		trigger.setAttribute('role', 'button');
+		trigger.setAttribute('tabindex', '0');
+		trigger.setAttribute('aria-haspopup', 'menu');
+		trigger.setAttribute('aria-expanded', 'false');
+		/* Il pannello del menu e' reso insieme al pulsante ma resta 'display:none' finche'
+		   non si apre, e axe esclude dal proprio albero cio' che non e' reso: 'aria-controls'
+		   verso quell'id produceva quindi, su ogni vista, un «non posso stabilire se l'id
+		   esista». L'attributo e' facoltativo nel modello del pulsante-menu — la relazione la
+		   dicono gia' 'aria-haspopup' e 'aria-expanded', e il pannello segue immediatamente il
+		   pulsante — quindi si tiene il legame per uso interno, su un attributo dati, e non lo
+		   si dichiara come ARIA. */
+		if (layer.id) {
+			trigger.setAttribute('data-gw-menu-pannello', layer.id);
+		}
+		var keyboard = this;
+		trigger.addEventListener('keydown', function(event) {
+			var key = event.keyCode || event.which;
+			if (key === keyboard.KEY.RETURN || key === keyboard.KEY.SPACE || key === keyboard.KEY.DOWN) {
+				keyboard.openDropDown(trigger, layer.id);
+				window.setTimeout(function() { keyboard.focusItem(layer, 0); }, 60);
+			} else if (key === keyboard.KEY.UP) {
+				keyboard.openDropDown(trigger, layer.id);
+				window.setTimeout(function() { keyboard.focusItem(layer, -1); }, 60);
+			} else if (key === keyboard.KEY.ESC) {
+				keyboard.close(null);
+				return true;
+			} else {
+				return true;
+			}
+			event.stopPropagation();
+			event.preventDefault();
+			return false;
+		});
+	},
+
+	/* Tasti attivi mentre il fuoco e' su una voce del menu. */
+	prepareLayer: function(layer, trigger) {
+		if (!layer || layer.getAttribute('data-gw-menu-tastiera')) {
+			return;
+		}
+		layer.setAttribute('data-gw-menu-tastiera', 'si');
+		layer.setAttribute('role', 'menu');
+		if (trigger && trigger.id) {
+			layer.setAttribute('aria-labelledby', trigger.id);
+		}
+		var keyboard = this;
+		layer.addEventListener('keydown', function(event) {
+			var key = event.keyCode || event.which;
+			var corrente = keyboard.indexOfFocused(layer);
+			if (key === keyboard.KEY.DOWN) {
+				keyboard.focusItem(layer, corrente + 1);
+			} else if (key === keyboard.KEY.UP) {
+				keyboard.focusItem(layer, corrente <= 0 ? -1 : corrente - 1);
+			} else if (key === keyboard.KEY.HOME) {
+				keyboard.focusItem(layer, 0);
+			} else if (key === keyboard.KEY.END) {
+				keyboard.focusItem(layer, -1);
+			} else if (key === keyboard.KEY.ESC) {
+				keyboard.close(trigger);
+			} else if (key === keyboard.KEY.TAB) {
+				RichFaces.Menu.Layers.shutdown();   // Tab chiude e prosegue
+				return true;
+			} else if (key === keyboard.KEY.RETURN || key === keyboard.KEY.SPACE) {
+				if (document.activeElement && layer.contains(document.activeElement)) {
+					document.activeElement.click();   // le voci legano gia' 'click'
+				}
+			} else {
+				return true;
+			}
+			/* Il layer di un menu a tendina e' annidato dentro l'etichetta: senza fermare
+			   la propagazione il tasto risalirebbe al gestore dell'etichetta, che
+			   riaprirebbe il menu riportando il fuoco sulla prima voce. */
+			event.stopPropagation();
+			event.preventDefault();
+			return false;
+		});
+	},
+
+	prepareItem: function(el) {
+		if (!el || el.getAttribute('role')) {
+			return;
+		}
+		el.setAttribute('role', 'menuitem');
+		el.setAttribute('tabindex', '-1');
+	},
+
+	/* Riallinea 'aria-expanded' alla chiusura, da qualunque via avvenga. */
+	syncExpanded: function() {
+		var etichette = document.querySelectorAll('[data-gw-menu-tastiera][aria-expanded]');
+		for (var i = 0; i < etichette.length; i++) {
+			var idLayer = etichette[i].getAttribute('data-gw-menu-pannello');
+			var aperto = idLayer ? RichFaces.Menu.Layers.isVisible(idLayer) : false;
+			etichette[i].setAttribute('aria-expanded', aperto ? 'true' : 'false');
+		}
+	}
+};
+
+/* 'shutdown' e' la via di chiusura comune a mouse e tastiera: da qui si riallinea lo stato
+   dichiarato delle etichette, senza duplicare la logica di chiusura del componente. */
+(function() {
+	var originale = RichFaces.Menu.Layers.shutdown;
+	RichFaces.Menu.Layers.shutdown = function() {
+		var esito = originale.apply(this, arguments);
+		window.setTimeout(function() { RichFaces.Menu.Keyboard.syncExpanded(); }, 0);
+		return esito;
+	};
+})();
+
 function _MenuLayer(id, options) { this.initialize(id, options); }
 RichFaces.Menu.Layer = _MenuLayer;
 _MenuLayer.prototype = {
@@ -901,6 +1093,22 @@ _MenuLayer.prototype = {
 					arrayinp[i].addEventListener("mouseover", MouseoverInInputb);
 					arrayinp[i].addEventListener("mouseout", MouseoutInInputb);
         }
+
+        /* Schema ARIA e tasti del menu. L'etichetta esiste solo per i menu a tendina:
+           per gli altri layer (menu contestuali, sottomenu) si prepara il solo layer. */
+        try {
+            var etichetta = null;
+            if (this.layer && this.layer.parentNode && this.layer.parentNode.parentNode) {
+                var possibile = this.layer.parentNode.parentNode;
+                if (possibile.className && possibile.className.indexOf('rich-ddmenu-label') !== -1) {
+                    etichetta = possibile;
+                }
+            }
+            RichFaces.Menu.Keyboard.prepareLayer(this.layer, etichetta);
+            if (etichetta) {
+                RichFaces.Menu.Keyboard.prepareTrigger(etichetta, this.layer);
+            }
+        } catch (e) { /* la mancanza dei tasti non deve impedire il funzionamento col mouse */ }
 
  	},
 
@@ -1385,6 +1593,10 @@ _MenuItem.prototype = {
  				this.onclick.bind(this));
  		menu.bindings.push(binding);
  		binding.refresh();
+
+ 		try {
+ 			RichFaces.Menu.Keyboard.prepareItem(document.getElementById(id));
+ 		} catch (e) { /* vedi sopra */ }
 	},
 
 

@@ -38,6 +38,51 @@
 	<table width="2%" class="rich-spinner-c #{component.attributes['styleClass']} #{cssId}-spinner-style" id="#{clientId}" cellspacing="0" cellpadding="0" border="0" >
 	<tbody>
 	  	<tr>
+			<!-- Decremento a sinistra del campo e incremento a destra: i due pulsanti
+			     erano sovrapposti in una tabella annidata, con un'area di attivazione di
+			     15x8 px, sotto il minimo di 24x24 (WCAG 2.5.8). Gli id BtnUp e BtnDown
+			     restano invariati: SpinnerScript.js li individua ora per id anziche' per
+			     posizione nelle righe della tabella, che non esiste piu'. -->
+			<td id="#{clientId}ForDown" class="rich-spinner-buttons #{cssId}-spinner-td-for-style">								
+								<jsp:scriptlet><![CDATA[
+				                	boolean disabled = ((Boolean) component.getAttributes().get("disabled")).booleanValue();
+				                	if (! disabled) {
+                				]]></jsp:scriptlet>
+                					<input type="image" alt="Decrementa" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" id="#{clientId}BtnDown" tabindex="-1" />
+									<script type="text/javascript" nonce="#{cspValue}">
+										jQuery(document).ready(function() {
+											jQuery("input[id$='#{clientId}BtnDown']").click(function() {
+												return false;
+									 		});
+											
+											jQuery("input[id$='#{clientId}BtnDown']").mousedown(function() {
+												this.className='rich-spinner-btn-press rich-spinner-button';
+									 		});	
+											
+											jQuery("input[id$='#{clientId}BtnDown']").mouseup(function() {
+												this.className='rich-spinner-btn rich-spinner-button';
+									 		});	
+											
+											jQuery("input[id$='#{clientId}BtnDown']").mouseout(function() {
+												this.className='rich-spinner-btn rich-spinner-button';
+									 		});	
+	            						});
+                					</script>
+								<jsp:scriptlet><![CDATA[
+				                	} else {
+                				]]></jsp:scriptlet>
+                					<input type="image" alt="Decrementa" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" id="#{clientId}BtnDown" tabindex="-1" />
+                					<script type="text/javascript" nonce="#{cspValue}">
+                						jQuery(document).ready(function() {
+                							jQuery("input[id$='#{clientId}BtnDown']").click(function() {
+												return false;
+									 		});
+                						});
+                					</script>
+                				<jsp:scriptlet><![CDATA[
+				                	}
+                				]]></jsp:scriptlet>
+							</td>
 			<td class="rich-spinner-input-container #{cssId}-spinner-td-edit-style" id="#{clientId}Edit">
 			<jsp:scriptlet><![CDATA[
 			    String autocomplete = "";
@@ -63,20 +108,16 @@
 						#{this:getInputEventHandlersScript(context,component)}
 					</script>
 			</td>	
-			<td id="#{clientId}For" class="rich-spinner-buttons #{cssId}-spinner-td-for-style">
-				<table id="#{clientId}Buttons" border="0" cellspacing="0" cellpadding="0">
-					<tbody>
-						<tr>
-							<td>								
+			<td id="#{clientId}For" class="rich-spinner-buttons #{cssId}-spinner-td-for-style">								
 								<jsp:scriptlet><![CDATA[
-				                	boolean disabled = ((Boolean) component.getAttributes().get("disabled")).booleanValue();
 				                	if (! disabled) {
                 				]]></jsp:scriptlet>
                 					<input id="#{clientId}BtnUp"
                 						type="image" 
+                						alt="Incrementa" 
                 						src="#{up_arrow}" 
                 						class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" 
-										tabindex="#{component.attributes['tabindex']}" />
+										tabindex="-1" />
 										<script type="text/javascript" nonce="#{cspValue}">
 											jQuery(document).ready(function() {
 												jQuery("input[id$='#{clientId}BtnUp']").click(function() {
@@ -101,9 +142,10 @@
                 				]]></jsp:scriptlet>
                 					<input id="#{clientId}BtnUp"
                 						type="image" 
+                						alt="Incrementa" 
                 						src="#{up_arrow}" 
                 						class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" 
-                						tabindex="#{component.attributes['tabindex']}" /> 
+                						tabindex="-1" /> 
                 						<script type="text/javascript" nonce="#{cspValue}">
 											jQuery(document).ready(function() {
 													jQuery("input[id$='#{clientId}BtnUp']").click(function() {
@@ -114,51 +156,7 @@
                 				<jsp:scriptlet><![CDATA[
 				                	}
                 				]]></jsp:scriptlet>
-							</td>
-						</tr>
-						<tr>
-							<td>								
-								<jsp:scriptlet><![CDATA[				                	
-				                	if (! disabled) {
-                				]]></jsp:scriptlet>
-                					<input type="image" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" id="#{clientId}BtnDown" />
-									<script type="text/javascript" nonce="#{cspValue}">
-										jQuery(document).ready(function() {
-											jQuery("input[id$='#{clientId}BtnDown']").click(function() {
-												return false;
-									 		});
-											
-											jQuery("input[id$='#{clientId}BtnDown']").mousedown(function() {
-												this.className='rich-spinner-btn-press rich-spinner-button';
-									 		});	
-											
-											jQuery("input[id$='#{clientId}BtnDown']").mouseup(function() {
-												this.className='rich-spinner-btn rich-spinner-button';
-									 		});	
-											
-											jQuery("input[id$='#{clientId}BtnDown']").mouseout(function() {
-												this.className='rich-spinner-btn rich-spinner-button';
-									 		});	
-	            						});
-                					</script>
-								<jsp:scriptlet><![CDATA[
-				                	} else {
-                				]]></jsp:scriptlet>
-                					<input type="image" src="#{down_arrow}" class="rich-spinner-btn rich-spinner-button #{cssId}-spinner-input-border-zero-style" id="#{clientId}BtnDown" />
-                					<script type="text/javascript" nonce="#{cspValue}">
-                						jQuery(document).ready(function() {
-                							jQuery("input[id$='#{clientId}BtnDown']").click(function() {
-												return false;
-									 		});
-                						});
-                					</script>
-                				<jsp:scriptlet><![CDATA[
-				                	}
-                				]]></jsp:scriptlet>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+							
 				<c:scriptObject var="options">
 					<c:scriptOption attributes="cycled, enableManualInput" defaultValue="true"/>
 					<c:scriptOption attributes="disabled, required, clientErrorMessage" />

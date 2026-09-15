@@ -1,3 +1,44 @@
+2026-09-14  Andrea Poli <andrea.poli@link.it>
+
+	* Interventi di accessibilità (WCAG 2.1 AA) sui componenti usati
+	  dalle console GovWay. Riguardano quasi tutti l'operabilità da
+	  tastiera e la semantica ARIA, assenti nella libreria originale:
+	  - tabPanel: le linguette sono un 'tablist' percorso con le frecce,
+	    Inizio e Fine, con una sola fermata di tabulazione e lo stato
+	    'aria-selected'; l'aggancio dei tasti viene reinstallato dopo
+	    ogni ridisegno del pannello.
+	  - menu-components e panelMenu: voci raggiungibili da tastiera, con
+	    ruolo e 'aria-expanded' allineato all'apertura.
+	  - tooltip: il suggerimento compare anche quando il comando riceve
+	    il fuoco e si chiude con Esc, senza aggiungere fermate di
+	    tabulazione; il legame è dichiarato con 'aria-describedby'.
+	  - suggestionbox: il campo diventa un 'combobox', con 'aria-expanded',
+	    'aria-activedescendant' e 'aria-selected' sulla voce corrente.
+	  - modalPanel: il fuoco entra nel pannello all'apertura e torna al
+	    comando che l'ha aperto alla chiusura; i comandi dell'intestazione
+	    sono operabili da tastiera.
+	  - inputnumber-slider: la maniglia era un <div> trascinabile col solo
+	    mouse; diventa uno 'slider' focalizzabile con frecce, Pagina su e
+	    giù, Inizio e Fine.
+	  - inputnumber-spinner: i due pulsanti erano sovrapposti in una tabella
+	    annidata, con un'area di attivazione di 15x8 px, sotto il minimo di
+	    24x24; ora affiancano il campo. Gli id BtnUp e BtnDown non cambiano.
+	  - listShuttle e orderingList: le voci delle liste sono operabili da
+	    tastiera.
+	  - message: con layout 'list' i messaggi erano <dt> dentro un <dl> privo
+	    di <dd>; sono ora una lista non ordinata.
+	  - combobox: dichiarati decorativi ('aria-hidden') i due input che
+	    rendono il pulsante e la freccia.
+
+	* Bug pre-esistenti emersi durante il lavoro e corretti:
+	  - combobox: le frecce su e giù non aprivano la lista e, a lista
+	    aperta col mouse, non avevano effetto finché non si passava sulle
+	    voci col puntatore.
+	  - inputnumber-spinner: i pulsanti reagivano al solo 'mousedown',
+	    quindi Invio e Spazio non producevano alcun effetto; la loro
+	    ricerca per posizione nella tabella è sostituita dalla ricerca
+	    per id, con ripiego sulla posizione.
+
 2026-05-20  Andrea Poli <andrea.poli@link.it>
 
 	* Rilasciata versione 20260520

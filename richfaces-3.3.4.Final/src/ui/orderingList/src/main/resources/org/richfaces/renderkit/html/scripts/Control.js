@@ -27,6 +27,35 @@ Richfaces.Control.onblur = function(element) {
 	element.hasFocus = undefined;
 }
 
+/*
+ * I comandi di trasferimento e di riordino delle liste sono <div> forniti come facet: il
+ * 'click' e' legato, ma non erano raggiungibili con Tab, e da tastiera Invio non produce
+ * 'click' su un elemento privo di ruolo interattivo. Restavano quindi azionabili col solo
+ * mouse (WCAG 2.1.1, livello A).
+ *
+ * Diventano pulsanti raggiungibili, e prendono il nome accessibile dal testo alternativo
+ * dell'icona che contengono. Il click non viene reimplementato: Invio e Spazio lo emettono.
+ * Un comando disabilitato viene nascosto dal componente ('doDisable'), quindi esce da se'
+ * dall'ordine di tabulazione.
+ */
+Richfaces.Control.makeKeyboardOperable = function(node) {
+	if (!node || !node.setAttribute || node.getAttribute('data-gw-tastiera')) {
+		return;
+	}
+	node.setAttribute('data-gw-tastiera', 'si');
+	node.setAttribute('role', 'button');
+	node.setAttribute('tabindex', '0');
+	node.addEventListener('keydown', function(event) {
+		var key = event.keyCode || event.which;
+		if (key !== 13 /* INVIO */ && key !== 32 /* SPAZIO */) {
+			return true;
+		}
+		event.preventDefault();
+		node.click();
+		return false;
+	}, false);
+};
+
 Richfaces.Control.prototype.initialize = function(eNode, dNode, isShown, isEnabled, action) {
 	this.disabledNode = dNode;
 	this.disabledNode.onselectstart = Richfaces.Control.eventStub;

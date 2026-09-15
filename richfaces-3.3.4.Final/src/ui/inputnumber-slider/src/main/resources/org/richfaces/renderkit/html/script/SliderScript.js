@@ -272,6 +272,7 @@ _RichfacesSlider.prototype = {
 
 	setInitialValue: function(){
 		this.setValue(parseFloat(this.options.sliderValue || this.options.minValue));
+		this._attachKeyboardBehaviors();
 		var jqHandler = jQuery(this.handle);
 		jqHandler.removeClass( "rich-inslider-visibility-hidden" ).addClass( "rich-inslider-visibility" );
 		this.prevValue = this.value;
@@ -366,6 +367,7 @@ _RichfacesSlider.prototype = {
 	    }
 		var newValue = this.getNearestValue(sliderValue);
 		this.value = newValue;
+		this._updateAriaValue();
 
 		if ((!this.editInFocus || newValue==sliderValue) && (this.required || "" != this.input.value || this.updating)){
 			this.input.value = this.value;
@@ -557,6 +559,92 @@ _RichfacesSlider.prototype = {
 		var ret =this.prevValue != this.value
 		this.prevValue = this.value;
 		return ret;
+	},
+
+	/*
+	 * La maniglia era un semplice <div> con 'tabindex="-1"' e nessun ruolo: si poteva
+	 * soltanto trascinare col mouse, quindi il controllo era inutilizzabile da
+	 * tastiera (WCAG 2.1.1) e privo di significato per uno screen reader. Diventa un
+	 * 'slider' focalizzabile, con i tasti previsti per questo schema: frecce per il
+	 * passo singolo, Pagina su e giu' per un passo grande, Inizio e Fine per gli
+	 * estremi. Il nome accessibile non e' noto alla libreria e viene assegnato
+	 * dall'applicazione.
+	 */
+	_attachKeyboardBehaviors : function(){
+		if (!this.handle){
+			return;
+		}
+
+		var slider = this;
+
+		this.handle.setAttribute("tabindex", "0");
+		this.handle.setAttribute("role", "slider");
+		this.handle.setAttribute("aria-orientation",
+			this.options.orientation == "vertical" ? "vertical" : "horizontal");
+		this._updateAriaValue();
+
+		this.handle.onkeydown = function(event){
+
+			var key = event.keyCode || event.which;
+			var passo = parseFloat(slider.step);
+			var passoGrande = (slider.options.maxValue - slider.options.minValue) / 10;
+			if (isNaN(passoGrande) || passoGrande < passo){
+				passoGrande = passo;
+			}
+
+			switch (key){
+				case 37: /* KEY_LEFT  */
+				case 40: /* KEY_DOWN  */
+					slider.decrease(event);
+					break;
+				case 39: /* KEY_RIGHT */
+				case 38: /* KEY_UP    */
+					slider.increase(event);
+					break;
+				case 34: /* KEY_PAGE_DOWN */
+					slider._setValueFromKeyboard(parseFloat(slider.value) - passoGrande, event);
+					break;
+				case 33: /* KEY_PAGE_UP   */
+					slider._setValueFromKeyboard(parseFloat(slider.value) + passoGrande, event);
+					break;
+				case 36: /* KEY_HOME */
+					slider._setValueFromKeyboard(slider.options.minValue, event);
+					break;
+				case 35: /* KEY_END  */
+					slider._setValueFromKeyboard(slider.options.maxValue, event);
+					break;
+				default:
+					return true;
+			}
+
+			if (event.preventDefault){
+				event.preventDefault();
+			}
+			return false;
+		};
+	},
+
+	_setValueFromKeyboard : function(valore, event){
+		if (valore < this.options.minValue){
+			valore = this.options.minValue;
+		}
+		if (valore > this.options.maxValue){
+			valore = this.options.maxValue;
+		}
+		this.setValue(Number(valore));
+		this.input.value = this.value;
+		if (this.eventChanged && this.isValueChanged()){
+			this.eventChanged(event);
+		}
+	},
+
+	_updateAriaValue : function(){
+		if (!this.handle || !this.handle.getAttribute("role")){
+			return;
+		}
+		this.handle.setAttribute("aria-valuemin", this.options.minValue);
+		this.handle.setAttribute("aria-valuemax", this.options.maxValue);
+		this.handle.setAttribute("aria-valuenow", this.value);
 	},
 
 	increase : function(event){

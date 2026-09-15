@@ -348,6 +348,45 @@ _RichfacesComboBox.prototype = {
 		this.comboList.hideWithDelay();
 	},
 
+	/*
+	 * Le frecce su e giu' muovevano soltanto la voce attiva di una lista gia' aperta,
+	 * e non aprivano la lista: dalla tastiera restava quindi inutilizzabile, poiche'
+	 * l'apertura avveniva solo da 'buttonClickHandler'. Inoltre 'moveActiveItem'
+	 * esce subito quando non c'e' una voce attiva e 'selectFirstOnUpdate' e' true,
+	 * che e' il valore predefinito: anche a lista aperta col mouse le frecce non
+	 * avevano effetto finche' non si passava sulle voci col puntatore.
+	 */
+	openOrMoveList : function(event) {
+		if (!this.comboList.visible()) {
+			this.comboList.createDefaultList();
+			this.comboList.showWithDelay();
+			this.comboList.isList = false;
+		} else if (this.comboList.activeItem) {
+			this.comboList.moveActiveItem(event);
+			return;
+		}
+
+		// lista appena aperta, oppure aperta ma senza voce attiva: si parte dalla voce
+		// corrente, altrimenti dalla prima o dall'ultima secondo la freccia premuta
+		var items = this.comboList.getItems();
+		if (items && items.length != 0) {
+			var startItem = this.comboList.selectedItem;
+			if (!startItem && this.field.value && (this.field.value != this.defaultLabel)) {
+				// 'findItemBySubstr' cerca per sottostringa: con valore vuoto
+				// restituirebbe sempre la prima voce, da qui la guardia sopra
+				startItem = this.comboList.findItemBySubstr(this.field.value);
+			}
+			if (!startItem) {
+				startItem = (event.keyCode == 38 /* KEY_UP */) ? items[items.length - 1] : items[0];
+			}
+			this.comboList.doActiveItem(startItem);
+			this.comboList.scrollingUpToItem(startItem);
+		}
+
+		if (event.preventDefault) event.preventDefault();
+		if (event.stopPropagation) event.stopPropagation();
+	},
+
 	fieldKeyDownHandler : function(event) {
 		switch (event.keyCode) {
 			case 13: // KEY_RETURN
@@ -357,10 +396,10 @@ _RichfacesComboBox.prototype = {
 				if (event.stopPropagation) event.stopPropagation();
 				break;
 			case 40: // KEY_DOWN
-				this.comboList.moveActiveItem(event);
+				this.openOrMoveList(event);
 				break;
 			case 38: // KEY_UP
-				this.comboList.moveActiveItem(event);
+				this.openOrMoveList(event);
 				break;
 			case 27: // KEY_ESC
 				this.field.value = this.field.value; //field must lose focus
