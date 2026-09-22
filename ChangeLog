@@ -1,6 +1,48 @@
-2026-09-15  Andrea Poli <andrea.poli@link.it>
+2026-09-22  Andrea Poli <andrea.poli@link.it>
 
-        * Rilasciata versione 20260915
+	* Accessibilità del componente 'datascroller': i comandi di pagina
+	  (prima, precedente, successiva, ultima) sono <td> con un gestore del
+	  clic emesso dal renderer, senza ruolo né 'tabindex': l'impaginazione
+	  degli elenchi non era utilizzabile senza mouse (WCAG 2.1.1) e le celle
+	  non portavano alcun nome, contenendo solo un'icona.
+	  Diventano comandi con nome; quelli spenti restano fuori dall'ordine di
+	  tabulazione e sono dichiarati disabilitati, la pagina corrente è
+	  marcata 'aria-current'. Poiché l'impaginatore torna dal server a ogni
+	  cambio di pagina, la marcatura si riapplica osservando il documento.
+	  Dove il markup contiene già un collegamento — e quindi l'impaginatore
+	  è di suo raggiungibile — non si interviene: marcare anche la cella
+	  creerebbe un comando dentro un comando e un bersaglio più piccolo del
+	  minimo, perché le celle sono adiacenti mentre il collegamento gode
+	  della distanza dai vicini.
+
+	* Accessibilità del componente 'calendar', editor dell'ora: i due campi
+	  erano privi di nome e il riquadro non reagiva né a Esc né a Invio, con
+	  il fuoco che non vi entrava mai. I campi si chiamano adesso «Ore» e
+	  «Minuti», il riquadro è una finestra di dialogo, il fuoco entra sulle
+	  ore all'apertura, Invio conferma ed Esc annulla riportando il fuoco al
+	  comando che l'ha aperto.
+
+2026-09-21  Andrea Poli <andrea.poli@link.it>
+
+	* Accessibilità del componente 'calendar': l'immagine che apre il
+	  calendario è un <img> senza ruolo né 'tabindex', e il pannello non
+	  aveva alcun gestore di tastiera; il selettore di date era quindi
+	  inutilizzabile senza mouse (WCAG 2.1.1) e le date non venivano
+	  annunciate (WCAG 4.1.2).
+	  - L'immagine diventa un comando focalizzabile, con nome e con lo
+	    stato aperto/chiuso.
+	  - Il pannello è una finestra di dialogo e ogni giorno un comando che
+	    porta la data per esteso. Si percorre con le frecce (giorno e
+	    settimana), Pagina su e giù per il mese e con Maiusc per l'anno,
+	    Inizio e Fine per il primo e l'ultimo giorno; Invio o barra
+	    spaziatrice sceglie, Esc chiude riportando il fuoco al comando.
+	    Le celle usano una sola fermata di tabulazione.
+	  - I comandi dell'intestazione e del piede (mese e anno avanti e
+	    indietro, scelta di mese e anno, data selezionata, Oggi, Pulisci,
+	    ora, chiusura) erano <div> con il solo gestore del clic: sono
+	    adesso raggiungibili col Tab e attivabili con Invio.
+	  La scelta della data passa dallo stesso gestore del clic, quindi il
+	  comportamento col mouse non cambia.
 
 2026-09-14  Andrea Poli <andrea.poli@link.it>
 

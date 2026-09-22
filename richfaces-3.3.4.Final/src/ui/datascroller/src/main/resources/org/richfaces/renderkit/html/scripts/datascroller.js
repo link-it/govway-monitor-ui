@@ -95,3 +95,99 @@ Datascroller.prototype = {
 		this.switchToPage("fastrewind");
 	}
 };
+
+/* ---------------------------------------------------------------------------
+ * Accessibilita' da tastiera dell'impaginatore (WCAG 2.1.1, 4.1.2).
+ *
+ * I comandi di pagina sono <td> con un gestore del clic emesso dal renderer:
+ * senza ruolo ne' 'tabindex' non sono raggiungibili col Tab, quindi chi non usa
+ * il mouse non puo' cambiare pagina in nessun elenco. I <td> non portano
+ * nemmeno un nome: il contenuto e' un'icona.
+ *
+ * Qui diventano comandi con nome, attivabili con Invio e barra spaziatrice; i
+ * comandi spenti (classe '...-dsbld') restano fuori dalla tabulazione e sono
+ * dichiarati disabilitati. Il numero di pagina corrente e' marcato
+ * 'aria-current'. L'impaginatore viene ridisegnato a ogni cambio di pagina,
+ * quindi la marcatura si riapplica osservando il documento.
+ *
+ * Il comportamento col mouse non cambia: l'attivazione da tastiera scatena
+ * lo stesso clic.
+ * ------------------------------------------------------------------------- */
+(function () {
+	var NOMI = [
+		[/first/i,       'Prima pagina'],
+		[/fastrewind/i,  'Indietro di piu\' pagine'],
+		[/prev/i,        'Pagina precedente'],
+		[/next/i,        'Pagina successiva'],
+		[/fastforward/i, 'Avanti di piu\' pagine'],
+		[/last/i,        'Ultima pagina']
+	];
+
+	function nomeDelComando(cella) {
+		for (var i = 0; i < NOMI.length; i++) {
+			if (NOMI[i][0].test(cella.id || '')) return NOMI[i][1];
+		}
+		var numero = (cella.textContent || '').trim();
+		return /^\d+$/.test(numero) ? 'Pagina ' + numero : null;
+	}
+
+	var FOCALIZZABILE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+	function marca(cella) {
+		/* In alcune viste il facet dentro la cella e' gia' un collegamento, quindi l'impaginatore
+		   e' gia' raggiungibile: marcare anche la cella creerebbe un comando dentro un comando
+		   (axe: nested-interactive) e un bersaglio piu' piccolo del minimo, perche' le celle sono
+		   adiacenti mentre il collegamento gode della distanza dai vicini. Si interviene solo
+		   dove dentro non c'e' nulla di focalizzabile. */
+		if (cella.querySelector(FOCALIZZABILE)) {
+			cella.removeAttribute('role');
+			cella.removeAttribute('tabindex');
+			cella.removeAttribute('aria-label');
+			return;
+		}
+		var spento = /-dsbld/.test(cella.className);
+		cella.setAttribute('role', 'button');
+		var nome = nomeDelComando(cella);
+		if (nome) cella.setAttribute('aria-label', nome);
+		if (spento) {
+			cella.setAttribute('aria-disabled', 'true');
+			cella.removeAttribute('tabindex');
+		} else {
+			cella.removeAttribute('aria-disabled');
+			cella.setAttribute('tabindex', '0');
+		}
+		if (/rich-datascr-act(\s|$)/.test(cella.className)) cella.setAttribute('aria-current', 'page');
+		else cella.removeAttribute('aria-current');
+	}
+
+	function marcaTutti() {
+		var celle = document.querySelectorAll('td.rich-datascr-button, td.rich-datascr-act, td.rich-datascr-inact');
+		for (var i = 0; i < celle.length; i++) marca(celle[i]);
+	}
+
+	function impianto() {
+		if (document.documentElement.getAttribute('data-gw-datascroller')) return;
+		document.documentElement.setAttribute('data-gw-datascroller', 'si');
+
+		document.addEventListener('keydown', function (evento) {
+			var tasto = evento.keyCode || evento.which;
+			if (tasto !== 13 /* INVIO */ && tasto !== 32 /* SPAZIO */) return;
+			var cella = evento.target && evento.target.closest ?
+					evento.target.closest('td.rich-datascr-button, td.rich-datascr-act, td.rich-datascr-inact') : null;
+			if (!cella || cella.getAttribute('aria-disabled') === 'true') return;
+			evento.preventDefault();
+			cella.click();
+		}, false);
+
+		/* l'impaginatore torna dal server a ogni cambio di pagina: la marcatura
+		   va rifatta sui nodi nuovi */
+		if (window.MutationObserver) {
+			new MutationObserver(function () { marcaTutti(); })
+				.observe(document.body, { childList: true, subtree: true });
+		}
+		marcaTutti();
+	}
+
+	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', impianto, false);
+	else impianto();
+})();

@@ -951,6 +951,7 @@ Object.assign(Calendar.prototype, {
 		{
 			var handler = this.customFunctionEval('event', "_calResolve('"+this.id+"').component.doSwitch();").bind();
 			_calObserve(this.POPUP_BUTTON_ID, "click", handler);
+			this.impiantoTastiera();
 			if (!this.params.enableManualInput) 
 			{
 				_calObserve(this.INPUT_DATE_ID, "click", handler);
@@ -1334,6 +1335,8 @@ Object.assign(Calendar.prototype, {
 			
 			this.isVisible = false;
 
+			this.chiudiPerTastiera();
+
 		}
 	},
 
@@ -1404,6 +1407,8 @@ Object.assign(Calendar.prototype, {
 			calT.removeClass( "rich-calendar-display-none" ).addClass( "rich-calendar-display" );
 			
 			this.isVisible = true;
+
+			this.apriPerTastiera();
 
 			_calObserve(window.document, "click", this.eventOnCollapse);
 			
@@ -1914,6 +1919,7 @@ Object.assign(Calendar.prototype, {
 		}*/
 		
 		this.attachEventHandlers();
+		this.preparaCelleAccessibili();
 	},
 
 	renderHF: function()
@@ -2283,6 +2289,11 @@ Object.assign(Calendar.prototype, {
 		
 		_calClonePositionByIds(this.EDITOR_LAYOUT_SHADOW_ID, this.TIME_EDITOR_LAYOUT_ID, {offsetLeft: 3, offsetTop: 3});
 		this.isEditorVisible = true;	
+
+		/* i comandi dell'editor nascono ora: vanno resi operabili, e il fuoco entra sulle ore,
+		   altrimenti l'editor si apre ma resta irraggiungibile da tastiera */
+		this.preparaComandiPannello();
+		this.impiantoEditorOra();
 		//this.attachTimeEditorEventHandlers();	
 	},
 
@@ -2365,6 +2376,275 @@ Object.assign(Calendar.prototype, {
 		}
 	},
 	
+	/* ------------------------------------------------------------------------
+	 * Accessibilita' da tastiera (WCAG 2.1.1, 2.4.7, 4.1.2).
+	 *
+	 * Il componente non aveva alcun gestore di tastiera: l'immagine che apre il
+	 * calendario e' un <img> senza ruolo ne' 'tabindex', quindi irraggiungibile
+	 * col Tab, e le celle dei giorni sono <td> nudi. Chi non usa il mouse non
+	 * poteva ne' aprire il calendario ne' scegliere una data, e le date non
+	 * venivano annunciate dalle tecnologie assistive.
+	 *
+	 * L'immagine diventa un comando focalizzabile con un nome; il pannello e'
+	 * una finestra di dialogo e ogni giorno un comando che porta la data per
+	 * esteso. I tasti sono quelli consueti di un selettore di date: frecce per
+	 * giorno e settimana, Pagina su e giu' per il mese (con Maiusc per l'anno),
+	 * Inizio e Fine per il primo e l'ultimo giorno del mese, Invio o barra
+	 * spaziatrice per scegliere, Esc per chiudere riportando il fuoco al
+	 * comando. Il fuoco si sposta fra le celle con un solo punto di tabulazione
+	 * (roving tabindex), per non aggiungere 42 fermate alla pagina.
+	 *
+	 * Il comportamento col mouse non cambia: la scelta passa da
+	 * 'eventCellOnClick', lo stesso gestore del clic.
+	 * ---------------------------------------------------------------------- */
+	ETICHETTA_COMANDO_CALENDARIO: 'Apri il calendario',
+	ETICHETTA_PANNELLO_CALENDARIO: 'Calendario',
+	ETICHETTA_EDITOR_ORA: 'Modifica dell\'ora',
+
+	impiantoTastiera: function() {
+		var comando = _calResolve(this.POPUP_BUTTON_ID);
+		if (!comando || comando.getAttribute('data-gw-tastiera')) return;
+		var calendario = this;
+		comando.setAttribute('data-gw-tastiera', 'si');
+		comando.setAttribute('role', 'button');
+		comando.setAttribute('tabindex', '0');
+		comando.setAttribute('aria-haspopup', 'dialog');
+		comando.setAttribute('aria-expanded', 'false');
+		if (!comando.getAttribute('aria-label') && !comando.getAttribute('alt')) {
+			comando.setAttribute('aria-label', this.ETICHETTA_COMANDO_CALENDARIO);
+		}
+		comando.addEventListener('keydown', function(evento) {
+			var tasto = evento.keyCode || evento.which;
+			if (tasto !== 13 /* INVIO */ && tasto !== 32 /* SPAZIO */) return true;
+			evento.preventDefault();
+			calendario.doSwitch(evento);
+			return false;
+		}, false);
+	},
+
+	apriPerTastiera: function() {
+		var pannello = _calResolve(this.id);
+		if (!pannello) return;
+		if (!pannello.getAttribute('data-gw-tastiera')) {
+			pannello.setAttribute('data-gw-tastiera', 'si');
+			pannello.setAttribute('role', 'dialog');
+			pannello.setAttribute('aria-label', this.ETICHETTA_PANNELLO_CALENDARIO);
+			pannello.addEventListener('keydown', this.tastieraCalendario.bind(this), false);
+		}
+		var comando = _calResolve(this.POPUP_BUTTON_ID);
+		if (comando) comando.setAttribute('aria-expanded', 'true');
+
+		/* si parte dalla data scelta, se appartiene al mese mostrato; altrimenti dal
+		   primo giorno del mese, che e' sempre presente fra le celle */
+		var partenza = this.selectedDate ? new Date(this.selectedDate) : new Date(this.getCurrentDate());
+		if (partenza.getMonth() !== this.getCurrentMonth() || partenza.getFullYear() !== this.getCurrentYear()) {
+			partenza = new Date(this.getCurrentYear(), this.getCurrentMonth(), 1);
+		}
+		this.dataAttiva = partenza;
+		this.fuocoDaRiportare = true;
+		this.preparaCelleAccessibili();
+	},
+
+	chiudiPerTastiera: function() {
+		var comando = _calResolve(this.POPUP_BUTTON_ID);
+		if (!comando) return;
+		comando.setAttribute('aria-expanded', 'false');
+		/* il fuoco torna al comando solo se stava dentro il pannello: se la chiusura
+		   e' avvenuta per un clic altrove, spostarlo sarebbe un salto inatteso */
+		var pannello = _calResolve(this.id);
+		if (pannello && document.activeElement && pannello.contains(document.activeElement)) {
+			comando.focus();
+		}
+	},
+
+	cellaDellaData: function(data) {
+		if (!data || this.firstDateIndex === undefined) return null;
+		if (data.getMonth() !== this.getCurrentMonth() || data.getFullYear() !== this.getCurrentYear()) return null;
+		return _calResolve(this.DATE_ELEMENT_ID + (this.firstDateIndex + data.getDate() - 1));
+	},
+
+	nomeDellaData: function(giorno) {
+		var mese = (this.params.monthLabels && this.params.monthLabels[this.getCurrentMonth()]) ?
+				this.params.monthLabels[this.getCurrentMonth()] : (this.getCurrentMonth() + 1);
+		return giorno + ' ' + mese + ' ' + this.getCurrentYear();
+	},
+
+	/* I comandi del pannello (frecce di mese e anno, 'Oggi', 'Pulisci', l'ora, la chiusura)
+	   sono <div> con il solo gestore del clic: senza ruolo ne' 'tabindex' restano fuori dalla
+	   tastiera, e chi non usa il mouse puo' scegliere una data ma non cambiare anno ne' ora. */
+	COMANDI_PANNELLO: {
+		'PreviousYearControl':  'Anno precedente',
+		'NextYearControl':      'Anno successivo',
+		'PreviousMonthControl': 'Mese precedente',
+		'NextMonthControl':     'Mese successivo',
+		'CurrentMonthControl':  'Scegli mese e anno',
+		'SelectedDateControl':  'Vai alla data selezionata',
+		'TodayControl':         'Oggi',
+		'CleanControl':         'Pulisci',
+		'TimeControl':          'Modifica l\'ora',
+		'CloseControl':         'Chiudi il calendario',
+		/* comandi degli editor: nascono alla prima apertura, quindi 'preparaComandiPannello'
+		   viene richiamata anche da 'showTimeEditor' */
+		'TimeEditorButtonOk':     'Conferma l\'ora',
+		'TimeEditorButtonCancel': 'Annulla',
+		'DateEditorButtonOk':     'Conferma',
+		'DateEditorButtonCancel': 'Annulla'
+	},
+
+	preparaComandiPannello: function() {
+		for (var suffisso in this.COMANDI_PANNELLO) {
+			if (!this.COMANDI_PANNELLO.hasOwnProperty(suffisso)) continue;
+			var comando = _calResolve(this.id + suffisso);
+			if (!comando || comando.getAttribute('data-gw-tastiera')) continue;
+			comando.setAttribute('data-gw-tastiera', 'si');
+			comando.setAttribute('role', 'button');
+			comando.setAttribute('tabindex', '0');
+			/* il nome si aggiunge solo se il comando non mostra gia' un testo proprio,
+			   come 'Oggi' o il mese corrente: sovrascriverlo direbbe meno, non di piu' */
+			if (!(comando.textContent || '').trim()) {
+				comando.setAttribute('aria-label', this.COMANDI_PANNELLO[suffisso]);
+			}
+			comando.addEventListener('keydown', function(evento) {
+				var tasto = evento.keyCode || evento.which;
+				if (tasto !== 13 /* INVIO */ && tasto !== 32 /* SPAZIO */) return true;
+				evento.preventDefault();
+				evento.stopPropagation();
+				this.click();
+				return false;
+			}, false);
+		}
+	},
+
+	/* Editor dell'ora: due campi con i pulsantini di incremento, piu' Conferma e Annulla.
+	   I campi sono <input> veri, quindi focalizzabili, ma senza nome; l'editor non reagiva
+	   ne' a Esc ne' a Invio, e il fuoco non ci entrava mai. */
+	impiantoEditorOra: function() {
+		var editor = _calResolve(this.TIME_EDITOR_LAYOUT_ID);
+		if (!editor) return;
+		var calendario = this;
+		var ore = _calResolve(this.id + 'TimeHours');
+		var nomi = [[ore, 'Ore'], [_calResolve(this.id + 'TimeMinutes'), 'Minuti'],
+					[_calResolve(this.id + 'TimeSign'), 'Antimeridiane o pomeridiane']];
+		for (var i = 0; i < nomi.length; i++) {
+			if (nomi[i][0] && !nomi[i][0].getAttribute('aria-label')) nomi[i][0].setAttribute('aria-label', nomi[i][1]);
+		}
+		if (!editor.getAttribute('data-gw-tastiera')) {
+			editor.setAttribute('data-gw-tastiera', 'si');
+			editor.setAttribute('role', 'dialog');
+			editor.setAttribute('aria-label', this.ETICHETTA_EDITOR_ORA);
+			editor.addEventListener('keydown', function(evento) {
+				var tasto = evento.keyCode || evento.which;
+				if (tasto === 27) {        /* ESC: chiude l'editor e torna al calendario */
+					evento.preventDefault();
+					evento.stopPropagation();
+					calendario.hideTimeEditor(false);
+					var comando = _calResolve(calendario.id + 'TimeControl');
+					if (comando) comando.focus();
+				} else if (tasto === 13) { /* INVIO: conferma, come il pulsante */
+					evento.preventDefault();
+					evento.stopPropagation();
+					var ok = _calResolve(calendario.TIME_EDITOR_BUTTON_OK);
+					if (ok) ok.click();
+				}
+			}, false);
+		}
+		if (ore && ore.focus) ore.focus();
+	},
+
+	preparaCelleAccessibili: function() {
+		this.preparaComandiPannello();
+		if (!this.days || this.firstDateIndex === undefined) return;
+		var giornoAttivo = (this.dataAttiva &&
+				this.dataAttiva.getMonth() === this.getCurrentMonth() &&
+				this.dataAttiva.getFullYear() === this.getCurrentYear()) ? this.dataAttiva.getDate() : 1;
+		for (var i = 0; i < this.days.length; i++) {
+			var cella = _calResolve(this.DATE_ELEMENT_ID + i);
+			if (!cella) continue;
+			var dato = this.days[i];
+			cella.setAttribute('role', 'button');
+			if (dato._month !== 0) {
+				/* giorni del mese precedente o successivo: restano cliccabili col mouse
+				   secondo 'boundaryDatesMode', ma non sono fermate della tastiera */
+				cella.setAttribute('tabindex', '-1');
+				cella.setAttribute('aria-hidden', 'true');
+				/* la cella puo' aver portato il nome di un giorno del mese precedente: va tolto,
+				   altrimenti resta a descrivere una data che non e' piu' quella mostrata */
+				cella.removeAttribute('aria-label');
+				cella.removeAttribute('aria-current');
+				continue;
+			}
+			cella.removeAttribute('aria-hidden');
+			cella.setAttribute('aria-label', this.nomeDellaData(dato.day));
+			cella.setAttribute('tabindex', dato.day === giornoAttivo ? '0' : '-1');
+			if (cella.id === this.todayCellId) cella.setAttribute('aria-current', 'date');
+			else cella.removeAttribute('aria-current');
+		}
+		/* il cambio di mese ridisegna le celle: il fuoco si riporta qui, dopo il
+		   ridisegno, perche' in modalita' ajax arriva piu' tardi della pressione */
+		if (this.fuocoDaRiportare && this.isVisible) {
+			var cellaAttiva = this.cellaDellaData(this.dataAttiva);
+			if (cellaAttiva) { this.fuocoDaRiportare = false; cellaAttiva.focus(); }
+		}
+	},
+
+	muoviFuocoCalendario: function(data) {
+		this.dataAttiva = data;
+		this.fuocoDaRiportare = true;
+		if (data.getMonth() !== this.getCurrentMonth() || data.getFullYear() !== this.getCurrentYear()) {
+			this.changeCurrentDate(data.getFullYear(), data.getMonth(), false);
+		}
+		this.preparaCelleAccessibili();
+	},
+
+	tastieraCalendario: function(evento) {
+		if (!this.isVisible) return true;
+		var tasto = evento.keyCode || evento.which;
+		var data = this.dataAttiva ? new Date(this.dataAttiva) : new Date(this.getCurrentDate());
+		var giorniDelMese = function(d) { return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); };
+		var spostaMese = function(offsetMesi) {
+			/* passando a un mese piu' corto il giorno va limitato, altrimenti il 31
+			   marzo diventerebbe il 1 maggio */
+			var atteso = new Date(data.getFullYear(), data.getMonth() + offsetMesi, 1);
+			atteso.setDate(Math.min(data.getDate(), giorniDelMese(atteso)));
+			return atteso;
+		};
+		switch (tasto) {
+			case 37: /* FRECCIA SINISTRA */ data.setDate(data.getDate() - 1); break;
+			case 39: /* FRECCIA DESTRA   */ data.setDate(data.getDate() + 1); break;
+			case 38: /* FRECCIA SU       */ data.setDate(data.getDate() - 7); break;
+			case 40: /* FRECCIA GIU      */ data.setDate(data.getDate() + 7); break;
+			case 36: /* INIZIO */ data.setDate(1); break;
+			case 35: /* FINE   */ data.setDate(giorniDelMese(data)); break;
+			case 33: /* PAGINA SU  */ data = spostaMese(evento.shiftKey ? -12 : -1); break;
+			case 34: /* PAGINA GIU */ data = spostaMese(evento.shiftKey ?  12 :  1); break;
+			case 27: /* ESC */ {
+				evento.preventDefault();
+				evento.stopPropagation();
+				this.doCollapse();
+				var comando = _calResolve(this.POPUP_BUTTON_ID);
+				if (comando) comando.focus();
+				return false;
+			}
+			case 13: /* INVIO */
+			case 32: /* SPAZIO */ {
+				evento.preventDefault();
+				evento.stopPropagation();
+				var cella = this.cellaDellaData(data);
+				if (cella) this.eventCellOnClick(evento, cella);
+				if (!this.isVisible) {
+					var comandoScelta = _calResolve(this.POPUP_BUTTON_ID);
+					if (comandoScelta) comandoScelta.focus();
+				}
+				return false;
+			}
+			default: return true;
+		}
+		evento.preventDefault();
+		evento.stopPropagation();
+		this.muoviFuocoCalendario(data);
+		return false;
+	},
+
 	attachEventHandlers: function(){
 		var myId = this.id;
 		
