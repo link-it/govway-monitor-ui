@@ -1,5 +1,9 @@
 2026-09-22  Andrea Poli <andrea.poli@link.it>
 
+	* Rilasciata versione 20260922
+
+2026-09-22  Andrea Poli <andrea.poli@link.it>
+
 	* Accessibilità del componente 'datascroller': i comandi di pagina
 	  (prima, precedente, successiva, ultima) sono <td> con un gestore del
 	  clic emesso dal renderer, senza ruolo né 'tabindex': l'impaginazione
