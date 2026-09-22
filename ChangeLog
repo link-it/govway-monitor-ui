@@ -1,6 +1,12 @@
 2026-09-22  Andrea Poli <andrea.poli@link.it>
 
-	* Rilasciata versione 20260922
+	* Adeguamento alle regole di buona pratica di axe, adottate dalle console GovWay:
+	  - dataTable: l'attributo 'scope' veniva scritto anche sulle celle del piede, rese
+	    come <td>, dove non è ammesso e non descrive nulla. Ora compare solo sui <th>.
+	    Corretto sia in 'AbstractRowsRenderer' sia in 'AbstractExtendedRowsRenderer'.
+	  - calendar: l'immagine che apre il calendario porta 'alt=""', che implica il ruolo
+	    di presentazione e contraddice il comando dichiarato su di essa. Le si assegna lo
+	    stesso nome del comando, così il ruolo e il testo alternativo concordano.
 
 2026-09-22  Andrea Poli <andrea.poli@link.it>
 

@@ -2410,8 +2410,12 @@ Object.assign(Calendar.prototype, {
 		comando.setAttribute('tabindex', '0');
 		comando.setAttribute('aria-haspopup', 'dialog');
 		comando.setAttribute('aria-expanded', 'false');
-		if (!comando.getAttribute('aria-label') && !comando.getAttribute('alt')) {
-			comando.setAttribute('aria-label', this.ETICHETTA_COMANDO_CALENDARIO);
+		var nome = comando.getAttribute('aria-label') || comando.getAttribute('alt') || this.ETICHETTA_COMANDO_CALENDARIO;
+		comando.setAttribute('aria-label', nome);
+		/* un 'alt' vuoto implica il ruolo di presentazione, che contraddice il comando appena
+		   dichiarato (axe: presentation-role-conflict): gli si da' lo stesso nome */
+		if (!comando.getAttribute('alt')) {
+			comando.setAttribute('alt', nome);
 		}
 		comando.addEventListener('keydown', function(evento) {
 			var tasto = evento.keyCode || evento.which;

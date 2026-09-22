@@ -392,7 +392,11 @@ public abstract class AbstractExtendedRowsRenderer extends
             if (columns > 0) {
                 writer.writeAttribute("colspan", String.valueOf(columns), null);
             }
-            writer.writeAttribute("scope", "colgroup", null);
+            /* "scope" e' ammesso solo su <th>: sul piede della tabella, reso come <td>,
+               e' un attributo non valido (axe: scope-attr-valid). */
+            if ("th".equals(element)) {
+                writer.writeAttribute("scope", "colgroup", null);
+            }
         }
         encodeCellChildren(context, footer, skinFirstRowClass, skinRowClass,
                 footerClass, skinCellClass, null);

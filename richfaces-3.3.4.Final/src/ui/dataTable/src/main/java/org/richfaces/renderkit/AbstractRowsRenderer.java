@@ -343,7 +343,11 @@ public abstract class AbstractRowsRenderer extends HeaderResourcesRendererBase
 			if (columns > 0) {
 				writer.writeAttribute("colspan", String.valueOf(columns), null);
 			}
-			writer.writeAttribute("scope", "colgroup", null);
+			/* L'attributo "scope" e' ammesso solo su <th>: sul piede della tabella, reso come <td>,
+			   e' un attributo non valido che non descrive nulla (axe: scope-attr-valid). */
+			if ("th".equals(element)) {
+				writer.writeAttribute("scope", "colgroup", null);
+			}
 		}
 		
 		encodeCellChildren(context, footer, skinFirstRowClass, skinRowClass, 
