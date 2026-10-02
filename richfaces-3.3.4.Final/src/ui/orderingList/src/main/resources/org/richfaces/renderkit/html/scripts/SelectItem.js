@@ -124,6 +124,12 @@ Richfaces.SelectItem.prototype = {
 	saveState: function() {
 		var regex = /^s?a?/;
 
+		// la riga e' un'opzione della lista (vedi ListBase.a11yPreparaLista): lo stato di
+		// selezione va dichiarato, altrimenti cambia solo il colore
+		if (this._node.getAttribute && this._node.getAttribute('role') == 'option') {
+			this._node.setAttribute('aria-selected', this.selected ? 'true' : 'false');
+		}
+
 		if (this.selected && this.active) {
 			this.input.value = this.input.value.replace(regex, 'sa');
 		} else if (this.selected) {

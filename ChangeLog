@@ -1,3 +1,22 @@
+2026-10-01  Andrea Poli <andrea.poli@link.it>
+
+	* modalPanel: le sentinelle del fuoco '<id>FirstHref' e '<id>LastHref' erano pulsanti
+	  vuoti segnalati da axe ('button-name'); ora hanno 'tabindex="-1"' e 'aria-hidden'.
+
+	* modalPanel: aprendo una finestra, i controlli della pagina sottostante diventavano
+	  tabulabili ('tabIndex = undefined' vale 0), anche quelli con 'tabindex="-1"'; alla
+	  chiusura chi aveva 'tabindex="0"' restava escluso. Ora sono esclusi finché la finestra
+	  è aperta e il valore originale viene ripristinato identico.
+
+	* listShuttle e orderingList: le immagini distanziatrici delle celle avevano 'alt=" "'
+	  ('image-alt'); ora 'alt=""'.
+
+	* listShuttle e orderingList: accessibilità delle liste. Il contenitore delle voci è una
+	  'listbox' raggiungibile con Tab, con le voci come opzioni ('aria-selected', voce attiva
+	  in 'aria-activedescendant'); il nome non include più CSS ed elenco delle voci; dopo un
+	  comando che si nasconde (es. 'Copia tutti') il fuoco passa alla lista invece di
+	  perdersi. Corretto anche 'removeItem', che non azzerava la voce attiva.
+
 2026-09-23  Andrea Poli <andrea.poli@link.it>
 
 	* Rilasciata versione 20260923

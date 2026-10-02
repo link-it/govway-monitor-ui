@@ -480,10 +480,17 @@ ModalPanel.prototype = {
 			this.firstOutside = input;
 		}
 		this.lastOutside = input;
-		if (input.tabIndex && !input.prevTabIndex) {
-			input.prevTabIndex = input.tabIndex;
+		/* L'originale assegnava 'input.tabIndex = undefined', che sui browser attuali vale 0:
+		   invece di escludere i controlli esterni dalla tabulazione li rendeva tutti
+		   tabulabili, compresi quelli che la pagina tiene fuori con 'tabindex="-1"' (es. i
+		   pulsanti delle tendine, marcati 'aria-hidden'). E alla chiusura chi aveva
+		   'tabindex="0"' restava escluso, perche' lo 0 non veniva salvato. Si salva il valore
+		   dell'attributo cosi' com'e', anche assente, e lo si ripristina identico. */
+		if (!input.gwTabindexSalvato) {
+			input.gwTabindexSalvato = true;
+			input.gwTabindexOriginale = input.getAttribute('tabindex');
 		}
-		input.tabIndex = undefined;
+		input.setAttribute('tabindex', '-1');
 		if (input.accesskey  && !input.prevAccesskey) {
 			input.prevAccesskey = input.accesskey;
 		}
@@ -491,9 +498,14 @@ ModalPanel.prototype = {
 	},
 
 	restoreTabindexes:	function(input) {
-		if (input.prevTabIndex) {
-			input.tabIndex = input.prevTabIndex;
-			input.prevTabIndex = undefined;
+		if (input.gwTabindexSalvato) {
+			if (input.gwTabindexOriginale === null) {
+				input.removeAttribute('tabindex');
+			} else {
+				input.setAttribute('tabindex', input.gwTabindexOriginale);
+			}
+			input.gwTabindexSalvato = false;
+			input.gwTabindexOriginale = undefined;
 		}
 		if (input.prevAccesskey) {
 			input.accesskey = input.prevAccesskey;
@@ -516,7 +528,8 @@ ModalPanel.prototype = {
 	 * Qui la finestra dichiara il proprio ruolo, prende il fuoco sul primo comando utile,
 	 * lo trattiene ciclando su Tab e Maiusc+Tab, si chiude con Esc e alla chiusura
 	 * restituisce il fuoco all'elemento da cui era stata aperta. La macchina originale non
-	 * viene toccata.
+	 * viene toccata, salvo 'processTabindexes' e 'restoreTabindexes', che ora escludono
+	 * davvero i controlli esterni e ne ripristinano il valore originale (vedi sopra).
 	 */
 	a11yFocusableElements: function() {
 		var contenitore = document.getElementById(this.cdiv);

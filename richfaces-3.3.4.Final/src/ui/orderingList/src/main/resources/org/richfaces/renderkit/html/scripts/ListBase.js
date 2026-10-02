@@ -53,40 +53,39 @@ Richfaces.ListBase.prototype = {
 		var contentTableId = containerId + "internal_tab";
 		this.shuttleTable = document.getElementById(contentTableId);
 		this.shuttleTable.onselectstart = Richfaces.disableSelectionText;
-		this.focusKeeper = document.getElementById(containerId + "focusKeeper");
+		/*
+		 * Contratto di accessibilita' della lista (WCAG 1.3.1, 2.1.1, 2.4.7, 4.1.2).
+		 *
+		 * In origine i tasti della lista li riceve il 'focusKeeper', un <input type="button">
+		 * tenuto fuori schermo: le frecce su e giu' scorrono e selezionano le voci (vedi
+		 * 'onkeydownHandler'), Ctrl+A seleziona tutto. Un pulsante pero' non puo' fare da
+		 * lista: chi usa uno screen reader sentiva un pulsante e nessuna voce, quindi non
+		 * sapeva quale elemento stesse selezionando. In piu' il contenitore scorrevole delle
+		 * voci ('contentBox') e' di suo raggiungibile con Tab sui browser attuali, e
+		 * diventava una seconda sosta che non faceva nulla.
+		 *
+		 * Il contenitore delle voci diventa la lista: ruolo 'listbox' a selezione multipla,
+		 * raggiungibile con Tab, e riceve i tasti al posto del 'focusKeeper', che esce
+		 * dall'ordine di tabulazione e dall'albero di accessibilita'. Le righe diventano
+		 * opzioni con 'aria-selected', e la voce attiva viene indicata con
+		 * 'aria-activedescendant'. Il fuoco resta visibile marcando il contenitore.
+		 */
+		var tastieraOriginale = document.getElementById(containerId + "focusKeeper");
+		var contenuto = document.getElementById(containerId + "contentBox");
+		if (contenuto) {
+			this.focusKeeper = contenuto;
+			if (tastieraOriginale) {
+				tastieraOriginale.setAttribute('tabindex', '-1');
+				tastieraOriginale.setAttribute('aria-hidden', 'true');
+			}
+		} else {
+			this.focusKeeper = tastieraOriginale;
+		}
 		this.focusKeeper.focused = false;
 		//this.setFocus();
 		this.focusKeeper.addEventListener("keydown", (function(e) {this.onkeydownHandler(window.event || e)}).bind(this));
 		this.focusKeeper.addEventListener("blur", function (e) {this.focusListener(e);}.bind(this));
 		this.focusKeeper.addEventListener("focus", function (e) {this.onfocusHandler(e);}.bind(this));
-
-		/*
-		 * Il 'focusKeeper' e' un pulsante tenuto fuori schermo ('left: -32767px') che
-		 * riceve i tasti della lista: le frecce su e giu' scorrono e selezionano le voci
-		 * (vedi 'onkeydownHandler'), Ctrl+A seleziona tutto. Era quindi raggiungibile con
-		 * Tab, ma senza nome accessibile e senza alcuna indicazione visibile del fuoco:
-		 * chi usa la tastiera si fermava su un controllo invisibile e muto, e concludeva
-		 * che la lista non fosse utilizzabile.
-		 *
-		 * Prende il nome dall'intestazione della propria lista, e il fuoco viene reso
-		 * visibile marcando il contenitore delle voci (WCAG 2.4.7).
-		 */
-		try {
-			var intestazione = document.getElementById(containerId + "headerBox");
-			var etichetta = intestazione ? String(intestazione.textContent || '').replace(/\s+/g, ' ').trim() : '';
-			if (etichetta && !this.focusKeeper.getAttribute('aria-label')) {
-				this.focusKeeper.setAttribute('aria-label', etichetta);
-			}
-			var contenuto = document.getElementById(containerId + "contentBox");
-			if (contenuto) {
-				this.focusKeeper.addEventListener("focus", function() {
-					contenuto.classList.add("rich-shuttle-list-focus");
-				}, false);
-				this.focusKeeper.addEventListener("blur", function() {
-					contenuto.classList.remove("rich-shuttle-list-focus");
-				}, false);
-			}
-		} catch (e) { /* la mancanza del nome non deve impedire il funzionamento */ }
 
 		this.shuttleTbody = this.shuttleTable.tBodies[0];
 
@@ -99,6 +98,9 @@ Richfaces.ListBase.prototype = {
 
 		this.controlClass = controlClass;
 		this.retrieveShuttleItems(containerId, controlClass);
+		try {
+			this.a11yPreparaLista(containerId);
+		} catch (e) { /* la semantica accessibile non deve impedire il funzionamento */ }
 		this.counter;
 		this.shuttle = null;
 		this.sortOrder = Richfaces.ListBase.ASC;
@@ -142,6 +144,92 @@ Richfaces.ListBase.prototype = {
 	setActiveItem : function(newActiveItem) {
 		this.pseudoActiveItem = newActiveItem;
 		this.activeItem = newActiveItem;
+		this.a11yAggiornaVoceAttiva();
+	},
+
+	/*
+	 * Semantica della lista: il contenitore e' la 'listbox', le righe le sue opzioni. La
+	 * tabella che le impagina e' solo disposizione, e il ruolo 'none' evita che venga
+	 * annunciata come tabella dentro la lista.
+	 */
+	a11yPreparaLista : function(containerId) {
+		var lista = this.focusKeeper;
+		if (!lista || lista.tagName.toUpperCase() == 'INPUT') {
+			return;   // senza contenitore resta il comportamento originale
+		}
+		lista.setAttribute('role', 'listbox');
+		lista.setAttribute('aria-multiselectable', 'true');
+		lista.setAttribute('tabindex', '0');
+		if (!lista.getAttribute('aria-label') && !lista.getAttribute('aria-labelledby')) {
+			var nome = this.a11yTestoIntestazione(containerId);
+			lista.setAttribute('aria-label', nome || 'Elenco');
+		}
+		this.shuttleTable.setAttribute('role', 'none');
+		this.shuttleTbody.setAttribute('role', 'none');
+		this.a11yPreparaVoci();
+
+		lista.addEventListener("focus", function() {
+			lista.classList.add("rich-shuttle-list-focus");
+		}, false);
+		lista.addEventListener("blur", function() {
+			lista.classList.remove("rich-shuttle-list-focus");
+		}, false);
+	},
+
+	/* Le righe arrivano anche dall'altra lista (spostamenti del listShuttle): la marcatura
+	   viene riapplicata a tutte, ed e' idempotente. */
+	a11yPreparaVoci : function() {
+		var rows = this.shuttleTbody ? this.shuttleTbody.rows : [];
+		for (var i = 0; i < rows.length; i++) {
+			var row = rows[i];
+			row.setAttribute('role', 'option');
+			row.setAttribute('aria-selected', (row.item && row.item.isSelected()) ? 'true' : 'false');
+			for (var c = 0; c < row.cells.length; c++) {
+				row.cells[c].setAttribute('role', 'none');
+			}
+		}
+		this.a11yAggiornaVoceAttiva();
+	},
+
+	a11yAggiornaVoceAttiva : function() {
+		var lista = this.focusKeeper;
+		if (!lista || lista.getAttribute('role') != 'listbox') {
+			return;
+		}
+		var attiva = this.activeItem;
+		if (attiva && attiva.id && attiva.parentNode == this.shuttleTbody) {
+			lista.setAttribute('aria-activedescendant', attiva.id);
+		} else {
+			lista.removeAttribute('aria-activedescendant');
+		}
+	},
+
+	/* Il nome della lista viene dalle intestazioni di colonna, quando ci sono. Non dal
+	   contenitore 'headerBox', che racchiude anche i blocchi <style> e tutte le voci: il
+	   nome risultante conteneva il codice CSS seguito dall'intero elenco. */
+	a11yTestoIntestazione : function(containerId) {
+		var intestazione = document.getElementById(containerId + "internal_header_tab");
+		if (!intestazione) {
+			return '';
+		}
+		var copia = intestazione.cloneNode(true);
+		var esclusi = copia.querySelectorAll('style, script');
+		for (var i = 0; i < esclusi.length; i++) {
+			esclusi[i].parentNode.removeChild(esclusi[i]);
+		}
+		return String(copia.textContent || '').replace(/\s+/g, ' ').trim();
+	},
+
+	/* Nome esplicito, usato dai componenti che conoscono la propria didascalia: prevale sul
+	   nome predefinito ma non su quello dato dalle intestazioni di colonna. */
+	a11yImpostaNome : function(nome, sovrascrivi) {
+		var lista = this.focusKeeper;
+		if (!lista || lista.getAttribute('role') != 'listbox' || !nome) {
+			return;
+		}
+		if (sovrascrivi || lista.getAttribute('aria-label') == 'Elenco') {
+			lista.setAttribute('aria-label', nome);
+		}
 	},
 
 	retrieveShuttleItems : function(containerId, controlClass) {

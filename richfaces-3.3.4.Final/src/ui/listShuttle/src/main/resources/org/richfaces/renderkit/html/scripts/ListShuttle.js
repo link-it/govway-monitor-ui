@@ -142,6 +142,16 @@ Richfaces.ListShuttle.prototype = {
 		options.idFuffix = "tl";
 		options.itemClass = Richfaces.ListShuttle.Target.SelectItem;
 		this.targetList = new Richfaces.ListShuttle.Target(id, options);
+
+		/* Nome delle due liste: la didascalia del componente se valorizzata
+		   ('sourceCaptionLabel', 'targetCaptionLabel'), altrimenti un nome che ne dica il
+		   ruolo. Le intestazioni di colonna, se presenti, hanno gia' dato il nome. */
+		try {
+			var didascalie = document.querySelectorAll('[id="' + id + '"] td.rich-list-shuttle-caption');
+			var testo = function(td) { return td ? String(td.textContent || '').replace(/\s+/g, ' ').trim() : ''; };
+			this.sourceList.a11yImpostaNome(testo(didascalie[0]) || 'Elementi disponibili', false);
+			this.targetList.a11yImpostaNome(testo(didascalie[1]) || 'Elementi selezionati', false);
+		} catch (e) { /* il nome non deve impedire il funzionamento */ }
 	},
 
 	destroy: function() {
@@ -165,6 +175,7 @@ Richfaces.ListShuttle.prototype = {
 	},
 
 	controlListManager : function() {
+		var attivo = document.activeElement;
 		//this.controlsProcessing();
 		this.controlsProcessing(["copy", "copyAll", "removeAll" ,"remove"], "enable");
 		if (this.sourceList.shuttleItems.length < 1)
@@ -176,6 +187,32 @@ Richfaces.ListShuttle.prototype = {
 		if (this.targetList.selectedItems.length < 1) {
 			this.controlsProcessing(["remove"], "disable");
 		}
+		this.a11yRecuperaFocus(attivo);
+	},
+
+	/* Un comando appena usato puo' sparire: 'Copia tutti' svuota la lista di partenza e
+	   viene nascosto. Il fuoco finiva sul body e chi usa la tastiera ripartiva dall'inizio
+	   della pagina. Lo si porta sulla lista che ha ricevuto le voci (WCAG 2.4.3). */
+	a11yRecuperaFocus : function(attivo) {
+		if (!attivo || attivo === document.body || !this.container.contains(attivo) || attivo.offsetParent !== null) {
+			return;
+		}
+		var id = String(attivo.id || '');
+		var base = this.container.id;
+		if (id == base + 'copy' || id == base + 'copyAll') {
+			this.targetList.setFocus();
+		} else if (id == base + 'remove' || id == base + 'removeAll') {
+			this.sourceList.setFocus();
+		}
+	},
+
+	/* Le voci passate da una lista all'altra: stato di selezione e voce attiva vanno
+	   riallineati in entrambe. */
+	a11yAggiornaListe : function() {
+		try {
+			this.sourceList.a11yPreparaVoci();
+			this.targetList.a11yPreparaVoci();
+		} catch (e) { /* la semantica accessibile non deve impedire il funzionamento */ }
 	},
 
 	onclickHandler : function(event, component) {
@@ -218,6 +255,7 @@ Richfaces.ListShuttle.prototype = {
 
 				this.targetLayoutManager.widthSynchronization();
 				this.sourceLayoutManager.widthSynchronization();
+				this.a11yAggiornaListe();
 
 				_lsFire(this.container, "rich:onlistchanged", {sourceItems: sourceComponent.shuttleItems, targetItems: targetComponent.shuttleItems});
 			}
@@ -243,8 +281,12 @@ Richfaces.ListShuttle.prototype = {
 		var items = component.shuttleItems;
 		component.selectedItems.remove(item._node);
 		items.remove(item);
-		if (item == component.activeItem) {
-			component.activeItem == null;
+		// la voce attiva e' una riga: confrontata con l'elemento non risultava mai uguale, e
+		// l'originale la confrontava invece di azzerarla; restava cosi' attiva una riga
+		// passata all'altra lista
+		if (item._node == component.activeItem) {
+			component.activeItem = null;
+			component.pseudoActiveItem = null;
 		}
 	},
 
@@ -276,6 +318,7 @@ Richfaces.ListShuttle.prototype = {
 
 			this.targetLayoutManager.widthSynchronization();
 			this.sourceLayoutManager.widthSynchronization();
+			this.a11yAggiornaListe();
 
 			_lsFire(this.container, "rich:onlistchanged", {sourceItems: sourceComponent.shuttleItems, targetItems: targetComponent.shuttleItems});
 		}

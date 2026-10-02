@@ -87,6 +87,7 @@ Object.assign(Richfaces.OrderingList.prototype, {
 	},
 
 	controlListManager : function() {
+		var attivo = document.activeElement;
 		this.selectedItems.sort(this.compareByRowIndex);
 		var control;
 		//FIXME
@@ -98,6 +99,11 @@ Object.assign(Richfaces.OrderingList.prototype, {
 				this.controlsProcessing(["first", "up"], "disable");
 			if (this.selectedItems[this.selectedItems.length - 1].rowIndex == (this.shuttleItems.length - 1))
 				this.controlsProcessing(["down", "last"], "disable");
+		}
+		// il comando di riordino appena usato si nasconde quando la voce arriva in cima o in
+		// fondo: il fuoco torna sulla lista invece di perdersi sul body (WCAG 2.4.3)
+		if (attivo && attivo !== document.body && this.container.contains(attivo) && attivo.offsetParent === null) {
+			this.setFocus();
 		}
 	},
 

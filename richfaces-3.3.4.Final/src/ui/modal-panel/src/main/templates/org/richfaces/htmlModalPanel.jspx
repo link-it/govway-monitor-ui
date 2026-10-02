@@ -58,7 +58,7 @@
 				onmouseover="#{component.attributes['onmaskmouseover']}"
 				onmouseout="#{component.attributes['onmaskmouseout']}">
 			
-				<button class="rich-mpnl-button" id="#{clientId}FirstHref"></button>
+				<button class="rich-mpnl-button" id="#{clientId}FirstHref" tabindex="-1" aria-hidden="true"></button>
 			</div>	
 
 			<div class="rich-mpnl-panel" >
@@ -183,7 +183,7 @@
 			</style>
 			<div class="rich-mpnl-mask-div rich-mpnl-mask-div-transparent #{cssId}-cursor-div-style" id="#{clientId}CursorDiv">
 				
-		        <button class="rich-mpnl-button" id="#{clientId}LastHref"></button>
+		        <button class="rich-mpnl-button" id="#{clientId}LastHref" tabindex="-1" aria-hidden="true"></button>
 			</div>
 
 			<script type="text/javascript" nonce="#{cspValue}">

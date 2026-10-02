@@ -209,7 +209,8 @@ public abstract class OrderingListRendererBase extends OrderingComponentRenderer
 				writer.startElement(HTML.IMG_ELEMENT, table);
 				writer.writeAttribute(HTML.src_ATTRIBUTE, getResource("/org/richfaces/renderkit/html/images/spacer.gif").getUri(context, null), null);
 				writer.writeAttribute(HTML.class_ATTRIBUTE, "rich-ordering-list-source-cell-img", null);
-				writer.writeAttribute(HTML.alt_ATTRIBUTE, " ", null);
+				// distanziatore decorativo: il testo alternativo va lasciato vuoto, uno spazio non lo è
+				writer.writeAttribute(HTML.alt_ATTRIBUTE, "", null);
 				writer.endElement(HTML.IMG_ELEMENT);
 				
 				renderChildren(context, component);
