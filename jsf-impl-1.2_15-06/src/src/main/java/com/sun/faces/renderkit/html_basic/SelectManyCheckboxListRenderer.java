@@ -203,6 +203,9 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         assert(writer != null);
 
         writer.startElement("table", component);
+        // la tabella dispone le opzioni (h:selectManyCheckbox, h:selectOneRadio): e' di
+        // impaginazione, non di dati (WCAG 1.3.1)
+        writer.writeAttribute("role", "presentation", null);
         if (border != Integer.MIN_VALUE) {
             writer.writeAttribute("border", border, "border");
         }

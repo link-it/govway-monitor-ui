@@ -68,6 +68,16 @@ public class GridRenderer extends BaseTableRenderer {
     // ---------------------------------------------------------- Public Methods
 
 
+    /**
+     * h:panelGrid dispone i componenti su una griglia: e' una tabella di impaginazione,
+     * non di dati (WCAG 1.3.1).
+     */
+    @Override
+    protected boolean isLayoutTable() {
+        return true;
+    }
+
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component)
           throws IOException {

@@ -133,6 +133,36 @@ Datascroller.prototype = {
 
 	var FOCALIZZABILE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+	/* Una finestra modale aperta (modalPanel.js) toglie dalla tabulazione i controlli che stanno
+	   dietro: salva il 'tabindex' di ognuno in 'gwTabindexOriginale', mette -1 e lo ripristina
+	   alla chiusura. L'osservatore qui sotto rimarcava le celle a ogni mutazione del documento,
+	   anche mentre la finestra era aperta, e rimetteva il loro 'tabindex="0"': col Tab dalla
+	   finestra si finiva sui comandi di pagina coperti dalla maschera (WCAG 2.4.3). Ora, se la
+	   cella e' sospesa dalla finestra, si aggiorna il valore da ripristinare; se e' nuova e sta
+	   dietro una finestra aperta, la si sospende allo stesso modo. */
+	function dietroFinestraAperta(cella) {
+		var finestre = document.querySelectorAll('[aria-modal="true"]');
+		for (var i = 0; i < finestre.length; i++) {
+			var f = finestre[i];
+			if ((f.offsetWidth || f.offsetHeight || f.getClientRects().length) && !f.contains(cella)) return true;
+		}
+		return false;
+	}
+
+	function impostaTabindex(cella, valore) {
+		if (!cella.gwTabindexSalvato && valore !== null && dietroFinestraAperta(cella)) {
+			cella.gwTabindexSalvato = true;
+		}
+		if (cella.gwTabindexSalvato) {
+			cella.gwTabindexOriginale = valore;
+			cella.setAttribute('tabindex', '-1');
+		} else if (valore === null) {
+			cella.removeAttribute('tabindex');
+		} else {
+			cella.setAttribute('tabindex', valore);
+		}
+	}
+
 	function marca(cella) {
 		/* In alcune viste il facet dentro la cella e' gia' un collegamento, quindi l'impaginatore
 		   e' gia' raggiungibile: marcare anche la cella creerebbe un comando dentro un comando
@@ -141,7 +171,7 @@ Datascroller.prototype = {
 		   dove dentro non c'e' nulla di focalizzabile. */
 		if (cella.querySelector(FOCALIZZABILE)) {
 			cella.removeAttribute('role');
-			cella.removeAttribute('tabindex');
+			impostaTabindex(cella, null);
 			cella.removeAttribute('aria-label');
 			return;
 		}
@@ -151,10 +181,10 @@ Datascroller.prototype = {
 		if (nome) cella.setAttribute('aria-label', nome);
 		if (spento) {
 			cella.setAttribute('aria-disabled', 'true');
-			cella.removeAttribute('tabindex');
+			impostaTabindex(cella, null);
 		} else {
 			cella.removeAttribute('aria-disabled');
-			cella.setAttribute('tabindex', '0');
+			impostaTabindex(cella, '0');
 		}
 		if (/rich-datascr-act(\s|$)/.test(cella.className)) cella.setAttribute('aria-current', 'page');
 		else cella.removeAttribute('aria-current');

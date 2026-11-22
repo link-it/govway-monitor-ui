@@ -40,7 +40,7 @@
     <div id="#{clientId}" class="rich-ordering-list-ds #{component.attributes['styleClass']}" x:passThruWithExclusions="id,class,styleClass">
     	<input id="#{clientId}focusKeeper" type="button" value="" class="#{cssId}-rich-ordering-list-focus-keeper-style" />
 		
-		<table id="#{clientId}table" cellpadding="0" cellspacing="0" class="rich-ordering-list-body">
+		<table role="presentation" id="#{clientId}table" cellpadding="0" cellspacing="0" class="rich-ordering-list-body">
 			<tbody>
 				<tr class="#{cssId}-rich-ordering-list-tr-caption-style" >
 					<jsp:scriptlet><![CDATA[
@@ -89,7 +89,7 @@
 								<style type="text/css" nonce="#{cspValue}">
 									.#{cssId}-rich-ordering-list-header-style { #{contentContainerStyle}; }
 								</style>
-								<table id="#{clientId}internal_header_tab" class="rich-ordering-list-items-header" cellpadding="0" cellspacing="0">
+								<table role="presentation" id="#{clientId}internal_header_tab" class="rich-ordering-list-items-header" cellpadding="0" cellspacing="0">
 									<f:call name="encodeHeader"/>
 								</table>
 							</div>
@@ -105,7 +105,7 @@
 								.#{cssId}-rich-ordering-list-content-style { #{contentContainerStyle}; }
 							</style>
 							<div id="#{clientId}contentBox" class="rich-ordering-list-content #{cssId}-rich-ordering-list-content-style">
-								<table id="#{clientId}internal_tab" class="rich-ordering-list-items" cellpadding="0" cellspacing="0">
+								<table role="presentation" id="#{clientId}internal_tab" class="rich-ordering-list-items" cellpadding="0" cellspacing="0">
 									<tbody id="#{clientId}tbody">
 										<vcp:body>
 											<f:call name="encodeRows" />

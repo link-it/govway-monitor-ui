@@ -68,7 +68,7 @@
 		.#{cssId}-slider-height-novantotto-style { height: 98%; }
 		.#{cssId}-slider-display-block-style { display: block; }
 	</style>
-   <table id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider-vertical rich-slider #{component.attributes['styleClass']} #{cssId}-slider-style"
+   <table role="presentation" id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider-vertical rich-slider #{component.attributes['styleClass']} #{cssId}-slider-style"
             x:passThruWithExclusions="id,boundClass,tipClass,class,width,height,style,border">
         <tbody>
             <tr>
@@ -138,7 +138,7 @@
 	        ]]></jsp:scriptlet>
             <tr>                  
                 <td class="#{cssId}-slider-height-cento-style">
-                    <table border="0" cellpadding="0" cellspacing="0" class="#{cssId}-slider-height-cento-style">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="#{cssId}-slider-height-cento-style">
 	                    <tbody>
 		                    <tr>
                                <td rowspan="2" id="#{clientId}Track" class="rich-inslider-size-height">     
@@ -148,7 +148,7 @@
 											.#{cssId}-slider-inslider-bar-style { #{component.attributes['barStyle']} }
 									</style>
                                    <div class="rich-inslider-track-vertical rich-inslider-track #{component.attributes['barClass']} #{cssId}-slider-inslider-bar-style">
-                                       <table class="rich-inslider-track-decor-1 rich-inslider-track-border" cellpadding="0" cellspacing="0" >
+                                       <table role="presentation" class="rich-inslider-track-decor-1 rich-inslider-track-border" cellpadding="0" cellspacing="0" >
                                            <tbody>
                                                <tr class="#{cssId}-slider-height-novantotto-style">
                                                    <td class="rich-inslider-track-decor-2">
@@ -310,7 +310,7 @@
 		.#{cssId}-slider-height-novantotto-style { height: 98%; }
 		.#{cssId}-slider-display-block-style { display: block; }
 	</style>
-   <table id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider rich-slider #{component.attributes['styleClass']} #{cssId}-slider-style"
+   <table role="presentation" id="#{clientId}" border="0" cellpadding="0" cellspacing="0" class="rich-inslider rich-slider #{component.attributes['styleClass']} #{cssId}-slider-style"
             x:passThruWithExclusions="id,boundClass,tipClass,class,width,height,style,border">
 		<tbody>
 			<tr>
@@ -461,7 +461,7 @@
             </tr>
 			<tr>
 				<td colspan="2" class="rich-inslider-size rich-inslider-vert-spacer">
-					<table border="0" cellpadding="0" cellspacing="0" class="rich-inslider-size">
+					<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="rich-inslider-size">
 						<tbody>
 							<tr>
 								<td id="#{clientId}Track">
@@ -483,7 +483,7 @@
                                         </div>
 									</div>
 									<div class="rich-inslider-track #{component.attributes['barClass']} #{cssId}-slider-inslider-bar-style">
-										<table class="rich-inslider-track-decor-1" cellpadding="0" cellspacing="0">
+										<table role="presentation" class="rich-inslider-track-decor-1" cellpadding="0" cellspacing="0">
 											<tbody>
 												<tr>
 													<td class="rich-inslider-track-decor-2">

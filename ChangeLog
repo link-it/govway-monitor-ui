@@ -1,3 +1,40 @@
+2026-11-19  Andrea Poli <andrea.poli@link.it>
+
+	* Tabelle di impaginazione dichiarate con 'role="presentation"' (WCAG 1.3.1, 4.1.2): le
+	  tecnologie assistive e i validatori (IBM Equal Access) le trattavano come tabelle di
+	  dati senza intestazioni, e le celle con un ruolo proprio (pulsanti dell'impaginatore,
+	  linguette delle schede, opzioni delle liste, giorni del calendario) risultavano non
+	  ammesse dentro una tabella.
+	  - h:panelGrid (GridRenderer) e le tabelle che dispongono le opzioni di
+	    h:selectManyCheckbox e h:selectOneRadio; h:dataTable resta una tabella di dati;
+	  - tabPanel (pannello, intestazioni, contenuto), inputNumberSlider,
+	    inputNumberSpinner, datascroller, listShuttle, orderingList, modalPanel;
+	  - calendar: tabelle generate dallo script (pannello, editor di data e ora).
+
+	* modalPanel: i controlli che un aggiornamento AJAX sostituisce mentre la finestra e' aperta
+	  (es. l'icona di stato dell'intestazione aggiornata periodicamente) arrivavano senza il
+	  'tabindex="-1"' dato all'apertura e tornavano raggiungibili col Tab dietro la finestra; ora
+	  sono esclusi anch'essi e ripristinati alla chiusura (WCAG 2.4.3). Le finestre sovrapposte
+	  restano escluse dal trattamento.
+
+	* datascroller: l'osservatore che marca i comandi di pagina rimetteva 'tabindex="0"' anche
+	  mentre una finestra modale li aveva esclusi dal Tab; ora aggiorna il valore da ripristinare
+	  alla chiusura (WCAG 2.4.3).
+
+	* calendar: il pannello aperto e' una finestra di dialogo modale ('aria-modal'), come il
+	  modello del selettore di date WAI-ARIA: Tab e Maiusc+Tab ciclano fra i suoi comandi e il
+	  giorno attivo. Prima il Tab dall'ultimo comando usciva nella pagina con il calendario ancora
+	  aperto sopra i campi raggiunti (WCAG 2.4.3, 2.4.11).
+
+	* listShuttle e orderingList: la barra spaziatrice seleziona o deseleziona la voce attiva,
+	  come il Ctrl+clic; prima una voce si selezionava solo spostandosi con le frecce, quindi in una
+	  lista di una sola voce soltanto con Ctrl+A (WCAG 2.1.1).
+
+	* modalPanel: con la finestra aperta anche gli elementi della pagina sottostante resi
+	  raggiungibili con 'tabindex' (pulsanti e menu costruiti su <div> o <span>, righe rese
+	  collegamenti, voci del menu laterale) escono dall'ordine di tabulazione, come gia' i
+	  controlli nativi, e alla chiusura riprendono il valore originale (WCAG 2.4.3).
+
 2026-10-02  Andrea Poli <andrea.poli@link.it>
 
 	* Rilasciata versione 20261002

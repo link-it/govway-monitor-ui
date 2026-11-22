@@ -6,7 +6,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.richfaces.cdk</groupId>
-	<artifactId>maven-cdk-plugin</artifactId>
+	<artifactId>cdk-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>Maven plugin for JSF components code generation</name>
 	<dependencies>

@@ -35,7 +35,7 @@
 	<script type="text/javascript" nonce="#{cspValue}">
 		#{this:getTableEventHandlersScript(context,component)}
 	</script>
-	<table width="2%" class="rich-spinner-c #{component.attributes['styleClass']} #{cssId}-spinner-style" id="#{clientId}" cellspacing="0" cellpadding="0" border="0" >
+	<table role="presentation" width="2%" class="rich-spinner-c #{component.attributes['styleClass']} #{cssId}-spinner-style" id="#{clientId}" cellspacing="0" cellpadding="0" border="0" >
 	<tbody>
 	  	<tr>
 			<!-- Decremento a sinistra del campo e incremento a destra: i due pulsanti

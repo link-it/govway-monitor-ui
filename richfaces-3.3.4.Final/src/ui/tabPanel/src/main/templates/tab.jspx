@@ -25,7 +25,7 @@
 
 	<td id="#{clientId}" class="#{cssId}-tab-td-style">
 
-		<table border="0" cellpadding="10" cellspacing="0" width="100%" class="rich-tabpanel-content-position">
+		<table role="presentation" border="0" cellpadding="10" cellspacing="0" width="100%" class="rich-tabpanel-content-position">
 			<tr>
 				<td class="rich-tabpanel-content #{component.pane.attributes['contentClass']} #{component.attributes['styleClass']} #{cssId}-tab-td-content-style" 
 					x:passThruWithExclusions="class,style,styleClass,id"

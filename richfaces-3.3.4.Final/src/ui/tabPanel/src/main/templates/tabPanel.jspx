@@ -37,7 +37,7 @@
 		.#{cssId}-tab-panel-input-div-style { display: none; }
 	</style>
 		
-	<table border="0" cellpadding="0" cellspacing="0" id="#{clientId}"
+	<table role="presentation" border="0" cellpadding="0" cellspacing="0" id="#{clientId}"
 		class="rich-tabpanel #{component.attributes['styleClass']} #{cssId}-tab-panel-style">
 		<f:call name="utils.encodePassThruWithExclusions">
 			<f:parameter value="width,height,styleClass,class,style,id" />
@@ -48,7 +48,7 @@
 				<td align="#{component.attributes['headerAlignment']}" class="rich-tab-bottom-line #{component.attributes['headerClass']}">
 					<f:call	name="utils.encodeBeginFormIfNessesary" />
 					<!--table  border="0" cellpadding="0" cellspacing="0" style="position:relative;top:1px"-->
-					<table  border="0" cellpadding="0" cellspacing="0">
+					<table role="presentation"  border="0" cellpadding="0" cellspacing="0">
 						<tr>
 							
 									

@@ -125,7 +125,7 @@
 						.#{cssId}-tr-td-header-content-table-style { white-space: nowrap;}
 						.#{cssId}-tr-body-content-table-style { height: 99%; }
 					</style>
-					<table id="#{clientId}ContentTable" border="0" cellpadding="0" cellspacing="0" class="rich-mp-content-table #{cssId}-content-table-style">
+					<table role="presentation" id="#{clientId}ContentTable" border="0" cellpadding="0" cellspacing="0" class="rich-mp-content-table #{cssId}-content-table-style">
 						<jsp:scriptlet>
 							<![CDATA[if(component.getFacet("header")!=null && component.getFacet("header").isRendered()) {]]>
 						</jsp:scriptlet>

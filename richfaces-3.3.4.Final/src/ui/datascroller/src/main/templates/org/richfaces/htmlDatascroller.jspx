@@ -73,7 +73,7 @@
 			]]>		                                               
 	    </jsp:scriptlet>	
 			
-			<table id="#{clientId}_table" border="0" cellpadding="0" cellspacing="1" class="rich-dtascroller-table #{component.attributes['tableStyleClass']} #{cssId}-rich-datascr-table-style">  
+			<table role="presentation" id="#{clientId}_table" border="0" cellpadding="0" cellspacing="1" class="rich-dtascroller-table #{component.attributes['tableStyleClass']} #{cssId}-rich-datascr-table-style">  
 			<tbody>
 				    <tr>			    
 	                <jsp:scriptlet><![CDATA[

@@ -84,7 +84,7 @@ public class CreateComponentMojo extends AbstractCDKMojo {
 			// Search for this plugin in project pom
 			for (Iterator iter = plugins.iterator(); iter.hasNext();) {
 				plugin = (Plugin) iter.next();
-				if("maven-cdk-plugin".equals(plugin.getArtifactId())) {
+				if("cdk-maven-plugin".equals(plugin.getArtifactId())) {
 					
 					String groupId;
 					if ("3.1.0".compareTo(plugin.getVersion()) > 0) {

@@ -463,6 +463,16 @@ ModalPanel.prototype = {
 			!root.disabled && root.type!="hidden") {
 				callback.call(this, root);
 		} else {
+			/* Gli elementi resi raggiungibili con 'tabindex' (pulsanti e menu costruiti su un
+			   <div> o uno <span>, righe rese collegamenti, celle del calendario) restavano
+			   tabulabili dietro la finestra: si trattano come i controlli nativi, all'apertura
+			   (tabindex >= 0) e alla chiusura (quelli salvati). Si prosegue anche nei loro figli,
+			   che possono contenere altri controlli (es. le caselle di una riga). La finestra
+			   stessa resta esclusa. */
+			if (root.nodeType == 1 && root != this.id && root.hasAttribute &&
+				root.hasAttribute('tabindex') && (root.tabIndex >= 0 || root.gwTabindexSalvato)) {
+				callback.call(this, root);
+			}
 			if (root != this.id) {
 				var child = root.firstChild;
 				while (child) {
@@ -732,6 +742,45 @@ ModalPanel.prototype = {
 	preventFocus:	function() {
 		this.processAllFocusElements(document, this.processTabindexes);
 
+		/* I controlli che un re-render AJAX sostituisce mentre la finestra e' aperta (es. l'icona
+		   di stato dell'intestazione, aggiornata periodicamente, o un elenco ridisegnato dietro la
+		   finestra) arrivavano nuovi, senza il tabindex=-1 dato all'apertura: col Tab dalla finestra
+		   si finiva di nuovo nella pagina sottostante (WCAG 2.4.3). Finche' la finestra e' aperta i
+		   nodi aggiunti fuori da essa vengono trattati come all'apertura, e ripristinati alla
+		   chiusura con gli altri. Primo e ultimo controllo esterno restano quelli dell'apertura,
+		   a cui sono agganciati i gestori del rimbalzo. */
+		if (window.MutationObserver && !this.gwOsservatoreEsterni) {
+			var pannello = this;
+			/* anche le finestre aperte sopra questa (finestre sovrapposte) sono escluse: i loro
+			   controlli restano raggiungibili */
+			var dentroUnaFinestra = function(nodo) {
+				var finestre = ModalPanel.activePanels.concat([pannello]);
+				for (var k = 0; k < finestre.length; k++) {
+					var c = finestre[k].id;
+					if (c && (c === nodo || (c.contains && c.contains(nodo)))) {
+						return true;
+					}
+				}
+				return false;
+			};
+			this.gwOsservatoreEsterni = new MutationObserver(function(mutazioni) {
+				var primo = pannello.firstOutside, ultimo = pannello.lastOutside;
+				for (var i = 0; i < mutazioni.length; i++) {
+					var aggiunti = mutazioni[i].addedNodes;
+					for (var j = 0; j < aggiunti.length; j++) {
+						var nodo = aggiunti[j];
+						if (nodo.nodeType !== 1 || !nodo.isConnected || dentroUnaFinestra(nodo)) {
+							continue;
+						}
+						pannello.processAllFocusElements(nodo, pannello.processTabindexes);
+					}
+				}
+				pannello.firstOutside = primo;
+				pannello.lastOutside = ultimo;
+			});
+			this.gwOsservatoreEsterni.observe(document.body, { childList: true, subtree: true });
+		}
+
 		if (this.firstOutside) {
 			this.firstOutside.addEventListener("focus", this.eventFirstOnfocus);
 		}
@@ -741,6 +790,10 @@ ModalPanel.prototype = {
 	},
 
 	restoreFocus: function() {
+		if (this.gwOsservatoreEsterni) {
+			this.gwOsservatoreEsterni.disconnect();
+			this.gwOsservatoreEsterni = null;
+		}
 		this.processAllFocusElements(document, this.restoreTabindexes);
 
 		if (this.firstOutside) {

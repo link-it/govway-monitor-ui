@@ -14,7 +14,7 @@
 		    ......
 			<plugin>
 				<groupId>org.ajax4jsf.cdk</groupId>
-				<artifactId>maven-cdk-plugin</artifactId>
+				<artifactId>cdk-maven-plugin</artifactId>
 				<configuration>
 				  ..........see below........
 				</configuration>

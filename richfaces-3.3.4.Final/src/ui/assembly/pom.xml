@@ -16,7 +16,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.richfaces.cdk</groupId>
-				<artifactId>maven-cdk-plugin</artifactId>
+				<artifactId>cdk-maven-plugin</artifactId>
 				<version>${govway-monitor-ui.version}</version>
 				<configuration>
 					<library>
@@ -108,7 +108,7 @@
 			</plugin>
 			<plugin>
 				<groupId>org.richfaces.cdk</groupId>
-				<artifactId>maven-javascript-plugin</artifactId>
+				<artifactId>javascript-maven-plugin</artifactId>
 <!-- 				<version>${project.version}</version> -->
 				<version>${org-richfaces-cdk-maven-javascript-plugin.version}</version>
 				<executions>

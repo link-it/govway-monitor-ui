@@ -146,6 +146,11 @@ public abstract class BaseTableRenderer extends HtmlBasicRenderer {
 
         writer.startElement("table", table);
         writeIdAttributeIfNecessary(context, writer, table);
+        // una tabella di impaginazione lo dichiara: le tecnologie assistive non la
+        // annunciano come tabella di dati (WCAG 1.3.1)
+        if (isLayoutTable()) {
+            writer.writeAttribute("role", "presentation", null);
+        }
         
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, "styleClass");
@@ -155,6 +160,16 @@ public abstract class BaseTableRenderer extends HtmlBasicRenderer {
                                                 passThroughAttributes);
         writer.writeText("\n", table, null);
 
+    }
+
+
+    /**
+     * Indica se la tabella serve solo a disporre i componenti (h:panelGrid) e non
+     * contiene dati (h:dataTable).
+     * @return <code>true</code> per una tabella di impaginazione
+     */
+    protected boolean isLayoutTable() {
+        return false;
     }
 
 

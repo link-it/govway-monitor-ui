@@ -42,7 +42,7 @@
 		.#{cssId}-rich-shuttle-td-controls-va-style { vertical-align: #{component.controlsVerticalAlign}; }
 		.#{cssId}-rich-shuttle-tr-caption-style { #{this:getCaptionDisplay(context, component)} }
 	</style>
-	<table id="#{clientId}" class="rich-list-shuttle #{component.attributes['styleClass']}"
+	<table role="presentation" id="#{clientId}" class="rich-list-shuttle #{component.attributes['styleClass']}"
 			cellspacing="0" cellpadding="0"
 			x:passThruWithExclusions="id,class,styleClass">
 		<tbody>
@@ -76,7 +76,7 @@
 					    <div class="rich-shuttle-source-items #{component.listClass}">
 					    	<input id="#{clientId}focusKeeper" type="button" value="" class="#{cssId}-rich-shuttle-focus-keeper-style"/>
 							
-							<table id="#{clientId}table" cellpadding="0" cellspacing="0" class="rich-shuttle-body">
+							<table role="presentation" id="#{clientId}table" cellpadding="0" cellspacing="0" class="rich-shuttle-body">
 								<tbody>
 									<tr>
 										<td class="#{cssId}-rich-shuttle-table-td-header-box-style">
@@ -96,7 +96,7 @@
 													.#{cssId}-rich-shuttle-list-header-style { #{contentContainerStyle}; }
 												</style>
 												<div class="rich-shuttle-list-header #{cssId}-rich-shuttle-list-header-style">
-													<table id="#{clientId}internal_header_tab" class="rich-shuttle-internal-header-tab" cellpadding="0" cellspacing="0">
+													<table role="presentation" id="#{clientId}internal_header_tab" class="rich-shuttle-internal-header-tab" cellpadding="0" cellspacing="0">
 														<f:call name="encodeSLHeader"/>
 													</table>
 												</div>
@@ -114,7 +114,7 @@
 													.#{cssId}-rich-shuttle-list-content-style { #{contentContainerStyle}; }
 												</style>
 												<div id="#{clientId}contentBox" class="rich-shuttle-list-content #{cssId}-rich-shuttle-list-content-style">
-													<table id="#{clientId}internal_tab" class="rich-shuttle-internal-tab" cellpadding="0" cellspacing="0">
+													<table role="presentation" id="#{clientId}internal_tab" class="rich-shuttle-internal-tab" cellpadding="0" cellspacing="0">
 														<tbody id="#{clientId}tbody">
 															<jsp:scriptlet><![CDATA[
 																writer.write(encodedSourceRows);
@@ -144,7 +144,7 @@
 	
 					    	<input id="#{clientId}tlfocusKeeper" type="button" value="" class="#{cssId}-rich-shuttle-focus-tl-keeper-style"/>
 							
-							<table id="#{clientId}tltable" cellpadding="0" cellspacing="0" class="rich-shuttle-body">
+							<table role="presentation" id="#{clientId}tltable" cellpadding="0" cellspacing="0" class="rich-shuttle-body">
 								<tbody>
 									<tr>
 										<td class="#{cssId}-rich-shuttle-table-td-tl-header-box-style">
@@ -164,7 +164,7 @@
 													.#{cssId}-rich-shuttle-list-tl-header-style { #{trContentContainerStyle}; }
 												</style>
 												<div class="rich-shuttle-list-header #{cssId}-rich-shuttle-list-tl-header-style">
-													<table id="#{clientId}tlinternal_header_tab" class="rich-shuttle-internal-header-tab" cellpadding="0" cellspacing="0">
+													<table role="presentation" id="#{clientId}tlinternal_header_tab" class="rich-shuttle-internal-header-tab" cellpadding="0" cellspacing="0">
 														<f:call name="encodeTLHeader"/>
 													</table>
 												</div>
@@ -181,7 +181,7 @@
 													.#{cssId}-rich-shuttle-list-tl-content-style { #{trContentContainerStyle}; }
 												</style>
 												<div id="#{clientId}tlcontentBox" class="rich-shuttle-list-content #{cssId}-rich-shuttle-list-tl-content-style">
-													<table id="#{clientId}tlinternal_tab" class="rich-shuttle-internal-tab" cellpadding="0" cellspacing="0">
+													<table role="presentation" id="#{clientId}tlinternal_tab" class="rich-shuttle-internal-tab" cellpadding="0" cellspacing="0">
 														<tbody id="#{clientId}tltbody">
 															<jsp:scriptlet><![CDATA[
 																writer.write(encodedTargetRows);

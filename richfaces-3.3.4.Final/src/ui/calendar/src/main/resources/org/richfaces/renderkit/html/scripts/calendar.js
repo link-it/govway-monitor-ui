@@ -838,7 +838,7 @@ Object.assign(Calendar.prototype, {
 
 		var textHeaderStyleCssClass = 'rich-calendar-popup-style-' + this.params.cssId;
 		var htmlTextHeaderStyle = htmlStyleTextBegin + '.' + textHeaderStyleCssClass+ '{' + popupStyles+this.params.style+ '}' + htmlStyleTextEnd;
-		var htmlTextHeader = '<table id="'+this.id+'" border="0" cellpadding="0" cellspacing="0" class="rich-calendar-exterior rich-calendar-popup '+popupStyleClass+' '+textHeaderStyleCssClass+' rich-calendar-display-none"><tbody>';
+		var htmlTextHeader = '<table role="presentation" id="'+this.id+'" border="0" cellpadding="0" cellspacing="0" class="rich-calendar-exterior rich-calendar-popup '+popupStyleClass+' '+textHeaderStyleCssClass+' rich-calendar-display-none"><tbody>';
 		var colspan = (this.params.showWeeksBar ? "8" : "7");
 		var htmlHeaderOptional = (this.params.optionalHeaderMarkup) ? '<tr><td class="rich-calendar-header-optional" colspan="'+colspan+'" id="'+this.id+'HeaderOptional"></td></tr>' : '';
 		var htmlFooterOptional = (this.params.optionalFooterMarkup) ? '<tr><td class="rich-calendar-footer-optional" colspan="'+colspan+'" id="'+this.id+'FooterOptional"></td></tr>' : '';
@@ -1089,7 +1089,7 @@ Object.assign(Calendar.prototype, {
 	createEditor: function()
 	{
 		var element = _calResolve(this.id);
-		var htmlBegin = '<div id="'+this.EDITOR_SHADOW_ID+'" class="rich-calendar-editor-shadow rich-calendar-position-absolute rich-calendar-display-none"></div><table border="0" cellpadding="0" cellspacing="0" id="'+this.EDITOR_ID
+		var htmlBegin = '<div id="'+this.EDITOR_SHADOW_ID+'" class="rich-calendar-editor-shadow rich-calendar-position-absolute rich-calendar-display-none"></div><table role="presentation" border="0" cellpadding="0" cellspacing="0" id="'+this.EDITOR_ID
 		+'" class="rich-calendar-position-absolute rich-calendar-display-none"><tbody><tr><td class="rich-calendar-editor-container" align="center"><div class="rich-calendar-position-relative rich-calendar-width-centopercento">';
 		var htmlContent = '<div id="'+this.EDITOR_LAYOUT_SHADOW_ID+'" class="rich-calendar-editor-layout-shadow"></div>';
 		
@@ -1168,7 +1168,7 @@ Object.assign(Calendar.prototype, {
 
 	createDateEditorLayout: function(editor)
 	{
-		var htmlBegin = '<table id="'+this.DATE_EDITOR_LAYOUT_ID+'" class="rich-calendar-date-layout" border="0" cellpadding="0" cellspacing="0"><tbody><tr id="'+this.DATE_EDITOR_LAYOUT_ID+'TR">';
+		var htmlBegin = '<table role="presentation" id="'+this.DATE_EDITOR_LAYOUT_ID+'" class="rich-calendar-date-layout" border="0" cellpadding="0" cellspacing="0"><tbody><tr id="'+this.DATE_EDITOR_LAYOUT_ID+'TR">';
 		var htmlEnd = '</tr></tbody></table>';
 		var month = 0;
 		this.dateEditorYear = this.getCurrentYear();
@@ -1210,12 +1210,12 @@ Object.assign(Calendar.prototype, {
 	},	
 	
 	createSpinnerTable: function(id) {
-		return '<table cellspacing="0" cellpadding="0" border="0"><tbody><tr>'+
+		return '<table role="presentation" cellspacing="0" cellpadding="0" border="0"><tbody><tr>'+
 					'<td class="rich-calendar-spinner-input-container">'+
 						'<input id="' + id + '" name="' + id + '" class="rich-calendar-spinner-input" type="text" />'+
 					'</td>'+	
 					'<td class="rich-calendar-spinner-buttons">'+
-						'<table border="0" cellspacing="0" cellpadding="0"><tbody>'+
+						'<table role="presentation" border="0" cellspacing="0" cellpadding="0"><tbody>'+
 							'<tr><td>'+
 								'<div id="'+id+'BtnUp" class="rich-calendar-spinner-up"><span></span></div>'+
 							'</td></tr>'+
@@ -1297,7 +1297,7 @@ Object.assign(Calendar.prototype, {
 			}
 		);
 		
-		this.timePatternHtml = '<table border="0" cellpadding="0"><tbody><tr><td>'+this.timePatternHtml+'</td></tr></tbody></table>';
+		this.timePatternHtml = '<table role="presentation" border="0" cellpadding="0"><tbody><tr><td>'+this.timePatternHtml+'</td></tr></tbody></table>';
   		
 		if (m && h)
 		{
@@ -2394,6 +2394,13 @@ Object.assign(Calendar.prototype, {
 	 * comando. Il fuoco si sposta fra le celle con un solo punto di tabulazione
 	 * (roving tabindex), per non aggiungere 42 fermate alla pagina.
 	 *
+	 * Il pannello e' una finestra di dialogo modale, come prevede il modello del
+	 * selettore di date (WAI-ARIA APG, Date Picker Dialog): mentre e' aperto
+	 * Tab e Maiusc+Tab ciclano fra i suoi comandi e il giorno attivo, e il
+	 * pannello e' dichiarato 'aria-modal'. Prima il Tab dall'ultimo comando
+	 * usciva nella pagina lasciando il calendario aperto sopra i campi che il
+	 * fuoco andava a raggiungere (WCAG 2.4.3, 2.4.11).
+	 *
 	 * Il comportamento col mouse non cambia: la scelta passa da
 	 * 'eventCellOnClick', lo stesso gestore del clic.
 	 * ---------------------------------------------------------------------- */
@@ -2435,6 +2442,7 @@ Object.assign(Calendar.prototype, {
 			pannello.setAttribute('aria-label', this.ETICHETTA_PANNELLO_CALENDARIO);
 			pannello.addEventListener('keydown', this.tastieraCalendario.bind(this), false);
 		}
+		pannello.setAttribute('aria-modal', 'true');
 		var comando = _calResolve(this.POPUP_BUTTON_ID);
 		if (comando) comando.setAttribute('aria-expanded', 'true');
 
@@ -2450,6 +2458,8 @@ Object.assign(Calendar.prototype, {
 	},
 
 	chiudiPerTastiera: function() {
+		var aperto = _calResolve(this.id);
+		if (aperto) aperto.removeAttribute('aria-modal');
 		var comando = _calResolve(this.POPUP_BUTTON_ID);
 		if (!comando) return;
 		comando.setAttribute('aria-expanded', 'false');
@@ -2600,9 +2610,44 @@ Object.assign(Calendar.prototype, {
 		this.preparaCelleAccessibili();
 	},
 
+	/* I punti di tabulazione del pannello aperto, nell'ordine del documento: i comandi
+	   resi focalizzabili da 'preparaComandiPannello', il giorno attivo, gli eventuali
+	   campi degli editor. Esclusi i nascosti e i giorni fuori mese (aria-hidden). */
+	tabulabiliDelPannello: function(pannello) {
+		var candidati = pannello.querySelectorAll('[tabindex], a[href], button, input, select, textarea');
+		var utili = [];
+		for (var i = 0; i < candidati.length; i++) {
+			var e = candidati[i];
+			if (e.tabIndex < 0 || e.disabled || (e.type && e.type === 'hidden')) continue;
+			if (!e.getClientRects().length || window.getComputedStyle(e).visibility === 'hidden') continue;
+			if (e.closest && e.closest('[aria-hidden="true"]')) continue;
+			utili.push(e);
+		}
+		return utili;
+	},
+
 	tastieraCalendario: function(evento) {
 		if (!this.isVisible) return true;
 		var tasto = evento.keyCode || evento.which;
+		if (tasto === 9 /* TAB */) {
+			var pannello = _calResolve(this.id);
+			var tabulabili = pannello ? this.tabulabiliDelPannello(pannello) : [];
+			if (!tabulabili.length) return true;
+			var primo = tabulabili[0], ultimo = tabulabili[tabulabili.length - 1];
+			var attuale = document.activeElement;
+			var fuori = tabulabili.indexOf(attuale) === -1;
+			if (evento.shiftKey && (attuale === primo || fuori)) {
+				evento.preventDefault();
+				ultimo.focus();
+				return false;
+			}
+			if (!evento.shiftKey && (attuale === ultimo || fuori)) {
+				evento.preventDefault();
+				primo.focus();
+				return false;
+			}
+			return true;   // dentro il pannello il Tab segue l'ordine del documento
+		}
 		var data = this.dataAttiva ? new Date(this.dataAttiva) : new Date(this.getCurrentDate());
 		var giorniDelMese = function(d) { return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); };
 		var spostaMese = function(offsetMesi) {
@@ -3097,7 +3142,7 @@ CalendarView.timeControl = function (context) {	return CalendarView.getTimeContr
 CalendarView.timeEditorFields = function (context) {return context.calendar.timePatternHtml;};
 
 CalendarView.header = [
-	new E('table',{'border': '0', 'cellpadding': '0', 'cellspacing': '0', 'width': '100%'},
+	new E('table',{'role': 'presentation', 'border': '0', 'cellpadding': '0', 'cellspacing': '0', 'width': '100%'},
 		[
 			new E('tbody',{},
 			[
@@ -3133,7 +3178,7 @@ CalendarView.header = [
 	)];
 	
 CalendarView.footer = [
-	new E('table',{'border': '0', 'cellpadding': '0', 'cellspacing': '0', 'width': '100%'},
+	new E('table',{'role': 'presentation', 'border': '0', 'cellpadding': '0', 'cellspacing': '0', 'width': '100%'},
 		[
 			new E('tbody',{},
 			[
@@ -3167,7 +3212,7 @@ CalendarView.footer = [
 	
 CalendarView.timeEditorLayout = [
 
-        new E('table',{'id': function(context){return context.calendar.TIME_EDITOR_LAYOUT_ID}, 'border': '0', 'cellpadding': '0', 'cellspacing': '0', 'class': 'rich-calendar-time-layout'},
+        new E('table',{'role': 'presentation', 'id': function(context){return context.calendar.TIME_EDITOR_LAYOUT_ID}, 'border': '0', 'cellpadding': '0', 'cellspacing': '0', 'class': 'rich-calendar-time-layout'},
 		[
 			new E('tbody',{},
 			[

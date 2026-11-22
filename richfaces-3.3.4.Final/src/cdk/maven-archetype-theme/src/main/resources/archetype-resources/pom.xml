@@ -9,7 +9,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.richfaces.cdk</groupId>
-				<artifactId>maven-cdk-plugin</artifactId>
+				<artifactId>cdk-maven-plugin</artifactId>
 				<version>${version}</version>
 				<executions>
 					<execution>

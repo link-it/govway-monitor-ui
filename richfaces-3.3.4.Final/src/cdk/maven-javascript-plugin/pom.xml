@@ -7,7 +7,7 @@
 		<version>${govway-monitor-ui.version}</version>
 	</parent>
 	<groupId>org.richfaces.cdk</groupId>
-	<artifactId>maven-javascript-plugin</artifactId>
+	<artifactId>javascript-maven-plugin</artifactId>
 	<version>${govway-monitor-ui.version}</version>
 	<packaging>maven-plugin</packaging>
 	<name>YUI Compressor Maven Mojo</name>

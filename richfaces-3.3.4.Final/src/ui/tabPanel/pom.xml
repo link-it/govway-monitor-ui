@@ -12,7 +12,7 @@
     <plugins>
       <plugin>
         <groupId>org.richfaces.cdk</groupId>
-        <artifactId>maven-cdk-plugin</artifactId>
+        <artifactId>cdk-maven-plugin</artifactId>
 	<version>${govway-monitor-ui.version}</version>
         <executions>
           <execution>

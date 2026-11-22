@@ -347,6 +347,18 @@ Richfaces.ListBase.prototype = {
 					  this.moveActiveItem(action, event);
 					  _lsStopEvent(event);
 					  break;
+			case 32 : // barra spaziatrice
+					  /* seleziona o deseleziona la voce attiva senza toccare le altre, come il
+					     Ctrl+clic: e' il tasto del modello listbox a selezione multipla (WAI-ARIA
+					     APG). Senza, una voce si selezionava solo spostandosi con le frecce, quindi
+					     in una lista di una sola voce soltanto con Ctrl+A (WCAG 2.1.1) */
+					  if (this.activeItem && this.activeItem.item) {
+						this.addSelectedItem(this.activeItem);
+						this.activeItem.item.doActive(this.getExtRowClass(this.activeItem.rowIndex), this.columnClasses);
+						this.a11yPreparaVoci();
+					  }
+					  _lsStopEvent(event);
+					  break;
 			case 65 : // Ctrl + A
 					  if (event.ctrlKey) {
 						this.selectAll();
